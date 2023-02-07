@@ -15,14 +15,14 @@ scenario:
   simpl: # only relevant for PyPSA-Eur
     - ''
   lv: # allowed transmission line volume expansion, can be any float >= 1.0 (today) or "opt"
-    - 1.0
-    - 1.5
+    # - 1.0
+    - 1.2
   clusters: # number of nodes in Europe, any integer between 37 (1 node per country-zone) and several hundred
-    - 5
+    - 10
   opts: # only relevant for PyPSA-Eur
     - ''
   sector_opts: # this is where the main scenario settings are
-    - Co2L0-3H-T-H-B-I-A-solar+p3-dist1
+    - Co2L0-T-H-B-I-A-solar+p3-dist1
   # to really understand the options here, look in scripts/prepare_sector_network.py
   # Co2Lx specifies the CO2 target in x% of the 1990 values; default will give default (5%);
   # Co2L0p25 will give 25% CO2 emissions; Co2Lm0p05 will give 5% negative emissions
@@ -187,11 +187,20 @@ sector:
     2030: 0.25
     2040: 0.6
     2050: 0.85
+  land_transport_ice_share:
+    2020: 1
+    2030: 0.7
+    2040: 0.3
+    2050: 0
   transport_fuel_cell_efficiency: 0.5
   transport_internal_combustion_efficiency: 0.3
   agriculture_machinery_electric_share: 0
+  agriculture_machinery_oil_share: 1
   agriculture_machinery_fuel_efficiency: 0.7 # fuel oil per use
   agriculture_machinery_electric_efficiency: 0.3 # electricity per use
+  MWh_MeOH_per_MWh_H2: 0.8787 # in LHV, source: DECHEMA (2017): Low carbon energy and feedstock for the European chemical industry , pg. 64.
+  MWh_MeOH_per_tCO2: 4.0321 # in LHV, source: DECHEMA (2017): Low carbon energy and feedstock for the European chemical industry , pg. 64.
+  MWh_MeOH_per_MWh_e: 3.6907 # in LHV, source: DECHEMA (2017): Low carbon energy and feedstock for the European chemical industry , pg. 64.
   shipping_average_efficiency: 0.4 #For conversion of fuel oil to propulsion in 2011
   shipping_hydrogen_liquefaction: false # whether to consider liquefaction costs for shipping H2 demands
   shipping_hydrogen_share:  # 1 means all hydrogen FC
@@ -202,6 +211,12 @@ sector:
     2040: 0.3
     2045: 0.6
     2050: 1
+  shipping_methanol_share: 1
+  shipping_oil_share: 0
+  shipping_methanol_efficiency: 0.46 # 10-15% higher https://www.iea-amf.org/app/webroot/files/file/Annex%20Reports/AMF_Annex_56.pdf, https://users.ugent.be/~lsileghe/documents/extended_abstract.pdf
+  shipping_oil_efficiency: 0.40 #For conversion of fuel oil to propulsion in 2011
+  aviation_demand_factor: 1. # relative aviation demand compared to today
+  HVC_demand_factor: 1. # relative HVC demand compared to today
   time_dep_hp_cop: true #time dependent heat pump coefficient of performance
   heat_pump_sink_T: 55. # Celsius, based on DTU / large area radiators; used in build_cop_profiles.py
    # conservatively high to cover hot water and space heating in poorly-insulated buildings
@@ -242,8 +257,10 @@ sector:
   dac: true
   co2_vent: false
   SMR: true
+  sequestration_potential: true  # geological co2 storage potential
   co2_sequestration_potential: 200  #MtCO2/a sequestration potential for Europe
   co2_sequestration_cost: 10   #EUR/tCO2 for sequestration of CO2
+  co2_spatial: true
   co2_network: true
   cc_fraction: 0.9  # default fraction of CO2 captured with post-combustion capture
   hydrogen_underground_storage: true
@@ -267,6 +284,7 @@ sector:
   gas_network_connectivity_upgrade: 1 # https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.connectivity.edge_augmentation.k_edge_augmentation.html#networkx.algorithms.connectivity.edge_augmentation.k_edge_augmentation
   gas_distribution_grid: true
   gas_distribution_grid_cost_factor: 1.0  #multiplies cost in data/costs.csv
+  biomass_spatial: true  # biomass transport between nodes
   biomass_transport: true  # biomass transport between nodes
   conventional_generation: # generator : carrier
     OCGT: gas
@@ -453,6 +471,9 @@ plotting:
     - solar thermal collector
     - central solar thermal collector
   tech_colors:
+    # electricity
+    AC: "teal"
+    DC: "teal"
     # wind
     onwind: "#235ebc"
     onshore wind: "#235ebc"
@@ -584,7 +605,7 @@ plotting:
     hydrogen storage: '#bf13a0'
     H2 storage: '#bf13a0'
     land transport fuel cell: '#6b3161'
-    H2 pipeline: '#f081dc'
+    H2 pipeline: '#c251ae'
     H2 pipeline retrofitted: '#ba99b5'
     H2 Fuel Cell: '#c251ae'
     H2 Electrolysis: '#ff29d9'

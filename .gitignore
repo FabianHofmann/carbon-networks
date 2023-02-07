@@ -12,6 +12,7 @@ dconf
 results/
 resources/
 data/
+playaround/
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
