@@ -3,14 +3,29 @@ configfile: "config/config.pypsa-eur.yaml"
 configfile: "config/config.pypsa-eur-sec.yaml"
 configfile: "config/config.yaml"
 
+
 from shutil import copyfile
+
 copyfile("config/config.pypsa-eur.yaml", "workflow/subworkflows/pypsa-eur/config.yaml")
-copyfile("config/config.pypsa-eur-sec.yaml", "workflow/subworkflows/pypsa-eur-sec/config.yaml")
+copyfile(
+    "config/config.pypsa-eur-sec.yaml",
+    "workflow/subworkflows/pypsa-eur-sec/config.yaml",
+)
+
+
+wildcard_constraints:
+    lv="[a-z0-9\.]+",
+    simpl="[a-zA-Z0-9]*",
+    clusters="[0-9]+m?",
+    opts="[-+a-zA-Z0-9]*",
+    sector_opts="[-+a-zA-Z0-9\.\s]*",
+
 
 localrules:
     all,
     report,
     clean,
+
 
 subworkflow pypsaeur:
     configfile:
@@ -35,23 +50,68 @@ RDIR = config["results_dir"] + config["run"]
 CDIR = config["costs_dir"]
 
 
-rule solve_all_networks:
+rule all:
+    input:
+        expand(
+            RDIR
+            + "/maps/networks_map_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
+            **config["scenario"]
+        ),
+        expand(
+            RDIR
+            + "/maps/operation_map_{kind}_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
+            **config["scenario"],
+            kind=config["constants"]["kinds"]
+        ),
+
+
+rule plot_networks_map:
+    input:
+        network=RDIR
+        + "/postnetworks/elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}.nc",
+        onshore_regions=pypsaeur(
+            "resources/regions_onshore_elec_s{simpl}_{clusters}.geojson"
+        ),
+        offshore_regions=pypsaeur(
+            "resources/regions_offshore_elec_s{simpl}_{clusters}.geojson"
+        ),
+    output:
+        map=RDIR
+        + "/maps/networks_map_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
+    script:
+        "scripts/plot-networks-map.py"
+
+
+rule plot_operation_map:
+    input:
+        network=RDIR
+        + "/postnetworks/elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}.nc",
+        onshore_regions=pypsaeur(
+            "resources/regions_onshore_elec_s{simpl}_{clusters}.geojson"
+        ),
+        offshore_regions=pypsaeur(
+            "resources/regions_offshore_elec_s{simpl}_{clusters}.geojson"
+        ),
+    output:
+        map=RDIR
+        + "/maps/operation_map_{kind}_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
+    script:
+        "scripts/plot-operation-map.py"
+
+
+rule get_solved_networks:
     input:
         pypsaeursec(
-            expand(
-                RDIR
-                + "/postnetworks/elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}.nc",
-                **config["scenario"]
-            ), 
+            RDIR
+            + "/postnetworks/elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}.nc"
         ),
-        pypsaeursec(
-            SDIR + '/graphs/costs.pdf',
-        )
-
-
-# rule test:
-#     input:
-#         pypsaeursec("subworkflows/pypsa-eur-sec/results")
+    output:
+        RDIR
+        + "/postnetworks/elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}.nc",
+    shell:
+        """
+        cp {input} {output}
+        """
 
 
 rule report:

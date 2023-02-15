@@ -5,18 +5,12 @@ Created on Thu Nov 24 10:14:48 2022
 
 @author: fabian
 """
-
-# Sources and sinks
-# Focussing on CO2 network might be enough (turn on/off)
-# How to handle import of H2?
-
-
+import os
 import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-from common import import_network, pypsa_eur_sec, pypsa_eur
-from constants import PLOT_SPECS, KINDS
+from common import import_network, mock_snakemake
 
 from plotting import (
     create_carrier_network,
@@ -28,46 +22,66 @@ import geopandas as gpd
 
 
 sns.set_context("paper")
-kind = "carbon"
 column = "Optimal Capacity"
 alpha = 1
 region_alpha = 0.8
 
 
-n = import_network(
-    pypsa_eur_sec
-    / "results/your-run-name/postnetworks/elec_s_10_lv1.2__Co2L0-T-H-B-I-A-solar+p3-dist1_2050.nc"
-)
-regions = gpd.read_file(
-    pypsa_eur / "resources/regions_onshore_elec_s_10.geojson"
-).set_index("name")
+if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
+    snakemake = mock_snakemake(
+        "plot_networks_map",
+        simpl="",
+        lv=1.2,
+        clusters=181,
+        opts="",
+        sector_opts="Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq200",
+        planning_horizons=2050,
+    )
+
+
+n = import_network(snakemake.input.network)
+offshore_regions = gpd.read_file(snakemake.input.offshore_regions).set_index("name")
+onshore_regions = gpd.read_file(snakemake.input.onshore_regions).set_index("name")
+kinds = snakemake.config["constants"]["kinds"]
 
 fig, axes = plt.subplots(
-    2, 2, figsize=(15, 13), subplot_kw={"projection": ccrs.EqualEarth()}
+    2,
+    2,
+    figsize=(15, 13),
+    subplot_kw={"projection": ccrs.EqualEarth()},
 )
 
-for kind, ax in zip(KINDS, axes.flatten()):
+for kind, ax in zip(kinds, axes.flatten()):
 
-    o = create_carrier_network(n, kind=kind)
+    carriers = snakemake.config["constants"]["carrier_to_buses"][kind]
+    o = create_carrier_network(n, kind, carriers)
     data = get_carrier_network_plotting_data(o, "Optimal Capacity")
-    specs = PLOT_SPECS[kind]
+    specs = snakemake.config["plotting"]["capacity_map"][kind]
+
+    if kind == "carbon":
+        regions = offshore_regions
+    else:
+        regions = onshore_regions
 
     plot_map(
         ax,
         o,
         regions,
-        column=column,
-        bus_scale=specs["bus_scale"],
-        branch_scale=specs["branch_scale"],
+        data,
+        bus_scale=float(specs["bus_scale"]),
+        branch_scale=float(specs["branch_scale"]),
         alpha=alpha,
+        branch_alpha=alpha,
         region_alpha=region_alpha,
         region_cmap=specs["region_cmap"],
+        region_unit=specs["region_unit"],
     )
+    fig.canvas.draw()
     add_legend(
         ax,
         o,
-        bus_scale=specs["bus_scale"],
-        branch_scale=specs["branch_scale"],
+        bus_scale=float(specs["bus_scale"]),
+        branch_scale=float(specs["branch_scale"]),
         bus_sizes=specs["bus_sizes"],
         branch_sizes=specs["branch_sizes"],
         alpha=alpha,
@@ -76,4 +90,9 @@ for kind, ax in zip(KINDS, axes.flatten()):
     ax.set_title(kind.title())
 
 fig.tight_layout()
-fig.savefig("map_networks.png", bbox_inches="tight", dpi=300, facecolor="white")
+fig.savefig(
+    snakemake.output.map,
+    bbox_inches="tight",
+    dpi=300,
+    facecolor="white",
+)

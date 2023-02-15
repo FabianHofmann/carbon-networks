@@ -5,7 +5,7 @@ Created on Wed Jan 18 13:55:01 2023
 
 @author: fabian
 """
-
+import os
 from pathlib import Path
 import warnings
 import pypsa
@@ -14,12 +14,21 @@ from pypsa.components import components, component_attrs
 import pandas as pd
 import yaml
 import numpy as np
-from constants import SITES, NODE_COMPS
 
-root = Path("/home/fabian/papers/co2-network")
+root = Path(__file__).parent.parent.parent.resolve()
 pypsa_eur = root / "workflow/subworkflows/pypsa-eur"
 pypsa_eur_sec = root / "workflow/subworkflows/pypsa-eur-sec"
 override_dir = pypsa_eur_sec / "data/override_component_attrs"
+
+
+SITES = [
+    "residential urban decentral",
+    "services urban decentral",
+    "residential rural",
+    "services rural",
+    "services urban",
+    "urban central",
+]
 
 
 def import_network(path):
@@ -38,12 +47,18 @@ def import_network(path):
 
 def get_transmission_links(n):
     # only choose transmission links
-    return n.links.bus0.map(n.buses.location) != n.links.bus1.map(n.buses.location)
+    return (
+        (n.links.bus0.map(n.buses.location) != n.links.bus1.map(n.buses.location))
+        & ~n.links.bus0.map(n.buses.location).str.contains("EU")
+        & ~n.links.bus1.map(n.buses.location).str.contains("EU")
+    )
 
 
 def get_generation_carriers(n):
     carriers = []
-    for c in NODE_COMPS:
+    for c in n.one_port_components | n.branch_components:
+        if n.df(c).empty:
+            continue
         cars = n.df(c).carrier
         if c == "Link":
             cars = cars[~get_transmission_links(n)]
@@ -61,8 +76,8 @@ def assign_location(n):
         ifind = pd.Series(df.index.str.find(" ", start=4), df.index)
         for i in ifind.value_counts().index:
             # these have already been assigned defaults
-            if i == -1:
-                continue
+            # if i == -1:
+            #     continue
             names = ifind.index[ifind == i]
             df.loc[names, "location"] = names.str[:i]
 
@@ -157,3 +172,72 @@ def override_component_attrs(directory):
             attrs[component] = overrides.combine_first(attrs[component])
 
     return attrs
+
+
+def mock_snakemake(rulename, **wildcards):
+    """
+    This function is expected to be executed from the 'scripts'-directory of '
+    the snakemake project. It returns a snakemake.script.Snakemake object,
+    based on the Snakefile.
+    If a rule has wildcards, you have to specify them in **wildcards.
+    Parameters
+    ----------
+    rulename: str
+        name of the rule for which the snakemake object should be generated
+    **wildcards:
+        keyword arguments fixing the wildcards. Only necessary if wildcards are
+        needed.
+    """
+    import snakemake as sm
+    import os
+    from pypsa.descriptors import Dict
+    from snakemake.script import Snakemake
+    from packaging.version import Version, parse
+
+    script_dir = Path(__file__).parent.resolve()
+    assert (
+        Path.cwd().resolve() == script_dir
+    ), f"mock_snakemake has to be run from the repository scripts directory {script_dir}"
+    try:
+        os.chdir(script_dir.parent.parent)
+        for p in sm.SNAKEFILE_CHOICES:
+            if os.path.exists(p):
+                snakefile = p
+                break
+        kwargs = (
+            dict(rerun_triggers=[]) if parse(sm.__version__) > Version("7.7.0") else {}
+        )
+        workflow = sm.Workflow(snakefile, overwrite_configfiles=[], **kwargs)
+        workflow.include(snakefile)
+        workflow.global_resources = {}
+        rule = workflow.get_rule(rulename)
+        dag = sm.dag.DAG(workflow, rules=[rule])
+        wc = Dict(wildcards)
+        job = sm.jobs.Job(rule, dag, wc)
+
+        def make_accessable(*ios):
+            for io in ios:
+                for i in range(len(io)):
+                    io[i] = os.path.abspath(io[i])
+
+        make_accessable(job.input, job.output, job.log)
+        snakemake = Snakemake(
+            job.input,
+            job.output,
+            job.params,
+            job.wildcards,
+            job.threads,
+            job.resources,
+            job.log,
+            job.dag.workflow.config,
+            job.rule.name,
+            None,
+        )
+        # create log and output dir if not existent
+        for path in list(snakemake.log) + list(snakemake.output):
+            Path(path).parent.mkdir(parents=True, exist_ok=True)
+
+        return snakemake
+
+    finally:
+        os.chdir(script_dir)

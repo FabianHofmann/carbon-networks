@@ -7,7 +7,7 @@ retrieve_sector_databundle: true
 results_dir: results/
 summary_dir: results
 costs_dir: ../technology-data/outputs/
-run: your-run-name  # use this to keep track of runs with different settings
+run: eem  # use this to keep track of runs with different settings
 foresight: overnight # options are overnight, myopic, perfect (perfect is not yet implemented)
 # if you use myopic or perfect foresight, set the investment years in "planning_horizons" below
 
@@ -18,27 +18,31 @@ scenario:
     # - 1.0
     - 1.2
   clusters: # number of nodes in Europe, any integer between 37 (1 node per country-zone) and several hundred
-    - 10
+    - 181
   opts: # only relevant for PyPSA-Eur
     - ''
-  sector_opts: # this is where the main scenario settings are
-    - Co2L0-T-H-B-I-A-solar+p3-dist1
-  # to really understand the options here, look in scripts/prepare_sector_network.py
-  # Co2Lx specifies the CO2 target in x% of the 1990 values; default will give default (5%);
-  # Co2L0p25 will give 25% CO2 emissions; Co2Lm0p05 will give 5% negative emissions
-  # xH is the temporal resolution; 3H is 3-hourly, i.e. one snapshot every 3 hours
-  # single letters are sectors: T for land transport, H for building heating,
-  # B for biomass supply, I for industry, shipping and aviation,
-  # A for agriculture, forestry and fishing
-  # solar+c0.5 reduces the capital cost of solar to 50\% of reference value
-  # solar+p3 multiplies the available installable potential by factor 3
-  # seq400 sets the potential of CO2 sequestration to 400 Mt CO2 per year
-  # dist{n} includes distribution grids with investment cost of n times cost in data/costs.csv
-  # for myopic/perfect foresight cb states the carbon budget in GtCO2 (cumulative
-  # emissions throughout the transition path in the timeframe determined by the
-  # planning_horizons), be:beta decay; ex:exponential decay
-  # cb40ex0 distributes a carbon budget of 40 GtCO2 following an exponential
-  # decay with initial growth rate 0
+  sector_opts: # this is where the main scenario settings are, for description look at
+    # both hydrogen and co2 network
+    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq000
+    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq200
+    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq400
+    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq600
+    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq800
+    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq1000
+    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq000-CF+sector+co2network+false
+    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq200-CF+sector+co2network+false
+    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq400-CF+sector+co2network+false
+    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq600-CF+sector+co2network+false
+    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq800-CF+sector+co2network+false
+    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq1000-CF+sector+co2network+false
+    # no h2 network
+    # - Co2L0-25H-T-H-B-I-A-solar+p3-linemaxext15-seq000-noH2network
+    # - Co2L0-25H-T-H-B-I-A-solar+p3-linemaxext15-seq200-noH2network
+    # - Co2L0-25H-T-H-B-I-A-solar+p3-linemaxext15-seq400-noH2network
+    # - Co2L0-25H-T-H-B-I-A-solar+p3-linemaxext15-seq600-noH2network
+    # - Co2L0-25H-T-H-B-I-A-solar+p3-linemaxext15-seq800-noH2network
+    # - Co2L0-25H-T-H-B-I-A-solar+p3-linemaxext15-seq1000-noH2network
+
   planning_horizons: # investment years for myopic and perfect; for overnight, year of cost assumptions can be different and is defined under 'costs'
     - 2050
   # for example, set to
@@ -261,7 +265,7 @@ sector:
   co2_sequestration_potential: 200  #MtCO2/a sequestration potential for Europe
   co2_sequestration_cost: 10   #EUR/tCO2 for sequestration of CO2
   co2_spatial: true
-  co2_network: true
+  co2network: true
   cc_fraction: 0.9  # default fraction of CO2 captured with post-combustion capture
   hydrogen_underground_storage: true
   hydrogen_underground_storage_locations:
@@ -347,6 +351,7 @@ industry:
   # Material Economics (2019): https://materialeconomics.com/latest-updates/industrial-transformation-2050
 
 costs:
+  version: v0.5.0
   year: 2030
   lifetime: 25 #default lifetime
   # From a Lion Hirth paper, also reflects average of Noothout et al 2016
@@ -395,22 +400,50 @@ solving:
 
   solver:
     name: gurobi
-    threads: 4
-    method: 2 # barrier
-    crossover: 0
-    BarConvTol: 1.e-6
-    Seed: 123
-    AggFill: 0
-    PreDual: 0
-    GURO_PAR_BARDENSETHRESH: 200
-    #FeasibilityTol: 1.e-6
+    options: gurobi-default
 
-    #name: cplex
-    #threads: 4
-    #lpmethod: 4 # barrier
-    #solutiontype: 2 # non basic solution, ie no crossover
-    #barrier_convergetol: 1.e-5
-    #feasopt_tolerance: 1.e-6
+  solver_options:
+    gurobi-default:
+      threads: 4
+      method: 2 # barrier
+      crossover: 0
+      BarConvTol: 1.e-6
+      Seed: 123
+      AggFill: 0
+      PreDual: 0
+      GURO_PAR_BARDENSETHRESH: 200
+      seed: 10              # Consistent seed for all plattforms
+    gurobi-numeric-focus:
+      name: gurobi
+      NumericFocus: 3       # Favour numeric stability over speed
+      method: 2             # barrier
+      crossover: 0          # do not use crossover
+      BarHomogeneous: 1     # Use homogeneous barrier if standard does not converge
+      BarConvTol: 1.e-5
+      FeasibilityTol: 1.e-4
+      OptimalityTol: 1.e-4
+      ObjScale: -0.5
+      threads: 8
+      Seed: 123
+    gurobi-fallback:        # Use gurobi defaults
+      name: gurobi
+      crossover: 0
+      method: 2             # barrier
+      BarHomogeneous: 1     # Use homogeneous barrier if standard does not converge
+      BarConvTol: 1.e-5
+      FeasibilityTol: 1.e-5
+      OptimalityTol: 1.e-5
+      Seed: 123
+      threads: 8
+    cplex-default:
+      threads: 4
+      lpmethod: 4 # barrier
+      solutiontype: 2 # non basic solution, ie no crossover
+      barrier_convergetol: 1.e-5
+      feasopt_tolerance: 1.e-6
+
+    cbc-default: {} # Used in CI
+
   mem: 30000 #memory in MB; 20 GB enough for 50+B+I+H2; 100 GB for 181+B+I+H2
 
 
@@ -508,6 +541,7 @@ plotting:
     natural gas: '#e05b09'
     CCGT: '#a85522'
     CCGT marginal: '#a85522'
+    allam: '#e01a09'
     gas for industry co2 to atmosphere: '#692e0a'
     gas for industry co2 to stored: '#8a3400'
     gas for industry: '#853403'
@@ -625,6 +659,7 @@ plotting:
     liquid: '#25c49a'
     kerosene for aviation: '#a1ffe6'
     naphtha for industry: '#57ebc4'
+    methanolisation: '#57aac1'
     # co2
     CC: '#f29dae'
     CCS: '#f29dae'

@@ -1,1 +1,322 @@
-example: "setting"
+constants:
+  kinds:
+    - electricity
+    - gas
+    - hydrogen
+    - carbon
+
+  oneport_comps:
+    - Generator
+    - Store
+    - StorageUnit
+    - Load
+
+  node_comps:
+    - Generator
+    - Link
+    - StorageUnit
+    - Load
+
+  region_comps:
+    - Store
+
+  branch_comps:
+    - Line
+    - Link
+
+  comps:
+    - Generator
+    - Store
+    - StorageUnit
+    - Line
+    - Link
+
+  sites:
+    - residential urban decentral
+    - services urban decentral
+    - residential rural
+    - services rural
+    - services urban
+    - urban central
+
+  heating_techs:
+    - heat
+    - water tanks
+    - solar thermal
+
+  carrier_to_buses:
+    carbon:
+      - co2 stored
+    hydrogen:
+      - H2
+    electricity:
+      - AC
+      - DC
+      # - low voltage
+    gas:
+      - gas
+
+  kind_to_carrier:
+    electricity:
+      production:
+        Generator:
+          - offwind
+          - onwind
+          - solar
+          - ror
+          - solar rooftop
+        Link:
+          bus1:
+            - OCGT
+            - H2 Fuel Cell
+            - V2G
+            - gas CHP
+            - gas CHP CC
+            - solid biomass CHP
+            - solid biomass CHP CC
+            - allam
+            - electricity distribution grid
+            - battery discharger
+            - home battery discharger
+        StorageUnit:
+          - PHS
+          - hydro
+      consumption:
+        Load:
+          - electricity
+          - industry electricity
+          - agriculture electricity
+        Link:
+          bus0:
+            - H2 Electrolysis
+            - battery charger
+            - helmeth
+            - BEV charger
+            - ground heat pump
+            - resistive heater
+            - air heat pump
+            - electricity distribution grid
+            - home battery charger
+      transport:
+        Line:
+          - AC
+        Link:
+          - DC
+      storage:
+        Store:
+          - battery
+          - home battery
+        StorageUnit:
+          - PHS
+          - hydro
+
+    gas:
+      production:
+        Generator:
+          - gas
+        Link:
+          bus1:
+            - Sabatier
+            - helmeth
+            - biogas to gas
+      consumption:
+        Load:
+          - gas for industry
+        Link:
+          bus0:
+            - OCGT
+            - SMR CC
+            - SMR
+            - gas boiler
+            - gas CHP
+            - gas CHP CC
+            - gas for industry
+            - gas for industry CC
+            - allam
+    storage:
+      Store:
+        - gas
+    transport:
+      Link:
+        - gas pipeline
+        - gas pipeline new
+
+    hydrogen:
+      production:
+        Link:
+          bus1:
+            - H2 Electrolysis
+            - SMR CC
+            - SMR
+      consumption:
+        Link:
+          bus0:
+            - H2 Fuel Cell
+            - Sabatier
+            - methanolisation
+            - Fischer-Tropsch
+      storage:
+        Store:
+          - H2
+      transport:
+        Link:
+          - H2 pipeline
+
+    carbon:
+      production:
+        Link:
+          bus1:
+            - DAC
+            - DAC CC
+          bus2:
+            - process emissions CC
+          bus3:
+            - solid biomass for industry CC
+            - gas for industry CC
+          bus4:
+            - gas CHP CC
+            - solid biomass CHP CC
+      consumption:
+        Link:
+          bus0:
+            - DAC
+          bus2:
+            - Sabatier
+            - helmeth
+            - Fischer-Tropsch
+            - allam
+      storage:
+        Store:
+          - co2 stored
+      transport:
+        Link:
+          - CO2 pipeline
+
+    co2:
+      production:
+        Load:
+          - shipping methanol emissions
+          - oil emissions
+          - agriculture machinery oil emissions
+        Link:
+          bus1:
+            - process emissions
+            - process emissions CC
+          bus2:
+            - OCGT
+            - SMR CC
+            - SMR
+            - gas boiler
+            - biogas to gas
+            - solid biomass for industry CC
+            - gas for industry
+            - gas for industry CC
+          bus3:
+            - gas CHP
+            - gas CHP CC
+            - solid biomass CHP CC
+      consumption:
+        Link:
+          bus0:
+            - DAC
+      storage:
+        Store:
+          - co2
+
+  # Watch out for negative efficiencies
+  #                      'Sabatier', 'efficiency2'
+  #                       'helmeth', 'efficiency2'
+  #                 'biogas to gas', 'efficiency2'
+  #          'solid biomass CHP CC', 'efficiency3'
+  # 'solid biomass for industry CC', 'efficiency2'
+  #               'methanolisation', 'efficiency2'
+  #               'methanolisation', 'efficiency3'
+  #               'Fischer-Tropsch', 'efficiency2'
+  #                           'DAC', 'efficiency2'
+  #                           'DAC', 'efficiency3'
+
+
+plotting:
+  capacity_map:
+    electricity:
+      region_cmap: Greens
+      region_unit: TWh
+      bus_scale: 5e-6
+      branch_scale: 2e-4
+      bus_sizes:
+        - 50000
+        - 100000
+      branch_sizes:
+        - 5000
+        - 10000
+    gas:
+      region_cmap: Purples
+      region_unit: TWh
+      bus_scale: 5e-7
+      branch_scale: 5e-5
+      bus_sizes:
+        - 500000
+        - 1000000
+      branch_sizes:
+        - 10000
+        - 20000
+    hydrogen:
+      region_cmap: Blues
+      region_unit: TWh
+      bus_scale: 4e-5
+      branch_scale: 2e-4
+      bus_sizes:
+        - 5000
+        - 10000
+      branch_sizes:
+        - 5000
+        - 10000
+    carbon:
+      region_cmap: Reds
+      region_unit: Mt
+      bus_scale: 1e-4
+      branch_scale: 2e-3
+      bus_sizes:
+        - 5000
+        - 10000
+      branch_sizes:
+        - 1000
+        - 2000
+
+  operation_map:
+    electricity:
+      region_cmap: Greens
+      region_unit: TWh
+      bus_scale: 2e-5
+      branch_scale: 4e-4
+      bus_sizes:
+        - 50000
+        - 100000
+      branch_sizes: null
+    gas:
+      region_cmap: Purples
+      region_unit: TWh
+      bus_scale: 7e-5
+      branch_scale: 2e-4
+      bus_sizes:
+        - 50000
+        - 100000
+      branch_sizes: null
+    hydrogen:
+      region_cmap: Blues
+      region_unit: TWh
+      bus_scale: 5e-6
+      branch_scale: 2e-4
+      bus_sizes:
+        - 20000
+        - 50000
+      branch_sizes: null
+    carbon:
+      region_cmap: Reds
+      region_unit: Mt
+      bus_scale: 2e-5
+      branch_scale: 1e-3
+      bus_sizes:
+        - 5000
+        - 10000
+      branch_sizes: null
