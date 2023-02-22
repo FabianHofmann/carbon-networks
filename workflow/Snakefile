@@ -59,13 +59,18 @@ rule all:
         ),
         expand(
             RDIR
+            + "/maps/operation_bar_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
+            **config["scenario"]
+        ),
+        expand(
+            RDIR
             + "/maps/operation_map_{kind}_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
             **config["scenario"],
             kind=config["constants"]["kinds"]
         ),
 
 
-rule plot_networks_map:
+rule plot_capacity_map:
     input:
         network=RDIR
         + "/postnetworks/elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}.nc",
@@ -79,7 +84,7 @@ rule plot_networks_map:
         map=RDIR
         + "/maps/networks_map_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
     script:
-        "scripts/plot-networks-map.py"
+        "scripts/plot-capacity-map.py"
 
 
 rule plot_operation_map:
@@ -89,14 +94,22 @@ rule plot_operation_map:
         onshore_regions=pypsaeur(
             "resources/regions_onshore_elec_s{simpl}_{clusters}.geojson"
         ),
-        offshore_regions=pypsaeur(
-            "resources/regions_offshore_elec_s{simpl}_{clusters}.geojson"
-        ),
     output:
         map=RDIR
         + "/maps/operation_map_{kind}_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
     script:
         "scripts/plot-operation-map.py"
+
+
+rule plot_operation_bar:
+    input:
+        network=RDIR
+        + "/postnetworks/elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}.nc",
+    output:
+        map=RDIR
+        + "/maps/operation_bar_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
+    script:
+        "scripts/plot-operation-bar.py"
 
 
 rule get_solved_networks:

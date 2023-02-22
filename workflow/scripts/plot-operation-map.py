@@ -1,27 +1,36 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Nov 24 10:14:48 2022
+
+@author: fabian
+"""
 import os
+import warnings
 import seaborn as sns
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-from common import import_network, mock_snakemake
-
-from plotting import (
-    create_carrier_network,
-    plot_map,
-    add_legend,
-    get_carrier_network_plotting_data,
+from pypsa.plot import add_legend_circles, add_legend_patches, add_legend_lines
+from common import (
+    import_network,
+    mock_snakemake,
+    get_carrier_consumption,
+    get_carrier_storage,
+    get_carrier_transport,
+    get_carrier_production,
 )
+
 import geopandas as gpd
 
-
-sns.set_context("paper")
-column = "Optimal Capacity"
+sns.set_theme(style="white", context="paper", rc={"patch.linewidth": 0.2})
+warnings.filterwarnings("ignore", category=UserWarning)
 alpha = 1
 region_alpha = 0.8
 
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
-
     snakemake = mock_snakemake(
         "plot_operation_map",
         simpl="",
@@ -33,85 +42,86 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
         kind="electricity",
     )
 
+
 n = import_network(snakemake.input.network)
-offshore_regions = gpd.read_file(snakemake.input.offshore_regions).set_index("name")
-onshore_regions = gpd.read_file(snakemake.input.onshore_regions).set_index("name")
+regions = gpd.read_file(snakemake.input.onshore_regions).set_index("name")
+kinds = snakemake.config["constants"]["kinds"]
+config = snakemake.config
+which = "operation"
 kind = snakemake.wildcards.kind
 
-
 fig, axes = plt.subplots(
-    1, 2, figsize=(9, 4), subplot_kw={"projection": ccrs.EqualEarth()}
+    1,
+    2,
+    figsize=(15, 13),
+    squeeze=False,
+    subplot_kw={"projection": ccrs.EqualEarth()},
 )
 
-carriers = snakemake.config["constants"]["carrier_to_buses"][kind]
-o = create_carrier_network(n, kind, carriers, include_eu=True)
-data = get_carrier_network_plotting_data(o, "Operation")
-specs = snakemake.config["plotting"]["operation_map"][kind]
-bus_sizes = data.bus_sizes.copy()
+tags = ["production", "consumption"]
 
-if kind == "carbon":
-    regions = offshore_regions
-else:
-    regions = onshore_regions
+for tag, ax in zip(tags, axes.flatten()):
+    specs = config["plotting"]["operation_map"][kind]
+    bus_scale = float(specs["bus_scale"])
+    branch_scale = float(specs["branch_scale"])
+    flow_scale = float(specs["flow_scale"])
+    legend_kwargs = {"loc": "upper left", "frameon": False}
+    unit = specs["region_unit"]
 
-ax = axes[0]
-data.bus_sizes = bus_sizes[bus_sizes > 0]
-plot_map(
-    ax,
-    o,
-    regions,
-    data,
-    bus_scale=float(specs["bus_scale"]),
-    branch_scale=float(specs["branch_scale"]),
-    alpha=alpha,
-    branch_alpha=alpha,
-    region_alpha=region_alpha,
-    region_cmap=specs["region_cmap"],
-    region_unit=specs["region_unit"],
-)
-fig.canvas.draw()
-add_legend(
-    ax,
-    o,
-    bus_scale=float(specs["bus_scale"]),
-    branch_scale=float(specs["branch_scale"]),
-    bus_sizes=specs["bus_sizes"],
-    branch_sizes=specs["branch_sizes"],
-    alpha=alpha,
-    gen_carriers=o.carriers.loc[data.bus_sizes.index.unique(1)],
-)
-ax.set_extent(regions.total_bounds[[0, 2, 1, 3]])
-ax.set_title(kind.title() + " Production")
+    if tag == "production":
+        bus_sizes = get_carrier_production(n, kind, config, which)
+    else:
+        bus_sizes = get_carrier_consumption(n, kind, config, which)
+    branch_widths = get_carrier_transport(n, kind, config, which)
+    flow = pd.concat(branch_widths)
+    branch_carriers = get_carrier_transport(n, kind, config, "carrier")
+    branch_colors = {
+        c: (n.carriers.color.get(vals[0], "lightgrey") if len(vals) else "lightgrey")
+        for c, vals in branch_carriers.items()
+    }
 
-data = get_carrier_network_plotting_data(o, "Operation")
-data.bus_sizes = -bus_sizes[bus_sizes < 0]
-ax = axes[1]
-plot_map(
-    ax,
-    o,
-    regions,
-    data,
-    bus_scale=float(specs["bus_scale"]),
-    branch_scale=float(specs["branch_scale"]),
-    alpha=alpha,
-    branch_alpha=alpha,
-    region_alpha=region_alpha,
-    region_cmap=specs["region_cmap"],
-    region_unit=specs["region_unit"],
-)
-fig.canvas.draw()
-add_legend(
-    ax,
-    o,
-    bus_scale=float(specs["bus_scale"]),
-    branch_scale=float(specs["branch_scale"]),
-    bus_sizes=specs["bus_sizes"],
-    branch_sizes=specs["branch_sizes"],
-    alpha=alpha,
-    gen_carriers=o.carriers.loc[data.bus_sizes.index.unique(1)],
-)
-ax.set_extent(regions.total_bounds[[0, 2, 1, 3]])
-ax.set_title(kind.title() + " Consumption")
+    n.plot(
+        bus_sizes=bus_sizes * bus_scale,
+        bus_alpha=alpha,
+        line_widths=branch_widths["Line"].abs().reindex(n.lines.index, fill_value=0)
+        * branch_scale,
+        link_widths=branch_widths["Link"].abs().reindex(n.links.index, fill_value=0)
+        * branch_scale,
+        line_colors=branch_colors["Line"],
+        link_colors=branch_colors["Link"],
+        flow=flow * flow_scale,
+        ax=ax,
+        margin=0.2,
+        color_geomap={"border": "darkgrey", "coastline": "darkgrey"},
+        geomap="10m",
+    )
+
+    gen_carriers = n.carriers.loc[bus_sizes.index.unique(1)].sort_values("color")
+    add_legend_patches(
+        ax,
+        gen_carriers.color,
+        gen_carriers.nice_name,
+        patch_kw={"alpha": alpha},
+        legend_kw={"bbox_to_anchor": (0, 0), "ncol": 3, **legend_kwargs},
+    )
+
+    ax.set_extent(regions.total_bounds[[0, 2, 1, 3]])
+    ax.set_title(kind.title() + " " + tag.title())
+
+    legend_bus_sizes = specs["bus_sizes"]
+    if legend_bus_sizes is not None:
+        add_legend_circles(
+            ax,
+            [s * bus_scale * 1e6 for s in legend_bus_sizes],
+            [f"{s} {unit}" for s in legend_bus_sizes],
+            legend_kw={"bbox_to_anchor": (0, 1), **legend_kwargs},
+        )
+
 
 fig.tight_layout()
-fig.savefig(snakemake.output.map, bbox_inches="tight", dpi=300, facecolor="white")
+fig.savefig(
+    snakemake.output.map,
+    bbox_inches="tight",
+    dpi=300,
+    facecolor="white",
+)

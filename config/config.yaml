@@ -4,6 +4,7 @@ constants:
     - gas
     - hydrogen
     - carbon
+    - co2
 
   oneport_comps:
     - Generator
@@ -55,6 +56,8 @@ constants:
       # - low voltage
     gas:
       - gas
+    co2:
+      - co2
 
   kind_to_carrier:
     electricity:
@@ -75,7 +78,6 @@ constants:
             - solid biomass CHP
             - solid biomass CHP CC
             - allam
-            - electricity distribution grid
             - battery discharger
             - home battery discharger
         StorageUnit:
@@ -95,8 +97,13 @@ constants:
             - ground heat pump
             - resistive heater
             - air heat pump
-            - electricity distribution grid
             - home battery charger
+          bus2:
+            - methanolisation
+            - DAC
+        StorageUnit:
+          - PHS
+          - hydro
       transport:
         Line:
           - AC
@@ -119,6 +126,8 @@ constants:
             - Sabatier
             - helmeth
             - biogas to gas
+            -  gas for industry
+            -  gas for industry CC
       consumption:
         Load:
           - gas for industry
@@ -133,13 +142,13 @@ constants:
             - gas for industry
             - gas for industry CC
             - allam
-    storage:
-      Store:
-        - gas
-    transport:
-      Link:
-        - gas pipeline
-        - gas pipeline new
+      storage:
+        Store:
+          - gas
+      transport:
+        Link:
+          - gas pipeline
+          - gas pipeline new
 
     hydrogen:
       production:
@@ -155,6 +164,10 @@ constants:
             - Sabatier
             - methanolisation
             - Fischer-Tropsch
+        Load:
+          - H2 for industry
+          - H2 for shipping
+          - land transport fuel cell
       storage:
         Store:
           - H2
@@ -167,24 +180,28 @@ constants:
         Link:
           bus1:
             - DAC
-            - DAC CC
           bus2:
             - process emissions CC
+            - allam
           bus3:
+            - SMR CC
             - solid biomass for industry CC
             - gas for industry CC
           bus4:
             - gas CHP CC
             - solid biomass CHP CC
+        Store:
+          - co2 stored
       consumption:
         Link:
-          bus0:
-            - DAC
           bus2:
             - Sabatier
             - helmeth
             - Fischer-Tropsch
-            - allam
+          bus3:
+            - methanolisation
+        Store:
+          - co2 stored
       storage:
         Store:
           - co2 stored
@@ -207,18 +224,20 @@ constants:
             - SMR CC
             - SMR
             - gas boiler
-            - biogas to gas
-            - solid biomass for industry CC
             - gas for industry
             - gas for industry CC
           bus3:
             - gas CHP
             - gas CHP CC
-            - solid biomass CHP CC
       consumption:
         Link:
           bus0:
             - DAC
+          bus2:
+            - biogas to gas
+            - solid biomass for industry CC
+          bus3:
+            - solid biomass CHP CC
       storage:
         Store:
           - co2
@@ -287,36 +306,40 @@ plotting:
     electricity:
       region_cmap: Greens
       region_unit: TWh
-      bus_scale: 2e-5
-      branch_scale: 4e-4
+      bus_scale: 4e-9
+      branch_scale: 7e-9
+      flow_scale: 6e-6
       bus_sizes:
-        - 50000
-        - 100000
+        - 500 # TWh
+        - 100 # TWh
       branch_sizes: null
     gas:
       region_cmap: Purples
       region_unit: TWh
-      bus_scale: 7e-5
-      branch_scale: 2e-4
+      bus_scale: 1e-8
+      branch_scale: 6e-8
+      flow_scale: 3e-5
       bus_sizes:
-        - 50000
-        - 100000
+        - 50 # TWh
+        - 10 # TWh
       branch_sizes: null
     hydrogen:
       region_cmap: Blues
       region_unit: TWh
-      bus_scale: 5e-6
-      branch_scale: 2e-4
+      bus_scale: 1e-8
+      branch_scale: 3e-8
+      flow_scale: 1e-5
       bus_sizes:
-        - 20000
-        - 50000
+        - 100 # TWh
+        - 50 # TWh
       branch_sizes: null
     carbon:
       region_cmap: Reds
       region_unit: Mt
-      bus_scale: 2e-5
-      branch_scale: 1e-3
+      bus_scale: 8e-8
+      branch_scale: 2e-7
+      flow_scale: 8e-5
       bus_sizes:
-        - 5000
-        - 10000
+        - 50 # Mt
+        - 20 # Mt
       branch_sizes: null

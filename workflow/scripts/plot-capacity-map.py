@@ -22,7 +22,7 @@ from common import (
 
 import geopandas as gpd
 
-sns.set_context("paper")
+sns.set_theme(style="white", context="paper", rc={"patch.linewidth": 0.2})
 column = "Optimal Capacity"
 alpha = 1
 region_alpha = 0.8
@@ -30,7 +30,7 @@ region_alpha = 0.8
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
-        "plot_networks_map",
+        "plot_capacity_map",
         simpl="",
         lv=1.2,
         clusters=181,
@@ -67,7 +67,7 @@ for kind, ax in zip(kinds, axes.flatten()):
     branch_widths = get_carrier_transport(n, kind, config, which)
     branch_carriers = get_carrier_transport(n, kind, config, "carrier")
     branch_colors = {
-        c: (n.carriers.color[vals[0]] if len(vals) else "lightgrey")
+        c: (n.carriers.color.get(vals[0], "lightgrey") if len(vals) else "lightgrey")
         for c, vals in branch_carriers.items()
     }
 
@@ -142,14 +142,20 @@ for kind, ax in zip(kinds, axes.flatten()):
         legend_kw={"bbox_to_anchor": (1, 0.1), **legend_kwargs, "loc": "lower left"},
     )
 
-    branch_carriers = n.carriers.loc[sum(branch_carriers.values(), [])]
-    add_legend_patches(
-        ax,
-        branch_carriers.color,
-        branch_carriers.nice_name,
-        patch_kw={"alpha": alpha},
-        legend_kw={"bbox_to_anchor": (1, 0.0), **legend_kwargs, "loc": "lower left"},
-    )
+    bcarriers = sum(branch_carriers.values(), [])
+    if set(bcarriers).issubset(n.carriers.index):
+        branch_carriers = n.carriers.loc[bcarriers]
+        add_legend_patches(
+            ax,
+            branch_carriers.color,
+            branch_carriers.nice_name,
+            patch_kw={"alpha": alpha},
+            legend_kw={
+                "bbox_to_anchor": (1, 0.0),
+                **legend_kwargs,
+                "loc": "lower left",
+            },
+        )
 
 
 ax.set_extent(regions.total_bounds[[0, 2, 1, 3]])

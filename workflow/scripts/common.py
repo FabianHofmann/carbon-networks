@@ -14,6 +14,9 @@ from pypsa.components import components, component_attrs
 import pandas as pd
 import yaml
 import numpy as np
+import logging
+
+logger = logging.getLogger(__name__)
 
 root = Path(__file__).parent.parent.parent.resolve()
 pypsa_eur = root / "workflow/subworkflows/pypsa-eur"
@@ -45,6 +48,13 @@ def import_network(path):
     return n
 
 
+def assert_carriers_existent(n, carriers, c):
+    if not set(carriers).issubset(n.df(c).carrier.unique()):
+        logger.warning(
+            f"Carriers {set(carriers) - set(n.df(c).carrier)} are not in the component {c}."
+        )
+
+
 def get_transmission_links(n):
     # only choose transmission links
     return (
@@ -52,6 +62,265 @@ def get_transmission_links(n):
         & ~n.links.bus0.map(n.buses.location).str.contains("EU")
         & ~n.links.bus1.map(n.buses.location).str.contains("EU")
     )
+
+
+def get_p_nom_opt_eff(links, bus):
+    port = int(bus[-1])
+    p_nom_opt = links.p_nom_opt
+    if port == 0:
+        efficiency = 1
+    elif port == 1:
+        efficiency = links.efficiency.abs()
+    else:
+        efficiency = links["efficiency" + str(port)].abs()
+    return p_nom_opt * efficiency
+
+
+def get_carrier_production(n, kind, config, which="capacity"):
+    """
+    Get the production of a certain kind of carrier.
+
+    The corresponding values are calculated on the basis of the config file entry
+    'kind_to_carrier'.
+
+    Parameters
+    ----------
+    n : pypsa.Network
+    kind : str
+    config : dict
+    which: str, optional
+        Whether to return the capacity or the operation of the carriers, by default 'capacity'
+    """
+    weights = n.snapshot_weightings.generators
+    location = n.buses.location
+    specs = config["constants"]["kind_to_carrier"][kind].get("production", {})
+    res = []
+
+    carriers = specs.get("Generator", [])
+    assert_carriers_existent(n, carriers, "Generator")
+    gens = n.generators.query("carrier in @carriers")
+    groups = [gens.location, gens.carrier]
+    if which == "capacity":
+        df = gens.groupby(groups).p_nom_opt.sum()
+    elif which == "operation":
+        df = (weights @ n.generators_t.p)[gens.index].groupby(groups).sum()
+    res.append(df)
+
+    buses = specs.get("Link", [])
+    for bus, carriers in buses.items():
+
+        port = int(bus[-1])
+        links = n.links.query("carrier in @carriers")
+        assert_carriers_existent(n, carriers, "Link")
+        groups = [links[bus].map(location), links.carrier]
+        if which == "capacity":
+            df = get_p_nom_opt_eff(links, bus).groupby(groups).sum()
+        elif which == "operation":
+            p = f"p{port}"
+            # producing operation at a port is always negative
+            df = (
+                -(weights @ n.links_t[p][links.index].clip(upper=0))
+                .groupby(groups)
+                .sum()
+            )
+        res.append(df)
+
+    carriers = specs.get("StorageUnit", [])
+    assert_carriers_existent(n, carriers, "StorageUnit")
+    stos = n.storage_units.query("carrier in @carriers")
+    groups = [stos.location, stos.carrier]
+    if which == "capacity":
+        df = stos.groupby(groups).p_nom_opt.sum()
+    elif which == "operation":
+        df = (
+            (weights @ n.storage_units_t.p.clip(lower=0))[stos.index]
+            .groupby(groups)
+            .sum()
+        )
+    res.append(df)
+
+    carriers = specs.get("Store", [])
+    assert_carriers_existent(n, carriers, "Store")
+    sus = n.stores.query("carrier in @carriers")
+    groups = [sus.location, sus.carrier]
+    if which == "operation":
+        df = (weights @ n.stores_t.p[sus.index].clip(lower=0)).groupby(groups).sum()
+        res.append(df)
+
+    carriers = specs.get("Load", [])
+    assert_carriers_existent(n, carriers, "Load")
+    loads = n.loads.query("carrier in @carriers")
+    groups = [loads.location, loads.carrier]
+    if which == "operation":
+        p_set = n.get_switchable_as_dense("Load", "p_set")
+        df = -(weights @ p_set[loads.index].clip(upper=0)).groupby(groups).sum()
+    res.append(df)
+
+    return pd.concat(res)
+
+
+def get_carrier_consumption(n, kind, config, which="capacity"):
+    """
+    Get the consumption of a certain kind of carrier.
+
+    The corresponding values are calculated on the basis of the config file entry
+    'kind_to_carrier'.
+
+    Parameters
+    ----------
+    n : pypsa.Network
+    kind : str
+    config : dict
+    which: str, optional
+        Whether to return the capacity or the operation of the carriers, by default 'capacity'
+    """
+    weights = n.snapshot_weightings.generators
+    location = n.buses.location
+    specs = config["constants"]["kind_to_carrier"][kind].get("consumption", {})
+    res = []
+
+    carriers = specs.get("Load", [])
+    assert_carriers_existent(n, carriers, "Load")
+    loads = n.loads.query("carrier in @carriers")
+    groups = [loads.location, loads.carrier]
+    if which == "operation":
+        p_set = n.get_switchable_as_dense("Load", "p_set")
+        df = (weights @ p_set[loads.index].clip(lower=0)).groupby(groups).sum()
+        res.append(df)
+
+    buses = specs.get("Link", [])
+    for bus, carriers in buses.items():
+
+        port = int(bus[-1])
+        assert_carriers_existent(n, carriers, "Link")
+        links = n.links.query("carrier in @carriers")
+        groups = [links[bus].map(location), links.carrier]
+        if which == "capacity":
+            df = get_p_nom_opt_eff(links, bus).groupby(groups).sum()
+        elif which == "operation":
+            p = f"p{port}"
+            df = (
+                (weights @ n.links_t[p][links.index].clip(lower=0))
+                .groupby(groups)
+                .sum()
+            )
+        res.append(df)
+
+    carriers = specs.get("StorageUnit", [])
+    assert_carriers_existent(n, carriers, "StorageUnit")
+    stos = n.storage_units.query("carrier in @carriers")
+    groups = [stos.location, stos.carrier]
+    if which == "capacity":
+        df = stos.groupby(groups).p_nom_opt.sum()
+    elif which == "operation":
+        df = (
+            -(weights @ n.storage_units_t.p[stos.index].clip(upper=0))
+            .groupby(groups)
+            .sum()
+        )
+    res.append(df)
+
+    carriers = specs.get("Store", [])
+    assert_carriers_existent(n, carriers, "Store")
+    sus = n.stores.query("carrier in @carriers")
+    groups = [sus.location, sus.carrier]
+    if which == "capacity":
+        df = sus.groupby(groups).e_nom_opt.sum()
+    elif which == "operation":
+        df = -(weights @ n.stores_t.p[sus.index].clip(upper=0)).groupby(groups).sum()
+    res.append(df)
+
+    return pd.concat(res)
+
+
+def get_carrier_storage(n, kind, config, which="capacity"):
+    """
+    Get the storage of a certain kind of carrier.
+
+    The corresponding values are calculated on the basis of the config file entry
+    'kind_to_carrier'.
+
+    Parameters
+    ----------
+    n : pypsa.Network
+    kind : str
+    config : dict
+    which: str, optional
+        Whether to return the capacity or the operation of the carriers, by default 'capacity'
+    """
+    weights = n.snapshot_weightings.generators
+    specs = config["constants"]["kind_to_carrier"][kind].get("storage", {})
+    res = []
+
+    carriers = specs.get("StorageUnit", [])
+    assert_carriers_existent(n, carriers, "StorageUnit")
+    stos = n.storage_units.query("carrier in @carriers")
+    groups = [stos.location, stos.carrier]
+    if which == "capacity":
+        df = stos.eval("p_nom_opt * max_hours").groupby(groups).sum()
+    elif which == "operation":
+        df = (
+            (weights @ n.storage_units_t.state_of_charge[stos.index])
+            .groupby(groups)
+            .sum()
+        )
+    res.append(df)
+
+    carriers = specs.get("Store", [])
+    assert_carriers_existent(n, carriers, "Store")
+    sus = n.stores.query("carrier in @carriers")
+    groups = [sus.location, sus.carrier]
+    if which == "capacity":
+        df = sus.groupby(groups).e_nom_opt.sum()
+    elif which == "operation":
+        df = (weights @ n.stores_t.e[sus.index]).groupby(groups).sum()
+    res.append(df)
+
+    return pd.concat(res)
+
+
+def get_carrier_transport(n, kind, config, which="capacity"):
+    """
+    Get the transport of a certain kind of carrier.
+
+    The corresponding values are calculated on the basis of the config file entry
+    'kind_to_carrier'.
+
+    Parameters
+    ----------
+    n : pypsa.Network
+    kind : str
+    config : dict
+    which: str, optional
+        Whether to return the capacity or the operation of the carriers, by default 'capacity'
+    """
+    weights = n.snapshot_weightings.generators
+    specs = config["constants"]["kind_to_carrier"][kind].get("transport", {})
+    res = {}
+
+    carriers = specs.get("Link", [])
+    assert_carriers_existent(n, carriers, "Link")
+    links = n.links.query("carrier in @carriers")
+    if which == "capacity":
+        df = links.p_nom_opt
+    elif which == "operation":
+        df = weights @ n.links_t.p0[links.index]
+    elif which == "carrier":
+        df = carriers
+    res["Link"] = df
+
+    carriers = specs.get("Line", [])
+    assert_carriers_existent(n, carriers, "Line")
+    lines = n.lines.query("carrier in @carriers")
+    if which == "capacity":
+        df = lines.s_nom_opt
+    elif which == "operation":
+        df = weights @ n.lines_t.p0[lines.index]
+    elif which == "carrier":
+        df = carriers
+    res["Line"] = df
+
+    return res
 
 
 def get_generation_carriers(n):
@@ -73,16 +342,16 @@ def assign_location(n):
         if "location" not in df:
             df["location"] = np.nan
 
-        ifind = pd.Series(df.index.str.find(" ", start=4), df.index)
-        for i in ifind.value_counts().index:
-            # these have already been assigned defaults
-            # if i == -1:
-            #     continue
-            names = ifind.index[ifind == i]
-            df.loc[names, "location"] = names.str[:i]
-
+        # ifind = pd.Series(df.index.str.find(" ", start=4), df.index)
+        # for i in ifind.value_counts().index:
+        #     # these have already been assigned defaults
+        #     # if i == -1:
+        #     #     continue
+        #     names = ifind.index[ifind == i]
+        #     df.loc[names, "location"] = names.str[:i]
         bus_col = df.columns[df.columns.str.startswith("bus")][0]
-        df.location.fillna(df[bus_col], inplace=True)
+
+        df["location"] = df[bus_col].map(n.buses.location)
 
 
 def assign_interconnection(n):
@@ -241,3 +510,27 @@ def mock_snakemake(rulename, **wildcards):
 
     finally:
         os.chdir(script_dir)
+
+
+def print_kind_carriers(n, carriers):
+    """Print all components and their carriers"""
+    buses = n.buses.query("carrier in @carriers").index
+    for c in n.one_port_components | {"Load"}:
+        df = n.df(c).query("bus in @buses")
+        if df.empty:
+            continue
+        print(c, ":")
+        for e in df.carrier.unique():
+            print(" - ", e)
+
+    for c in n.branch_components:
+        print(c, ":")
+        for bus in n.df(c).filter(like="bus"):
+            df = n.df(c).query(f"{bus} in @buses")
+            if df.empty:
+                continue
+            print(bus, ":")
+            for e in df.carrier.unique():
+                print(" - ", e)
+                efficiency = f"efficiency{bus[-1] if int(bus[-1]) > 1 else ''}"
+                # print(df.query("carrier == @e")[efficiency].mean())
