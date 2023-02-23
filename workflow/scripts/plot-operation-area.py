@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from common import (
     import_network,
     mock_snakemake,
@@ -15,13 +16,8 @@ sns.set_theme(style="white", context="paper")
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_operation_area",
-        simpl="",
-        lv=1.2,
-        clusters=181,
-        opts="",
-        sector_opts="Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq200",
-        planning_horizons=2050,
-        kind="electricity",
+        design="co2network",
+        kind="gas",
     )
 
 
@@ -39,14 +35,8 @@ for path in snakemake.input.networks:
     if (prod.sum() / cons.sum()).round(3) != 1:
         print(f"Warning: {kind} production and consumption are not equal.")
 
-    sec_opts = path.split("/")[-1].split("_")[-2].split("-")
-    sequestration = int([s for s in sec_opts if "seq" in s][0][3:])
-    if "CF+sector+co2network+false" in sec_opts:
-        co2_network = "Without Carbon Network"
-    else:
-        co2_network = "With Carbon Network"
-
-    key = (co2_network, sequestration)
+    design, sequestration = Path(path).stem.split("_")
+    key = (snakemake.config["labels"][design], int(sequestration))
 
     df[key] = pd.concat([prod, cons], keys=["Production", "Consumption"])
 df = pd.concat(df, axis=1)
@@ -76,8 +66,12 @@ for k, output in zip(keys, snakemake.output):
     consumption = consumption.loc[:, consumption.sum() > 0.1]
 
     fig, ax = plt.subplots(1, 1, figsize=(8, 5))
-    production.plot(kind="area", ax=ax, color=colors.to_dict(), alpha=0.8)
-    consumption.mul(-1).plot(kind="area", ax=ax, color=colors.to_dict(), alpha=0.8)
+    production.plot(
+        kind="area", stacked=True, ax=ax, color=colors.to_dict(), alpha=0.8, lw=0
+    )
+    consumption.mul(-1).plot(
+        kind="area", stacked=True, ax=ax, color=colors.to_dict(), alpha=0.8, lw=0
+    )
     ax.axhline(0, color="k", lw=1)
     ax.set_xlim(production.index.min(), production.index.max())
     ax.set_ylim(-consumption.sum(1).max() * 1.1, production.sum(1).max() * 1.1)

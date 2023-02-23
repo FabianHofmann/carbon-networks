@@ -48,98 +48,108 @@ subworkflow pypsaeursec:
 SDIR = config["summary_dir"] + "/" + config["run"]
 RDIR = config["results_dir"] + config["run"]
 CDIR = config["costs_dir"]
+# flatten config
+base = dict()
+for k, v in config["scenario"].items():
+    base[k] = v[0]
 
 
 rule all:
     input:
         expand(
-            RDIR
-            + "/figures/capacity_map_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
-            **config["scenario"]
+            RDIR + "/figures/capacity_map_{design}_{sequestration}.pdf",
+            **config["scenarios"]
         ),
         expand(
-            RDIR
-            + "/figures/operation_map_{kind}_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
-            **config["scenario"],
+            RDIR + "/figures/operation_map_{kind}_{design}_{sequestration}.pdf",
+            **config["scenarios"],
             kind=config["constants"]["kinds"]
         ),
         expand(
-            RDIR
-            + "/figures/operation_bar_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
-            **config["scenario"]
+            RDIR + "/figures/operation_bar_{design}_{sequestration}.pdf",
+            **config["scenarios"]
         ),
         expand(
             RDIR + "/figures/operation_area_{kind}_{design}.pdf",
-            config["constants"]["kinds"],
-            network=config["constants"]["designs"],
+            **config["scenarios"],
+            kind=config["constants"]["kinds"]
         ),
 
 
 rule plot_capacity_map:
     input:
-        network=RDIR
-        + "/postnetworks/elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}.nc",
+        network=RDIR + "/networks/{design}_{sequestration}.nc",
         onshore_regions=pypsaeur(
-            "resources/regions_onshore_elec_s{simpl}_{clusters}.geojson"
+            "resources/regions_onshore_elec_s{simpl}_{clusters}.geojson".format(**base)
         ),
         offshore_regions=pypsaeur(
-            "resources/regions_offshore_elec_s{simpl}_{clusters}.geojson"
+            "resources/regions_offshore_elec_s{simpl}_{clusters}.geojson".format(
+                **base
+            )
         ),
     output:
-        map=RDIR
-        + "/figures/capacity_map_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
+        map=RDIR + "/figures/capacity_map_{design}_{sequestration}.pdf",
     script:
         "scripts/plot-capacity-map.py"
 
 
 rule plot_operation_map:
     input:
-        network=RDIR
-        + "/postnetworks/elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}.nc",
+        network=RDIR + "/networks/{design}_{sequestration}.nc",
         onshore_regions=pypsaeur(
-            "resources/regions_onshore_elec_s{simpl}_{clusters}.geojson"
+            "resources/regions_onshore_elec_s{simpl}_{clusters}.geojson".format(**base)
         ),
     output:
-        map=RDIR
-        + "/figures/operation_map_{kind}_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
+        map=RDIR + "/figures/operation_map_{kind}_{design}_{sequestration}.pdf",
     script:
         "scripts/plot-operation-map.py"
 
 
 rule plot_operation_bar:
     input:
-        network=RDIR
-        + "/postnetworks/elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}.nc",
+        network=RDIR + "/networks/{design}_{sequestration}.nc",
     output:
-        map=RDIR
-        + "/figures/operation_bar_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
+        map=RDIR + "/figures/operation_bar_{design}_{sequestration}.pdf",
     script:
         "scripts/plot-operation-bar.py"
+
+
+def get_design_networks(w):
+    return expand(
+        RDIR + "/networks/{design}_{sequestration}.nc",
+        sequestration=config["scenarios"]["sequestration"],
+        **w
+    )
 
 
 rule plot_operation_area:
-    # This rule requires that the only thing we sweep over in the confic['scenario'] is the sector_opts
     input:
-        networks=expand(
-            RDIR
-            + "/postnetworks/elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}.nc",
-            **config["scenario"]
-        ),
+        networks=get_design_networks,
     output:
         map=RDIR + "/figures/operation_area_{kind}_{design}.pdf",
     script:
-        "scripts/plot-operation-bar.py"
+        "scripts/plot-operation-area.py"
 
 
-rule get_solved_networks:
-    input:
-        pypsaeursec(
-            RDIR
-            + "/postnetworks/elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}.nc"
-        ),
-    output:
+def get_solved_network(wildcards):
+    scenario = base.copy()
+    sector_opts = scenario["sector_opts"] + f"-seq{wildcards.sequestration}"
+    if wildcards.design == "noco2network":
+        sector_opts = sector_opts + "-CF+sector+co2network+false"
+    scenario["sector_opts"] = sector_opts
+    return pypsaeursec(
         RDIR
-        + "/postnetworks/elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}.nc",
+        + "/postnetworks/elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}.nc".format(
+            **scenario
+        )
+    )
+
+
+rule get_solved_network:
+    input:
+        get_solved_network,
+    output:
+        RDIR + "/networks/{design}_{sequestration}.nc",
     shell:
         """
         cp {input} {output}

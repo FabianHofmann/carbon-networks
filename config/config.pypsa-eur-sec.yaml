@@ -11,46 +11,17 @@ run: eem  # use this to keep track of runs with different settings
 foresight: overnight # options are overnight, myopic, perfect (perfect is not yet implemented)
 # if you use myopic or perfect foresight, set the investment years in "planning_horizons" below
 
-scenario_sector_opts:
-  all_networks: &all_networks
-    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq000
-    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq200
-    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq400
-    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq600
-    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq800
-    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq1000
-  no_co2_network: &no_co2_network
-    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq000-CF+sector+co2network+false
-    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq200-CF+sector+co2network+false
-    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq400-CF+sector+co2network+false
-    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq600-CF+sector+co2network+false
-    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq800-CF+sector+co2network+false
-    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq1000-CF+sector+co2network+false
-
-
 scenario:
-  simpl: # only relevant for PyPSA-Eur
+  simpl:
     - ''
-  lv: # allowed transmission line volume expansion, can be any float >= 1.0 (today) or "opt"
-    # - 1.0
+  lv:
     - 1.2
-  clusters: # number of nodes in Europe, any integer between 37 (1 node per country-zone) and several hundred
+  clusters:
     - 181
-  opts: # only relevant for PyPSA-Eur
+  opts:
     - ''
   sector_opts:
-    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq000
-    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq200
-    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq400
-    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq600
-    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq800
-    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq1000
-    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq000-CF+sector+co2network+false
-    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq200-CF+sector+co2network+false
-    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq400-CF+sector+co2network+false
-    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq600-CF+sector+co2network+false
-    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq800-CF+sector+co2network+false
-    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq1000-CF+sector+co2network+false
+    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15
   planning_horizons:
     - 2050
 

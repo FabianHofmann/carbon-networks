@@ -1,14 +1,26 @@
-constants:
-  designs:
+scenarios:
+  design:
     - co2network
     - noco2network
+  sequestration:
+    # - 0
+    - 200
+    - 400
+    - 600
+    - 800
+    - 1000
 
+labels:
+  co2network: "with CO$_2$ network"
+  noco2network: "without CO$_2$ network"
+
+constants:
   kinds:
     - electricity
     - gas
     - hydrogen
     - carbon
-    - co2
+    # - co2
 
   oneport_comps:
     - Generator
