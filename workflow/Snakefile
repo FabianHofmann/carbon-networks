@@ -93,6 +93,20 @@ rule plot_capacity_map:
         "scripts/plot-capacity-map.py"
 
 
+rule plot_sequestration_map:
+    input:
+        network=RDIR + "/networks/co2network_200.nc",  # take any network
+        offshore_regions=pypsaeur(
+            "resources/regions_offshore_elec_s{simpl}_{clusters}.geojson".format(
+                **base
+            )
+        ),
+    output:
+        map=RDIR + "/figures/sequestration_map.pdf",
+    script:
+        "scripts/plot-sequestration-map.py"
+
+
 rule plot_operation_map:
     input:
         network=RDIR + "/networks/{design}_{sequestration}.nc",
@@ -156,6 +170,11 @@ rule get_solved_network:
         """
 
 
+rule get_all_solved_networks:
+    input:
+        expand(RDIR + "/networks/{design}_{sequestration}.nc", **config["scenarios"]),
+
+
 rule report:
     message:
         "Compile report."
@@ -173,25 +192,11 @@ rule report:
         """
 
 
-rule dag:
-    message:
-        "Plot dependency graph of the workflow."
-    output:
-        dot="resources/dag.dot",
-        pdf="resources/dag.pdf",
+rule sync:
+    params:
+        cluster=config["cluster"],
     shell:
         """
-        snakemake --rulegraph > {output.dot}
-        dot -Tpdf -o {output.pdf} {output.dot}
+        rsync -uvarh --no-g --ignore-missing-args --files-from=.sync-send . {params.cluster}
+        rsync -uvarh --no-g --ignore-missing-args --files-from=.sync-receive {params.cluster} .
         """
-
-
-rule clean:
-    message:
-        "Remove all build results but keep downloaded data."
-    run:
-        import shutil
-
-        shutil.rmtree("resources")
-        shutil.rmtree("results")
-        print("Data downloaded to data/ has not been cleaned.")
