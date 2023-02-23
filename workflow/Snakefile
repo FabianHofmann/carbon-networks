@@ -54,19 +54,24 @@ rule all:
     input:
         expand(
             RDIR
-            + "/maps/networks_map_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
+            + "/figures/capacity_map_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
             **config["scenario"]
         ),
         expand(
             RDIR
-            + "/maps/operation_bar_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
-            **config["scenario"]
-        ),
-        expand(
-            RDIR
-            + "/maps/operation_map_{kind}_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
+            + "/figures/operation_map_{kind}_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
             **config["scenario"],
             kind=config["constants"]["kinds"]
+        ),
+        expand(
+            RDIR
+            + "/figures/operation_bar_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
+            **config["scenario"]
+        ),
+        expand(
+            RDIR + "/figures/operation_area_{kind}_{design}.pdf",
+            config["constants"]["kinds"],
+            network=config["constants"]["designs"],
         ),
 
 
@@ -82,7 +87,7 @@ rule plot_capacity_map:
         ),
     output:
         map=RDIR
-        + "/maps/networks_map_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
+        + "/figures/capacity_map_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
     script:
         "scripts/plot-capacity-map.py"
 
@@ -96,7 +101,7 @@ rule plot_operation_map:
         ),
     output:
         map=RDIR
-        + "/maps/operation_map_{kind}_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
+        + "/figures/operation_map_{kind}_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
     script:
         "scripts/plot-operation-map.py"
 
@@ -107,7 +112,21 @@ rule plot_operation_bar:
         + "/postnetworks/elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}.nc",
     output:
         map=RDIR
-        + "/maps/operation_bar_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
+        + "/figures/operation_bar_elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}_solved.pdf",
+    script:
+        "scripts/plot-operation-bar.py"
+
+
+rule plot_operation_area:
+    # This rule requires that the only thing we sweep over in the confic['scenario'] is the sector_opts
+    input:
+        networks=expand(
+            RDIR
+            + "/postnetworks/elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}.nc",
+            **config["scenario"]
+        ),
+    output:
+        map=RDIR + "/figures/operation_area_{kind}_{design}.pdf",
     script:
         "scripts/plot-operation-bar.py"
 

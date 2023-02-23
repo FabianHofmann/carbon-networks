@@ -1,4 +1,8 @@
 constants:
+  designs:
+    - co2network
+    - noco2network
+
   kinds:
     - electricity
     - gas

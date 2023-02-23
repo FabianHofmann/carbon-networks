@@ -11,6 +11,23 @@ run: eem  # use this to keep track of runs with different settings
 foresight: overnight # options are overnight, myopic, perfect (perfect is not yet implemented)
 # if you use myopic or perfect foresight, set the investment years in "planning_horizons" below
 
+scenario_sector_opts:
+  all_networks: &all_networks
+    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq000
+    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq200
+    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq400
+    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq600
+    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq800
+    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq1000
+  no_co2_network: &no_co2_network
+    # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq000-CF+sector+co2network+false
+    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq200-CF+sector+co2network+false
+    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq400-CF+sector+co2network+false
+    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq600-CF+sector+co2network+false
+    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq800-CF+sector+co2network+false
+    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq1000-CF+sector+co2network+false
+
+
 scenario:
   simpl: # only relevant for PyPSA-Eur
     - ''
@@ -21,8 +38,7 @@ scenario:
     - 181
   opts: # only relevant for PyPSA-Eur
     - ''
-  sector_opts: # this is where the main scenario settings are, for description look at
-    # both hydrogen and co2 network
+  sector_opts:
     # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq000
     - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq200
     # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq400
@@ -35,22 +51,9 @@ scenario:
     # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq600-CF+sector+co2network+false
     # - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq800-CF+sector+co2network+false
     - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq1000-CF+sector+co2network+false
-    # no h2 network
-    # - Co2L0-25H-T-H-B-I-A-solar+p3-linemaxext15-seq000-noH2network
-    # - Co2L0-25H-T-H-B-I-A-solar+p3-linemaxext15-seq200-noH2network
-    # - Co2L0-25H-T-H-B-I-A-solar+p3-linemaxext15-seq400-noH2network
-    # - Co2L0-25H-T-H-B-I-A-solar+p3-linemaxext15-seq600-noH2network
-    # - Co2L0-25H-T-H-B-I-A-solar+p3-linemaxext15-seq800-noH2network
-    # - Co2L0-25H-T-H-B-I-A-solar+p3-linemaxext15-seq1000-noH2network
-
-  planning_horizons: # investment years for myopic and perfect; for overnight, year of cost assumptions can be different and is defined under 'costs'
+  planning_horizons:
     - 2050
-  # for example, set to
-  # - 2020
-  # - 2030
-  # - 2040
-  # - 2050
-  # for myopic foresight
+
 
 # CO2 budget as a fraction of 1990 emissions
 # this is over-ridden if CO2Lx is set in sector_opts
