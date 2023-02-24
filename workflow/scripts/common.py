@@ -48,6 +48,27 @@ def import_network(path):
     return n
 
 
+def group_small_contributions(df, threshold=0.01):
+    if isinstance(df, pd.DataFrame):
+        is_small = df.sum() < threshold
+        if is_small.sum() <= 1:
+            return df
+        small = df.loc[:, is_small]
+        df = df.loc[:, ~is_small]
+        df = df.assign(Other=small.sum(1))
+        return df
+    elif isinstance(df, pd.Series):
+        is_small = df < threshold
+        if is_small.sum() <= 1:
+            return df
+        small = df[is_small]
+        df = df[~is_small]
+        df.assign(Other=small.sum())
+        return df
+    else:
+        raise TypeError("df must be a DataFrame or Series")
+
+
 def assert_carriers_existent(n, carriers, c):
     if not set(carriers).issubset(n.df(c).carrier.unique()):
         logger.warning(
@@ -387,6 +408,7 @@ def fill_missing_carriers(n):
 
 
 def modify_carrier_names(n):
+    n.add("Carrier", "other", nice_name="Other", color="lightgrey")
     n.add("Carrier", "offwind", nice_name="Offshore Wind", color="#6895dd")
     n.mremove("Carrier", ["offwind-ac", "offwind-dc"])
     n.generators.loc[

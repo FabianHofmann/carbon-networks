@@ -5,6 +5,7 @@ from common import (
     mock_snakemake,
     get_carrier_consumption,
     get_carrier_production,
+    group_small_contributions,
 )
 import pandas as pd
 import seaborn as sns
@@ -17,7 +18,7 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_operation_area",
         design="co2network",
-        kind="gas",
+        kind="electricity",
     )
 
 
@@ -62,10 +63,10 @@ for k, output in zip(keys, snakemake.output):
         df.loc["Consumption", k].rename(index=nice_name).div(norm).pipe(sort_by_color).T
     )
 
-    production = production.loc[:, production.sum() > 0.1]
-    consumption = consumption.loc[:, consumption.sum() > 0.1]
+    production = group_small_contributions(production, 1)
+    consumption = group_small_contributions(consumption, 1)
 
-    fig, ax = plt.subplots(1, 1, figsize=(8, 5))
+    fig, ax = plt.subplots(1, 1, figsize=(6, 5))
     production.plot(
         kind="area", stacked=True, ax=ax, color=colors.to_dict(), alpha=0.8, lw=0
     )
@@ -86,10 +87,10 @@ for k, output in zip(keys, snakemake.output):
     plabels, phandles = [], []
     clabels, chandles = [], []
     for label, handle in zip(labels[::-1], handles[::-1]):
-        if label in pcarriers:
+        if label in pcarriers and label not in plabels:
             plabels.append(label)
             phandles.append(handle)
-        if label in ccarriers:
+        if label in ccarriers and label not in clabels:
             clabels.append(label)
             chandles.append(handle)
 
@@ -97,11 +98,12 @@ for k, output in zip(keys, snakemake.output):
         phandles,
         plabels,
         loc="upper left",
-        bbox_to_anchor=(1, 1),
+        bbox_to_anchor=(1, 1.05),
         frameon=False,
-        ncol=2,
+        ncol=1,
         title="Production",
         labelcolor="k",
+        labelspacing=0.3,
     )
     fig.add_artist(legend)
 
@@ -109,11 +111,12 @@ for k, output in zip(keys, snakemake.output):
         chandles[::-1],
         clabels[::-1],
         loc="lower left",
-        bbox_to_anchor=(1, 0),
+        bbox_to_anchor=(1, -0.05),
         frameon=False,
-        ncol=2,
+        ncol=1,
         title="Consumption",
         labelcolor="k",
+        labelspacing=0.3,
     )
     fig.add_artist(legend)
 

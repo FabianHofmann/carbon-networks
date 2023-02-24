@@ -15,12 +15,8 @@ sns.set_theme(style="white", context="paper")
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_operation_bar",
-        simpl="",
-        lv=1.2,
-        clusters=181,
-        opts="",
-        sector_opts="Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq200",
-        planning_horizons=2050,
+        design="co2network",
+        sequestration=600,
     )
 
 
@@ -42,7 +38,7 @@ for kind in kinds:
 df = pd.concat(df)
 
 
-fig, axes = plt.subplots(len(kinds), 1, figsize=(14, 14), sharex=True)
+fig, axes = plt.subplots(len(kinds), 1, figsize=(8, 10), sharex=True)
 colors = n.carriers.color.dropna()
 nice_name = n.carriers.nice_name
 
@@ -84,11 +80,12 @@ for kind, ax in zip(kinds, axes):
         phandles,
         plabels,
         loc="upper left",
-        bbox_to_anchor=(1, 1.1),
+        bbox_to_anchor=(0.95, 1.1),
         frameon=False,
         ncol=1,
         title="Production",
         labelcolor="k",
+        labelspacing=0.3,
     )
     fig.add_artist(legend)
 
@@ -96,11 +93,12 @@ for kind, ax in zip(kinds, axes):
         chandles,
         clabels,
         loc="upper left",
-        bbox_to_anchor=(1.7, 1.1),
+        bbox_to_anchor=(1.5, 1.1),
         frameon=False,
         ncol=1,
         title="Consumption",
         labelcolor="k",
+        labelspacing=0.3,
     )
     fig.add_artist(legend)
 
