@@ -6,5 +6,7 @@ workflow/notebooks
 workflow/envs
 workflow/rules
 workflow/Snakefile
-workflow/subworkflows/*/Snakefile
-workflow/subworkflows/*/scripts
+workflow/subworkflows/pypsa-eur/Snakefile
+workflow/subworkflows/pypsa-eur/scripts
+workflow/subworkflows/pypsa-eur-sec/Snakefile
+workflow/subworkflows/pypsa-eur-sec/scripts

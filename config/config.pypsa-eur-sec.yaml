@@ -21,7 +21,7 @@ scenario:
   opts:
     - ''
   sector_opts:
-    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15
+    - Co2L0-3H-T-H-B-I-A-solar+p3-linemaxext15
   planning_horizons:
     - 2050
 

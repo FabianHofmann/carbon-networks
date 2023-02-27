@@ -199,5 +199,5 @@ rule sync:
     shell:
         """
         rsync -uvarh --no-g --ignore-missing-args --files-from=.sync-send . {params.cluster}
-        rsync -uvarh --no-g --ignore-missing-args --files-from=.sync-receive {params.cluster} .
+        rsync -uvarh --no-g --files-from=.sync-receive {params.cluster} .
         """
