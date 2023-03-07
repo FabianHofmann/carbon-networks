@@ -2,36 +2,36 @@
 
 
 \begin{itemize}
-    \item CCUS or CCTUS seem to be covered mainly by IAM community, not energy system modelling. 
-    \item \cite{CaptureMapGetSitespecific} Recent Swiss study on CCTS
-    \item \cite{weiProposedGlobalLayout2021} Chinese Nature study on global CCS potential: 92 GtCO$_2$ mitigated globally of which 59 Gt will be sequestered. All at cost of 0.12\% of global GDP   
-    \item \cite{ToolsGreenTransition} Endravas Capture Map estimates 1.4 Gt capturing potential from point sources in Europe.
-    \item SimCCS Optimization software for MIP problems with infrastructure decision \cite{middletonSimCCSOpensourceTool2020}
+    \item CCUS or CCTUS seem to be covered mainly by IAM community, not energy system modelling.
+    \item ~\cite{CaptureMapGetSitespecific} Recent Swiss study on CCTS
+    \item ~\cite{weiProposedGlobalLayout2021} Chinese Nature study on global CCS potential: 92 GtCO$_2$ mitigated globally of which 59 Gt will be sequestered. All at cost of 0.12\% of global GDP
+    \item ~\cite{ToolsGreenTransition} Endravas Capture Map estimates 1.4 Gt capturing potential from point sources in Europe.
+    \item SimCCS Optimization software for MIP problems with infrastructure decision ~\cite{middletonSimCCSOpensourceTool2020}
 \end{itemize}
 
 
 \textbf{Companies and projects}
 \begin{itemize}
-    \item Potential Carbon Management hubs are evolving Tree Energy, Carbfix, Equinor    
-    \item Mission Innovation Hydrogen Valley Platform \cite{H2ValleysMissionInnovation} collects hydrogen flagship projects to facilitate 
-    \item European Hydrogen Backbone \cite{gasforclimateEuropeanHydrogenBackbone2022} 
+    \item Potential Carbon Management hubs are evolving Tree Energy, Carbfix, Equinor
+    \item Mission Innovation Hydrogen Valley Platform ~\cite{H2ValleysMissionInnovation} collects hydrogen flagship projects to facilitate
+    \item European Hydrogen Backbone ~\cite{gasforclimateEuropeanHydrogenBackbone2022}
 \end{itemize}
 
 
 \textbf{Legislation}
 \begin{itemize}
-    \item German climate protection act \cite{KlimaschutzgesetzKlimaneutralitaetBis} targets climate neutrality by 2045, and 65\% CO$_2$ reduction by 2030. (762 Mt CO2-eq emitted in 2021; 438 Mt targeted for 2030) 
+    \item German climate protection act ~\cite{KlimaschutzgesetzKlimaneutralitaetBis} targets climate neutrality by 2045, and 65\% CO$_2$ reduction by 2030. (762 Mt CO2-eq emitted in 2021; 438 Mt targeted for 2030)
     \item Fit-for-55 package by EU targets 55\% reduction by 2030 in the EU
-    \item REpowerEU \cite{REPowerEU} targets accelerated energy transition and security. A fast ramp up of a green Hydrogen system should support transition of hard-to-abate sectors. Domestic production should be 10 MT H$_2$ by 2030, same as import. Additional funding for Clean Hydrogen Partnership through Horizon Europe Programme. 
+    \item REpowerEU ~\cite{REPowerEU} targets accelerated energy transition and security. A fast ramp up of a green Hydrogen system should support transition of hard-to-abate sectors. Domestic production should be 10 MT H$_2$ by 2030, same as import. Additional funding for Clean Hydrogen Partnership through Horizon Europe Programme.
     \item Delegated Act for green H$_2$
-    \item 
+    \item
 \end{itemize}
 
 
 \textbf{Research Questions}
 
 \begin{itemize}
-    \item How to optimally supply cities far from renewable wind production centers in throughout the whole year?    
+    \item How to optimally supply cities far from renewable wind production centers in throughout the whole year?
     \item Where is synergy and where competition between H$_2$ and CO$_2$ management?
     \item Where is one technology in advantage?
     \item DAC vs. point source CC?
@@ -44,3 +44,12 @@
 \begin{itemize}
     \item Economy of scale? What are the learning curves to expect?
 \end{itemize}
+
+
+In net-zero economies, carbon capture is considered a key technology for balancing emissions from hard-to-abate sectors and inevitable emissions from land use and agriculture. Capturing carbon at point sources and from the atmosphere by direct air capture (DAC) opens up new opportunities for producing drop-in fuels such as methane, methanol, or carbon-neutral liquid hydrocarbons, known as Carbon Capture and Utilization (CCU), and for storing carbon in geological formations, known as Carbon Capture and Storage (CCS). Together with carbon transport, these carbon management technologies are considered to be part of what is called the New Carbon Economy~\cite{arniehellerNewCarbonEconomy2019}.
+
+Individual potentials of carbon management technologies have been discussed in detail in the literature and included in previous modeling efforts~\cite{burandtDecarbonizingChinaEnergy2019,caprosEnergysystemModellingEU2019,damoreOptimalDesignEuropean2021,larsonNetZeroAmericaPotential2021,maModelingOptimizationCombined2021,mikulcicFlexibleCarbonCapture2019,williamsCarbonNeutralPathwaysUnited2021}. Recently, policymakers and industry have been committing to carbon management strategies, planning the first infrastructure components, and developing business models for emerging sectors of the economy~\cite{adomaitisEquinorRWEBuild2023,apnewswireGermanyDrawLegislation2023,KohlenstoffKannKlimaschutz2023,OGETESJoin2022,TESHydrogenLife2023}.
+
+However, there is still a lack of careful assessment of the benefits of carbon infrastructure in geographic terms. As we show in our study, the dynamics of carbon capture, transport, use, and storage in different regions are highly dependent on the availability of carbon pipelines and sequestration sinks. To our knowledge, there has never been a study that has examined carbon management with a detailed geographic representation for the future European energy system.
+
+In this paper, we therefore present a detailed study of the European energy system for 2050, which includes high geographical resolution and a comprehensive representation of carbon management technologies. The study is conducted using the PyPSA-EUR-Sec energy system model and encompasses all relevant sectors. We enable the system to optimize the design of renewable energy sources and storage technologies, as well as the transmission of electricity, hydrogen, methane, and carbon. Our evaluation focuses on the transport dynamics of carbon and hydrogen through their respective networks on the European continent. We also analyze how an energy system with limited annual sequestration potential prioritizes decarbonization and fuel switching in various sectors, and how the construction of carbon networks varies based on different levels of available carbon sequestration potential.
