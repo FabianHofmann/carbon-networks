@@ -110,8 +110,8 @@ for k, output in zip(keys, snakemake.output):
     legend = ax.legend(
         chandles[::-1],
         clabels[::-1],
-        loc="lower left",
-        bbox_to_anchor=(1, -0.05),
+        loc="upper left",
+        bbox_to_anchor=(0.5, -0.05),
         frameon=False,
         ncol=1,
         title="Consumption",

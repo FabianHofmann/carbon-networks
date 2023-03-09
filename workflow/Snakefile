@@ -1,6 +1,9 @@
+sec_config = "config/config.pypsa-eur-sec.test.yaml"
+
+
 # Merge subworkflow configs and main config
 configfile: "config/config.pypsa-eur.yaml"
-configfile: "config/config.pypsa-eur-sec.yaml"
+configfile: sec_config
 configfile: "config/config.yaml"
 configfile: "config/config.cluster.yaml"
 
@@ -9,7 +12,7 @@ from shutil import copyfile
 
 copyfile("config/config.pypsa-eur.yaml", "workflow/subworkflows/pypsa-eur/config.yaml")
 copyfile(
-    "config/config.pypsa-eur-sec.yaml",
+    sec_config,
     "workflow/subworkflows/pypsa-eur-sec/config.yaml",
 )
 
@@ -39,7 +42,7 @@ subworkflow pypsaeur:
 
 subworkflow pypsaeursec:
     configfile:
-        "config/config.pypsa-eur-sec.yaml"
+        sec_config
     workdir:
         "subworkflows/pypsa-eur-sec"
     snakefile:
@@ -58,7 +61,8 @@ for k, v in config["scenario"].items():
 rule all:
     input:
         expand(
-            RDIR + "/figures/capacity_map_{design}_{sequestration}.pdf",
+            RDIR + "/figures/capacity_map_{kind}_{design}_{sequestration}.pdf",
+            kind=config["constants"]["kinds"],
             **config["scenarios"]
         ),
         expand(
@@ -89,7 +93,7 @@ rule plot_capacity_map:
             )
         ),
     output:
-        map=RDIR + "/figures/capacity_map_{design}_{sequestration}.pdf",
+        map=RDIR + "/figures/capacity_map_{kind}_{design}_{sequestration}.pdf",
     script:
         "scripts/plot-capacity-map.py"
 

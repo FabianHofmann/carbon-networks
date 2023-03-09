@@ -7,7 +7,7 @@ retrieve_sector_databundle: true
 results_dir: results/
 summary_dir: results
 costs_dir: ../technology-data/outputs/
-run: eem  # use this to keep track of runs with different settings
+run: eem-test  # use this to keep track of runs with different settings
 foresight: overnight # options are overnight, myopic, perfect (perfect is not yet implemented)
 # if you use myopic or perfect foresight, set the investment years in "planning_horizons" below
 
@@ -21,7 +21,7 @@ scenario:
   opts:
     - ''
   sector_opts:
-    - Co2L0-2500seg-T-H-B-I-A-solar+p3-linemaxext15
+    - Co2L0-30seg-T-H-B-I-A-solar+p3-linemaxext15
   planning_horizons:
     - 2050
 

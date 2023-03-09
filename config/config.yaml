@@ -20,7 +20,7 @@ constants:
     - gas
     - hydrogen
     - carbon
-    # - co2
+    - co2
 
   oneport_comps:
     - Generator
@@ -317,6 +317,17 @@ plotting:
       branch_sizes:
         - 1000
         - 2000
+    co2:
+      region_cmap: Reds
+      region_unit: Mt
+      bus_scale: 1e-4
+      branch_scale: 2e-3
+      bus_sizes:
+        - 5000
+        - 10000
+      branch_sizes:
+        - 1000
+        - 2000
 
   operation_map:
     electricity:
@@ -350,6 +361,16 @@ plotting:
         - 50 # TWh
       branch_sizes: null
     carbon:
+      region_cmap: Reds
+      region_unit: Mt
+      bus_scale: 8e-8
+      branch_scale: 2e-7
+      flow_scale: 8e-5
+      bus_sizes:
+        - 50 # Mt
+        - 20 # Mt
+      branch_sizes: null
+    co2:
       region_cmap: Reds
       region_unit: Mt
       bus_scale: 8e-8
