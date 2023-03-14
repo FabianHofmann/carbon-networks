@@ -440,6 +440,20 @@ def get_carrier_mapper(n):
 def add_carrier_nice_names(n):
     nname = n.carriers.nice_name
     n.carriers.nice_name = nname.where(nname != "", nname.index.str.title())
+    # replace abbreviations with capital letters
+    replace = {
+        "H2": "H$_2$",
+        "Co2": "CO$_2$",
+        "Chp": "CHP",
+        "Dac": "DAC",
+        "Smr": "SMR",
+        " Cc": "*",
+        "Ocgt": "OCGT",
+        "Ac": "AC",
+        "Dc": "DC",
+        "Allam": "Allam Cycle",
+    }
+    n.carriers.nice_name.replace(replace, regex=True, inplace=True)
 
 
 def add_colors(n):

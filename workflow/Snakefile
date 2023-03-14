@@ -1,4 +1,4 @@
-sec_config = "config/config.pypsa-eur-sec.test.yaml"
+sec_config = "config/config.pypsa-eur-sec.yaml"
 
 
 # Merge subworkflow configs and main config
@@ -58,6 +58,23 @@ for k, v in config["scenario"].items():
     base[k] = v[0]
 
 
+rule eem:
+    message:
+        "Compile figures for EEM paper."
+    input:
+        filenames=[
+            RDIR + "/figures/sequestration_map.pdf",
+            RDIR + "/figures/capacity_map_electricity_co2network_1000.pdf",
+            RDIR + "/figures/capacity_map_carbon_co2network_1000.pdf",
+            RDIR + "/figures/capacity_map_hydrogen_co2network_1000.pdf",
+            RDIR + "/figures/operation_map_carbon_co2network_1000.pdf",
+            RDIR + "/figures/operation_area_carbon_co2network.pdf",
+            RDIR + "/figures/operation_area_carbon_noco2network.pdf",
+            RDIR + "/figures/operation_area_hydrogen_co2network.pdf",
+            RDIR + "/figures/operation_area_hydrogen_noco2network.pdf",
+        ],
+
+
 rule all:
     input:
         expand(
@@ -71,17 +88,32 @@ rule all:
             kind=config["constants"]["kinds"]
         ),
         expand(
-            RDIR + "/figures/operation_bar_{design}_{sequestration}.pdf",
-            **config["scenarios"]
-        ),
-        expand(
             RDIR + "/figures/operation_area_{kind}_{design}.pdf",
             **config["scenarios"],
             kind=config["constants"]["kinds"]
         ),
 
 
+def get_design_networks(w):
+    return expand(
+        RDIR + "/networks/{design}_{sequestration}.nc",
+        sequestration=config["scenarios"]["sequestration"],
+        **w
+    )
+
+
+rule plot_cost_area:
+    input:
+        networks=get_design_networks,
+    output:
+        map=RDIR + "/figures/cost_area_{design}.pdf",
+    script:
+        "scripts/plot-cost-area.py"
+
+
 rule plot_capacity_map:
+    params:
+        settings=config["plotting"]["capacity_map"],
     input:
         network=RDIR + "/networks/{design}_{sequestration}.nc",
         onshore_regions=pypsaeur(
@@ -113,6 +145,8 @@ rule plot_sequestration_map:
 
 
 rule plot_operation_map:
+    params:
+        settings=config["plotting"]["operation_map"],
     input:
         network=RDIR + "/networks/{design}_{sequestration}.nc",
         onshore_regions=pypsaeur(
@@ -131,14 +165,6 @@ rule plot_operation_bar:
         map=RDIR + "/figures/operation_bar_{design}_{sequestration}.pdf",
     script:
         "scripts/plot-operation-bar.py"
-
-
-def get_design_networks(w):
-    return expand(
-        RDIR + "/networks/{design}_{sequestration}.nc",
-        sequestration=config["scenarios"]["sequestration"],
-        **w
-    )
 
 
 rule plot_operation_area:
@@ -178,23 +204,6 @@ rule get_solved_network:
 rule get_all_solved_networks:
     input:
         expand(RDIR + "/networks/{design}_{sequestration}.nc", **config["scenarios"]),
-
-
-rule report:
-    message:
-        "Compile report."
-    input:
-        tex="report/report.tex",
-        bib="report/references.bib",
-    output:
-        "report/report.pdf",
-    shell:
-        """
-        pdflatex {input.tex}
-        bibtex {input.bib})
-        pdflatex {input.tex}
-        pdflatex {input.tex}
-        """
 
 
 rule sync:

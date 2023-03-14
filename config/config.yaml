@@ -272,6 +272,7 @@ constants:
 
 
 plotting:
+  extent: [-12,  30,  35 ,  73]
   capacity_map:
     electricity:
       region_cmap: Greens
@@ -310,7 +311,7 @@ plotting:
       region_cmap: Reds
       region_unit: Mt
       bus_scale: 1e-4
-      branch_scale: 2e-3
+      branch_scale: 8e-4
       bus_sizes:
         - 5000
         - 10000
@@ -363,9 +364,9 @@ plotting:
     carbon:
       region_cmap: Reds
       region_unit: Mt
-      bus_scale: 8e-8
-      branch_scale: 2e-7
-      flow_scale: 8e-5
+      bus_scale: 2e-8
+      branch_scale: 5e-8
+      flow_scale: 2e-5
       bus_sizes:
         - 50 # Mt
         - 20 # Mt

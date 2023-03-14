@@ -10,7 +10,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import geopandas as gpd
 
-sns.set_theme(style="white", context="paper")
+sns.set_theme(style="white", context="paper", font="serif")
 
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():

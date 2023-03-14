@@ -14,7 +14,6 @@ from pypsa.plot import add_legend_circles, add_legend_patches, add_legend_lines
 from common import (
     import_network,
     mock_snakemake,
-    get_carrier_consumption,
     get_carrier_storage,
     get_carrier_transport,
     get_carrier_production,
@@ -22,7 +21,7 @@ from common import (
 
 import geopandas as gpd
 
-sns.set_theme(style="white", context="paper", rc={"patch.linewidth": 0.2})
+sns.set_theme(style="white", context="paper", rc={"patch.linewidth": 0.1}, font="serif")
 column = "Optimal Capacity"
 alpha = 1
 region_alpha = 0.8
@@ -46,7 +45,7 @@ which = "capacity"
 
 
 fig, ax = plt.subplots(
-    figsize=(7.5, 6.5),
+    figsize=(7, 6),
     subplot_kw={"projection": ccrs.EqualEarth()},
 )
 
@@ -107,15 +106,16 @@ regions.plot(
         "alpha": region_alpha,
     },
 )
+ax.set_extent(snakemake.config["plotting"]["extent"])
 
 legend_bus_sizes = specs["bus_sizes"]
-legend_kwargs = {"loc": "upper left", "frameon": False}
+legend_kwargs = {"framealpha": 0.7, "frameon": True, "loc": "upper left"}
 if legend_bus_sizes is not None:
     add_legend_circles(
         ax,
         [s * bus_scale for s in legend_bus_sizes],
         [f"{s // 1000} GW" for s in legend_bus_sizes],
-        legend_kw={"bbox_to_anchor": (1, 1), **legend_kwargs},
+        legend_kw={"bbox_to_anchor": (0, 1), **legend_kwargs},
     )
 
 legend_branch_sizes = specs["branch_sizes"]
@@ -124,7 +124,7 @@ if legend_branch_sizes is not None:
         ax,
         [s * branch_scale for s in legend_branch_sizes],
         [f"{s // 1000} GW" for s in legend_branch_sizes],
-        legend_kw={"bbox_to_anchor": (1, 0.9), **legend_kwargs},
+        legend_kw={"bbox_to_anchor": (0, 0.85), "framealpha": 0.7, **legend_kwargs},
     )
 
 gen_carriers = n.carriers.loc[bus_sizes.index.unique(1)]
@@ -133,29 +133,17 @@ add_legend_patches(
     gen_carriers.color,
     gen_carriers.nice_name,
     patch_kw={"alpha": alpha},
-    legend_kw={"bbox_to_anchor": (1, 0.1), **legend_kwargs, "loc": "lower left"},
+    legend_kw={
+        "bbox_to_anchor": (0, 1),
+        "ncol": 2,
+        "frameon": False,
+        "loc": "lower left",
+    },
 )
 
-bcarriers = sum(branch_carriers.values(), [])
-if set(bcarriers).issubset(n.carriers.index):
-    branch_carriers = n.carriers.loc[bcarriers]
-    add_legend_patches(
-        ax,
-        branch_carriers.color,
-        branch_carriers.nice_name,
-        patch_kw={"alpha": alpha},
-        legend_kw={
-            "bbox_to_anchor": (1, 0.0),
-            **legend_kwargs,
-            "loc": "lower left",
-        },
-    )
 
+# fig.set_title(kind.title() + " Production and Storage Capacity Map")
 
-ax.set_extent(regions.total_bounds[[0, 2, 1, 3]])
-ax.set_title(kind.title() + " Production and Storage Capacity Map")
-
-fig.tight_layout()
 fig.savefig(
     snakemake.output.map,
     bbox_inches="tight",

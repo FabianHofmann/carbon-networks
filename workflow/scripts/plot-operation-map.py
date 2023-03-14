@@ -17,14 +17,13 @@ from common import (
     import_network,
     mock_snakemake,
     get_carrier_consumption,
-    get_carrier_storage,
     get_carrier_transport,
     get_carrier_production,
 )
 
 import geopandas as gpd
 
-sns.set_theme(style="white", context="paper", rc={"patch.linewidth": 0.2})
+sns.set_theme(style="white", context="paper", rc={"patch.linewidth": 0.1}, font="serif")
 warnings.filterwarnings("ignore", category=UserWarning)
 alpha = 1
 region_alpha = 0.8
@@ -33,13 +32,9 @@ region_alpha = 0.8
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_operation_map",
-        simpl="",
-        lv=1.2,
-        clusters=181,
-        opts="",
-        sector_opts="Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15-seq200",
-        planning_horizons=2050,
-        kind="electricity",
+        kind="hydrogen",
+        design="co2network",
+        sequestration=1000,
     )
 
 
@@ -53,7 +48,7 @@ kind = snakemake.wildcards.kind
 fig, axes = plt.subplots(
     1,
     2,
-    figsize=(15, 13),
+    figsize=(10, 8),
     squeeze=False,
     subplot_kw={"projection": ccrs.EqualEarth()},
 )
@@ -102,10 +97,10 @@ for tag, ax in zip(tags, axes.flatten()):
         gen_carriers.color,
         gen_carriers.nice_name,
         patch_kw={"alpha": alpha},
-        legend_kw={"bbox_to_anchor": (0, 0), "ncol": 3, **legend_kwargs},
+        legend_kw={"bbox_to_anchor": (0, 0), "ncol": 2, **legend_kwargs},
     )
 
-    ax.set_extent(regions.total_bounds[[0, 2, 1, 3]])
+    ax.set_extent(snakemake.config["plotting"]["extent"])
     ax.set_title(kind.title() + " " + tag.title())
 
     legend_bus_sizes = specs["bus_sizes"]

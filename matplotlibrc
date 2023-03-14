@@ -1,5 +1,3 @@
-font.family: sans-serif
-font.sans-serif: Ubuntu
 image.cmap: viridis
 axes.grid : false
 legend.frameon : false

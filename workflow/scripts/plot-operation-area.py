@@ -11,14 +11,15 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-sns.set_theme(style="white", context="paper")
+
+sns.set_theme(style="white", context="paper", font="serif")
 
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_operation_area",
         design="co2network",
-        kind="electricity",
+        kind="carbon",
     )
 
 
@@ -66,7 +67,7 @@ for k, output in zip(keys, snakemake.output):
     production = group_small_contributions(production, 1)
     consumption = group_small_contributions(consumption, 1)
 
-    fig, ax = plt.subplots(1, 1, figsize=(6, 5))
+    fig, ax = plt.subplots(1, 1, figsize=(3, 3.5), layout="constrained")
     production.plot(
         kind="area", stacked=True, ax=ax, color=colors.to_dict(), alpha=0.8, lw=0
     )
@@ -77,6 +78,7 @@ for k, output in zip(keys, snakemake.output):
     ax.set_xlim(production.index.min(), production.index.max())
     ax.set_ylim(-consumption.sum(1).max() * 1.1, production.sum(1).max() * 1.1)
     ax.set_xlabel("Sequestration Potential [Mt]")
+    ax.set_ylabel(f"{kind.title()} [{unit}]")
     ax.set_title(f"{kind.title()} Balance {k}")
     ax.grid(axis="y", alpha=0.5)
 
@@ -93,12 +95,13 @@ for k, output in zip(keys, snakemake.output):
         if label in ccarriers and label not in clabels:
             clabels.append(label)
             chandles.append(handle)
+    ax.legend().remove()
 
-    legend = ax.legend(
+    legend = fig.legend(
         phandles,
         plabels,
         loc="upper left",
-        bbox_to_anchor=(1, 1.05),
+        bbox_to_anchor=(1, 0.9),
         frameon=False,
         ncol=1,
         title="Production",
@@ -107,11 +110,11 @@ for k, output in zip(keys, snakemake.output):
     )
     fig.add_artist(legend)
 
-    legend = ax.legend(
+    legend = fig.legend(
         chandles[::-1],
         clabels[::-1],
-        loc="upper left",
-        bbox_to_anchor=(0.5, -0.05),
+        loc="lower left",
+        bbox_to_anchor=(1, 0.1),
         frameon=False,
         ncol=1,
         title="Consumption",
@@ -121,7 +124,6 @@ for k, output in zip(keys, snakemake.output):
     fig.add_artist(legend)
 
     sns.despine()
-    ax.set_ylabel(unit)
 
-    fig.tight_layout()
+    # fig.tight_layout()
     fig.savefig(output, dpi=300, bbox_inches="tight")

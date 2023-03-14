@@ -17,11 +17,11 @@ scenario:
   lv:
     - 1.2
   clusters:
-    - 128
+    - 90
   opts:
     - ''
   sector_opts:
-    - Co2L0-30seg-T-H-B-I-A-solar+p3-linemaxext15
+    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15
   planning_horizons:
     - 2050
 
@@ -270,7 +270,7 @@ sector:
   gas_distribution_grid: true
   gas_distribution_grid_cost_factor: 1.0  #multiplies cost in data/costs.csv
   biomass_spatial: true  # biomass transport between nodes
-  biomass_transport: true  # biomass transport between nodes
+  biomass_transport: false  # biomass transport between nodes
   conventional_generation: # generator : carrier
     OCGT: gas
   biomass_to_liquid: false
