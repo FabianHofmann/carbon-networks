@@ -1,4 +1,9 @@
-sec_config = "config/config.pypsa-eur-sec.yaml"
+TEST = True
+
+if TEST:
+    sec_config = "config/config.pypsa-eur-sec.test.yaml"
+else:
+    sec_config = "config/config.pypsa-eur-sec.yaml"
 
 
 # Merge subworkflow configs and main config
@@ -64,6 +69,7 @@ rule eem:
     input:
         filenames=[
             RDIR + "/figures/sequestration_map.pdf",
+            RDIR + "/figures/cost_area.pdf",
             RDIR + "/figures/capacity_map_electricity_co2network_1000.pdf",
             RDIR + "/figures/capacity_map_carbon_co2network_1000.pdf",
             RDIR + "/figures/capacity_map_hydrogen_co2network_1000.pdf",
@@ -92,21 +98,22 @@ rule all:
             **config["scenarios"],
             kind=config["constants"]["kinds"]
         ),
+        RDIR + "/figures/cost_area.pdf",
 
 
-def get_design_networks(w):
+def get_all_networks(w):
     return expand(
         RDIR + "/networks/{design}_{sequestration}.nc",
+        design=config["scenarios"]["design"],
         sequestration=config["scenarios"]["sequestration"],
-        **w
     )
 
 
 rule plot_cost_area:
     input:
-        networks=get_design_networks,
+        networks=get_all_networks,
     output:
-        map=RDIR + "/figures/cost_area_{design}.pdf",
+        map=RDIR + "/figures/cost_area.pdf",
     script:
         "scripts/plot-cost-area.py"
 
@@ -126,6 +133,8 @@ rule plot_capacity_map:
         ),
     output:
         map=RDIR + "/figures/capacity_map_{kind}_{design}_{sequestration}.pdf",
+    resources:
+        mem_mb=10000,
     script:
         "scripts/plot-capacity-map.py"
 
@@ -152,6 +161,8 @@ rule plot_operation_map:
         onshore_regions=pypsaeur(
             "resources/regions_onshore_elec_s{simpl}_{clusters}.geojson".format(**base)
         ),
+    resources:
+        mem_mb=10000,
     output:
         map=RDIR + "/figures/operation_map_{kind}_{design}_{sequestration}.pdf",
     script:
@@ -167,11 +178,21 @@ rule plot_operation_bar:
         "scripts/plot-operation-bar.py"
 
 
+def get_design_networks(w):
+    return expand(
+        RDIR + "/networks/{design}_{sequestration}.nc",
+        sequestration=config["scenarios"]["sequestration"],
+        **w
+    )
+
+
 rule plot_operation_area:
     input:
         networks=get_design_networks,
     output:
         map=RDIR + "/figures/operation_area_{kind}_{design}.pdf",
+    resources:
+        mem_mb=10000,
     script:
         "scripts/plot-operation-area.py"
 

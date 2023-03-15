@@ -381,3 +381,83 @@ plotting:
         - 50 # Mt
         - 20 # Mt
       branch_sizes: null
+  technology_groups:
+    AC: Electricity Grid
+    Air Heat Pump: Heat Pump
+    Allam Cycle: Carbon Capture Technologies
+    Battery: Battery Infrastructure
+    Battery Charger: Battery Infrastructure
+    Battery Discharger: Battery Infrastructure
+    Bev Charger: Battery Infrastructure
+    Biogas: Bioenergy
+    Biogas To Gas: Bioenergy
+    Biomass Boiler: Bioenergy
+    "CO$_2$": CO$_2$ Infrastucture
+    "CO$_2$ Pipeline": CO$_2$ Infrastucture
+    "CO$_2$ Stored": CO$_2$ Infrastucture
+    DAC: DAC
+    DC: Electricity Grid
+    Electricity Distribution Grid: Electricity Grid
+    Fischer-Tropsch: Fischer-Tropsch
+    Gas: Gas Infrastucture
+    Gas Boiler: Gas Infrastucture
+    Gas CHP: Gas Infrastucture
+    "Gas CHP*": Carbon Capture Technologies
+    "Gas For Industry": Gas Infrastucture
+    "Gas For Industry*": Carbon Capture Technologies
+    Ground Heat Pump: Heat Pump
+    "H$_2$": H$_2$ Infrastucture
+    "H$_2$ Electrolysis": H$_2$ Infrastucture
+    "H$_2$ Fuel Cell": H$_2$ Infrastucture
+    "H$_2$ Pipeline": H$_2$ Infrastucture
+    Helmeth: Helmeth
+    Home Battery: Battery Infrastructure
+    Home Battery Charger: Battery Infrastructure
+    Home Battery Discharger: Battery Infrastructure
+    "Li Ion": Battery Infrastructure
+    Methanol: Methanol
+    Methanolisation: Methanolisation
+    OCGT: Gas Infrastucture
+    Offshore Wind: Wind
+    Oil: Oil
+    Onshore Wind: Wind
+    Process Emissions: Process Emissions
+    "Process Emissions*": Carbon Capture Technologies
+    Pumped Hydro Storage: Hydro Energy
+    "Reservoir & Dam": Hydro Energy
+    Resistive Heater: Resistive Heater
+    "Run of River": Hydro Energy
+    SMR: Gas Infrastucture
+    "SMR*": Carbon Capture Technologies
+    Sabatier: Sabatier
+    Solar: Solar
+    "Solar Rooftop": Solar
+    "Solar Thermal": Solar
+    "Solid Biomass": Bioenergy
+    "Solid Biomass CHP": Bioenergy
+    "Solid Biomass CHP*": Carbon Capture Technologies
+    "Solid Biomass For Industry": Bioenergy
+    "Solid Biomass For Industry*": Carbon Capture Technologies
+    V2G: Battery Infrastructure
+    "Water Tanks": Water Tanks
+    "Water Tanks Charger": Water Tanks
+    "Water Tanks Discharger": Water Tanks
+  technology_group_colors:
+    Hydro Energy: "#298c81"
+    Battery Infrastructure: "#ace37f"
+    Resistive Heater: "#d8f9b8"
+    Methanolisation: "#57aac1"
+    Water Tanks: "#e69487"
+    Electricity Grid: "#97ad8c"
+    CO$_2$ Infrastucture: "#f5627f"
+    Carbon Capture Technologies: "#f29dae"
+    Heat Pump: "#2fb537"
+    Fischer-Tropsch: "#25c49a"
+    DAC: "#ff5270"
+    Bioenergy: "#baa741"
+    H$_2$ Infrastucture: "#bf13a0"
+    Gas Infrastucture: "#ebbca0"
+    Wind: "#235ebc"
+    Oil: "#c9c9c9"
+    Solar: "#f9d002"
+    Process Emissions: '#222222'

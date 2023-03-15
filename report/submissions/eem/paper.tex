@@ -48,7 +48,7 @@ natbib=true % natbib compatibility mode (\citep and~\citet still work)
 \def\approxprop{\mathpalette\app\relax}
 
 \graphicspath{
-    {../../../results/eem/figures/},
+    {../../../results/eem-test/figures/},
 }
 
 \begin{document}
@@ -150,18 +150,35 @@ To model the detailed expansion of the carbon network, we use the open-source Py
     \label{fig:sequestration_map}
 \end{figure}
 
-PyPSA-Eur-Sec uses exogenous assumptions for the regional energy demand of the power sector, industry, transport, buildings and agriculture. This includes energy demand for shipping and aviation, and non-energy feedstocks for the chemical industry. To take account of climate neutrality targets, we have set a binding upper limit for zero emissions in line with the EU's 2050 target. Biomass use in each region is limited by its biomass potential, but biomass transport between regions is allowed and the model accounts for transport costs. Furthermore, we limit the expansion of the electric transmission system to 20\% of today's total capacity to account for the difficulties in placing new transmission projects. The geographical layout of process emissions from industry is derived from~\cite{piamanzGeoreferencedIndustrialSites2018}. These include emissions from the cement, chemical, paper and printing, glass and steel industry as well as refineries and amount 158~Mt CO$_2$ per year in total.
-For carbon sequestration, only offshore sites are considered as potential sinks (see Figure~\ref{fig:sequestration_map}). This is partly because offshore storage potential tends to be greater than onshore potential, and partly because carbon storage infrastructure projects near population centers may be difficult to implement due to public safety concerns. We make conservative assumptions in estimating storage potential by truncating the total potential to 25~Mt per site and calculate annual storage availability when filled over 25 years.
-On the carbon utilization side, we include three drop-in fuel production technologies in our model: Steam Methane Reforming (SMR), Methanolization, and Fischer-Tropsch (FT) synthesis. After processing, the fuels are made available for free use and can transported accross regions without additional costs. Synthetic methane can be used as a substitute for natural gas or biogas and is used in combined heat and power (CHP) plants, in gas boilers for home heating, or to meet the gas needs of industry. Synthetic methanol is used in the model to decarbonize fuel demand in the marine industry. Finally, FT fuels can replace fossil oil in the production of naphtha for industry and kerosene for aviation, or be used as machinery oil for agriculture.
-All technology cost assumptions for 2050 are listed taken from~\cite{lisazeyenPyPSATechnologydataTechnology2023}.
+The PyPSA-EUR-Sec model incorporates exogenous assumptions for regional energy demand across various sectors, including power, industry, transport, buildings, and agriculture. This covers energy demand for shipping and aviation, as well as non-energy feedstocks for the chemical industry. In order to address climate neutrality targets, we establish a binding upper limit for zero emissions, consistent with the EU's 2050 target. The usage of biomass in each region is constrained by its biomass potential; however, biomass transport between regions is permitted, and the model takes transport costs into account. Additionally, we restrict the expansion of the electric transmission system to 20\% of its current capacity to account for challenges in establishing new transmission projects. The geographical distribution of process emissions from various industries, such as cement, chemical, paper and printing, glass, and steel, along with refineries, is obtained from~\cite{piamanzGeoreferencedIndustrialSites2018}, amounting to a total of 158~Mt CO$_2$ per year.
 
-To explore the impact of carbon sequestration on the optimal layout of carbon management technologies, we vary the global carbon sequestration potential from 200~Mt to 1000~Mt per year in steps of 200~Mt.
+For carbon sequestration, we only consider offshore sites as potential sinks (refer to Figure~\ref{fig:sequestration_map}). This is partly because offshore storage potential tends to be larger than onshore potential, and partly due to public safety concerns surrounding carbon storage infrastructure projects near populated areas. We adopt conservative assumptions when estimating storage potential, capping the total potential at 25~Mt per site and calculating annual storage availability over a 25-year period.
 
+Regarding carbon utilization, our model incorporates three drop-in fuel production technologies: Steam Methane Reforming (SMR), Methanolization, and Fischer-Tropsch (FT) synthesis. Once processed, the fuels are available for unrestricted use and can be transported across regions at no additional cost. Synthetic methane serves as a substitute for natural gas or biogas and is utilized in combined heat and power (CHP) plants, gas boilers for residential heating, or to fulfill the gas requirements of the industry. Synthetic methanol is employed to decarbonize fuel demand in the marine industry. Lastly, FT fuels can replace fossil oil for producing naphtha in the industry and kerosene for aviation or serve as machinery oil in agriculture.
+
+All technology cost assumptions for 2050 are derived from~\cite{lisazeyenPyPSATechnologydataTechnology2023}.
+
+To investigate the influence of carbon sequestration on the optimal configuration of carbon management technologies, we incrementally vary the global carbon sequestration potential from 200~Mt to 1000~Mt per year in steps of 200~Mt.
 
 \section{Results}
 \label{sec:results}
 
-Figure~\ref{fig:capacity_map_carbon_co2network_1000} shows the optimal capacities of carbon capture and transport technologies in the European sector-coupled system for a total sequestration of 1000~Mt/a. The colors of the offshore regions are reflecting the optimal sequestration capacity per region. As shown, the optimization identifies three main carbon sinks that dominate and determine the CO$_2$ network design, namely a large sequestration cluster in the North Sea and two clusters on the coasts of Portugal and Greece. The CO$_2$ network is primarily built around the North Sea, connecting onshore carbon capture facilities to the coast. At the same time, large SMR facilities with CC are placed close to sequestration areas.
+\begin{figure*}[h!]
+    \centering
+    \includegraphics*[width=\linewidth]{cost_area.pdf}
+    \caption[short]{Total annual system cost for the sector-coupled system with different levels of carbon sequestration potential, with (left) and without (right) CO$_2$ network. When increasing the annual sequestration of from 200~Mt to 1000~Mt, the system cost reduce up to 10\% in case of a network with CO$_2$ transport. Due to an increased flexibility from fossil carriers with subsequent sequestration, the need for FT synthesis and H$_2$ electrolysis and the corresponding renewable power supply is reduced. }
+    \label{fig:cost_area}
+\end{figure*}
+
+Firstly, we analyze the optimal deployment of technologies and their associated costs for different levels of carbon sequestration potential.
+Figure~\ref{fig:cost_area} shows the annual system cost per technology group for the sector-coupled model for different levels of sequestration allowed with and without CO$_2$-network. The costs are calculated as the sum of the annualized investment and operational costs for all technologies. Starting at the left, we see that most system costs are associated with the deployment of renewable energy sources, heating, hydrogen technologies and the electricity grid. The costs for fossil fuels and carbon capture and transport technologies are relatively low. In terms of capacities, xx~GW of offshore wind, xx~GW of solar PV, xx~GW of onshore wind, and xx~GW of electrolysis are installed.
+In both cases, with and without CO$_2$ transport, total costs decrease as sequestration potential increases. At high sequestration rates, the fossil fuels, gas and oil, remain in the system and reduce the need for synthetic FT fuel which requires significant renewable energy sources. At the same time, the system deploys more net negative technologies as DAC or Bioenergy with Carbon Capture (contained in "Carbon Capture Technologies") to balance out emissions from fossil carriers. Other Carbon Capture Technologies ramp up; in particular, SMR with Carbon Capture. The conversion of natural gas to hydrogen replaces the need for investments in electrolysis and a hydrogen network.
+
+The cost reduction for the scenario with CO$_2$ transport is about xx\%, which is slightly more than without CO$_2$-net. Across all sequestration levels, the system with CO$_2$ transport is on average xx\% cheaper.
+
+
+Moving on from the cost analysis, we now turn our attention to the spatial distribution of carbon capture and transport technologies, specifically focusing on the European sector-coupled system under a total sequestration of 1000~Mt/a.
+Figure~\ref{fig:capacity_map_carbon_co2network_1000} illustrates the optimal capacities of carbon capture and transport technologies in the European sector-coupled system, given a total sequestration of 1000~Mt/a. The colors within the offshore regions represent the optimal sequestration capacity for each region. As depicted, the optimization process identifies three primary carbon sinks that significantly influence the CO$_2$ network design. These include a substantial sequestration cluster in the North Sea, as well as two clusters located along the coasts of Portugal and Greece. The CO$_2$ network is predominantly developed around the North Sea, connecting onshore carbon capture facilities to the coast. Concurrently, large SMR facilities equipped with carbon capture are strategically well-positioned in proximity to the sequestration areas.
 
 
 \begin{figure}[h]
@@ -173,24 +190,7 @@ Figure~\ref{fig:capacity_map_carbon_co2network_1000} shows the optimal capacitie
 
 
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\linewidth]{capacity_map_electricity_co2network_1000.pdf}
-    \caption{Optimal capacities per of the electricity sector for a sequestration of 1000 Mt/a.}
-    \label{fig:capacity_map_electricity_co2network_1000}
-\end{figure}
-
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\linewidth]{capacity_map_hydrogen_co2network_1000.pdf}
-    \caption{Optimal capacities per of the hydrogen sector for a sequestration of 1000 Mt/a.}
-    \label{fig:capacity_map_hydrogen_co2network_1000}
-\end{figure}
-
-
-
-\begin{figure*}
+\begin{figure*}[h]
     \centering
     \includegraphics[width=\linewidth]{operation_map_carbon_co2network_1000.pdf}
     \caption{Optimal operation per sector for a sequestration of 1000 Mt/a.}
@@ -201,15 +201,8 @@ Figure~\ref{fig:capacity_map_carbon_co2network_1000} shows the optimal capacitie
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{operation_area_carbon_co2network.pdf}
-    \caption{Balance of captured CO$_2$ emissions for the optimal operation with CO$_2$ network.}
+    \caption{Balance of captured CO$_2$ for the optimal operation with CO$_2$ network.}
     \label{fig:operation_area_carbon_co2network}
-\end{figure}
-
-\begin{figure}
-    \centering
-    \includegraphics[width=\linewidth]{operation_area_carbon_noco2network.pdf}
-    \caption{Balance of captured CO$_2$ emissions for the optimal operation without CO$_2$ network.}
-    \label{fig:operation_area_carbon_noco2network}
 \end{figure}
 
 
@@ -217,15 +210,19 @@ Figure~\ref{fig:capacity_map_carbon_co2network_1000} shows the optimal capacitie
     \centering
     \includegraphics[width=\linewidth]{operation_area_hydrogen_co2network.pdf}
     \caption{Balance of H$_2$ production and consumption with CO$_2$ network.}
-    \label{fig:operation_area_carbon_co2network}
+    \label{fig:operation_area_hydrogen_co2network}
 \end{figure}
+
+
 
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{operation_area_hydrogen_noco2network.pdf}
-    \caption{Balance of H$_2$ production and consumption without CO$_2$ network.}
-    \label{fig:operation_area_carbon_noco2network}
+    \includegraphics[width=\linewidth]{operation_area_co2_co2network.pdf}
+    \caption{Balance of atmospheric CO$_2$ emissions for the optimal operation with CO$_2$ network.}
+    \label{fig:operation_area_co2_co2network}
 \end{figure}
+
+
 
 
 \section{Limitations}
@@ -246,7 +243,27 @@ Industry processes not endougenous.
 
 \appendix
 
-Here come the appendices
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{capacity_map_electricity_co2network_1000.pdf}
+    \caption{Optimal capacities per of the electricity sector for a sequestration of 1000 Mt/a.}
+    \label{fig:capacity_map_electricity_co2network_1000}
+\end{figure}
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{capacity_map_hydrogen_co2network_1000.pdf}
+    \caption{Optimal capacities per of the hydrogen sector for a sequestration of 1000 Mt/a.}
+    \label{fig:capacity_map_hydrogen_co2network_1000}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{operation_area_carbon_noco2network.pdf}
+    \caption{Balance of captured CO$_2$ emissions for the optimal operation without CO$_2$ network.}
+    \label{fig:operation_area_carbon_noco2network}
+\end{figure}
 
 
 \end{document}
