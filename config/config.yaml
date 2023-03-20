@@ -13,6 +13,11 @@ scenarios:
 labels:
   co2network: "with CO$_2$ network"
   noco2network: "without CO$_2$ network"
+  carbon: "Captured Carbon"
+  hydrogen: "Hydrogen"
+  electricity: "Electricity"
+  gas: "Natural Gas"
+  co2: "Atmospheric CO$_2$"
 
 constants:
   kinds:
@@ -384,7 +389,7 @@ plotting:
   technology_groups:
     AC: Electricity Grid
     Air Heat Pump: Heat Pump
-    Allam Cycle: Carbon Capture Technologies
+    Allam Cycle: Carbon Capt. at Point Sources
     Battery: Battery Infrastructure
     Battery Charger: Battery Infrastructure
     Battery Discharger: Battery Infrastructure
@@ -402,9 +407,9 @@ plotting:
     Gas: Gas Infrastucture
     Gas Boiler: Gas Infrastucture
     Gas CHP: Gas Infrastucture
-    "Gas CHP*": Carbon Capture Technologies
+    "Gas CHP*": Carbon Capt. at Point Sources
     "Gas For Industry": Gas Infrastucture
-    "Gas For Industry*": Carbon Capture Technologies
+    "Gas For Industry*": Carbon Capt. at Point Sources
     Ground Heat Pump: Heat Pump
     "H$_2$": H$_2$ Infrastucture
     "H$_2$ Electrolysis": H$_2$ Infrastucture
@@ -422,22 +427,22 @@ plotting:
     Oil: Oil
     Onshore Wind: Wind
     Process Emissions: Process Emissions
-    "Process Emissions*": Carbon Capture Technologies
+    "Process Emissions*": Carbon Capt. at Point Sources
     Pumped Hydro Storage: Hydro Energy
     "Reservoir & Dam": Hydro Energy
     Resistive Heater: Resistive Heater
     "Run of River": Hydro Energy
-    SMR: Gas Infrastucture
-    "SMR*": Carbon Capture Technologies
+    SMR: Hydrogen Infrastucture
+    "SMR*": Carbon Capt. at Point Sources
     Sabatier: Sabatier
     Solar: Solar
     "Solar Rooftop": Solar
     "Solar Thermal": Solar
     "Solid Biomass": Bioenergy
     "Solid Biomass CHP": Bioenergy
-    "Solid Biomass CHP*": Carbon Capture Technologies
+    "Solid Biomass CHP*": Carbon Capt. at Point Sources
     "Solid Biomass For Industry": Bioenergy
-    "Solid Biomass For Industry*": Carbon Capture Technologies
+    "Solid Biomass For Industry*": Carbon Capt. at Point Sources
     V2G: Battery Infrastructure
     "Water Tanks": Water Tanks
     "Water Tanks Charger": Water Tanks
@@ -449,15 +454,15 @@ plotting:
     Methanolisation: "#57aac1"
     Water Tanks: "#e69487"
     Electricity Grid: "#97ad8c"
-    CO$_2$ Infrastucture: "#f5627f"
-    Carbon Capture Technologies: "#f29dae"
+    CO$_2$ Infrastucture: "#cc99ff"
+    Carbon Capt. at Point Sources: "#f29dae"
     Heat Pump: "#2fb537"
     Fischer-Tropsch: "#25c49a"
     DAC: "#ff5270"
     Bioenergy: "#baa741"
     H$_2$ Infrastucture: "#bf13a0"
-    Gas Infrastucture: "#ebbca0"
-    Wind: "#235ebc"
-    Oil: "#c9c9c9"
-    Solar: "#f9d002"
+    Gas Infrastucture: "#e05b09"
+    Wind: "#66b5ff"
+    Oil: "#001a33"
+    Solar: "#ffe066"
     Process Emissions: '#222222'

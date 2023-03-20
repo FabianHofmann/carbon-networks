@@ -1,4 +1,4 @@
-TEST = True
+TEST = False
 
 if TEST:
     sec_config = "config/config.pypsa-eur-sec.test.yaml"
@@ -68,16 +68,19 @@ rule eem:
         "Compile figures for EEM paper."
     input:
         filenames=[
-            RDIR + "/figures/sequestration_map.pdf",
+            RDIR + "/figures/sequestration_map.png",
             RDIR + "/figures/cost_area.pdf",
-            RDIR + "/figures/capacity_map_electricity_co2network_1000.pdf",
-            RDIR + "/figures/capacity_map_carbon_co2network_1000.pdf",
-            RDIR + "/figures/capacity_map_hydrogen_co2network_1000.pdf",
-            RDIR + "/figures/operation_map_carbon_co2network_1000.pdf",
+            RDIR + "/figures/capacity_map_electricity_co2network_1000.png",
+            RDIR + "/figures/capacity_map_carbon_co2network_1000.png",
+            RDIR + "/figures/capacity_map_hydrogen_co2network_1000.png",
+            RDIR + "/figures/operation_map_carbon_co2network_1000.png",
             RDIR + "/figures/operation_area_carbon_co2network.pdf",
-            RDIR + "/figures/operation_area_carbon_noco2network.pdf",
+            RDIR + "/figures/operation_area_co2_co2network.pdf",
             RDIR + "/figures/operation_area_hydrogen_co2network.pdf",
+            RDIR + "/figures/operation_area_carbon_noco2network.pdf",
+            RDIR + "/figures/operation_area_co2_noco2network.pdf",
             RDIR + "/figures/operation_area_hydrogen_noco2network.pdf",
+            RDIR + "/figures/captureshare_line.pdf",
         ],
 
 
@@ -110,10 +113,15 @@ def get_all_networks(w):
 
 
 rule plot_cost_area:
+    params:
+        config["plotting"]["technology_groups"],
+        config["plotting"]["technology_group_colors"],
     input:
         networks=get_all_networks,
     output:
-        map=RDIR + "/figures/cost_area.pdf",
+        map=RDIR + "/figures/cost_area.{ext}",
+    resources:
+        mem_mb=20000,
     script:
         "scripts/plot-cost-area.py"
 
@@ -132,9 +140,9 @@ rule plot_capacity_map:
             )
         ),
     output:
-        map=RDIR + "/figures/capacity_map_{kind}_{design}_{sequestration}.pdf",
+        map=RDIR + "/figures/capacity_map_{kind}_{design}_{sequestration}.{ext}",
     resources:
-        mem_mb=10000,
+        mem_mb=20000,
     script:
         "scripts/plot-capacity-map.py"
 
@@ -148,7 +156,7 @@ rule plot_sequestration_map:
             )
         ),
     output:
-        map=RDIR + "/figures/sequestration_map.pdf",
+        map=RDIR + "/figures/sequestration_map.{ext}",
     script:
         "scripts/plot-sequestration-map.py"
 
@@ -162,9 +170,9 @@ rule plot_operation_map:
             "resources/regions_onshore_elec_s{simpl}_{clusters}.geojson".format(**base)
         ),
     resources:
-        mem_mb=10000,
+        mem_mb=20000,
     output:
-        map=RDIR + "/figures/operation_map_{kind}_{design}_{sequestration}.pdf",
+        map=RDIR + "/figures/operation_map_{kind}_{design}_{sequestration}.{ext}",
     script:
         "scripts/plot-operation-map.py"
 
@@ -173,7 +181,7 @@ rule plot_operation_bar:
     input:
         network=RDIR + "/networks/{design}_{sequestration}.nc",
     output:
-        map=RDIR + "/figures/operation_bar_{design}_{sequestration}.pdf",
+        map=RDIR + "/figures/operation_bar_{design}_{sequestration}.{ext}",
     script:
         "scripts/plot-operation-bar.py"
 
@@ -190,11 +198,22 @@ rule plot_operation_area:
     input:
         networks=get_design_networks,
     output:
-        map=RDIR + "/figures/operation_area_{kind}_{design}.pdf",
+        map=RDIR + "/figures/operation_area_{kind}_{design}.{ext}",
     resources:
-        mem_mb=10000,
+        mem_mb=20000,
     script:
         "scripts/plot-operation-area.py"
+
+
+rule plot_captureshare_line:
+    input:
+        networks=get_all_networks,
+    output:
+        map=RDIR + "/figures/captureshare_line.{ext}",
+    resources:
+        mem_mb=20000,
+    script:
+        "scripts/plot-captureshare-line.py"
 
 
 def get_solved_network(wildcards):

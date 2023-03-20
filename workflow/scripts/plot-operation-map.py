@@ -32,9 +32,10 @@ region_alpha = 0.8
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_operation_map",
-        kind="hydrogen",
+        kind="carbon",
         design="co2network",
         sequestration=1000,
+        ext="png",
     )
 
 
@@ -42,6 +43,7 @@ n = import_network(snakemake.input.network)
 regions = gpd.read_file(snakemake.input.onshore_regions).set_index("name")
 kinds = snakemake.config["constants"]["kinds"]
 config = snakemake.config
+labels = config["labels"]
 which = "operation"
 kind = snakemake.wildcards.kind
 
@@ -101,7 +103,7 @@ for tag, ax in zip(tags, axes.flatten()):
     )
 
     ax.set_extent(snakemake.config["plotting"]["extent"])
-    ax.set_title(kind.title() + " " + tag.title())
+    ax.set_title(labels[kind] + " " + tag.title())
 
     legend_bus_sizes = specs["bus_sizes"]
     if legend_bus_sizes is not None:

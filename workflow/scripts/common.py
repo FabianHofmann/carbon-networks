@@ -69,6 +69,14 @@ def group_small_contributions(df, threshold=0.01):
         raise TypeError("df must be a DataFrame or Series")
 
 
+def sort_rows_by_diff(df):
+    return (
+        df.assign(diff=df.max(axis=1) - df.min(axis=1))
+        .sort_values(by="diff")
+        .drop("diff", axis=1)
+    )
+
+
 def assert_carriers_existent(n, carriers, c):
     if not set(carriers).issubset(n.df(c).carrier.unique()):
         logger.warning(
@@ -443,6 +451,7 @@ def add_carrier_nice_names(n):
     # replace abbreviations with capital letters
     replace = {
         "H2": "H$_2$",
+        "Co2 Stored": "CO$_2$ Sequestration",
         "Co2": "CO$_2$",
         "Chp": "CHP",
         "Dac": "DAC",
@@ -451,6 +460,7 @@ def add_carrier_nice_names(n):
         "Ocgt": "OCGT",
         "Ac": "AC",
         "Dc": "DC",
+        "Agriculture Machinery Oil Emissions": "Agricultur Emissions",
         "Allam": "Allam Cycle",
     }
     n.carriers.nice_name.replace(replace, regex=True, inplace=True)

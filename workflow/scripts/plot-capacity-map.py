@@ -51,6 +51,7 @@ fig, ax = plt.subplots(
 
 
 regions = offshore_regions if kind == "carbon" else onshore_regions
+unit = "GW" if kind not in ["carbon", "co2"] else "kt/h"
 
 specs = config["plotting"]["capacity_map"][kind]
 bus_scale = float(specs["bus_scale"])
@@ -114,7 +115,7 @@ if legend_bus_sizes is not None:
     add_legend_circles(
         ax,
         [s * bus_scale for s in legend_bus_sizes],
-        [f"{s // 1000} GW" for s in legend_bus_sizes],
+        [f"{s // 1000} {unit}" for s in legend_bus_sizes],
         legend_kw={"bbox_to_anchor": (0, 1), **legend_kwargs},
     )
 
@@ -123,7 +124,7 @@ if legend_branch_sizes is not None:
     add_legend_lines(
         ax,
         [s * branch_scale for s in legend_branch_sizes],
-        [f"{s // 1000} GW" for s in legend_branch_sizes],
+        [f"{s // 1000} {unit}" for s in legend_branch_sizes],
         legend_kw={"bbox_to_anchor": (0, 0.85), "framealpha": 0.7, **legend_kwargs},
     )
 

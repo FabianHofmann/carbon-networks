@@ -47,8 +47,12 @@ natbib=true % natbib compatibility mode (\citep and~\citet still work)
 }
 \def\approxprop{\mathpalette\app\relax}
 
+% make abbreviation for co2
+\newcommand{\carbon}{CO$_2$ }
+
+
 \graphicspath{
-    {../../../results/eem-test/figures/},
+    {../../../results/eem/figures/},
 }
 
 \begin{document}
@@ -59,46 +63,43 @@ natbib=true % natbib compatibility mode (\citep and~\citet still work)
 \thanks{Fabian Hofmann is funded by the Breakthrough Energy Project "Hydrogen Integration and Carbon Management in Energy System Models".}
 
 \author{
-    \IEEEauthorblockN{Fabian Hofmann}
+    \IEEEauthorblockN{Fabian Hofmann, Christoph Tries, Fabian Neumann, Lisa Zeyen, Tom Brown}
     \IEEEauthorblockA{\textit{Institute of Energy Technology} \\
         \textit{Technical University of Berlin}\\
         Berlin, Germany \\
         m.hofmann@tu-berlin.de}
-    \and
-    \IEEEauthorblockN{Christoph Tries}
-    \IEEEauthorblockA{\textit{Institute of Energy Technology} \\
-        \textit{Technical University of Berlin}\\
-        Berlin, Germany \\
-        christoph.tries@tu-berlin.de}
-    \and
-    \IEEEauthorblockN{Fabian Neumann}
-    \IEEEauthorblockA{\textit{Institute of Energy Technology} \\
-        \textit{Technical University of Berlin}\\
-        Berlin, Germany \\
-        f.neumann@tu-berlin.de}
-    \and
-    \IEEEauthorblockN{Lisa Zeyen}
-    \IEEEauthorblockA{\textit{Institute of Energy Technology} \\
-        \textit{Technical University of Berlin}\\
-        Berlin, Germany \\
-        e.zeyen@tu-berlin.de}
-    \and
-    \IEEEauthorblockN{Tom Brown}
-    \IEEEauthorblockA{\textit{Institute of Energy Technology} \\
-        \textit{Technical University of Berlin}\\
-        Berlin, Germany \\
-        t.brown@tu-berlin.de}
+    % \and
+    % \IEEEauthorblockN{Christoph Tries}
+    % \IEEEauthorblockA{\textit{Institute of Energy Technology} \\
+    %     \textit{Technical University of Berlin}\\
+    %     Berlin, Germany \\
+    %     christoph.tries@tu-berlin.de}
+    % \and
+    % \IEEEauthorblockN{Fabian Neumann}
+    % \IEEEauthorblockA{\textit{Institute of Energy Technology} \\
+    %     \textit{Technical University of Berlin}\\
+    %     Berlin, Germany \\
+    %     f.neumann@tu-berlin.de}
+    % \and
+    % \IEEEauthorblockN{Lisa Zeyen}
+    % \IEEEauthorblockA{\textit{Institute of Energy Technology} \\
+    %     \textit{Technical University of Berlin}\\
+    %     Berlin, Germany \\
+    %     e.zeyen@tu-berlin.de}
+    % \and
+    % \IEEEauthorblockN{Tom Brown}
+    % \IEEEauthorblockA{\textit{Institute of Energy Technology} \\
+    %     \textit{Technical University of Berlin}\\
+    %     Berlin, Germany \\
+    %     t.brown@tu-berlin.de}
 }
 
 \maketitle
 
 \begin{abstract}
-    Enabling a carbon-neutral European economy requires internationally coordinated investments into all sectors of the energy system. In the light of hard-to-abate emissions from process industry, energy-intensive transport and backup heat or power sources, it is important to determine the extent to which a system-wide carbon management is needed. Different technologies such as direct air capture, carbon capture at point sources and carbon transport, utilization in hydrocarbon synthesis and storage are considered as valuable contributors to formulate a comprehensive carbon strategy and take the final step to climate-neutrality.
-    % While the literature has already showed the synergies of these technologies, the question of how to design the infrastructure at high resolution together with a CO$_2$ transport system has not been addressed so far. Moreover, there is a growing number of individually planned carbon management projects whereas the formulation of a European carbon strategy is still missing from the political agenda.
-    In this paper, we present the first study of a cost-optimal design of the European energy system with a full representation of carbon management technologies including a CO$_2$ transport network, considering all sectors with high spatial resolution. In addition, the system is allowed to optimize the layout of renewable energy sources as well as energy transmission and storage systems based on hydrogen and methane.
-    Assuming net-zero emissions, we show that carbon management technologies provide critical cost-beneficial flexibilities to the European energy system. In particular, we show that building a CO$_2$ network complements the built out of a hydrogen network and is cost-effective across different rates of carbon sequestration in the offshore regions (200 -- 1000 Mt/a). Combined with a hydrogen grid, the CO$_2$ grid leads to cost savings of about 6\%, as it allows industrial and densely populated inland sites to source hydrogen from coastal regions with favorable renewable energy potential and, in return, supply CO$_2$ that can be sequestered or utilized for synthetic hydrocarbons for petrochemical feedstocks, aviation and shipping. At high sequestration rates, direct air capture facilities complement carbon capture technologies at point sources, leading however to higher use of fossil energy carriers in the power and heating sector.
-    % The optimization identifies three main carbon sinks that dominate and determine the CO$_2$ network design, namely a large sequestration cluster in the North Sea and two clusters on the coasts of Portugal and Greece.
-    The results highlight the potential of a comprehensive carbon management strategy as a basis for designing future carbon networks and identifying the most promising sites for carbon capture and storage.
+    Enabling a carbon-neutral European economy requires internationally coordinated investments into all sectors of the energy system. In the light of hard-to-abate emissions from process industry, energy-intensive transport and backup heat or power sources, it is important to determine the extent to which a system-wide carbon management is needed. Different technologies such as carbon capture, transport, utilization and storage build the basis to formulate a carbon strategy to take the final step to climate-neutrality.
+    In this paper, we present the first study of a cost-optimal design of the European energy system with a full representation of carbon management technologies including a \carbon transport network, considering all sectors with high spatial resolution. Among other technologies, we are jointly optimizing carbon technologies, hydrogen transport and storage, and the design of renewable energy sources in the system.
+    Assuming net-zero emissions, we show that carbon management technologies provide systemic flexibilities to the European energy system, reducing system costs up to 14\%. In particular, we show that building a \carbon network is cost-effective across different rates of carbon sequestration in the offshore regions (200 -- 1000 Mt/a), leading to cost reduction of 13bn€/a in average. The network allows to capture carbon at point sources, instead of building large amounts of Direct Air Capture facilities. Moreover, we show that high sequestration rates, with or without \carbon network, reduce the need for hydrogen network and synthetic fuel production and allow fossil fuels to continue to be used in industry, aviation, agriculture, and the heating sector. In the light of potential "loopholes" for fossil fuels, the results should be interpreted in the context of moving towards a net-negative economy and should support creating carbon management strategy for that way.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -109,132 +110,129 @@ natbib=true % natbib compatibility mode (\citep and~\citet still work)
 \section{Introduction}
 \label{sec:introduction}
 
-In net-zero economies, carbon capture is considered a key technology for balancing emissions from hard-to-abate sectors and inevitable emissions from land use and agriculture. Capturing carbon at point sources and from the atmosphere by direct air capture (DAC) opens up new opportunities for producing drop-in fuels such as methane, methanol, or carbon-neutral liquid hydrocarbons, known as Carbon Capture and Utilization (CCU), and for storing carbon in geological formations, known as Carbon Capture and Storage (CCS). Together with carbon transport, these technologies are considered to be part of what is called the New Carbon Economy~\cite{arniehellerNewCarbonEconomy2019}.
+In net-zero economies, carbon capture is regarded as a crucial technology for offsetting emissions from hard-to-abate sectors and unavoidable emissions from land use and agriculture. Capturing carbon at point sources and from the atmosphere via Direct Air Capture (DAC) presents new opportunities for producing drop-in fuels such as methane, methanol, or carbon-neutral liquid hydrocarbons. This process is known as Carbon Capture and Utilization (CCU). Additionally, storing carbon in geological formations is referred to as Carbon Capture and Storage (CCS). Along with carbon transport, these technologies are collectively considered part of what is called the New Carbon Economy~\cite{arniehellerNewCarbonEconomy2019}.
 
-The literature has extensively discussed the individual potentials of carbon management technologies~\cite{burandtDecarbonizingChinaEnergy2019,caprosEnergysystemModellingEU2019,damoreOptimalDesignEuropean2021,larsonNetZeroAmericaPotential2021,maModelingOptimizationCombined2021,mikulcicFlexibleCarbonCapture2019,williamsCarbonNeutralPathwaysUnited2021}.
-% CC
-
-% CCU
-
-% CCS
-The Capture Map in~\cite{ToolsGreenTransition} estimates a potential of 1.4~Gt of carbon capture from point sources in Europe. A sequestration potential study in~\cite{weiProposedGlobalLayout2021} suggests that 92 GtCO$_2$ can be mitigated globally, of which 59 Gt can be sequestered. A recent study on carbon capture, transport and storage in~\cite{CaptureMapGetSitespecific} has shown that
-
-% combined analysis
-Finally, optimization tools have been developed in recent years to model synergies between different carbon management technologies and support infrastructure decisions~\cite{bakkenLinearModelsOptimization2008,morbeeOptimisedDeploymentEuropean2012,oeiModelingCarbonCapture2014,elahiMultiperiodLeastCost2014,middletonSimCCSOpensourceTool2020,bjerketvedtOptimalDesignCost2020,weiProposedGlobalLayout2021,damoreOptimalDesignEuropean2021,becattiniCarbonDioxideCapture2022}. In contrast to Integrated Assessment Models these consider the spatial distribution of carbon sources and sink. Among these, the recent work in~\cite{becattiniCarbonDioxideCapture2022} presents a comprehensive mixed-integer model to optimize the time-evolution of a CO$_2$ transport system in Switzerland with a connection to a remote sequestration site in Norway.
+For Europe, the Capture Map~\cite{ToolsGreenTransition} estimates a potential of 1.4Gt of carbon capture from point sources per year. In combination with large sequestration potentials as stated in~\cite{weiProposedGlobalLayout2021}, this highlights the vast potential for decarbonization. Recently, policymakers and industry in Europe have been committing to carbon management projects, planning the first infrastructure components, and developing business models for emerging sectors of the economy~\cite{adomaitisEquinorRWEBuild2023,apnewswireGermanyDrawLegislation2023,KohlenstoffKannKlimaschutz2023,OGETESJoin2022,TESHydrogenLife2023}. Business models from companies like Tree Energy~\cite{TESHydrogenLife2023}, Carbfix~\cite{WeTurnCO2}, and Equinor~\cite{adomaitisEquinorRWEBuild2023} advertise carbon management hubs that provide green hydrogen, methane, or synfuels on the one hand and offtake \carbon on the other hand. In this context, the need for an international strategy, analogous to the European Hydrogen Backbone~\cite{gasforclimateEuropeanHydrogenBackbone2022}, becomes apparent to coordinate and support deep decarbonization efforts. Important insights to formulate such a strategy can be gained from energy system models that provide a holistic view of the energy system and its technological interactions. To this end, a number of optimization tools have been developed in recent years to model synergies between various carbon management technologies~\cite{bakkenLinearModelsOptimization2008,morbeeOptimisedDeploymentEuropean2012,oeiModelingCarbonCapture2014,elahiMultiperiodLeastCost2014,burandtDecarbonizingChinaEnergy2019,middletonSimCCSOpensourceTool2020,bjerketvedtOptimalDesignCost2020,weiProposedGlobalLayout2021,damoreOptimalDesignEuropean2021,becattiniCarbonDioxideCapture2022}. In addition to Integrated Assessment Models, these tools account for the spatial distribution of carbon sources and sinks.
+% A comprehensive example is found in~\cite{becattiniCarbonDioxideCapture2022}, which presents a mixed-integer model to optimize the time-evolution of a \carbon transport system in Switzerland, connecting to a remote sequestration site in Norway.
+However, the models are often limited with regard to geographical scope and detail at the same time. While representing a single country with spatial resolution may neglect synergies of international cooperation, a coarse grained representation of multiple countries may neglect important geographical properties.
 
 
-Recently, policymakers and industry in Europe have been committing to carbon management strategies, planning the first infrastructure components, and developing business models for emerging sectors of the economy~\cite{adomaitisEquinorRWEBuild2023,apnewswireGermanyDrawLegislation2023,KohlenstoffKannKlimaschutz2023,OGETESJoin2022,TESHydrogenLife2023}. Business models from companies like Tree Energy~\cite{TESHydrogenLife2023}, Carbfix [cite], and Equinor~\cite{adomaitisEquinorRWEBuild2023} advertise carbon management hubs that provide green hydrogen, methane, or synfuels on the one hand and offtake CO$_2$ on the other hand. ...
-% TODO other businesses, sequestration business models
-Despite the growing number of individually planned carbon management projects, an internationally coordinated carbon management strategy is still missing from the political agenda.
-
-% Hydrogen
-% Germany's climate protection act~\cite{KlimaschutzgesetzKlimaneutralitaetBis} targets a 65\% reduction in CO$_2$ emissions by 2030 and climate neutrality by 2045. Similarly, the EU's Fit-for-55 package aims for a 55\% reduction in emissions by 2030. To accelerate the energy transition and ensure energy security, REpowerEU~\cite{REPowerEU} proposes a fast ramp-up of a green Hydrogen system, with a domestic production target of 10 MT H$_2$ by 2030. Potential carbon management hubs such as Tree Energy, Carbfix, and Equinor are emerging as industry leaders.
-% The Mission Innovation Hydrogen Valley Platform~\cite{H2ValleysMissionInnovation} is a platform that collects hydrogen flagship projects to facilitate collaboration and knowledge sharing. Finally, the European Hydrogen Backbone~\cite{gasforclimateEuropeanHydrogenBackbone2022} is a project that aims to develop a cross-border hydrogen infrastructure network to enable the transport of renewable energy across Europe.
-
-
-
-However, to formulate such a international strategy, it is important to carefully assess the benefits of carbon infrastructure in geographic terms and in terms of interaction with the energy system. As we show in our study, the dynamics of carbon capture, transport, use, and storage in different regions are highly dependent on the availability of renewable energy, carbon pipelines and sequestration sinks. To our knowledge, there has never been a study that has examined carbon management with a detailed geographic representation for the future European energy system.
-
-In this paper, we therefore present a detailed study of the European energy system for 2050, which includes high geographical resolution and a comprehensive representation of carbon management technologies. The study is conducted using the PyPSA-EUR-Sec energy system model and encompasses all relevant sectors. We enable the system to optimize the design of renewable energy sources and storage technologies, as well as the transmission of electricity, hydrogen, methane, and carbon. Our evaluation focuses on the transport dynamics of carbon and hydrogen through their respective networks on the European continent. We also analyze how an energy system with limited annual sequestration potential prioritizes decarbonization and fuel switching in various sectors, and how the construction of carbon networks varies based on different levels of available carbon sequestration potential.
+In this paper, we present a detailed study of the European energy system for 2050, which includes high geographical resolution and a comprehensive representation of carbon management technologies. The study is conducted using the \textit{PyPSA-EUR-Sec} energy system model and encompasses all relevant energy sectors. We enable the system to optimize the design of renewable energy sources and storage technologies, as well as the transmission of electricity, hydrogen, methane, and carbon. We show that the dynamics of carbon capture, transport, use, and storage in different regions are highly dependent on the availability of renewable energy, carbon pipelines and sequestration sinks. Our evaluation focuses on the transport dynamics of carbon and hydrogen through their respective networks on the European continent. We also analyze how an energy system with limited annual sequestration potential prioritizes decarbonization and fuel switching in various sectors, and how the construction of carbon networks varies based on different levels of available sequestration potential.
 
 
 \section{Methodology}
 \label{sec:methodology}
 
-To model the detailed expansion of the carbon network, we use the open-source PyPSA-Eur-Sec~\cite{PyPSAEurSecSectorCoupledOpen2023} model. This is a fully sector-coupled model with high spatial and temporal resolution and detailed transmission infrastructure for electricity, hydrogen, methane, and carbon networks. The model enables joint optimization of investment and operational decisions for generation, storage, conversion, and transmission infrastructures. For our study, we use a model representation with 90~geographic regions for Europe and 4~hours time resolution to capture the dynamics of material flow between carbon sources and sinks while ensuring computational feasibility.
+To model the detailed expansion of the carbon network, we use the open-source PyPSA-EUR-Sec~\cite{PyPSAEurSecSectorCoupledOpen2023} model. This is a fully sector-coupled model with high spatial and temporal resolution and detailed transmission infrastructure for electricity, hydrogen, methane, and carbon networks. The model enables joint optimization of investment and operational decisions for generation, storage, conversion, and transmission infrastructures. For our study, we use a model representation with 90~geographic regions for Europe and 4~hours time resolution to capture the dynamics of material flow between carbon sources and sinks while ensuring computational feasibility.
 
 \begin{figure}
     \centering
-    \includegraphics[width=\linewidth]{sequestration_map.pdf}
+    \includegraphics[width=\linewidth]{sequestration_map.png}
     \caption{Sequestration map}
     \label{fig:sequestration_map}
 \end{figure}
 
-The PyPSA-EUR-Sec model incorporates exogenous assumptions for regional energy demand across various sectors, including power, industry, transport, buildings, and agriculture. This covers energy demand for shipping and aviation, as well as non-energy feedstocks for the chemical industry. In order to address climate neutrality targets, we establish a binding upper limit for zero emissions, consistent with the EU's 2050 target. The usage of biomass in each region is constrained by its biomass potential; however, biomass transport between regions is permitted, and the model takes transport costs into account. Additionally, we restrict the expansion of the electric transmission system to 20\% of its current capacity to account for challenges in establishing new transmission projects. The geographical distribution of process emissions from various industries, such as cement, chemical, paper and printing, glass, and steel, along with refineries, is obtained from~\cite{piamanzGeoreferencedIndustrialSites2018}, amounting to a total of 158~Mt CO$_2$ per year.
+The PyPSA-EUR-Sec model incorporates exogenous assumptions for regional energy demand across various sectors, including power, industry, transport, buildings, and agriculture. This covers energy demand for shipping and aviation, as well as non-energy feedstocks for the chemical industry. In order to address climate neutrality targets, we establish a binding upper limit for zero emissions, consistent with the EU's 2050 target. The usage of biomass in each region is constrained by its biomass potential; however, biomass transport between regions is permitted, and the model takes transport costs into account. Additionally, we restrict the expansion of the electric transmission system to 20\% of its current capacity to account for challenges in establishing new transmission projects. The geographical distribution of process emissions from various industries, such as cement, chemical, paper and printing, glass, and steel, along with refineries, is obtained from~\cite{piamanzGeoreferencedIndustrialSites2018}, amounting to a total of 158~Mt \carbon per year.
 
 For carbon sequestration, we only consider offshore sites as potential sinks (refer to Figure~\ref{fig:sequestration_map}). This is partly because offshore storage potential tends to be larger than onshore potential, and partly due to public safety concerns surrounding carbon storage infrastructure projects near populated areas. We adopt conservative assumptions when estimating storage potential, capping the total potential at 25~Mt per site and calculating annual storage availability over a 25-year period.
 
 Regarding carbon utilization, our model incorporates three drop-in fuel production technologies: Steam Methane Reforming (SMR), Methanolization, and Fischer-Tropsch (FT) synthesis. Once processed, the fuels are available for unrestricted use and can be transported across regions at no additional cost. Synthetic methane serves as a substitute for natural gas or biogas and is utilized in combined heat and power (CHP) plants, gas boilers for residential heating, or to fulfill the gas requirements of the industry. Synthetic methanol is employed to decarbonize fuel demand in the marine industry. Lastly, FT fuels can replace fossil oil for producing naphtha in the industry and kerosene for aviation or serve as machinery oil in agriculture.
 
-All technology cost assumptions for 2050 are derived from~\cite{lisazeyenPyPSATechnologydataTechnology2023}.
+All technology cost assumptions for the year 2050 are derived from~\cite{lisazeyenPyPSATechnologydataTechnology2023}.
 
 To investigate the influence of carbon sequestration on the optimal configuration of carbon management technologies, we incrementally vary the global carbon sequestration potential from 200~Mt to 1000~Mt per year in steps of 200~Mt.
 
 \section{Results}
 \label{sec:results}
 
-\begin{figure*}[h!]
+\begin{figure*}[hbt]
     \centering
     \includegraphics*[width=\linewidth]{cost_area.pdf}
-    \caption[short]{Total annual system cost for the sector-coupled system with different levels of carbon sequestration potential, with (left) and without (right) CO$_2$ network. When increasing the annual sequestration of from 200~Mt to 1000~Mt, the system cost reduce up to 10\% in case of a network with CO$_2$ transport. Due to an increased flexibility from fossil carriers with subsequent sequestration, the need for FT synthesis and H$_2$ electrolysis and the corresponding renewable power supply is reduced. }
+    \caption[short]{Total annual system cost for the sector-coupled system with different levels of carbon sequestration potential, with (left) and without (right) \carbon network. When increasing the annual sequestration of from 200~Mt to 1000~Mt, the system cost reduce up to 10\% in case of a network with \carbon transport. Due to an increased flexibility from fossil carriers with subsequent sequestration, the need for FT synthesis and H$_2$ electrolysis and the corresponding renewable power supply is reduced. }
     \label{fig:cost_area}
 \end{figure*}
 
-Firstly, we analyze the optimal deployment of technologies and their associated costs for different levels of carbon sequestration potential.
-Figure~\ref{fig:cost_area} shows the annual system cost per technology group for the sector-coupled model for different levels of sequestration allowed with and without CO$_2$-network. The costs are calculated as the sum of the annualized investment and operational costs for all technologies. Starting at the left, we see that most system costs are associated with the deployment of renewable energy sources, heating, hydrogen technologies and the electricity grid. The costs for fossil fuels and carbon capture and transport technologies are relatively low. In terms of capacities, xx~GW of offshore wind, xx~GW of solar PV, xx~GW of onshore wind, and xx~GW of electrolysis are installed.
-In both cases, with and without CO$_2$ transport, total costs decrease as sequestration potential increases. At high sequestration rates, the fossil fuels, gas and oil, remain in the system and reduce the need for synthetic FT fuel which requires significant renewable energy sources. At the same time, the system deploys more net negative technologies as DAC or Bioenergy with Carbon Capture (contained in "Carbon Capture Technologies") to balance out emissions from fossil carriers. Other Carbon Capture Technologies ramp up; in particular, SMR with Carbon Capture. The conversion of natural gas to hydrogen replaces the need for investments in electrolysis and a hydrogen network.
+First, we analyze the optimal deployment of technologies and their associated costs for different levels of carbon sequestration potential. Figure~\ref{fig:cost_area} displays the annual system cost per technology group for the sector-coupled model at various sequestration levels, both with and without a \carbon network. The costs are calculated as the sum of the annualized investment and operational costs for all technologies. Starting from the left, we observe that the majority of system costs are associated with the deployment of renewable energy sources, heating, hydrogen technologies, and the electricity grid. Costs for fossil fuels and carbon capture and transport technologies are relatively low. In terms of capacities, 200~GW of offshore wind, 3930~GW of solar PV, 1910~GW of onshore wind, and 1650~GW of electrolysis are installed in this setup.
+In both cases, with and without \carbon transport, total costs decrease as sequestration potential increases. At high sequestration rates, fossil fuels such as gas and oil are kept in the system and reduce the need for synthetic FT fuel, which requires significant renewable energy sources. Simultaneously, the system deploys more net negative technologies, such as DAC or Bioenergy with Carbon Capture (included in "Carbon Capture Technologies"), to offset emissions from fossil carriers.
 
-The cost reduction for the scenario with CO$_2$ transport is about xx\%, which is slightly more than without CO$_2$-net. Across all sequestration levels, the system with CO$_2$ transport is on average xx\% cheaper.
+The cost reduction for the scenario with \carbon transport is about 13\%, which is slightly more than without a \carbon network (11\%). Across all sequestration levels, the system with \carbon transport is, on average, 1.6\% less expensive, which is absolute terms is about €13 billion per year.
 
+% Other Carbon Capture Technologies, particularly SMR with Carbon Capture, ramp up. The conversion of natural gas to hydrogen eliminates the need for investments in electrolysis and a hydrogen network.
 
-Moving on from the cost analysis, we now turn our attention to the spatial distribution of carbon capture and transport technologies, specifically focusing on the European sector-coupled system under a total sequestration of 1000~Mt/a.
-Figure~\ref{fig:capacity_map_carbon_co2network_1000} illustrates the optimal capacities of carbon capture and transport technologies in the European sector-coupled system, given a total sequestration of 1000~Mt/a. The colors within the offshore regions represent the optimal sequestration capacity for each region. As depicted, the optimization process identifies three primary carbon sinks that significantly influence the CO$_2$ network design. These include a substantial sequestration cluster in the North Sea, as well as two clusters located along the coasts of Portugal and Greece. The CO$_2$ network is predominantly developed around the North Sea, connecting onshore carbon capture facilities to the coast. Concurrently, large SMR facilities equipped with carbon capture are strategically well-positioned in proximity to the sequestration areas.
-
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\linewidth]{capacity_map_carbon_co2network_1000.pdf}
-    \caption{Optimal capacities per of the carbon sector for a sequestration of 1000 Mt/a. All technologies with an "*" are explicitely augmented technologies to capture carbon emissions.}
-    \label{fig:capacity_map_carbon_co2network_1000}
-\end{figure}
-
-
-
-\begin{figure*}[h]
-    \centering
-    \includegraphics[width=\linewidth]{operation_map_carbon_co2network_1000.pdf}
-    \caption{Optimal operation per sector for a sequestration of 1000 Mt/a.}
-    \label{fig:operation_map_noco2network_1000}
-\end{figure*}
-
+Figures~\ref{fig:operation_area_carbon_co2network} \ref{fig:operation_area_hydrogen_co2network} and \ref{fig:operation_area_co2_co2network} show the balances of capture carbon, hydrogen and atmospheric \carbon in the system as a function of the sequestration potential respectively.
+Note that technologies with a ``*`` are explicitly augmented technologies with integrated carbon capture. Underlying our previous findings, we see in Figure~\ref{fig:operation_area_carbon_co2network} that the deployment of FT synthesis decreases as the sequestration potential increases. At the same time, we perceive a strong increase in captured carbon from Gas Combined Heat and Power (CHP) plants, Allam Cycle plants, Steam Methane Reforming (SMR) and DAC. The remaining technologies are constant across varying level of sequestration: biomass is bound by its maximum available potential reported in~\cite{europeancommissionjointresearchcentreENSPRESOBIOMASS2019}; the industry processes with their associated emissions are fixed; the methanol production is bound by a lower limit representing the demand from the shipping sector.
 
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{operation_area_carbon_co2network.pdf}
-    \caption{Balance of captured CO$_2$ for the optimal operation with CO$_2$ network.}
+    \caption{Balance of captured \carbon for the optimal operation with \carbon network. Technologies with "*" are explicitly augmented technologies to capture carbon emissions.}
     \label{fig:operation_area_carbon_co2network}
 \end{figure}
-
 
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{operation_area_hydrogen_co2network.pdf}
-    \caption{Balance of H$_2$ production and consumption with CO$_2$ network.}
+    \caption{Balance of H$_2$ production and consumption with \carbon network.}
     \label{fig:operation_area_hydrogen_co2network}
 \end{figure}
-
-
 
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{operation_area_co2_co2network.pdf}
-    \caption{Balance of atmospheric CO$_2$ emissions for the optimal operation with CO$_2$ network.}
+    \caption{Balance of atmospheric \carbon emissions for the optimal operation with \carbon network.}
     \label{fig:operation_area_co2_co2network}
 \end{figure}
 
 
 
+% TODO: kerosine emissions from fossil based kerosine are not taken into account by the system.
+In Figure~\ref{fig:operation_area_hydrogen_co2network} we see that hydrogen production decreases by about 50\% when going from 200~Mt/a sequestration to 1000~Mt/a. In the last segment, H$_2$ production from SMR starts to replace H$_2$ production from electrolysis. On the other hand, it can be observed that hydrogen demand for FT synthetic fuel production disappears, leaving only hydrogen demand for the marine sector. Finally, Figure~\ref{fig:operation_area_co2_co2network} shows that atmospheric \carbon emissions from gas and SMR plants increase, which is compensated by increased capture from DAC.
+We can conclude with that in combination with a \carbon transport network, a high sequestration reduces the feasibility of CCU and increases the feasibility of CCS, namely DAC and CC at point sources. To answer the question how the carbon capture technologies at point sources changes with the sequestration potential, we analyze the share of technologies with integrated carbon capture.
+Figure~\ref{fig:captureshare_line} shows the share of a given technology that is equipped with integrated carbon capture, i.e., carbon capture at point source, for both with and without \carbon transport network.
+For the case with \carbon network, all technologies except for SMR and Gas CHP are nearly fully equipped with CC across all sequestration potentials. For SMR the share rises with the sequestration from roughly 50\% to 100\%, for CHP from 0\% to 26\%. For the case without \carbon network the technologies behave differently. Besides the fact, that capturing at point source is less attractive in total, the CC share for the technologies rise slower with the sequestration. For process emissions we even perceive an decrease in CC share. This is mainly due to the fact that with increased sequestration, the system relies more on DAC and SMR with CC which can be placed flexibly at region close to the sequestration sites.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{captureshare_line.pdf}
+    \caption{Share of facilities with integrated Carbon Capture as a function of sequestration potential in a system with and without \carbon transport.}
+    \label{fig:captureshare_line}
+\end{figure}
+
+
+
+\begin{figure*}[h!]
+    \centering
+    \includegraphics[width=\linewidth]{operation_map_carbon_co2network_1000.png}
+    \caption{Optimal operation per sector for a sequestration of 1000 Mt/a.}
+    \label{fig:operation_map_noco2network_1000}
+\end{figure*}
+
+
+Proceeding from the analysis of the optimal operation for different sequestration potentials, we now examine the spatial distribution of carbon capture and transport technologies for the most "optimistic" case of 1000 Mt/a sequestration potential and a \carbon transport network.
+Figure~\ref{fig:operation_area_carbon_co2network} illustrates the total production and consumption of captured carbon in the system. The left side depicts the combined carbon supply of Carbon Capture facilities, along with the carbon network flow, while the right side displays regional carbon usage and the flow. The optimization places large capacities of DAC and SMR with CC close to the sequestration areas. An outstanding DAC facility can be found in Scotland where large onshore wind farms are located with a total annual production of roughly 400~TWh per year. Besides being used for H$_2$ electrolysis and distributed through electricity grid, 13\% of it is directly used for the  local DAC facilities. The optimization identifies three primary carbon sinks that significantly influence the \carbon network design. These include a major sequestration cluster in the North Sea, as well as two clusters situated along the coasts of Portugal and Greece and roughly matching the distribution of sequestration sites displayed in Figure~\ref{fig:sequestration_map}.
+
+We observe that the carbon network primarily serves to transport captured carbon from process and biomass emissions in central Europe to the sequestration areas. Simultaneously, large DAC and SMR facilities with Carbon Capture (SMR*) along the coast generate significant amounts of carbon. The build out of the \carbon network leads to less investments in hydrogen network.
+
+...
+
 
 \section{Limitations}
 \label{sec:limitations}
-Economy of scale? Cost projections? Other uncertainties?
-Industry processes not endougenous.
+
+Despite the detailed model representation, there are some limitations to the validity of the results. The model itself is based on a linearized optimization with perfect foresight for the entire modeling year. In reality, long-term energy demand and renewable supply can only be roughly estimated, while short-term predictions still entail some uncertainty. The model's perfect foresight may lead to non-reproducible behavior, such as precisely aligning energy storage with future energy shortages at a specific point in time.
+
+The technology costs used in the model rely on cost projections that incorporate reductions based on learning rates. These learning rates are derived from historical data, which may not necessarily be indicative of future trends. The model does not account for uncertainties arising from disruptive market behavior, such as the gas price peak that occurred in 2021.
+
+Furthermore, the model assumes a fixed rate for industrial process emissions, which cannot be altered through investments. This simplification may not accurately represent real-world scenarios, where many industries are considering adopting low-carbon processes and technologies.
+
+Lastly, the model's spatial and temporal resolution is insufficient to capture all relevant dynamics. Variations in renewable energy supply and energy demand below the applied time resolution, as well as more detailed interregional energy transport constraints, are currently not considered in the optimization. Transitioning to an hourly representation with more representative nodes would increase the model's computational time and complexity, but would also enhance its robustness and validity.
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-\section*{Acknowledgements}
-\label{sec:acknowledgements}
+
+% \section*{Acknowledgements}
+% \label{sec:acknowledgements}
 
 
 \newpage
@@ -245,7 +243,7 @@ Industry processes not endougenous.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{capacity_map_electricity_co2network_1000.pdf}
+    \includegraphics[width=\linewidth]{capacity_map_electricity_co2network_1000.png}
     \caption{Optimal capacities per of the electricity sector for a sequestration of 1000 Mt/a.}
     \label{fig:capacity_map_electricity_co2network_1000}
 \end{figure}
@@ -253,7 +251,7 @@ Industry processes not endougenous.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{capacity_map_hydrogen_co2network_1000.pdf}
+    \includegraphics[width=\linewidth]{capacity_map_hydrogen_co2network_1000.png}
     \caption{Optimal capacities per of the hydrogen sector for a sequestration of 1000 Mt/a.}
     \label{fig:capacity_map_hydrogen_co2network_1000}
 \end{figure}
@@ -261,7 +259,7 @@ Industry processes not endougenous.
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{operation_area_carbon_noco2network.pdf}
-    \caption{Balance of captured CO$_2$ emissions for the optimal operation without CO$_2$ network.}
+    \caption{Balance of captured \carbon emissions for the optimal operation without \carbon network.}
     \label{fig:operation_area_carbon_noco2network}
 \end{figure}
 

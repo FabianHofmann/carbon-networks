@@ -2,4 +2,5 @@ image.cmap: viridis
 axes.grid : false
 legend.frameon : false
 savefig.bbox : tight
+savefig.dpi : 300
 mathtext.default : regular

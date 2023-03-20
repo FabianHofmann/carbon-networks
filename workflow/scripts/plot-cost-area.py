@@ -6,6 +6,7 @@ import pandas as pd
 from common import (
     import_network,
     mock_snakemake,
+    sort_rows_by_diff,
 )
 
 sns.set_theme(style="white", context="paper", rc={"patch.linewidth": 0.1}, font="serif")
@@ -15,10 +16,7 @@ region_alpha = 0.8
 
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
-    snakemake = mock_snakemake(
-        "plot_cost_area",
-        design="co2network",
-    )
+    snakemake = mock_snakemake("plot_cost_area", design="co2network", ext="png")
 
 
 df = {}
@@ -48,12 +46,7 @@ unit = "bn€/a"
 sort_by_color = (
     lambda df: df.assign(color=colors).sort_values(by="color").drop("color", axis=1)
 )
-sort_by_diff = (
-    lambda df: df.assign(diff=df.max(axis=1) - df.min(axis=1))
-    .sort_values(by="diff")
-    .drop("diff", axis=1)
-)
-grouped = sort_by_diff(grouped).div(norm)
+grouped = sort_rows_by_diff(grouped).div(norm)
 
 fig, axes = plt.subplots(1, 2, figsize=(7, 3.0), layout="constrained")
 
