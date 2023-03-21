@@ -460,7 +460,9 @@ def add_carrier_nice_names(n):
         "Ocgt": "OCGT",
         "Ac": "AC",
         "Dc": "DC",
-        "Agriculture Machinery Oil Emissions": "Agricultur Emissions",
+        "Sabatier": "Methanation",
+        "Agriculture Machinery Oil Emissions": "Agriculture Emissions",
+        "Oil Emissions": "Aviation and Petrochemical\nEmissions",
         "Allam": "Allam Cycle",
     }
     n.carriers.nice_name.replace(replace, regex=True, inplace=True)
