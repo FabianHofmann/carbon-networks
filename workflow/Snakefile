@@ -87,12 +87,12 @@ rule eem:
 rule all:
     input:
         expand(
-            RDIR + "/figures/capacity_map_{kind}_{design}_{sequestration}.pdf",
+            RDIR + "/figures/capacity_map_{kind}_{design}_{sequestration}.png",
             kind=config["constants"]["kinds"],
             **config["scenarios"]
         ),
         expand(
-            RDIR + "/figures/operation_map_{kind}_{design}_{sequestration}.pdf",
+            RDIR + "/figures/operation_map_{kind}_{design}_{sequestration}.png",
             **config["scenarios"],
             kind=config["constants"]["kinds"]
         ),
@@ -102,6 +102,46 @@ rule all:
             kind=config["constants"]["kinds"]
         ),
         RDIR + "/figures/cost_area.pdf",
+        RDIR + "/figures/sequestration_map.png",
+        RDIR + "/figures/captureshare_line.pdf",
+        RDIR + "/gifs/.gifs_created",
+
+
+rule create_gifs:
+    input:
+        expand(
+            RDIR + "/gifs/capacity_map_{kind}_{design}.gif",
+            kind=config["constants"]["kinds"],
+            **config["scenarios"]
+        ),
+        expand(
+            RDIR + "/gifs/operation_map_{kind}_{design}.gif",
+            kind=config["constants"]["kinds"],
+            **config["scenarios"]
+        ),
+    output:
+        RDIR + "/gifs/.gifs_created",
+    shell:
+        "touch {output}"
+
+
+def get_maps(w):
+    return expand(
+        RDIR + "/figures/{which}_map_{kind}_{design}_{sequestration}.png",
+        sequestration=config["scenarios"]["sequestration"],
+        **w
+    )
+
+
+rule gif_map:
+    input:
+        get_maps,
+    output:
+        RDIR + "/gifs/{which}_map_{kind}_{design}.gif",
+    shell:
+        """
+        convert -delay 100 -loop 0 -gravity South -background White -splice 0x35 -pointsize 40 -annotate +0+4 %f {input} {output}
+        """
 
 
 def get_all_networks(w):
