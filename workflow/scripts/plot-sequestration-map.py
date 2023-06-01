@@ -10,7 +10,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import geopandas as gpd
 
-sns.set_theme(style="white", context="paper", font="serif")
+sns.set_theme(**snakemake.params["theme"])
 
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
@@ -30,7 +30,9 @@ offshore_regions["potential"] = (
 )  # Mt/a
 
 
-fig, ax = plt.subplots(figsize=(6, 6), subplot_kw={"projection": crs})
+fig, ax = plt.subplots(
+    figsize=snakemake.params.settings["figsize"], subplot_kw={"projection": crs}
+)
 offshore_regions.plot(
     ax=ax,
     column="potential",

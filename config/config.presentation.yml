@@ -1,0 +1,29 @@
+plotting:
+  theme:
+    style: white
+    context: talk
+    font: sans-serif
+    rc:
+      patch.linewidth: 0.1
+      savefig.transparent: True
+
+  sequestration_map:
+    figsize: [8,7]
+
+  # operation_area:
+  #   figsize: [3, 3.5]
+
+  # operation_bar:
+  #   figsize: [5, 7]
+
+  cost_area:
+    figsize: [8,5]
+
+  # capacity_map:
+  #   figsize: [7, 4]
+
+  # operation_map:
+  #   figsize: [7, 4]
+
+  # captureshare_line:
+  #   figsize: [4, 3]

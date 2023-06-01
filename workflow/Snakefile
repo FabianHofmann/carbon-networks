@@ -154,8 +154,10 @@ def get_all_networks(w):
 
 rule plot_cost_area:
     params:
-        config["plotting"]["technology_groups"],
-        config["plotting"]["technology_group_colors"],
+        technology_groups=config["plotting"]["technology_groups"],
+        technology_groups_colors=config["plotting"]["technology_group_colors"],
+        settings=config["plotting"]["cost_area"],
+        theme=config["plotting"]["theme"],
     input:
         networks=get_all_networks,
     output:
@@ -169,6 +171,7 @@ rule plot_cost_area:
 rule plot_capacity_map:
     params:
         settings=config["plotting"]["capacity_map"],
+        theme=config["plotting"]["theme"],
     input:
         network=RDIR + "/networks/{design}_{sequestration}.nc",
         onshore_regions=pypsaeur(
@@ -188,6 +191,9 @@ rule plot_capacity_map:
 
 
 rule plot_sequestration_map:
+    params:
+        settings=config["plotting"]["sequestration_map"],
+        theme=config["plotting"]["theme"],
     input:
         network=RDIR + "/networks/co2network_200.nc",  # take any network
         offshore_regions=pypsaeur(
@@ -204,6 +210,7 @@ rule plot_sequestration_map:
 rule plot_operation_map:
     params:
         settings=config["plotting"]["operation_map"],
+        theme=config["plotting"]["theme"],
     input:
         network=RDIR + "/networks/{design}_{sequestration}.nc",
         onshore_regions=pypsaeur(
@@ -218,6 +225,9 @@ rule plot_operation_map:
 
 
 rule plot_operation_bar:
+    params:
+        settings=config["plotting"]["operation_bar"],
+        theme=config["plotting"]["theme"],
     input:
         network=RDIR + "/networks/{design}_{sequestration}.nc",
     output:
@@ -235,6 +245,9 @@ def get_design_networks(w):
 
 
 rule plot_operation_area:
+    params:
+        settings=config["plotting"]["operation_area"],
+        theme=config["plotting"]["theme"],
     input:
         networks=get_design_networks,
     output:
@@ -246,6 +259,9 @@ rule plot_operation_area:
 
 
 rule plot_captureshare_line:
+    params:
+        settings=config["plotting"]["captureshare_line"],
+        theme=config["plotting"]["theme"],
     input:
         networks=get_all_networks,
     output:

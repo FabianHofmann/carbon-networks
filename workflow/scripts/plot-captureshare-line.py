@@ -9,7 +9,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-sns.set_theme(style="white", context="paper", font="serif")
+sns.set_theme(**snakemake.params["theme"])
 
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
@@ -49,7 +49,13 @@ df = pd.concat(df, axis=1)
 nice_name = n.carriers.nice_name
 colors = n.carriers.color.dropna().rename(nice_name)
 
-fig, axes = plt.subplots(2, 1, figsize=(5, 4), layout="constrained", sharex=True)
+fig, axes = plt.subplots(
+    2,
+    1,
+    figsize=snakemake.params.settings["figsize"],
+    layout="constrained",
+    sharex=True,
+)
 
 for ax, col in zip(axes, df.columns.unique(0)):
     df[col].mul(100).sort_values(by=200, ascending=False).T.plot(

@@ -9,7 +9,7 @@ from common import (
     sort_rows_by_diff,
 )
 
-sns.set_theme(style="white", context="paper", rc={"patch.linewidth": 0.1}, font="serif")
+sns.set_theme(**snakemake.params["theme"])
 
 alpha = 1
 region_alpha = 0.8
@@ -48,7 +48,9 @@ sort_by_color = (
 )
 grouped = sort_rows_by_diff(grouped).div(norm)
 
-fig, axes = plt.subplots(1, 2, figsize=(7, 3.0), layout="constrained")
+fig, axes = plt.subplots(
+    1, 2, figsize=snakemake.params.settings["figsize"], layout="constrained"
+)
 
 for key, ax in zip(snakemake.config["scenarios"]["design"], axes):
 

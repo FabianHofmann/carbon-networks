@@ -21,7 +21,7 @@ from common import (
 
 import geopandas as gpd
 
-sns.set_theme(style="white", context="paper", rc={"patch.linewidth": 0.1}, font="serif")
+sns.set_theme(**snakemake.params["theme"])
 column = "Optimal Capacity"
 alpha = 1
 region_alpha = 0.8

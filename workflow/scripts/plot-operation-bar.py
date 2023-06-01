@@ -9,7 +9,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-sns.set_theme(style="white", context="paper")
+sns.set_theme(**snakemake.params["theme"])
 
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
@@ -38,7 +38,9 @@ for kind in kinds:
 df = pd.concat(df)
 
 
-fig, axes = plt.subplots(len(kinds), 1, figsize=(8, 10), sharex=True)
+fig, axes = plt.subplots(
+    len(kinds), 1, figsize=snakemake.params.settings["figsize"], sharex=True
+)
 colors = n.carriers.color.dropna()
 nice_name = n.carriers.nice_name
 

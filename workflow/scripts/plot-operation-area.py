@@ -13,7 +13,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-sns.set_theme(style="white", context="paper", font="serif")
+sns.set_theme(**snakemake.params["theme"])
 
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
@@ -60,7 +60,9 @@ consumption = (
 production = group_small_contributions(production, 1)
 consumption = group_small_contributions(consumption, 1)
 
-fig, ax = plt.subplots(1, 1, figsize=(3, 3.5), layout="constrained")
+fig, ax = plt.subplots(
+    1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"
+)
 
 production.plot(
     kind="area",

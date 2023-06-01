@@ -277,8 +277,29 @@ constants:
 
 
 plotting:
+  theme:
+    style: white
+    context: paper
+    font: serif
+    rc:
+      patch.linewidth: 0.1
+
   extent: [-12,  30,  35 ,  73]
+
+  sequestration_map:
+    figsize: [6,6]
+
+  operation_area:
+    figsize: [3, 3.5]
+
+  operation_bar:
+    figsize: [8, 10]
+
+  cost_area:
+    figsize: [7, 3]
+
   capacity_map:
+    figsize: [10, 8]
     electricity:
       region_cmap: Greens
       region_unit: TWh
@@ -336,6 +357,7 @@ plotting:
         - 2000
 
   operation_map:
+    figsize: [10, 8]
     electricity:
       region_cmap: Greens
       region_unit: TWh
@@ -386,6 +408,10 @@ plotting:
         - 50 # Mt
         - 20 # Mt
       branch_sizes: null
+
+  captureshare_line:
+    figsize: [5, 4]
+
   technology_groups:
     AC: Electricity Grid
     Air Heat Pump: Heat Pump

@@ -23,7 +23,7 @@ from common import (
 
 import geopandas as gpd
 
-sns.set_theme(style="white", context="paper", rc={"patch.linewidth": 0.1}, font="serif")
+sns.set_theme(**snakemake.params["theme"])
 warnings.filterwarnings("ignore", category=UserWarning)
 alpha = 1
 region_alpha = 0.8
@@ -50,7 +50,7 @@ kind = snakemake.wildcards.kind
 fig, axes = plt.subplots(
     1,
     2,
-    figsize=(10, 8),
+    figsize=snakemake.params.settings["figsize"],
     squeeze=False,
     subplot_kw={"projection": ccrs.EqualEarth()},
 )
