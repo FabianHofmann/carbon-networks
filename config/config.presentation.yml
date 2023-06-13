@@ -6,12 +6,14 @@ plotting:
     rc:
       patch.linewidth: 0.1
       savefig.transparent: True
+      savefig.bbox: "tight"
 
   sequestration_map:
     figsize: [8,7]
 
-  # operation_area:
-  #   figsize: [3, 3.5]
+  operation_area:
+    figsize: [4, 6]
+    title: false
 
   # operation_bar:
   #   figsize: [5, 7]
@@ -22,8 +24,9 @@ plotting:
   # capacity_map:
   #   figsize: [7, 4]
 
-  # operation_map:
-  #   figsize: [7, 4]
+  operation_map:
+    figsize: [15, 7]
+    title: false
 
   # captureshare_line:
   #   figsize: [4, 3]

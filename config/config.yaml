@@ -283,6 +283,7 @@ plotting:
     font: serif
     rc:
       patch.linewidth: 0.1
+      savefig.bbox: "tight"
 
   extent: [-12,  30,  35 ,  73]
 

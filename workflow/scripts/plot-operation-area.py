@@ -116,7 +116,8 @@ ax.set_xlim(production.index.min(), production.index.max())
 ax.set_ylim(-consumption.sum(1).max() * 1.1, production.sum(1).max() * 1.1)
 ax.set_xlabel("Sequestration Potential [Mt]")
 ax.set_ylabel(f"{labels[kind]} [{unit}]")
-ax.set_title(f"{labels[kind]} Balance {labels[design]}")
+if snakemake.params.settings.get("title", True):
+    ax.set_title(f"{labels[kind]} Balance {labels[design]}")
 ax.grid(axis="y", alpha=0.5)
 
 sns.despine()

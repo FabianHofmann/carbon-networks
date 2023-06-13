@@ -103,7 +103,8 @@ for tag, ax in zip(tags, axes.flatten()):
     )
 
     ax.set_extent(snakemake.config["plotting"]["extent"])
-    ax.set_title(labels[kind] + " " + tag.title())
+    if snakemake.params.settings.get("title", True):
+        ax.set_title(labels[kind] + " " + tag.title())
 
     legend_bus_sizes = specs["bus_sizes"]
     if legend_bus_sizes is not None:
@@ -118,7 +119,5 @@ for tag, ax in zip(tags, axes.flatten()):
 fig.tight_layout()
 fig.savefig(
     snakemake.output.map,
-    bbox_inches="tight",
     dpi=300,
-    facecolor="white",
 )

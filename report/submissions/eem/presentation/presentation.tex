@@ -1,0 +1,161 @@
+\documentclass[12pt, aspectratio=169]{beamer}
+\usetheme{metropolis}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\newcommand{\carbon}{\textcolor{teal}{CO$_2$}}
+\newcommand{\hydrogen}{H$_2$}
+
+\title{Designing a \carbon{} Network for a Carbon-Neutral European Economy}
+\author{\textbf{Fabian Hofmann}, Christoph Tries, Fabian Neumann, Lisa Zeyen, Tom Brown}
+\institute{Technical University Berlin}
+\date{}
+\urlstyle{blue}
+
+
+\graphicspath{
+    {figures},
+}
+
+
+\begin{document}
+
+\begin{frame}[plain]
+    \titlepage
+\end{frame}
+
+
+\begin{frame}
+    \begin{columns}
+        \column{0.4\textwidth}
+        European \carbon{} emissions have to decrease \textbf{quickly}.
+        \column{0.6\textwidth}
+        \includegraphics[width=\linewidth]{emissions-timeline}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}
+    \begin{columns}
+        \column{0.4\textwidth}
+        Particular focus is needed on \textbf{hard-to-abate emissions} \\
+        \vspace*{1em}
+        \visible<2->{Formulate a strategy for \\ \textbf{carbon management}}
+        \visible<3>{
+            \begin{itemize}
+                \item \carbon{} Capture
+                \item \carbon{} Utilization
+                \item \carbon{} Transport
+                \item \carbon{} Sequestration
+            \end{itemize}
+
+        }
+        \column{0.6\textwidth}
+        \includegraphics[width=\linewidth]{emissions-timeline-alerted}
+    \end{columns}
+\end{frame}
+
+\section*{Model Setup}
+
+\begin{frame}
+    \begin{columns}
+        \column{0.55\textwidth}
+        Investment optimization with \textbf{PyPSA-Eur}
+        \visible<2>{
+            \begin{itemize}
+                \item European countries (EU+UK+NO+CH)
+                \item 90 nodes
+                \item 3 hour resolution
+                \item electricity, heating, transport, industry \& waste sectors
+                \item carbon management technologies (DAC, CC at point sources, Fischer-Trosch, Methanolization, )
+            \end{itemize}
+        }
+        \column{0.5\textwidth}
+        \includegraphics[width=\linewidth]{brownfield_capacities}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}[plain]
+    \begin{columns}
+        \column{0.3\textwidth}
+        Perform 2 $\times$ 5 model runs with
+        \carbon{}~\textbf{transport network} on/off and 5~different rates of annual \textbf{sequestration}.\\
+        \column{0.7\textwidth}
+        \includegraphics[width=\linewidth]{sequestration_map.png}
+    \end{columns}
+\end{frame}
+
+
+\section*{System Costs}
+\begin{frame}[plain]
+    % \qquad \textbf{System costs for different sequestration rates}
+    \includegraphics[width=\linewidth]{cost_area.pdf}
+\end{frame}
+
+
+\section*{Carbon Capture Technologies}
+\begin{frame}
+    \qquad \textbf{Captured carbon balance with a CO$_2$ network}
+    \begin{columns}
+        \column{0.3\textwidth}
+        \begin{itemize}
+            \item  Fischer-Tropsch fuels are replaced by fossils fuels
+            \item \hydrogen{} infrastructure is replaced by CCS
+        \end{itemize}
+        \column{0.7\textwidth}
+        \begin{figure}
+            \includegraphics[width=\linewidth]{operation_area_carbon_co2network.pdf}
+            \par\footnotesize{*with Carbon Capture}
+        \end{figure}
+    \end{columns}
+\end{frame}
+
+
+\begin{frame}
+    \textbf{Carbon Capture (left) and Utilization \& Storage (right) for 200~Mt$_{\text{seq}}$/a}
+    \includegraphics[width=\linewidth]{operation_map_carbon_co2network_200.png}
+\end{frame}
+
+\begin{frame}
+    \textbf{Carbon Capture (left) and Utilization \& Storage (right) for 400~Mt$_{\text{seq}}$/a}
+    \includegraphics[width=\linewidth]{operation_map_carbon_co2network_400.png}
+\end{frame}
+
+\begin{frame}
+    \textbf{Carbon Capture (left) and Utilization \& Storage (right) for 600~Mt$_{\text{seq}}$/a}
+    \includegraphics[width=\linewidth]{operation_map_carbon_co2network_600.png}
+\end{frame}
+
+\begin{frame}
+    \textbf{Carbon Capture (left) and Utilization \& Storage (right) for 800~Mt$_{\text{seq}}$/a}
+    \includegraphics[width=\linewidth]{operation_map_carbon_co2network_800.png}
+\end{frame}
+
+\begin{frame}
+    \textbf{Carbon Capture (left) and Utilization \& Storage (right) for 1000~Mt$_{\text{seq}}$/a}
+    \includegraphics[width=\linewidth]{operation_map_carbon_co2network_1000.png}
+\end{frame}
+
+
+\section*{Conclusion}
+
+\begin{frame}
+    \textbf{Conclusion}
+    \begin{itemize}
+        \pause
+        \item \carbon{} transport is relatively cheap and leads to large system cost-benefits
+              \pause
+        \item Competition between CCU + \hydrogen{} network and Fossils + CCS
+              \pause
+        \item Optimal investments strongly dependent on sequestration rates
+              \pause
+        \item CCU is at point-sources in the inland while DAC is at the coasts
+              \pause
+        \item Sequestration technology is still to be elaborated $\rightarrow$ take results with care
+    \end{itemize}
+\end{frame}
+
+
+
+\end{document}
