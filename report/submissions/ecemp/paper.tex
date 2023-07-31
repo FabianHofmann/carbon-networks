@@ -1,0 +1,171 @@
+\documentclass[twocolumn]{article}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{cuted}  % Add the cuted package
+\usepackage{caption}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{tabularx, multirow}
+\usepackage{fancyhdr,lipsum}
+
+% \IEEEoverridecommandlockouts
+% % The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+% \fancypagestyle{firstpage}{% Page style for first page
+%   \fancyhf{}% Clear header/footer
+%   \fancyfoot[l]{}% Footer
+% }
+% \thispagestyle{firstpage}
+
+% \usepackage{cleveref}
+
+% \crefname{align}{}{}
+% \Crefname{align}{Equation}{Equations}
+
+
+
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\usepackage[%
+backend=biber,bibencoding=utf8, %instead of bibtex
+language=auto,
+style=ieee,
+sorting=none, % nyt for name, year, title
+maxbibnames=10, % default: 3, et al.
+%backref=true,%
+natbib=true % natbib compatibility mode (\citep and~\citet still work)
+]{biblatex}
+\bibliography{../../references.bib}
+% Template from https://de.overleaf.com/latex/templates/ieee-conference-template/grfzhhncsfqn
+
+%define approx proportional
+\def\app#1#2{%
+  \mathrel{%
+    \setbox0=\hbox{$#1\sim$}%
+    \setbox2=\hbox{%
+      \rlap{\hbox{$#1\propto$}}%
+      \lower1.1\ht0\box0%
+    }%
+    \raise0.25\ht2\box2%
+  }%
+}
+\def\approxprop{\mathpalette\app\relax}
+
+% make abbreviation for co2
+\newcommand{\carbon}{CO$_2$}
+\newcommand{\hydrogen}{H$_2$}
+
+
+\graphicspath{
+    {paper-figures},
+}
+
+\begin{document}
+
+
+\title{\carbon{} Management Systems in a Carbon Neutral European Economy}
+
+% \thanks{Fabian Hofmann is funded by the Breakthrough Energy Project "Hydrogen Integration and Carbon Management in Energy System Models".}
+\author{
+    Fabian Hofmann\textsuperscript{1,2},
+    Christoph Tries\textsuperscript{1},
+    Fabian Neumann\textsuperscript{1},
+    Lisa Zeyen\textsuperscript{1},
+    Tom Brown\textsuperscript{1}
+    \vspace{.5em}
+    \\
+    \textsuperscript{1}Institute of Energy Technology, Technical University of Berlin, Berlin, Germany \\
+    \textsuperscript{2}m.hofmann@tu-berlin.de
+}
+
+\maketitle
+
+\begin{abstract}
+    This paper presents a cost-optimal approach to a carbon-neutral European energy system, emphasizing the need for comprehensive carbon management across all emissions-intensive sectors. It is highlighted that carbon management technologies offer systemic flexibility and are cost-effective, which could save an average of EUR 13 billion annually. Incorporating a carbon network supports point source carbon capture and reduces the need for direct air capture systems. The paper points out that the assumption of high sequestration rates leads to continued use of fossil fuels in some sectors while reducing costs, but should be viewed with caution because significant capacity expansion would be required that could jeopardize timely climate neutrality.
+\end{abstract}
+
+
+
+\section{Introduction}
+\label{sec:introduction}
+
+Carbon capture is recognized as a pivotal technology for reaching net-zero economies, particularly in offsetting emissions from hard-to-abate sectors, including land use and agriculture~\cite{arniehellerNewCarbonEconomy2019}. Carbon Capture and Utilization (CCU), Carbon Capture and Storage (CCS) and Carbon Transport, collectively referred to as carbon management, create new opportunities for producing carbon-neutral hydrocarbons and storing carbon in geological formations. The European region has an estimated potential for capturing roughly 1.4 Gt of carbon from point sources per annum, demonstrating a significant potential for decarbonization~\cite{ToolsGreenTransition,weiProposedGlobalLayout2021}. Recent industry and policymaker commitment in Europe to carbon management projects indicates emerging infrastructure components and business models~\cite{adomaitisEquinorRWEBuild2023,apnewswireGermanyDrawLegislation2023,KohlenstoffKannKlimaschutz2023,OGETESJoin2022,TESHydrogenLife2023}.
+
+In this paper, we introduce a comprehensive analysis of the European energy system for 2050 using the PyPSA-Eur-Sec energy system model~\cite{bakkenLinearModelsOptimization2008,morbeeOptimisedDeploymentEuropean2012,oeiModelingCarbonCapture2014,elahiMultiperiodLeastCost2014,burandtDecarbonizingChinaEnergy2019,middletonSimCCSOpensourceTool2020,bjerketvedtOptimalDesignCost2020,weiProposedGlobalLayout2021,damoreOptimalDesignEuropean2021,becattiniCarbonDioxideCapture2022}. Our analysis highlights the dynamics of carbon capture, use, and storage for system with and without \carbon{} transport, and the prioritization of decarbonization and fuel switching in an energy system with limited annual sequestration potential.
+
+\section{Methodology}
+\label{sec:methodology}
+
+
+\begin{figure*}[ht!]
+    \centering
+    \includegraphics*[width=\linewidth]{cost_area.pdf}
+    \caption[short]{Total annual system cost for the sector-coupled system with different levels of carbon sequestration potential, with (left) and without (right) \carbon{} network. "Gas Infrastructure" combines gas facilities for power and heat production, "H$_2$ Infrastructure" combines H$_2$ production, transport and re-electrification. Regardless of the implementation of a \carbon{} network, the system cost decrease as sequestration increases. Due to an increased flexibility from fossil carriers with subsequent sequestration, the need for FT synthesis and \hydrogen{} electrolysis and the corresponding renewable power supply is reduced.
+        % TODO: mention details on the grouped technologies
+    }
+    \label{fig:cost_area}
+\end{figure*}
+
+
+We base our analysis on the open-source model PyPSA-Eur~\cite{PyPSAEurSecSectorCoupledOpen2023}. It is a fully sector-coupled model with high spatial and temporal resolution that enables a joint optimization of investment and operational decisions in energy generation, storage, conversion, and transport infrastructures. In this study, a version with 90 European regions and a 3-hour time resolution is used. The model considers regional energy demand in sectors such as electricity, industry, transport, buildings, and agriculture, and sets a binding upper limit for zero emissions. Limits are also set for biomass use and expansion of the electricity transmission grid.
+
+% TODO: Mention exogenous decisions on carbon capture and 90% rates here for industry.
+
+The study only considers offshore sites for carbon sequestration due to their larger potential compared to onshore sites and public safety concerns and assumes a conservative approach to estimating storage potential, limiting it to 25~Mt per site and calculating annual storage availability over a 25-year period.
+
+The model includes three drop-in fuel production technologies: methanation, methanolization, and Fischer-Tropsch (FT) synthesis. Synthetic methane substitutes natural gas or biogas, synthetic methanol helps decarbonize the marine industry, while Fischer-Tropsch fuels replace fossil oil for various industrial and aviation uses. All the technology costs for 2050 used in the model are derived from an open-source database~\cite{lisazeyenPyPSATechnologydataTechnology2023}.
+
+In total, we run 10 simulations: To investigate the role of the \carbon{} network, we run different setups with the \carbon{} network on and off. To analyze the impact of sequestration, for each setup we vary the global sequestration potential from 200~Mt to 1000~Mt per year in steps of 200~Mt.
+
+\section{Results}
+
+As displayed in Figure~\ref{fig:cost_area}, the model results show that the majority of annual system costs are associated with renewable energy sources, heating, hydrogen technologies, and the electricity grid, while costs for fossil fuels and carbon capture and transport technologies are relatively low. As sequestration potential increases, costs decrease, with high sequestration rates allowing for continued use of fossil fuels and increased deployment of carbon removal technologies. Notably, a system with carbon transport is on average 1.6\% less expensive across all sequestration levels.
+
+
+In particular, we perceive a clear shift in technology when increasing the sequestration rate: While FT synthesis decreases, integrated carbon capture from Gas Combined Heat and Power (CHP) plants, Allam Cycle plants, Steam Methane Reforming (SMR) and DAC increase. Other technologies are constant across varying levels of sequestration due to different reasons: biomass is bound by its maximum available potential (as reported in~\cite{europeancommissionjointresearchcentreENSPRESOBIOMASS2019}); the industry processes with their associated emissions are set to fixed values; the methanol production is bound by a lower limit representing the demand from the shipping sector.
+
+As for hydrogen, the model with a \carbon{} transport system shows a 50\% decrease in hydrogen production as sequestration increases, with hydrogen production from steam methane reforming (SMR) beginning to replace electrolysis at high sequestration rates. With the decline of FT synfuel production, the demand for hydrogen declines, leaving only demand from the shipping, industry, and transport sectors.
+
+
+\section{Limitations}
+\label{sec:limitations}
+
+
+The model's validity is limited due to its reliance on linear optimization with perfect foresight. Technology cost assumptions are based on historical learning rates, which might not reflect future trends and cannot account for market disruptions like the 2022 gas price peak. Lastly, the model's spatial and temporal resolution does not capture all relevant dynamics and variations in energy supply and demand, although increasing these would raise computational time and complexity.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+This study explored the impact of a carbon transport system on the optimal configuration of technologies in a fully sector-coupled European energy system, focusing on carbon capture and Utilization (CCU) and Carbon Capture and Storage (CCS). Increasing carbon sequestration potential lowers total system costs, more significantly when a carbon transport network exists. Higher sequestration rates shift focus from CCU and hydrogen infrastructure to CCS and fossil fuels, offset by carbon removal elsewhere. A carbon transport network encourages more carbon capture at point sources. Despite limitations, our findings provide insights into the role of carbon sequestration and transport in achieving climate neutrality.
+While carbon sequestration offers promising possibilities for climate mitigation, it is not yet fully matured and proven as a safe, reliable technology, thus caution is warranted against over-reliance on it as a sole solution.
+
+
+\printbibliography
+
+% \appendix
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=\linewidth]{capacity_map_electricity_co2network_1000.png}
+%     \caption{Optimal capacities per of the electricity sector for a sequestration of 1000 Mt/a.}
+%     \label{fig:capacity_map_electricity_co2network_1000}
+% \end{figure}
+
+
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=\linewidth]{capacity_map_hydrogen_co2network_1000.png}
+%     \caption{Optimal capacities per of the hydrogen sector for a sequestration of 1000 Mt/a.}
+%     \label{fig:capacity_map_hydrogen_co2network_1000}
+% \end{figure}
+
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=\linewidth]{operation_area_carbon_noco2network.pdf}
+%     \caption{Balance of captured \carbon{} emissions for the optimal operation without \carbon{} network.}
+%     \label{fig:operation_area_carbon_noco2network}
+% \end{figure}
+
+
+\end{document}
