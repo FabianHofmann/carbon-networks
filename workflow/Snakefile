@@ -1,25 +1,20 @@
 TEST = False
 
-if TEST:
-    sec_config = "config/config.pypsa-eur-sec.test.yaml"
-else:
-    sec_config = "config/config.pypsa-eur-sec.yaml"
 
-
-# Merge subworkflow configs and main config
 configfile: "config/config.pypsa-eur.yaml"
-configfile: sec_config
 configfile: "config/config.yaml"
 configfile: "config/config.cluster.yaml"
 
 
+if TEST:
+
+    configfile: "config/config.pypsa-eur.test.yaml"
+
+
 from shutil import copyfile
 
-copyfile("config/config.pypsa-eur.yaml", "workflow/subworkflows/pypsa-eur/config.yaml")
-copyfile(
-    sec_config,
-    "workflow/subworkflows/pypsa-eur-sec/config.yaml",
-)
+
+# copyfile("config/config.pypsa-eur.yaml", "workflow/subworkflows/pypsa-eur/config.yaml")
 
 
 wildcard_constraints:
@@ -45,94 +40,85 @@ subworkflow pypsaeur:
         "subworkflows/pypsa-eur/Snakefile"
 
 
-subworkflow pypsaeursec:
-    configfile:
-        sec_config
-    workdir:
-        "subworkflows/pypsa-eur-sec"
-    snakefile:
-        "subworkflows/pypsa-eur-sec/Snakefile"
+RESOURCES = "resources/" + config["run"]["name"] + "/"
+RESULTS = "results/" + config["run"]["name"] + "/"
 
-
-SDIR = config["summary_dir"] + "/" + config["run"]
-RDIR = config["results_dir"] + config["run"]
-CDIR = config["costs_dir"]
 # flatten config
 base = dict()
 for k, v in config["scenario"].items():
     base[k] = v[0]
 
 
-rule eem:
+rule journal:
     message:
-        "Compile figures for EEM paper."
+        "Compile figures for journal paper."
     input:
         filenames=[
-            RDIR + "/figures/sequestration_map.png",
-            RDIR + "/figures/cost_area.pdf",
-            RDIR + "/figures/capacity_map_electricity_co2network_1000.png",
-            RDIR + "/figures/capacity_map_carbon_co2network_1000.png",
-            RDIR + "/figures/capacity_map_hydrogen_co2network_1000.png",
-            RDIR + "/figures/operation_map_carbon_co2network_200.png",
-            RDIR + "/figures/operation_map_carbon_co2network_200.png",
-            RDIR + "/figures/operation_map_carbon_co2network_400.png",
-            RDIR + "/figures/operation_map_carbon_co2network_600.png",
-            RDIR + "/figures/operation_map_carbon_co2network_800.png",
-            RDIR + "/figures/operation_map_carbon_co2network_1000.png",
-            RDIR + "/figures/operation_area_carbon_co2network.pdf",
-            RDIR + "/figures/operation_area_co2_co2network.pdf",
-            RDIR + "/figures/operation_area_hydrogen_co2network.pdf",
-            RDIR + "/figures/operation_area_carbon_noco2network.pdf",
-            RDIR + "/figures/operation_area_co2_noco2network.pdf",
-            RDIR + "/figures/operation_area_hydrogen_noco2network.pdf",
-            RDIR + "/figures/captureshare_line.pdf",
+            RESULTS + "figures/sequestration_map.png",
+            RESULTS + "figures/cost_area.pdf",
+            RESULTS + "figures/capacity_map_electricity_co2network_1000.png",
+            RESULTS + "figures/capacity_map_carbon_co2network_1000.png",
+            RESULTS + "figures/capacity_map_hydrogen_co2network_1000.png",
+            RESULTS + "figures/operation_map_carbon_co2network_200.png",
+            RESULTS + "figures/operation_map_carbon_co2network_200.png",
+            RESULTS + "figures/operation_map_carbon_co2network_400.png",
+            RESULTS + "figures/operation_map_carbon_co2network_600.png",
+            RESULTS + "figures/operation_map_carbon_co2network_800.png",
+            RESULTS + "figures/operation_map_carbon_co2network_1000.png",
+            RESULTS + "figures/operation_area_carbon_co2network.pdf",
+            RESULTS + "figures/operation_area_co2_co2network.pdf",
+            RESULTS + "figures/operation_area_hydrogen_co2network.pdf",
+            RESULTS + "figures/operation_area_carbon_noco2network.pdf",
+            RESULTS + "figures/operation_area_co2_noco2network.pdf",
+            RESULTS + "figures/operation_area_hydrogen_noco2network.pdf",
+            RESULTS + "figures/captureshare_line.pdf",
         ],
 
 
 rule all:
     input:
         expand(
-            RDIR + "/figures/capacity_map_{kind}_{design}_{sequestration}.png",
+            RESULTS + "figures/capacity_map_{kind}_{design}_{sequestration}.png",
             kind=config["constants"]["kinds"],
             **config["scenarios"]
         ),
         expand(
-            RDIR + "/figures/operation_map_{kind}_{design}_{sequestration}.png",
+            RESULTS + "figures/operation_map_{kind}_{design}_{sequestration}.png",
             **config["scenarios"],
             kind=config["constants"]["kinds"]
         ),
         expand(
-            RDIR + "/figures/operation_area_{kind}_{design}.pdf",
+            RESULTS + "figures/operation_area_{kind}_{design}.pdf",
             **config["scenarios"],
             kind=config["constants"]["kinds"]
         ),
-        RDIR + "/figures/cost_area.pdf",
-        RDIR + "/figures/sequestration_map.png",
-        RDIR + "/figures/captureshare_line.pdf",
-        RDIR + "/gifs/.gifs_created",
+        RESULTS + "figures/cost_area.pdf",
+        RESULTS + "figures/sequestration_map.png",
+        RESULTS + "figures/captureshare_line.pdf",
+        RESULTS + "gifs/.gifs_created",
 
 
 rule create_gifs:
     input:
         expand(
-            RDIR + "/gifs/capacity_map_{kind}_{design}.gif",
+            RESULTS + "gifs/capacity_map_{kind}_{design}.gif",
             kind=config["constants"]["kinds"],
             **config["scenarios"]
         ),
         expand(
-            RDIR + "/gifs/operation_map_{kind}_{design}.gif",
+            RESULTS + "gifs/operation_map_{kind}_{design}.gif",
             kind=config["constants"]["kinds"],
             **config["scenarios"]
         ),
     output:
-        RDIR + "/gifs/.gifs_created",
+        RESULTS + "gifs/.gifs_created",
     shell:
         "touch {output}"
 
 
 def get_maps(w):
     return expand(
-        RDIR + "/figures/{which}_map_{kind}_{design}_{sequestration}.png",
+        RESULTS + "figures/{which}_map_{kind}_{design}_{sequestration}.png",
         sequestration=config["scenarios"]["sequestration"],
         **w
     )
@@ -142,7 +128,7 @@ rule gif_map:
     input:
         get_maps,
     output:
-        RDIR + "/gifs/{which}_map_{kind}_{design}.gif",
+        RESULTS + "gifs/{which}_map_{kind}_{design}.gif",
     shell:
         """
         convert -delay 100 -loop 0 -gravity South -background White -splice 0x35 -pointsize 40 -annotate +0+4 %f {input} {output}
@@ -151,7 +137,7 @@ rule gif_map:
 
 def get_all_networks(w):
     return expand(
-        RDIR + "/networks/{design}_{sequestration}.nc",
+        RESULTS + "networks/{design}_{sequestration}.nc",
         design=config["scenarios"]["design"],
         sequestration=config["scenarios"]["sequestration"],
     )
@@ -166,7 +152,7 @@ rule plot_cost_area:
     input:
         networks=get_all_networks,
     output:
-        map=RDIR + "/figures/cost_area.{ext}",
+        map=RESULTS + "figures/cost_area.{ext}",
     resources:
         mem_mb=20000,
     script:
@@ -178,17 +164,17 @@ rule plot_capacity_map:
         settings=config["plotting"]["capacity_map"],
         theme=config["plotting"]["theme"],
     input:
-        network=RDIR + "/networks/{design}_{sequestration}.nc",
+        network=RESULTS + "networks/{design}_{sequestration}.nc",
         onshore_regions=pypsaeur(
-            "resources/regions_onshore_elec_s{simpl}_{clusters}.geojson".format(**base)
+            RESOURCES
+            + "regions_onshore_elec_s{simpl}_{clusters}.geojson".format(**base)
         ),
         offshore_regions=pypsaeur(
-            "resources/regions_offshore_elec_s{simpl}_{clusters}.geojson".format(
-                **base
-            )
+            RESOURCES
+            + "regions_offshore_elec_s{simpl}_{clusters}.geojson".format(**base)
         ),
     output:
-        map=RDIR + "/figures/capacity_map_{kind}_{design}_{sequestration}.{ext}",
+        map=RESULTS + "figures/capacity_map_{kind}_{design}_{sequestration}.{ext}",
     resources:
         mem_mb=20000,
     script:
@@ -200,14 +186,13 @@ rule plot_sequestration_map:
         settings=config["plotting"]["sequestration_map"],
         theme=config["plotting"]["theme"],
     input:
-        network=RDIR + "/networks/co2network_200.nc",  # take any network
+        network=RESULTS + "networks/co2network_200.nc",  # take any network
         offshore_regions=pypsaeur(
-            "resources/regions_offshore_elec_s{simpl}_{clusters}.geojson".format(
-                **base
-            )
+            RESOURCES
+            + "regions_offshore_elec_s{simpl}_{clusters}.geojson".format(**base)
         ),
     output:
-        map=RDIR + "/figures/sequestration_map.{ext}",
+        map=RESULTS + "figures/sequestration_map.{ext}",
     script:
         "scripts/plot-sequestration-map.py"
 
@@ -217,14 +202,15 @@ rule plot_operation_map:
         settings=config["plotting"]["operation_map"],
         theme=config["plotting"]["theme"],
     input:
-        network=RDIR + "/networks/{design}_{sequestration}.nc",
+        network=RESULTS + "networks/{design}_{sequestration}.nc",
         onshore_regions=pypsaeur(
-            "resources/regions_onshore_elec_s{simpl}_{clusters}.geojson".format(**base)
+            RESOURCES
+            + "regions_onshore_elec_s{simpl}_{clusters}.geojson".format(**base)
         ),
     resources:
         mem_mb=20000,
     output:
-        map=RDIR + "/figures/operation_map_{kind}_{design}_{sequestration}.{ext}",
+        map=RESULTS + "figures/operation_map_{kind}_{design}_{sequestration}.{ext}",
     script:
         "scripts/plot-operation-map.py"
 
@@ -234,16 +220,16 @@ rule plot_operation_bar:
         settings=config["plotting"]["operation_bar"],
         theme=config["plotting"]["theme"],
     input:
-        network=RDIR + "/networks/{design}_{sequestration}.nc",
+        network=RESULTS + "networks/{design}_{sequestration}.nc",
     output:
-        map=RDIR + "/figures/operation_bar_{design}_{sequestration}.{ext}",
+        map=RESULTS + "figures/operation_bar_{design}_{sequestration}.{ext}",
     script:
         "scripts/plot-operation-bar.py"
 
 
 def get_design_networks(w):
     return expand(
-        RDIR + "/networks/{design}_{sequestration}.nc",
+        RESULTS + "networks/{design}_{sequestration}.nc",
         sequestration=config["scenarios"]["sequestration"],
         **w
     )
@@ -256,7 +242,7 @@ rule plot_operation_area:
     input:
         networks=get_design_networks,
     output:
-        map=RDIR + "/figures/operation_area_{kind}_{design}.{ext}",
+        map=RESULTS + "figures/operation_area_{kind}_{design}.{ext}",
     resources:
         mem_mb=20000,
     script:
@@ -270,7 +256,7 @@ rule plot_captureshare_line:
     input:
         networks=get_all_networks,
     output:
-        map=RDIR + "/figures/captureshare_line.{ext}",
+        map=RESULTS + "figures/captureshare_line.{ext}",
     resources:
         mem_mb=20000,
     script:
@@ -283,9 +269,9 @@ def get_solved_network(wildcards):
     if wildcards.design == "noco2network":
         sector_opts = sector_opts + "-CF+sector+co2network+false"
     scenario["sector_opts"] = sector_opts
-    return pypsaeursec(
-        RDIR
-        + "/postnetworks/elec_s{simpl}_{clusters}_lv{lv}_{opts}_{sector_opts}_{planning_horizons}.nc".format(
+    return pypsaeur(
+        RESULTS
+        + "/postnetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc".format(
             **scenario
         )
     )
@@ -295,7 +281,7 @@ rule get_solved_network:
     input:
         get_solved_network,
     output:
-        RDIR + "/networks/{design}_{sequestration}.nc",
+        RESULTS + "networks/{design}_{sequestration}.nc",
     shell:
         """
         cp {input} {output}
@@ -304,7 +290,7 @@ rule get_solved_network:
 
 rule get_all_solved_networks:
     input:
-        expand(RDIR + "/networks/{design}_{sequestration}.nc", **config["scenarios"]),
+        expand(RESULTS + "networks/{design}_{sequestration}.nc", **config["scenarios"]),
 
 
 rule sync:
