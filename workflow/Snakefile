@@ -1,4 +1,4 @@
-TEST = False
+TEST = 1
 
 
 configfile: "config/config.pypsa-eur.yaml"
@@ -11,12 +11,6 @@ if TEST:
     configfile: "config/config.pypsa-eur.test.yaml"
 
 
-from shutil import copyfile
-
-
-# copyfile("config/config.pypsa-eur.yaml", "workflow/subworkflows/pypsa-eur/config.yaml")
-
-
 wildcard_constraints:
     lv="[a-z0-9\.]+",
     simpl="[a-zA-Z0-9]*",
@@ -25,28 +19,20 @@ wildcard_constraints:
     sector_opts="[-+a-zA-Z0-9\.\s]*",
 
 
-localrules:
-    all,
-    report,
-    clean,
-
-
-subworkflow pypsaeur:
-    configfile:
-        "config/config.pypsa-eur.yaml"
-    workdir:
-        "subworkflows/pypsa-eur"
+module pypsaeur:
     snakefile:
         "subworkflows/pypsa-eur/Snakefile"
+    config:
+        config
+# add data path from pypsa-eur
 
 
-RESOURCES = "resources/" + config["run"]["name"] + "/"
-RESULTS = "results/" + config["run"]["name"] + "/"
 
-# flatten config
 base = dict()
 for k, v in config["scenario"].items():
     base[k] = v[0]
+RESOURCES = "resources/" + config["run"]["name"] + "/"
+RESULTS = "results/" + config["run"]["name"] + "/"
 
 
 rule journal:
@@ -165,14 +151,10 @@ rule plot_capacity_map:
         theme=config["plotting"]["theme"],
     input:
         network=RESULTS + "networks/{design}_{sequestration}.nc",
-        onshore_regions=pypsaeur(
-            RESOURCES
-            + "regions_onshore_elec_s{simpl}_{clusters}.geojson".format(**base)
-        ),
-        offshore_regions=pypsaeur(
-            RESOURCES
-            + "regions_offshore_elec_s{simpl}_{clusters}.geojson".format(**base)
-        ),
+        onshore_regions=RESOURCES
+        + "regions_onshore_elec_s{simpl}_{clusters}.geojson".format(**base),
+        offshore_regions=RESOURCES
+        + "regions_offshore_elec_s{simpl}_{clusters}.geojson".format(**base),
     output:
         map=RESULTS + "figures/capacity_map_{kind}_{design}_{sequestration}.{ext}",
     resources:
@@ -187,10 +169,8 @@ rule plot_sequestration_map:
         theme=config["plotting"]["theme"],
     input:
         network=RESULTS + "networks/co2network_200.nc",  # take any network
-        offshore_regions=pypsaeur(
-            RESOURCES
-            + "regions_offshore_elec_s{simpl}_{clusters}.geojson".format(**base)
-        ),
+        offshore_regions=RESOURCES
+        + "regions_offshore_elec_s{simpl}_{clusters}.geojson".format(**base),
     output:
         map=RESULTS + "figures/sequestration_map.{ext}",
     script:
@@ -203,10 +183,8 @@ rule plot_operation_map:
         theme=config["plotting"]["theme"],
     input:
         network=RESULTS + "networks/{design}_{sequestration}.nc",
-        onshore_regions=pypsaeur(
-            RESOURCES
-            + "regions_onshore_elec_s{simpl}_{clusters}.geojson".format(**base)
-        ),
+        onshore_regions=RESOURCES
+        + "regions_onshore_elec_s{simpl}_{clusters}.geojson".format(**base),
     resources:
         mem_mb=20000,
     output:
@@ -269,9 +247,9 @@ def get_solved_network(wildcards):
     if wildcards.design == "noco2network":
         sector_opts = sector_opts + "-CF+sector+co2network+false"
     scenario["sector_opts"] = sector_opts
-    return pypsaeur(
+    return (
         RESULTS
-        + "/postnetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc".format(
+        + "postnetworks/elec_s{simpl}_{clusters}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc".format(
             **scenario
         )
     )
@@ -301,3 +279,6 @@ rule sync:
         rsync -uvarh --no-g --ignore-missing-args --files-from=.sync-send . {params.cluster}
         rsync -uvarh --no-g --files-from=.sync-receive {params.cluster} .
         """
+
+
+use rule * from pypsaeur as pypsaeur_*
