@@ -13,8 +13,16 @@ results/
 resources/
 data/
 playaround/
+benchmarks/
+pypsa-eur
 sec
 connect.sh
+
+# from pypsa-eur
+
+cidportal.jrc.ec.europa.eu/ftp/jrc-opendata/ENSPRESO/ENSPRESO_BIOMASS.xlsx
+logs
+
 
 ## Core latex/pdflatex auxiliary files:
 *.aux
