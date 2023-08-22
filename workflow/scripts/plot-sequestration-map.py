@@ -10,16 +10,18 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import geopandas as gpd
 
-sns.set_theme(**snakemake.params["theme"])
-
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_sequestration_map",
+        run="half-price",
+        clusters=40,
+        ext="png",
     )
 
-crs = ccrs.EqualEarth()
+sns.set_theme(**snakemake.params["theme"])
 
+crs = ccrs.EqualEarth()
 n = import_network(snakemake.input.network)
 offshore_regions = gpd.read_file(
     snakemake.input.offshore_regions, index_col=0

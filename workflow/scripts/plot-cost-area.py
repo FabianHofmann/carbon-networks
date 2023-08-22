@@ -58,7 +58,6 @@ ax.set_ylabel(f"System cost [{unit}]")
 ax.grid(axis="y", alpha=0.5)
 handles, labels = ax.get_legend_handles_labels()
 ax.legend().remove()
-ax.set_title(snakemake.config["labels"].title().replace("Co", "CO"))
 
 
 sns.despine()

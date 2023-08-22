@@ -22,7 +22,7 @@ scenario:
   - 2050
 
 enable:
-  retrieve: true
+  retrieve: false
   retrieve_cutout: false
 
 
@@ -38,9 +38,9 @@ solving:
 
 
 labels:
-  half-price: "Half-price"
-  projected-price: "Projected-price"
-  baseline: "Baseline"
+  half-price: "Half-Price\nCO$_2$ Network"
+  projected-price: "Projected-price\nCO$_2$ Network"
+  baseline: "Without\nCO$_2$ Network"
   carbon: "Captured Carbon"
   hydrogen: "Hydrogen"
   electricity: "Electricity"
@@ -141,7 +141,6 @@ constants:
           bus0:
             - H2 Electrolysis
             - battery charger
-            - helmeth
             - BEV charger
             - ground heat pump
             - resistive heater
@@ -173,7 +172,6 @@ constants:
         Link:
           bus1:
             - Sabatier
-            - helmeth
             - biogas to gas
             -  gas for industry
             -  gas for industry CC
@@ -194,10 +192,10 @@ constants:
       storage:
         Store:
           - gas
-      transport:
-        Link:
-          - gas pipeline
-          - gas pipeline new
+      # transport:
+        # Link:
+          # - gas pipeline
+          # - gas pipeline new
 
     hydrogen:
       production:
@@ -215,7 +213,6 @@ constants:
             - Fischer-Tropsch
         Load:
           - H2 for industry
-          - H2 for shipping
           - land transport fuel cell
       storage:
         Store:
@@ -245,7 +242,6 @@ constants:
         Link:
           bus2:
             - Sabatier
-            - helmeth
             - Fischer-Tropsch
           bus3:
             - methanolisation
@@ -308,7 +304,7 @@ plotting:
   theme:
     style: white
     context: paper
-    font: serif
+    font: sans-serif
     rc:
       patch.linewidth: 0.1
       savefig.bbox: "tight"
@@ -319,10 +315,10 @@ plotting:
     figsize: [6,6]
 
   operation_area:
-    figsize: [3, 3.5]
+    figsize: [4, 3.5]
 
   operation_bar:
-    figsize: [8, 10]
+    figsize: [10, 10]
 
   cost_area:
     figsize: [5, 3]
@@ -439,7 +435,7 @@ plotting:
       branch_sizes: null
 
   captureshare_line:
-    figsize: [5, 4]
+    figsize: [5, 2]
 
   technology_groups:
     AC: Electricity Grid

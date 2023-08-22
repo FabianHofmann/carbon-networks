@@ -9,7 +9,6 @@ import os
 import warnings
 import seaborn as sns
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 from pypsa.plot import add_legend_circles, add_legend_patches, add_legend_lines
@@ -20,10 +19,9 @@ from common import (
     get_carrier_transport,
     get_carrier_production,
 )
-
 import geopandas as gpd
 
-sns.set_theme(**snakemake.params["theme"])
+
 warnings.filterwarnings("ignore", category=UserWarning)
 alpha = 1
 region_alpha = 0.8
@@ -33,11 +31,12 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_operation_map",
         kind="carbon",
-        sigma="co2network",
-        sequestration=1000,
+        run="half-price",
+        clusters=40,
         ext="png",
     )
 
+sns.set_theme(**snakemake.params["theme"])
 
 n = import_network(snakemake.input.network)
 regions = gpd.read_file(snakemake.input.onshore_regions).set_index("name")

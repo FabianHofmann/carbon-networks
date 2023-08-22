@@ -13,16 +13,3 @@ projected-price:
 
 baseline:
   co2network: false
-
-# TESTING
-
-test-half-price:
-  co2network: true
-  co2_network_cost_factor: 0.5
-
-test-projected-price:
-  co2network: true
-  co2_network_cost_factor: 1.0
-
-test-baseline:
-  co2network: false

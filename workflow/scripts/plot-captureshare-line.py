@@ -9,16 +9,14 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-sns.set_theme(**snakemake.params["theme"])
-
-
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_captureshare_line",
-        sigma="co2network",
+        clusters=40,
         ext="png",
     )
 
+sns.set_theme(**snakemake.params["theme"])
 
 config = snakemake.config
 which = "capacity"
@@ -30,45 +28,38 @@ for path in snakemake.input.networks:
     capacity = n.statistics.optimal_capacity()
     capacity = capacity.droplevel(0)[lambda x: x > 0]
 
-    switch_techs = capacity.index[capacity.index.str.contains("\*")]
+    switch_techs = capacity.index[capacity.index.str.contains(" CC")]
     caps = pd.DataFrame(
         {
-            "cc": capacity[switch_techs].rename(lambda ds: ds[:-1]),
-            "original": capacity[switch_techs.str[:-1]],
+            "cc": capacity[switch_techs].rename(lambda ds: ds[:-3]),
+            "original": capacity[switch_techs.str[:-3]],
         }
     )
     caps = caps["cc"] / caps.sum(1)
 
-    design, sequestration = Path(path).stem.split("_")
-    key = (snakemake.config["labels"][design], int(sequestration))
-    # key = int(sequestration)
-
+    key = snakemake.config["labels"][n.meta["wildcards"]["run"]]
     df[key] = caps
+
 df = pd.concat(df, axis=1)
 
 nice_name = n.carriers.nice_name
 colors = n.carriers.color.dropna().rename(nice_name)
 
-fig, axes = plt.subplots(
-    2,
-    1,
+fig, ax = plt.subplots(
     figsize=snakemake.params.settings["figsize"],
     layout="constrained",
     sharex=True,
 )
 
-for ax, col in zip(axes, df.columns.unique(0)):
-    df[col].mul(100).sort_values(by=200, ascending=False).T.plot(
-        kind="line",
-        ax=ax,
-        color=colors.to_dict(),
-        alpha=0.8,
-    )
-    ax.set_xlabel("Sequestration Potential [Mt]")
-    ax.set_ylabel(f"CC share [%]")
-    ax.set_title(col.title().replace("Co", "CO"))
-    ax.grid(axis="y", alpha=0.5)
-    ax.legend(loc="center left", bbox_to_anchor=(1, 0.5), frameon=False)
+df.mul(100).T.plot(
+    kind="line",
+    ax=ax,
+    color=colors.to_dict(),
+    alpha=0.8,
+)
+ax.set_ylabel(f"CC share [%]")
+ax.grid(axis="y", alpha=0.5)
+ax.legend(loc="center left", bbox_to_anchor=(1, 0.5), frameon=False)
 
 sns.despine()
 

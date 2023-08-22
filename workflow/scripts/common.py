@@ -53,7 +53,7 @@ def import_network(path):
     overrides = override_component_attrs(override_dir)
     n = pypsa.Network(path, override_component_attrs=overrides)
     sanitize_locations(n)
-    # fill_missing_carriers(n)
+    fill_missing_carriers(n)
     modify_carrier_names(n)
     add_carrier_nice_names(n)
     # add_colors(n)
@@ -432,12 +432,13 @@ def modify_carrier_names(n):
     n.generators.loc[
         n.generators.carrier.str.startswith("offwind"), "carrier"
     ] = "offwind"
-    replace = [f"{s} " for s in SITES]
+    replace = [f"(?i){s} " for s in SITES]
     for c in n.iterate_components(
         n.one_port_components | n.branch_components | {"Bus"}
     ):
         c.df.carrier.replace(replace, "", regex=True, inplace=True)
     n.carriers.index = n.carriers.index.to_series().replace(replace, "", regex=True)
+    n.carriers.nice_name = n.carriers.nice_name.replace(replace, "", regex=True)
     n.carriers = n.carriers[~n.carriers.index.duplicated()]
 
 
@@ -456,8 +457,6 @@ def get_carrier_mapper(n):
 
 
 def add_carrier_nice_names(n):
-    nname = n.carriers.nice_name
-    n.carriers.nice_name = nname.where(nname != "", nname.index.str.title())
     # replace abbreviations with capital letters
     replace = {
         "H2": "H$_2$",

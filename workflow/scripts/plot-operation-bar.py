@@ -9,16 +9,17 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-sns.set_theme(**snakemake.params["theme"])
-
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_operation_bar",
-        sigma="co2network",
-        sequestration=600,
+        kind="carbon",
+        run="half-price",
+        clusters=40,
+        ext="png",
     )
 
+sns.set_theme(**snakemake.params["theme"])
 
 n = import_network(snakemake.input.network)
 kinds = snakemake.config["constants"]["kinds"]

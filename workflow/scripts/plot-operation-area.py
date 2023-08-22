@@ -1,5 +1,4 @@
 import os
-from pathlib import Path
 from common import (
     import_network,
     mock_snakemake,
@@ -13,14 +12,12 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-sns.set_theme(**snakemake.params["theme"])
-
-
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
-        "plot_operation_area", sigma="co2network", kind="carbon", ext="png"
+        "plot_operation_area", clusters=40, kind="carbon", ext="png"
     )
 
+sns.set_theme(**snakemake.params["theme"])
 
 kind = snakemake.wildcards.kind
 config = snakemake.config
@@ -37,11 +34,9 @@ for path in snakemake.input.networks:
     if (prod.sum() / cons.sum()).round(3) != 1:
         print(f"Warning: {kind} production and consumption are not equal.")
 
-    design, sequestration = Path(path).stem.split("_")
-    # key = (labels[design], int(sequestration))
-    key = int(sequestration)
-
+    key = snakemake.config["labels"][n.meta["wildcards"]["run"]]
     df[key] = pd.concat([prod, cons], keys=["Production", "Consumption"])
+
 df = pd.concat(df, axis=1)
 
 
@@ -65,7 +60,7 @@ fig, ax = plt.subplots(
 )
 
 production.plot(
-    kind="area",
+    kind="bar",
     stacked=True,
     ax=ax,
     color=colors.to_dict(),
@@ -87,7 +82,13 @@ legend = fig.legend(
 fig.add_artist(legend)
 
 consumption.mul(-1).plot(
-    kind="area", stacked=True, ax=ax, color=colors.to_dict(), alpha=0.8, lw=0
+    kind="bar",
+    stacked=True,
+    ax=ax,
+    color=colors.to_dict(),
+    alpha=0.8,
+    lw=0,
+    rot=0,
 )
 h, l = ax.get_legend_handles_labels()
 handle_map = (
@@ -103,7 +104,7 @@ legend = fig.legend(
     h,
     l,
     loc="lower left",
-    bbox_to_anchor=(1, 0.05),
+    bbox_to_anchor=(1, 0.1),
     frameon=False,
     ncol=1,
     title="Consumption",
@@ -112,12 +113,10 @@ legend = fig.legend(
 fig.add_artist(legend)
 
 ax.axhline(0, color="k", lw=1)
-ax.set_xlim(production.index.min(), production.index.max())
 ax.set_ylim(-consumption.sum(1).max() * 1.1, production.sum(1).max() * 1.1)
-ax.set_xlabel("Sequestration Potential [Mt]")
 ax.set_ylabel(f"{labels[kind]} [{unit}]")
 if snakemake.params.settings.get("title", True):
-    ax.set_title(f"{labels[kind]} Balance {labels[design]}")
+    ax.set_title(f"{labels[kind]} Balance")
 ax.grid(axis="y", alpha=0.5)
 
 sns.despine()
