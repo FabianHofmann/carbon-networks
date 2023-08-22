@@ -18,10 +18,9 @@ from common import (
     get_carrier_transport,
     get_carrier_production,
 )
-
 import geopandas as gpd
 
-sns.set_theme(**snakemake.params["theme"])
+
 column = "Optimal Capacity"
 alpha = 1
 region_alpha = 0.8
@@ -31,10 +30,12 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_capacity_map",
         kind="carbon",
-        design="co2network",
-        sequestration=200,
+        run="half-price",
+        clusters=40,
+        ext="png",
     )
 
+sns.set_theme(**snakemake.params["theme"])
 
 n = import_network(snakemake.input.network)
 offshore_regions = gpd.read_file(snakemake.input.offshore_regions).set_index("name")

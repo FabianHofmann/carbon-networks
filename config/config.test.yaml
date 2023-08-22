@@ -2,8 +2,12 @@
 #
 # SPDX-License-Identifier: CC0-1.0
 
+
 run:
-  name: "test"
+  name:
+    - half-price
+    - projected-price
+    - baseline
 
 scenario:
   simpl:

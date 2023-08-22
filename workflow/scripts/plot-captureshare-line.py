@@ -15,7 +15,7 @@ sns.set_theme(**snakemake.params["theme"])
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_captureshare_line",
-        design="co2network",
+        sigma="co2network",
         ext="png",
     )
 

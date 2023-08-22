@@ -12,6 +12,7 @@ import pypsa
 from pypsa.descriptors import Dict
 from pypsa.components import components, component_attrs
 import pandas as pd
+from snakemake.utils import update_config
 import yaml
 import numpy as np
 import logging
@@ -34,14 +35,28 @@ SITES = [
 ]
 
 
+def set_scenario_config(snakemake):
+    if snakemake.config["run"]["scenarios"] and "run" in snakemake.wildcards:
+        try:
+            with open(snakemake.config["scenariofile"], "r") as f:
+                scenario_config = yaml.safe_load(f)
+        except FileNotFoundError:
+            # fallback for mock_snakemake
+            script_dir = Path(__file__).parent.resolve()
+            root_dir = script_dir.parent
+            with open(root_dir / snakemake.config["scenariofile"], "r") as f:
+                scenario_config = yaml.safe_load(f)
+        update_config(snakemake.config, scenario_config[snakemake.wildcards.run])
+
+
 def import_network(path):
     overrides = override_component_attrs(override_dir)
     n = pypsa.Network(path, override_component_attrs=overrides)
     sanitize_locations(n)
-    fill_missing_carriers(n)
+    # fill_missing_carriers(n)
     modify_carrier_names(n)
     add_carrier_nice_names(n)
-    add_colors(n)
+    # add_colors(n)
     if n.carriers.notnull().all().all() and (n.carriers != "").all().all():
         warnings.warn("Some carriers have no color or nice_name")
     n.carriers = n.carriers.sort_values(["color"])
@@ -371,15 +386,7 @@ def assign_location(n):
         if "location" not in df:
             df["location"] = np.nan
 
-        # ifind = pd.Series(df.index.str.find(" ", start=4), df.index)
-        # for i in ifind.value_counts().index:
-        #     # these have already been assigned defaults
-        #     # if i == -1:
-        #     #     continue
-        #     names = ifind.index[ifind == i]
-        #     df.loc[names, "location"] = names.str[:i]
         bus_col = df.columns[df.columns.str.startswith("bus")][0]
-
         df["location"] = df[bus_col].map(n.buses.location)
 
 
@@ -401,7 +408,10 @@ def assign_interconnection(n):
 
 
 def sanitize_locations(n):
-    n.add("Bus", "EU", x=-5.5, y=46, location="EU")
+    if "EU" not in n.buses.index:
+        n.add("Bus", "EU", x=-5.5, y=46)
+        n.buses.loc["EU", "location"] = "EU"
+        n.buses.loc["co2 atmosphere", "location"] = "EU"
     assign_location(n)
     assign_interconnection(n)
     n.buses["x"] = n.buses.location.map(n.buses.x)
@@ -456,7 +466,7 @@ def add_carrier_nice_names(n):
         "Chp": "CHP",
         "Dac": "DAC",
         "Smr": "SMR",
-        " Cc": "*",
+        " Cc": " CC",
         "Ocgt": "OCGT",
         "Ac": "AC",
         "Dc": "DC",

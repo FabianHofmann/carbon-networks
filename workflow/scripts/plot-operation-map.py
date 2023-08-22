@@ -33,7 +33,7 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_operation_map",
         kind="carbon",
-        design="co2network",
+        sigma="co2network",
         sequestration=1000,
         ext="png",
     )

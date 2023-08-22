@@ -1,18 +1,46 @@
-scenarios:
-  design:
-    - co2network
-    - noco2network
-  sequestration:
-    # - 0
-    - 200
-    - 400
-    - 600
-    - 800
-    - 1000
+
+run:
+  name:
+    - half-price
+    - projected-price
+    - baseline
+  scenarios: true
+  disable_progressbar: true
+
+scenario:
+  simpl:
+  - ''
+  ll:
+  - v1.2
+  clusters:
+  - 90
+  opts:
+  - ''
+  sector_opts:
+    - Co2L0-3H-T-H-B-I-A-solar+p3-linemaxext15
+  planning_horizons:
+  - 2050
+
+enable:
+  retrieve: true
+  retrieve_cutout: false
+
+
+sector:
+  biomass_spatial: true
+  allam_cycle: true
+  regional_co2_sequestration_potential:
+    enable: true
+  co2_spatial: true
+
+solving:
+  walltime: 48:00:00
+
 
 labels:
-  co2network: "with CO$_2$ network"
-  noco2network: "without CO$_2$ network"
+  half-price: "Half-price"
+  projected-price: "Projected-price"
+  baseline: "Baseline"
   carbon: "Captured Carbon"
   hydrogen: "Hydrogen"
   electricity: "Electricity"
@@ -297,7 +325,7 @@ plotting:
     figsize: [8, 10]
 
   cost_area:
-    figsize: [7, 3]
+    figsize: [5, 3]
 
   capacity_map:
     figsize: [10, 8]

@@ -9,15 +9,13 @@ from common import (
     sort_rows_by_diff,
 )
 
-sns.set_theme(**snakemake.params["theme"])
-
 alpha = 1
 region_alpha = 0.8
 
-
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
-    snakemake = mock_snakemake("plot_cost_area", design="co2network", ext="png")
+    snakemake = mock_snakemake("plot_cost_area", ext="png", clusters=40)
 
+sns.set_theme(**snakemake.params["theme"])
 
 df = {}
 for path in snakemake.input.networks:
@@ -29,8 +27,7 @@ for path in snakemake.input.networks:
     costs = costs.droplevel(0)[lambda x: x > 0]
     costs = costs.groupby(costs.index).sum()
 
-    design, sequestration = Path(path).stem.split("_")
-    key = design, int(sequestration)
+    key = n.meta["wildcards"]["run"]
 
     df[key] = costs
 df = pd.concat(df, axis=1)
@@ -48,21 +45,20 @@ sort_by_color = (
 )
 grouped = sort_rows_by_diff(grouped).div(norm)
 
-fig, axes = plt.subplots(
-    1, 2, figsize=snakemake.params.settings["figsize"], layout="constrained"
+fig, ax = plt.subplots(
+    1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"
 )
 
-for key, ax in zip(snakemake.config["scenarios"]["design"], axes):
 
-    grouped[key].T.plot(kind="area", stacked=True, ax=ax, color=colors, alpha=0.8, lw=0)
+grouped.T.plot(kind="area", stacked=True, ax=ax, color=colors, alpha=0.8, lw=0)
 
-    ax.axhline(0, color="k", lw=1)
-    ax.set_xlabel("Sequestration Potential [Mt]")
-    ax.set_ylabel(f"System cost [{unit}]")
-    ax.grid(axis="y", alpha=0.5)
-    handles, labels = ax.get_legend_handles_labels()
-    ax.legend().remove()
-    ax.set_title(snakemake.config["labels"][key].title().replace("Co", "CO"))
+ax.axhline(0, color="k", lw=1)
+ax.set_xlabel("CO$_2$ transport scenario")
+ax.set_ylabel(f"System cost [{unit}]")
+ax.grid(axis="y", alpha=0.5)
+handles, labels = ax.get_legend_handles_labels()
+ax.legend().remove()
+ax.set_title(snakemake.config["labels"].title().replace("Co", "CO"))
 
 
 sns.despine()
