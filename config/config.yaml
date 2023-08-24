@@ -1,10 +1,17 @@
 
+remote:
+  ssh: zecm
+  path: /home/users/h/hofmann/scratch/projects/co2-network
+
+
 run:
   name:
     - half-price
     - projected-price
     - baseline
-  scenarios: true
+  scenarios:
+    enable: true
+  shared_resources: true
   disable_progressbar: true
 
 scenario:
@@ -22,7 +29,7 @@ scenario:
   - 2050
 
 enable:
-  retrieve: false
+  retrieve: true
   retrieve_cutout: false
 
 

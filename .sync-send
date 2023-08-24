@@ -8,5 +8,5 @@ workflow/rules
 workflow/Snakefile
 workflow/subworkflows/pypsa-eur/Snakefile
 workflow/subworkflows/pypsa-eur/scripts
-workflow/subworkflows/pypsa-eur-sec/Snakefile
-workflow/subworkflows/pypsa-eur-sec/scripts
+workflow/subworkflows/pypsa-eur/rules
+workflow/subworkflows/pypsa-eur/config

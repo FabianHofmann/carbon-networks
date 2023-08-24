@@ -4,12 +4,15 @@
 # SPDX-License-Identifier: MIT
 
 half-price:
-  co2network: true
-  co2_network_cost_factor: 0.5
+  sector:
+    co2network: true
+    co2_network_cost_factor: 0.5
 
 projected-price:
-  co2network: true
-  co2_network_cost_factor: 1.0
+  sector:
+    co2network: true
+    co2_network_cost_factor: 1.0
 
 baseline:
-  co2network: false
+  sector:
+    co2network: false

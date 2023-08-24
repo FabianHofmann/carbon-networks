@@ -1,9 +1,8 @@
-TEST = 1
+TEST = 0
 
 
 configfile: "workflow/subworkflows/pypsa-eur/config/config.default.yaml"
 configfile: "config/config.yaml"
-configfile: "config/config.cluster.yaml"
 
 
 if TEST:
@@ -108,10 +107,10 @@ rule plot_capacity_map:
         theme=config["plotting"]["theme"],
     input:
         network="results/{run}/networks/{clusters}_nodes.nc",
-        onshore_regions="resources/{{run}}/regions_onshore_elec_s{simpl}_{{clusters}}.geojson".format(
+        onshore_regions="resources/regions_onshore_elec_s{simpl}_{{clusters}}.geojson".format(
             **base
         ),
-        offshore_regions="resources/{{run}}/regions_offshore_elec_s{simpl}_{{clusters}}.geojson".format(
+        offshore_regions="resources/regions_offshore_elec_s{simpl}_{{clusters}}.geojson".format(
             **base
         ),
     output:
@@ -128,7 +127,7 @@ rule plot_sequestration_map:
         theme=config["plotting"]["theme"],
     input:
         network="results/{run}/networks/{clusters}_nodes.nc",
-        offshore_regions="resources/projected-price/regions_offshore_elec_s{simpl}_{{clusters}}.geojson".format(
+        offshore_regions="resources/regions_offshore_elec_s{simpl}_{{clusters}}.geojson".format(
             **base
         ),
     output:
@@ -143,7 +142,7 @@ rule plot_operation_map:
         theme=config["plotting"]["theme"],
     input:
         network="results/{run}/networks/{clusters}_nodes.nc",
-        onshore_regions="resources/{{run}}/regions_onshore_elec_s{simpl}_{{clusters}}.geojson".format(
+        onshore_regions="resources/regions_onshore_elec_s{simpl}_{{clusters}}.geojson".format(
             **base
         ),
     resources:
@@ -243,19 +242,6 @@ rule gif_map:
     shell:
         """
         convert -delay 100 -loop 0 -gravity South -background White -splice 0x35 -pointsize 40 -annotate +0+4 %f {input} {output}
-        """
-
-
-# SYNC
-
-
-rule sync:
-    params:
-        cluster=config["cluster"],
-    shell:
-        """
-        rsync -uvarh --no-g --ignore-missing-args --files-from=.sync-send . {params.cluster}
-        rsync -uvarh --no-g --files-from=.sync-receive {params.cluster} .
         """
 
 
