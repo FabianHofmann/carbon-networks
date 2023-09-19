@@ -30,9 +30,9 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_capacity_map",
         kind="carbon",
-        run="half-price",
+        run="projected-price",
         clusters=40,
-        ext="png",
+        ext="pdf",
     )
 
 sns.set_theme(**snakemake.params["theme"])
@@ -51,7 +51,6 @@ fig, ax = plt.subplots(
 )
 
 
-regions = offshore_regions if kind == "carbon" else onshore_regions
 unit = "GW" if kind not in ["carbon", "co2"] else "kt/h"
 
 specs = config["plotting"]["capacity_map"][kind]
@@ -82,11 +81,21 @@ n.plot(
 )
 
 region_data = get_carrier_storage(n, kind, config, which)
-region_data = region_data.groupby(level=0).sum()
+if kind == "carbon":
+    offshore_data = region_data.loc[:, "co2 sequestered"]
+
+    region_data = region_data.loc[:, "co2 stored"]
+else:
+    region_data = region_data.groupby(level=0).sum()
 region_cmap = specs["region_cmap"]
 region_unit = specs["region_unit"]
 
-regions = regions.assign(color=region_data / 1e6)
+
+regions = onshore_regions.assign(color=region_data / 1e6)
+if kind == "carbon":
+    regions = pd.concat([regions, offshore_regions.assign(color=offshore_data / 1e6)])
+
+
 regions.plot(
     ax=ax,
     column="color",
