@@ -1,128 +1,79 @@
-
-\documentclass[5p]{elsarticle}
-
-\journal{TBA}
-
-\bibliographystyle{elsarticle-num}
-\biboptions{numbers,sort&compress}
-
-% format hacks
-\usepackage{libertine}
-\usepackage{libertinust1math}
-% \usepackage{geometry}
-% \geometry{
-%     top=30mm,
-%     bottom=35mm,
-% }
-
-\usepackage{amsmath}
-\usepackage{bbold}
+\documentclass[twocolumn]{article}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{cuted}  % Add the cuted package
+\usepackage{caption}
+\usepackage{algorithmic}
 \usepackage{graphicx}
-\usepackage{eurosym}
-\usepackage{mathtools}
-\usepackage{url}
-\usepackage{booktabs}
-\usepackage{epstopdf}
-\usepackage{xfrac}
-\usepackage{tabularx}
-\usepackage{bm}
-\usepackage{subcaption}
-\usepackage{blindtext}
-\usepackage{longtable}
-\usepackage{multirow}
-\usepackage{threeparttable}
-\usepackage{pdflscape}
-\usepackage[export]{adjustbox}
-\usepackage[version=4]{mhchem}
-\usepackage[colorlinks]{hyperref}
-\usepackage[parfill]{parskip}
-\usepackage[nameinlink,sort&compress,capitalise,noabbrev]{cleveref}
-\usepackage[leftcaption,raggedright]{sidecap}
-\usepackage[prependcaption,textsize=footnotesize]{todonotes}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{tabularx, multirow}
+\usepackage{fancyhdr,lipsum}
 
-\usepackage{siunitx}
-\sisetup{
-	range-units = single,
-	per-mode = symbol
+\usepackage[%
+backend=biber,bibencoding=utf8, %instead of bibtex
+language=auto,
+style=ieee,
+sorting=none, % nyt for name, year, title
+maxbibnames=10, % default: 3, et al.
+%backref=true,%
+natbib=true % natbib compatibility mode (\citep and~\citet still work)
+]{biblatex}
+\bibliography{../../references.bib}
+
+%define approx proportional
+\def\app#1#2{%
+  \mathrel{%
+    \setbox0=\hbox{$#1\sim$}%
+    \setbox2=\hbox{%
+      \rlap{\hbox{$#1\propto$}}%
+      \lower1.1\ht0\box0%
+    }%
+    \raise0.25\ht2\box2%
+  }%
 }
-\DeclareSIUnit\year{a}
-\DeclareSIUnit{\tco}{t_{\ce{CO2}}}
-\DeclareSIUnit{\sieuro}{\mbox{\euro}}
+\def\approxprop{\mathpalette\app\relax}
 
-\usepackage{lipsum}
-
-\usepackage[resetlabels,labeled]{multibib}
-\newcites{S}{Supplementary References}
-\bibliographystyleS{elsarticle-num}
-
-
-\newcommand{\baseline}{../results/baseline/figures/40_nodes/}
-\newcommand{\halfprice}{../results/half-price/figures/40_nodes/}
-\newcommand{\projectedprice}{../results/projected-price/figures/40_nodes/}
-\newcommand{\comparison}{../results/comparison/figures/40_nodes/}
-
-\graphicspath{
-    {../results/},
-}
-
-% \usepackage[
-% 	type={CC},
-% 	modifier={by},
-% 	version={4.0},
-% ]{doclicense}
-
-\newcommand{\abs}[1]{\left|#1\right|}
-\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
-\newcommand{\set}[1]{\left\{#1\right\} }
-\DeclareMathOperator*{\argmin}{\arg\!\min}
-\newcommand{\R}{\mathbb{R} }
-\newcommand{\B}{\mathbb{B} }
-\newcommand{\N}{\mathbb{N} }
-\newcommand{\co}{\ce{CO2}~}
+% make abbreviation for co2
 \newcommand{\carbon}{CO$_2$}
 \newcommand{\hydrogen}{H$_2$}
-\def\el{${}_{\textrm{el}}$}
-\def\th{${}_{\textrm{th}}$}
-\def\deg{${}^\circ$}
 
+\graphicspath{
+    {paper-figures},
+}
 
 \begin{document}
 
-\begin{frontmatter}
+\title{Designing a \carbon{} Network for a Carbon-Neutral European Economy}
 
-    \title{Carbon Management Strategies for a Climate-Neutral European Economy}
+\author{
+    Fabian Hofmann, Christoph Tries, Fabian Neumann, Lisa Zeyen, Tom Brown \\
+    \textit{Institute of Energy Technology} \\
+    \textit{Technical University of Berlin}\\
+    Berlin, Germany \\
+    m.hofmann@tu-berlin.de
+}
 
-    \author[tub]{Fabian Hofmann}
-    \ead{ m.hofmann@tu-berlin.de }
-    \author[tub]{Tom Brown}
-    \ead{ t.brown@tu-berlin.de }
+
+\maketitle
+
+\begin{abstract}
+    Achieving a carbon-neutral European economy requires internationally coordinated efforts across all energy sectors, especially those with hard-to-abate emissions like heavy industry. Against this backdrop, It is critical to assess the need for comprehensive carbon management involving technologies such as carbon capture, transport, use, and storage to develop an effective carbon strategy for climate neutrality.
+
+    This paper provides the first cost-optimal design for a European energy system that fully incorporates carbon management technologies including a carbon transport network, and considers all emissions-intensive sectors. It optimizes carbon technologies, hydrogen transport and storage, and the design of renewable energy sources.
+
+    We show that carbon management technologies aiming at net-zero emissions provide systemic flexibility to the European energy system. A carbon network is cost-effective at different carbon capture rates (200 - 1000 Mt/a), leading to average cost savings of €13 billion per year. The \carbon{} network enables viable point source carbon capture, reducing the need for direct air capture facilities. We show that high sequestration rates are cost-beneficial by allowing continued fossil fuel use in some sectors, but require massive capacity expansion which could jeopardize timely attainment of climate neutrality.
+
+\end{abstract}
 
 
-    \address[affil]{ Department of Digital Transformation in Energy Systems, Institute of Energy Technology, Technische Universität Berlin, Fakultät III, Einsteinufer 25 (TA 8), 10587 Berlin, Germany }
+% Enabling a carbon-neutral European economy requires internationally coordinated investments in all sectors of the energy system. In the light of hard-to-abate emissions from heavy industry including feedstocks, dense fuels needed for transport and backup heat or power sources, it is important to determine the extent to which a system-wide carbon management is needed. Different technologies such as carbon capture, transport, utilization and storage build the basis to formulate a carbon strategy to take the final step to climate-neutrality.
 
-    \begin{abstract}
-        Achieving a carbon-neutral European economy requires internationally coordinated efforts across all energy sectors, especially those with hard-to-abate emissions like heavy industry. Against this backdrop, It is critical to assess the need for comprehensive carbon management involving technologies such as carbon capture, transport, use, and storage to develop an effective carbon strategy for climate neutrality.
+% In this paper, we present the first study of a cost-optimal design of the European energy system with a full representation of carbon management technologies including a \carbon{} transport network, considering all sectors with high spatial resolution. Among other technologies, we jointly optimize carbon technologies, hydrogen transport and storage, and the design of renewable energy sources in the system.
 
-        This paper provides the first cost-optimal design for a European energy system that fully incorporates carbon management technologies including a carbon transport network, and considers all emissions-intensive sectors. It optimizes carbon technologies, hydrogen transport and storage, and the design of renewable energy sources.
+% Assuming net-zero emissions, we argue that carbon management technologies provide systemic flexibility to the European energy system. In particular, we show that building a \carbon{} network is cost-effective across different rates of carbon sequestration in the offshore regions (200 -- 1000 Mt/a), leading to cost reductions of 13bn€/a on average. The network drives the feasibility of carbon capture at point sources which is preferred over building large amounts of direct air capture facilities. Moreover, we show that high sequestration rates, regardless of carbon network implementation, reduce the need for a hydrogen network and synthetic fuel production which allows fossil fuels to continue to be used in industry, aviation, agriculture, and the heating sector.
+% However, such high rates of sequestration would require an unprecedented expansion from today's low sequestration capacities and, in case it is not feasible, may delay reaching net-zero compared to other abatement strategies.
 
-        We show that carbon management technologies aiming at net-zero emissions provide systemic flexibility to the European energy system. A carbon network is cost-effective at different carbon capture rates (200 - 1000 Mt/a), leading to average cost savings of €13 billion per year. The \carbon{} network enables viable point source carbon capture, reducing the need for direct air capture facilities. We show that high sequestration rates are cost-beneficial by allowing continued fossil fuel use in some sectors, but require massive capacity expansion which could jeopardize timely attainment of climate neutrality.
 
-    \end{abstract}
-
-    \begin{keyword}
-        TODO
-    \end{keyword}
-
-    % \begin{graphicalabstract}
-    % \end{graphicalabstract}
-
-    \begin{highlights}
-        \item A
-        \item B
-        \item C
-    \end{highlights}
-
-\end{frontmatter}
 
 
 \section{Introduction}
@@ -146,7 +97,7 @@ To model the detailed expansion of the carbon network, we use the open-source Py
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{\baseline sequestration_map.png}
+    \includegraphics[width=\linewidth]{sequestration_map.png}
     \caption{Sequestration map}
     \label{fig:sequestration_map}
 \end{figure}
@@ -177,7 +128,7 @@ To investigate the influence of carbon sequestration on the optimal configuratio
 
 \begin{figure*}[ht!]
     \centering
-    \includegraphics*[width=\linewidth]{\comparison cost_area.pdf}
+    \includegraphics*[width=\linewidth]{cost_area.pdf}
     \caption[short]{Total annual system cost for the sector-coupled system with different levels of carbon sequestration potential, with (left) and without (right) \carbon{} network. "Gas Infrastructure" combines gas facilities for power and heat production, "H$_2$ Infrastructure" combines H$_2$ production, transport and re-electrification. Regardless of the implementation of a \carbon{} network, the system cost decrease as sequestration increases. Due to an increased flexibility from fossil carriers with subsequent sequestration, the need for FT synthesis and \hydrogen{} electrolysis and the corresponding renewable power supply is reduced.
         % TODO: mention details on the grouped technologies
     }
@@ -196,7 +147,7 @@ Note that technologies with a ``*`` are explicitly augmented technologies with i
 %
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{\comparison operation_area_carbon.pdf}
+    \includegraphics[width=\linewidth]{operation_area_carbon_co2network.pdf}
     \caption{Balance of captured \carbon{} for the optimal operation with \carbon{} network. Technologies with "*" are explicitly augmented technologies to capture carbon emissions.}
     \label{fig:operation_area_carbon_co2network}
 \end{figure}
@@ -206,7 +157,7 @@ Figure~\ref{fig:operation_area_carbon_co2network} confirms our previous results 
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{\comparison operation_area_hydrogen.pdf}
+    \includegraphics[width=\linewidth]{operation_area_hydrogen_co2network.pdf}
     \caption{Balance of \hydrogen{} production and consumption with \carbon{} network.}
     % TODO: make colors of gas and gas* more distinct
     \label{fig:operation_area_hydrogen_co2network}
@@ -214,7 +165,7 @@ Figure~\ref{fig:operation_area_carbon_co2network} confirms our previous results 
 %
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{\comparison operation_area_co2.pdf}
+    \includegraphics[width=\linewidth]{operation_area_co2_co2network.pdf}
     \caption{Balance of atmospheric \carbon{} emissions for the optimal operation with \carbon{} network.}
     \label{fig:operation_area_co2_co2network}
 \end{figure}
@@ -231,7 +182,7 @@ With \carbon{} transport, all technologies except for SMR and Gas CHP are nearly
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{\comparison captureshare_line.pdf}
+    \includegraphics[width=\linewidth]{captureshare_line.pdf}
     \caption{Share of facilities with integrated carbon capture as a function of sequestration potential in a system with and without \carbon{} transport.}
     \label{fig:captureshare_line}
 \end{figure}
@@ -250,7 +201,7 @@ Finally, the deployment of carbon capture technologies in a system with high seq
 
 \begin{figure*}[ht!]
     \centering
-    \includegraphics[width=\linewidth]{\projectedprice operation_map_carbon.png}
+    \includegraphics[width=\linewidth]{operation_map_carbon_co2network_1000.png}
     \caption{Optimal operation per sector for a sequestration of 1000~Mt/a. The left side shows the combined carbon supply from carbon capture facilities and the carbon network flow, while the right side illustrates regional carbon usage together with the flow.}
     % TODO: make colors more distinct
     \label{fig:operation_map_noco2network_1000}
@@ -279,74 +230,31 @@ Furthermore, we observed that with a \carbon{} transport network, the system ten
 Despite limitations of the study considering fixed model assumptions and cost uncertainties, our findings contribute valuable insights into the role of a carbon transport system and carbon sequestration potential in the transition towards a climate-neutral and net-negative energy system. As Europe strives to achieve its 2050 climate neutrality target, understanding the interplay between carbon sequestration, CCU, and CCS technologies will be crucial for the design of effective policies and strategies.
 
 
-\section*{Acknowledgements}
-\label{sec:acknowledgements}
+\printbibliography
 
-% XY gratefully acknowledge funding from XY under grant no. 00000.
+% \appendix
 
-\section*{License}
-\label{sec:license}
-% \doclicenseLongText
-% \doclicenseIcon
-
-\section*{Author Contributions}
-\label{sec:author-contributions}
-% following https://casrai.org/credit/
-
-\textbf{Author XY}:
-Conceptualization --
-Data curation --
-Formal Analysis --
-Funding acquisition --
-Investigation --
-Methodology --
-Project administration --
-Resources --
-Software --
-Supervision --
-Validation --
-Visualization --
-Writing - original draft --
-Writing - review \& editing
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=\linewidth]{capacity_map_electricity_co2network_1000.png}
+%     \caption{Optimal capacities per of the electricity sector for a sequestration of 1000 Mt/a.}
+%     \label{fig:capacity_map_electricity_co2network_1000}
+% \end{figure}
 
 
-\section*{Data and Code Availability}
-\label{sec:data-and-code-availability}
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=\linewidth]{capacity_map_hydrogen_co2network_1000.png}
+%     \caption{Optimal capacities per of the hydrogen sector for a sequestration of 1000 Mt/a.}
+%     \label{fig:capacity_map_hydrogen_co2network_1000}
+% \end{figure}
 
-A dataset of the model results is available at \href{zenodo}{doi:zenodo}.
-The code to reproduce the experiments is available at \newline
-\href{https://github.com/https://github.com/FabianHofmann/co2-network.git}{github.com/https://github.com/FabianHofmann/co2-network.git}.
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=\linewidth]{operation_area_carbon_noco2network.pdf}
+%     \caption{Balance of captured \carbon{} emissions for the optimal operation without \carbon{} network.}
+%     \label{fig:operation_area_carbon_noco2network}
+% \end{figure}
 
-
-
-% tidy with https://flamingtempura.github.io/bibtex-tidy/
-\addcontentsline{toc}{section}{References}
-\renewcommand{\ttdefault}{\sfdefault}
-\bibliography{references}
-
-% supplementary information
-
-\newpage
-
-\makeatletter
-\renewcommand \thesection{S\@arabic\c@section}
-\renewcommand\thetable{S\@arabic\c@table}
-\renewcommand \thefigure{S\@arabic\c@figure}
-\makeatother
-\renewcommand{\citenumfont}[1]{S#1}
-\setcounter{equation}{0}
-\setcounter{figure}{0}
-\setcounter{table}{0}
-\setcounter{section}{0}
-
-
-\section{Supplementary Information}
-\label{sec:supplementary-information}
-
-\input{sections/supplementary.tex}
-
-\addcontentsline{toc}{section}{Supplementary References}
-\renewcommand{\ttdefault}{\sfdefault}
-\bibliographyS{references}
 
 \end{document}

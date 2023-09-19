@@ -13,7 +13,7 @@ alpha = 1
 region_alpha = 0.8
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
-    snakemake = mock_snakemake("plot_cost_area", ext="png", clusters=90)
+    snakemake = mock_snakemake("plot_cost_bar", ext="pdf", clusters=90)
 
 sns.set_theme(**snakemake.params["theme"])
 
@@ -54,7 +54,7 @@ fig, ax = plt.subplots(
 )
 
 
-grouped.T.plot(kind="area", stacked=True, ax=ax, color=colors, alpha=0.8, lw=0)
+grouped.T.plot(kind="bar", stacked=True, ax=ax, color=colors, alpha=0.8, lw=0, rot=0)
 
 ax.axhline(0, color="k", lw=1)
 ax.set_ylabel(f"System cost [{unit}]")

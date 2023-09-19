@@ -1,4 +1,4 @@
-TEST = 0
+TEST = 1
 
 
 configfile: "workflow/subworkflows/pypsa-eur/config/config.default.yaml"
@@ -23,8 +23,13 @@ module pypsaeur:
         "subworkflows/pypsa-eur/Snakefile"
     config:
         config
-# TODO: add data path from pypsa-eur
 
+
+import shutil
+
+
+if not shutil.os.path.isdir("data"):
+    shutil.copytree("workflow/subworkflows/pypsa-eur/data", "data")
 
 
 base = dict()
@@ -56,11 +61,7 @@ rule main:
         expand(
             "results/comparison/figures/{clusters}_nodes/{figure}.pdf",
             clusters=config["scenario"]["clusters"],
-            figure=["cost_area", "captureshare_line"],
-        ),
-        expand(
-            "results/comparison/gifs/{clusters}_nodes/.gifs_created",
-            clusters=config["scenario"]["clusters"],
+            figure=["cost_bar", "cost_diff_bar", "captureshare_line"],
         ),
 
 
@@ -164,20 +165,36 @@ def get_networks(w):
     )
 
 
-rule plot_cost_area:
+rule plot_cost_bar:
     params:
         technology_groups=config["plotting"]["technology_groups"],
         technology_groups_colors=config["plotting"]["technology_group_colors"],
-        settings=config["plotting"]["cost_area"],
+        settings=config["plotting"]["cost_bar"],
         theme=config["plotting"]["theme"],
     input:
         networks=get_networks,
     output:
-        map="results/comparison/figures/{clusters}_nodes/cost_area.{ext}",
+        map="results/comparison/figures/{clusters}_nodes/cost_bar.{ext}",
     resources:
         mem_mb=20000,
     script:
-        "scripts/plot-cost-area.py"
+        "scripts/plot-cost-bar.py"
+
+
+rule plot_cost_diff_bar:
+    params:
+        technology_groups=config["plotting"]["technology_groups"],
+        technology_groups_colors=config["plotting"]["technology_group_colors"],
+        settings=config["plotting"]["cost_diff_bar"],
+        theme=config["plotting"]["theme"],
+    input:
+        networks=get_networks,
+    output:
+        map="results/comparison/figures/{clusters}_nodes/cost_diff_bar.{ext}",
+    resources:
+        mem_mb=20000,
+    script:
+        "scripts/plot-cost-diff-bar.py"
 
 
 rule plot_operation_area:

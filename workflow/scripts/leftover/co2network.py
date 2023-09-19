@@ -245,14 +245,14 @@ n = network.copy()
 
 crs = ccrs.EqualEarth()
 
-seq = n.stores.query("carrier == 'co2 stored'")
+seq = n.stores.query("carrier == 'co2 sequestered'")
 joinednodes["CO2"] = seq.rename(index=seq.bus.map(n.buses.location)).e_nom_opt.div(
     1e6
 )  # Mt
 joinednodes["CO2"] = joinednodes["CO2"].where(joinednodes["CO2"] > 0.1)
 
 
-balance = nodal_balance(n, "co2 stored", aggregate=["component", "snapshot"])
+balance = nodal_balance(n, "co2 sequestered", aggregate=["component", "snapshot"])
 
 
 balance = (
@@ -287,8 +287,8 @@ n.buses.drop(n.buses.index[n.buses.carrier != "AC"], inplace=True)
 
 n.mremove("Link", n.links.query("carrier != 'CO2 pipeline'").index)
 
-n.links.bus0 = n.links.bus0.str.replace(" co2 stored", "")
-n.links.bus1 = n.links.bus1.str.replace(" co2 stored", "")
+n.links.bus0 = n.links.bus0.str.replace(" co2 sequestered", "")
+n.links.bus1 = n.links.bus1.str.replace(" co2 sequestered", "")
 
 
 n.links["flow"] = n.snapshot_weightings.generators @ n.links_t.p0
@@ -353,9 +353,9 @@ plt.savefig(f"{OUTPUT_SCENARIO}/co2network.pdf", bbox_inches="tight")
 # ## Sequestration Potential
 
 offnodes["potential"] = (
-    n.stores.e_nom_max.filter(like="co2 stored")
+    n.stores.e_nom_max.filter(like="co2 sequestered")
     .div(1e6)
-    .rename(lambda x: x.replace(" co2 stored", ""))
+    .rename(lambda x: x.replace(" co2 sequestered", ""))
 )  # Mt
 
 

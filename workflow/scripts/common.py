@@ -460,7 +460,7 @@ def add_carrier_nice_names(n):
     # replace abbreviations with capital letters
     replace = {
         "H2": "H$_2$",
-        "Co2 Stored": "CO$_2$ Sequestration",
+        "Hydrogen": "H$_2$",
         "Co2": "CO$_2$",
         "Chp": "CHP",
         "Dac": "DAC",
@@ -474,7 +474,8 @@ def add_carrier_nice_names(n):
         "Oil Emissions": "Aviation and Petrochemical\nEmissions",
         "Allam": "Allam Cycle",
     }
-    n.carriers.nice_name.replace(replace, regex=True, inplace=True)
+    nice_names = n.carriers.nice_name.str.title()
+    n.carriers.nice_name = nice_names.replace(replace, regex=True)
 
 
 def add_colors(n):

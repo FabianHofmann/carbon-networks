@@ -6,7 +6,7 @@ remote:
 
 run:
   name:
-    - half-price
+    # - half-price
     - projected-price
     - baseline
   scenarios:
@@ -29,9 +29,11 @@ scenario:
   - 2050
 
 enable:
-  retrieve: true
+  retrieve: false
   retrieve_cutout: false
 
+costs:
+  year: 2040
 
 sector:
   biomass_spatial: true
@@ -41,12 +43,13 @@ sector:
   co2_spatial: true
 
 solving:
-  walltime: 48:00:00
+  walltime: 2-00:00:00
+  mem: 120000
 
 
 labels:
   half-price: "Half-Price\nCO$_2$ Network"
-  projected-price: "Projected-price\nCO$_2$ Network"
+  projected-price: "With\nCO$_2$ Network"
   baseline: "Without\nCO$_2$ Network"
   carbon: "Captured Carbon"
   hydrogen: "Hydrogen"
@@ -104,6 +107,7 @@ constants:
   carrier_to_buses:
     carbon:
       - co2 stored
+      - co2 sequestered
     hydrogen:
       - H2
     electricity:
@@ -254,9 +258,11 @@ constants:
             - methanolisation
         Store:
           - co2 stored
+          - co2 sequestered
       storage:
         Store:
           - co2 stored
+          - co2 sequestered
       transport:
         Link:
           - CO2 pipeline
@@ -294,18 +300,6 @@ constants:
         Store:
           - co2
 
-  # Watch out for negative efficiencies
-  #                      'Sabatier', 'efficiency2'
-  #                       'helmeth', 'efficiency2'
-  #                 'biogas to gas', 'efficiency2'
-  #          'solid biomass CHP CC', 'efficiency3'
-  # 'solid biomass for industry CC', 'efficiency2'
-  #               'methanolisation', 'efficiency2'
-  #               'methanolisation', 'efficiency3'
-  #               'Fischer-Tropsch', 'efficiency2'
-  #                           'DAC', 'efficiency2'
-  #                           'DAC', 'efficiency3'
-
 
 plotting:
   theme:
@@ -327,7 +321,10 @@ plotting:
   operation_bar:
     figsize: [10, 10]
 
-  cost_area:
+  cost_bar:
+    figsize: [4, 3]
+
+  cost_diff_bar:
     figsize: [5, 3]
 
   capacity_map:
@@ -446,65 +443,85 @@ plotting:
 
   technology_groups:
     AC: Electricity Grid
-    Air Heat Pump: Heat Pump
-    Allam Cycle: Carbon Capt. at Point Sources
-    Battery: Battery Infrastructure
-    Battery Charger: Battery Infrastructure
-    Battery Discharger: Battery Infrastructure
-    Bev Charger: Battery Infrastructure
-    Biogas: Bioenergy
-    Biogas To Gas: Bioenergy
-    Biomass Boiler: Bioenergy
-    "CO$_2$": CO$_2$ Infrastucture
-    "CO$_2$ Pipeline": CO$_2$ Infrastucture
-    "CO$_2$ Stored": CO$_2$ Infrastucture
+    BEV charger: Battery Infrastructure
     DAC: DAC
     DC: Electricity Grid
-    Electricity Distribution Grid: Electricity Grid
     Fischer-Tropsch: Fischer-Tropsch
-    Gas: Gas Infrastucture
-    Gas Boiler: Gas Infrastucture
-    Gas CHP: Gas Infrastucture
-    "Gas CHP*": Carbon Capt. at Point Sources
-    "Gas For Industry": Gas Infrastucture
-    "Gas For Industry*": Carbon Capt. at Point Sources
-    Ground Heat Pump: Heat Pump
-    "H$_2$": H$_2$ Infrastucture
-    "H$_2$ Electrolysis": H$_2$ Infrastucture
-    "H$_2$ Fuel Cell": H$_2$ Infrastucture
-    "H$_2$ Pipeline": H$_2$ Infrastucture
-    Helmeth: Helmeth
-    Home Battery: Battery Infrastructure
-    Home Battery Charger: Battery Infrastructure
-    Home Battery Discharger: Battery Infrastructure
-    "Li Ion": Battery Infrastructure
-    Methanol: Methanol
-    Methanolisation: Methanolisation
+    H2: H$_2$ Infrastucture
+    H2 Electrolysis: H$_2$ Infrastucture
+    H2 Fuel Cell: H$_2$ Infrastucture
+    H2 Store: H$_2$ Infrastucture
+    H2 for industry: H$_2$ Infrastucture
+    H2 pipeline: H$_2$ Infrastucture
+    Li ion: Battery Infrastructure
     OCGT: Gas Infrastucture
-    Offshore Wind: Wind
-    Oil: Oil
-    Onshore Wind: Wind
-    Process Emissions: Process Emissions
-    "Process Emissions*": Carbon Capt. at Point Sources
-    Pumped Hydro Storage: Hydro Energy
-    "Reservoir & Dam": Hydro Energy
-    Resistive Heater: Resistive Heater
-    "Run of River": Hydro Energy
+    PHS: Hydro Energy
     SMR: Hydrogen Infrastucture
-    "SMR*": Carbon Capt. at Point Sources
-    Sabatier: Sabatier
-    Solar: Solar
-    "Solar Rooftop": Solar
-    "Solar Thermal": Solar
-    "Solid Biomass": Bioenergy
-    "Solid Biomass CHP": Bioenergy
-    "Solid Biomass CHP*": Carbon Capt. at Point Sources
-    "Solid Biomass For Industry": Bioenergy
-    "Solid Biomass For Industry*": Carbon Capt. at Point Sources
+    SMR CC: Carbon Capt. at Point Sources
+    Sabatier: Other
     V2G: Battery Infrastructure
-    "Water Tanks": Water Tanks
-    "Water Tanks Charger": Water Tanks
-    "Water Tanks Discharger": Water Tanks
+    agriculture electricity: Other
+    agriculture heat: Other
+    agriculture machinery oil: Other
+    agriculture machinery oil emissions: Other
+    air heat pump: Heat Pump
+    allam: Carbon Capt. at Point Sources
+    battery: Battery Infrastructure
+    battery charger: Battery Infrastructure
+    battery discharger: Battery Infrastructure
+    battery storage: Battery Infrastructure
+    biogas: Bioenergy
+    biogas to gas: Bioenergy
+    biomass boiler: Bioenergy
+    co2: CO$_2$ Infrastucture
+    co2 sequestered: CO$_2$ Infrastucture
+    co2 stored: CO$_2$ Infrastucture
+    electricity: Electricity Grid
+    electricity distribution grid: Electricity Grid
+    gas: Gas Infrastucture
+    gas CHP: Gas Infrastucture
+    gas CHP CC: Carbon Capt. at Point Sources
+    gas boiler: Gas Infrastucture
+    gas for industry: Gas Infrastucture
+    gas for industry CC: Carbon Capt. at Point Sources
+    geothermal: Other
+    ground heat pump: Heat Pump
+    heat: Other
+    home battery: Battery Infrastructure
+    home battery charger: Battery Infrastructure
+    home battery discharger: Battery Infrastructure
+    hydro: Hydro Energy
+    industry electricity: Other
+    kerosene for aviation: Other
+    land transport EV: Other
+    land transport fuel cell: Other
+    low voltage: Electricity Grid
+    low-temperature heat for industry: Other
+    methanol: Methanol
+    methanolisation: Methanolisation
+    naphtha for industry: Other
+    offwind: Wind
+    oil: Oil
+    oil emissions: Other
+    onwind: Wind
+    other: Other
+    process emissions: Process Emissions
+    process emissions CC: Carbon Capt. at Point Sources
+    resistive heater: Resistive Heater
+    ror: Other
+    shipping methanol: Shipping
+    shipping methanol emissions: Shipping
+    solar: Solar
+    solar rooftop: Solar
+    solar thermal: Solar
+    solid biomass: Bioenergy
+    solid biomass CHP: Bioenergy
+    solid biomass CHP CC: Carbon Capt. at Point Sources
+    solid biomass for industry: Bioenergy
+    solid biomass for industry CC: Carbon Capt. at Point Sources
+    water tanks: Water Tanks
+    water tanks charger: Water Tanks
+    water tanks discharger: Water Tanks
   technology_group_colors:
     Hydro Energy: "#298c81"
     Battery Infrastructure: "#ace37f"
@@ -520,7 +537,9 @@ plotting:
     Bioenergy: "#baa741"
     H$_2$ Infrastucture: "#bf13a0"
     Gas Infrastucture: "#e05b09"
+    Shipping: "#ff8c00"
     Wind: "#66b5ff"
     Oil: "#001a33"
     Solar: "#ffe066"
     Process Emissions: '#222222'
+    Other: '#aaaaaa'

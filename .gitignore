@@ -17,6 +17,7 @@ benchmarks/
 pypsa-eur
 sec
 connect.sh
+old-results
 
 # from pypsa-eur
 
