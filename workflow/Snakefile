@@ -49,7 +49,7 @@ rule get_data:
     shell:
         """
         mkdir -p data
-        cp -nR {data_dir}/ data/
+        cp -nR {data_dir}/. data/
         """
 
 
