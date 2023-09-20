@@ -18,9 +18,10 @@ dependencies:
 
     - seaborn
 
-    - pypsa>=0.21.3
+    - pypsa>=0.25.1
     - atlite>=0.2.9
     - dask
+    - gurobi
 
     # Dependencies of the workflow itself
     - xlrd
