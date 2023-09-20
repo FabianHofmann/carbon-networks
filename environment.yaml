@@ -36,6 +36,7 @@ dependencies:
     - numpy<1.24
     - pandas
     - geopandas>=0.11.0
+    - rioxarray
     - xarray
     - netcdf4
     - networkx

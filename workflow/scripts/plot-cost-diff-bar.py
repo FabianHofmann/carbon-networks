@@ -13,9 +13,11 @@ alpha = 1
 region_alpha = 0.8
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
-    snakemake = mock_snakemake("plot_cost_diff_bar", ext="pdf", clusters=90)
+    snakemake = mock_snakemake("plot_cost_diff_bar", ext="pdf", clusters=40)
 
 sns.set_theme(**snakemake.params["theme"])
+labels = snakemake.config["labels"]
+
 
 df = {}
 objectives = {}
@@ -33,27 +35,21 @@ for path in snakemake.input.networks:
     df[key] = costs
     objectives[key] = n.objective
 
-df = pd.concat(df, axis=1)
+df = pd.concat(df, axis=1).fillna(0)
 
 norm = 1e9
 unit = "bn€/a"
 
-groups = snakemake.config["plotting"]["technology_groups"]
-groups = {n.carriers.nice_name.get(k, k): v for k, v in groups.items()}
-grouped = df.groupby(groups).sum()
-grouped = grouped[grouped.max(axis=1) > 5e4]
-diff = grouped.diff(axis=1).iloc[:, 1].div(norm)
+diff = (df[labels["baseline"]] - df[labels["projected-price"]]).div(norm)
 
-colors = snakemake.config["plotting"]["technology_group_colors"]
 
-# %%
 fig, ax = plt.subplots(
     1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"
 )
 
-
 diff = diff[diff.round(0) != 0].sort_values()
-diff.plot(kind="barh", ax=ax, color=[colors[k] for k in diff.index], lw=0, legend=False)
+colors = n.carriers.set_index("nice_name").color[diff.index]
+diff.plot(kind="barh", ax=ax, color=colors, lw=0, legend=False)
 
 ax.vlines(0, -0.5, len(diff) - 0.5, color="k", lw=0.5)
 ax.set_xlabel(f"Cost benefit [{unit}]")

@@ -1,6 +1,9 @@
 TEST = 1
 
 
+from pathlib import Path
+
+
 configfile: "workflow/subworkflows/pypsa-eur/config/config.default.yaml"
 configfile: "config/config.yaml"
 
@@ -25,17 +28,29 @@ module pypsaeur:
         config
 
 
-import shutil
-
-
-if not shutil.os.path.isdir("data"):
-    shutil.copytree("workflow/subworkflows/pypsa-eur/data", "data")
-
-
 base = dict()
+
+
 for k, v in config["scenario"].items():
     if k != "clusters":
         base[k] = v[0]
+
+
+data_dir = Path("workflow/subworkflows/pypsa-eur/data")
+
+
+rule get_data:
+    output:
+        [
+            str(Path("data") / p.relative_to(data_dir))
+            for p in data_dir.rglob("*")
+            if p.is_file()
+        ],
+    shell:
+        """
+        mkdir -p data
+        cp -nR {data_dir}/ data/
+        """
 
 
 rule main:

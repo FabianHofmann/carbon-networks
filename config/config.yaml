@@ -6,9 +6,9 @@ remote:
 
 run:
   name:
-    # - half-price
-    - projected-price
     - baseline
+    - projected-price
+    - half-price
   scenarios:
     enable: true
   shared_resources: true
@@ -48,9 +48,9 @@ solving:
 
 
 labels:
-  half-price: "Half-Price\nCO$_2$ Network"
-  projected-price: "With\nCO$_2$ Network"
   baseline: "Without\nCO$_2$ Network"
+  projected-price: "With\nCO$_2$ Network"
+  half-price: "With subsidized\nCO$_2$ Network"
   carbon: "Captured Carbon"
   hydrogen: "Hydrogen"
   electricity: "Electricity"
@@ -325,7 +325,7 @@ plotting:
     figsize: [4, 3]
 
   cost_diff_bar:
-    figsize: [5, 3]
+    figsize: [5, 5]
 
   capacity_map:
     figsize: [10, 8]
