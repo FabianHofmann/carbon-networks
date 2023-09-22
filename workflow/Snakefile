@@ -1,4 +1,4 @@
-TEST = 1
+TEST = 0
 
 
 from pathlib import Path
@@ -36,6 +36,41 @@ for k, v in config["scenario"].items():
         base[k] = v[0]
 
 
+rule main:
+    input:
+        expand(
+            "results/{run}/figures/{clusters}_nodes/{which}_map_{kind}.png",
+            run=config["run"]["name"],
+            clusters=config["scenario"]["clusters"],
+            which=["capacity", "operation"],
+            kind=config["constants"]["kinds"],
+        ),
+        expand(
+            "results/{run}/figures/{clusters}_nodes/energy_balance_area_{kind}.png",
+            run=config["run"]["name"],
+            clusters=config["scenario"]["clusters"],
+            kind=config["constants"]["kinds"]
+            + config["constants"]["additional_kinds"],
+        ),
+        expand(
+            "results/{run}/figures/{clusters}_nodes/{figure}.png",
+            run=config["run"]["name"],
+            clusters=config["scenario"]["clusters"],
+            figure=["operation_bar", "sequestration_map"],
+        ),
+        expand(
+            "results/comparison/figures/{clusters}_nodes/energy_balance_bar_{kind}.pdf",
+            clusters=config["scenario"]["clusters"],
+            kind=config["constants"]["kinds"]
+            + config["constants"]["additional_kinds"],
+        ),
+        expand(
+            "results/comparison/figures/{clusters}_nodes/{figure}.pdf",
+            clusters=config["scenario"]["clusters"],
+            figure=["cost_bar", "cost_diff_bar", "captureshare_line"],
+        ),
+
+
 data_dir = Path("workflow/subworkflows/pypsa-eur/data")
 
 
@@ -51,33 +86,6 @@ rule get_data:
         mkdir -p data
         cp -nR {data_dir}/. data/
         """
-
-
-rule main:
-    input:
-        expand(
-            "results/{run}/figures/{clusters}_nodes/{which}_map_{kind}.png",
-            run=config["run"]["name"],
-            clusters=config["scenario"]["clusters"],
-            which=["capacity", "operation"],
-            kind=config["constants"]["kinds"],
-        ),
-        expand(
-            "results/{run}/figures/{clusters}_nodes/{figure}.png",
-            run=config["run"]["name"],
-            clusters=config["scenario"]["clusters"],
-            figure=["operation_bar", "sequestration_map"],
-        ),
-        expand(
-            "results/comparison/figures/{clusters}_nodes/operation_area_{kind}.pdf",
-            clusters=config["scenario"]["clusters"],
-            kind=config["constants"]["kinds"],
-        ),
-        expand(
-            "results/comparison/figures/{clusters}_nodes/{figure}.pdf",
-            clusters=config["scenario"]["clusters"],
-            figure=["cost_bar", "cost_diff_bar", "captureshare_line"],
-        ),
 
 
 rule get_solved_network:
@@ -169,6 +177,20 @@ rule plot_operation_map:
         "scripts/plot-operation-map.py"
 
 
+rule plot_energy_balance_area:
+    params:
+        settings=config["plotting"]["energy_balance_area"],
+        theme=config["plotting"]["theme"],
+    input:
+        network="results/{run}/networks/{clusters}_nodes.nc",
+    output:
+        figure="results/{run}/figures/{clusters}_nodes/energy_balance_area_{kind}.{ext}",
+    resources:
+        mem_mb=20000,
+    script:
+        "scripts/plot-energy-balance-area.py"
+
+
 # COMPARISON
 
 
@@ -212,18 +234,18 @@ rule plot_cost_diff_bar:
         "scripts/plot-cost-diff-bar.py"
 
 
-rule plot_operation_area:
+rule plot_energy_balance_bar:
     params:
-        settings=config["plotting"]["operation_area"],
+        settings=config["plotting"]["energy_balance_bar"],
         theme=config["plotting"]["theme"],
     input:
         networks=get_networks,
     output:
-        map="results/comparison/figures/{clusters}_nodes/operation_area_{kind}.{ext}",
+        map="results/comparison/figures/{clusters}_nodes/energy_balance_bar_{kind}.{ext}",
     resources:
         mem_mb=20000,
     script:
-        "scripts/plot-operation-area.py"
+        "scripts/plot-energy-balance-bar.py"
 
 
 rule plot_captureshare_line:

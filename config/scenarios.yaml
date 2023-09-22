@@ -16,3 +16,11 @@ projected-price:
 baseline:
   sector:
     co2network: false
+
+
+nofossils:
+  sector:
+    co2network: true
+    regional_co2_sequestration_potential:
+      enable: false
+    co2_sequestration_potential: 0

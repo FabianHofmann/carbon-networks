@@ -51,6 +51,7 @@ labels:
   baseline: "Without\nCO$_2$ Network"
   projected-price: "With\nCO$_2$ Network"
   half-price: "With subsidized\nCO$_2$ Network"
+  nofossils: "Without\nFossil Fuels"
   carbon: "Captured Carbon"
   hydrogen: "Hydrogen"
   electricity: "Electricity"
@@ -64,6 +65,9 @@ constants:
     - hydrogen
     - carbon
     - co2
+  additional_kinds:
+    - methanol
+    - oil
 
   oneport_comps:
     - Generator
@@ -315,8 +319,11 @@ plotting:
   sequestration_map:
     figsize: [6,6]
 
-  operation_area:
+  energy_balance_bar:
     figsize: [4, 3.5]
+
+  energy_balance_area:
+    figsize: [8, 3.5]
 
   operation_bar:
     figsize: [10, 10]

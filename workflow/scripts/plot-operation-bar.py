@@ -13,10 +13,10 @@ import matplotlib.pyplot as plt
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_operation_bar",
-        kind="carbon",
+        kind="hydrogen",
         run="half-price",
         clusters=40,
-        ext="png",
+        ext="pdf",
     )
 
 sns.set_theme(**snakemake.params["theme"])
