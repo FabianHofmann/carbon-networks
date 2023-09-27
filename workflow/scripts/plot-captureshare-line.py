@@ -37,7 +37,7 @@ for path in snakemake.input.networks:
     )
     caps = caps["cc"] / caps.sum(1)
 
-    key = snakemake.config["labels"][n.meta["wildcards"]["run"]]
+    key = n.meta["label"]
     df[key] = caps
 
 df = pd.concat(df, axis=1)

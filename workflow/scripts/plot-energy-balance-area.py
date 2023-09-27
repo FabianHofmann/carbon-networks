@@ -34,7 +34,7 @@ label = config["labels"].get(kind, kind.title())
 
 
 n = import_network(snakemake.input.network)
-key = snakemake.config["labels"][n.meta["wildcards"]["run"]]
+key = n.meta["label"]
 balance = n.statistics.energy_balance(aggregate_time=False)
 
 

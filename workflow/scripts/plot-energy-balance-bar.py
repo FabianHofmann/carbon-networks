@@ -18,7 +18,7 @@ from common import (
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
-        "plot_energy_balance_bar", ext="pdf", kind="process emissions", clusters=90
+        "plot_energy_balance_bar", ext="pdf", kind="process emissions", clusters=40
     )
 
 sns.set_theme(**snakemake.params["theme"])
@@ -36,7 +36,7 @@ for path in snakemake.input.networks:
     n = import_network(path)
     balance = n.statistics.energy_balance()
 
-    key = snakemake.config["labels"][n.meta["wildcards"]["run"]]
+    key = n.meta["label"]
 
     df[key] = balance
     objectives[key] = n.objective

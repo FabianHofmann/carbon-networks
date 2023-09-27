@@ -1,16 +1,18 @@
-TEST = 0
-
-
-from pathlib import Path
+import pathlib
 
 
 configfile: "workflow/subworkflows/pypsa-eur/config/config.default.yaml"
 configfile: "config/config.yaml"
 
 
-if TEST:
+if config["configs"]["test"]:
 
     configfile: "config/config.test.yaml"
+
+
+if config["configs"]["presentation"]:
+
+    configfile: "config/config.presentation.yaml"
 
 
 wildcard_constraints:
@@ -28,14 +30,6 @@ module pypsaeur:
         config
 
 
-base = dict()
-
-
-for k, v in config["scenario"].items():
-    if k != "clusters":
-        base[k] = v[0]
-
-
 rule main:
     input:
         expand(
@@ -46,14 +40,14 @@ rule main:
             kind=config["constants"]["kinds"],
         ),
         expand(
-            "results/{run}/figures/{clusters}_nodes/energy_balance_area_{kind}.png",
+            "results/{run}/figures/{clusters}_nodes/energy_balance_area_{kind}.pdf",
             run=config["run"]["name"],
             clusters=config["scenario"]["clusters"],
             kind=config["constants"]["kinds"]
             + config["constants"]["additional_kinds"],
         ),
         expand(
-            "results/{run}/figures/{clusters}_nodes/{figure}.png",
+            "results/{run}/figures/{clusters}_nodes/{figure}.pdf",
             run=config["run"]["name"],
             clusters=config["scenario"]["clusters"],
             figure=["operation_bar", "sequestration_map"],
@@ -69,15 +63,37 @@ rule main:
             clusters=config["scenario"]["clusters"],
             figure=["cost_bar", "cost_diff_bar", "captureshare_line"],
         ),
+    output:
+        "results/.main",
+    shell:
+        """
+        touch {output}
+        """
 
 
-data_dir = Path("workflow/subworkflows/pypsa-eur/data")
+rule report:
+    input:
+        tex=config["report"]["path"] + ".tex",
+        bib="report/references.bib",
+        figures="results/.main",
+    output:
+        pdf=config["report"]["path"] + ".pdf",
+    shell:
+        """
+        pdflatex {input.tex}
+        bibtex {input.bib})
+        pdflatex {input.tex}
+        pdflatex {input.tex}
+        """
+
+
+data_dir = pathlib.Path("workflow/subworkflows/pypsa-eur/data")
 
 
 rule get_data:
     output:
         [
-            str(Path("data") / p.relative_to(data_dir))
+            str(pathlib.Path("data") / p.relative_to(data_dir))
             for p in data_dir.rglob("*")
             if p.is_file()
         ],
@@ -94,7 +110,7 @@ rule get_solved_network:
     """
     input:
         network="results/{{run}}/postnetworks/elec_s{simpl}_{{clusters}}_l{ll}_{opts}_{sector_opts}_{planning_horizons}.nc".format(
-            **base
+            **config["scenario"]
         ),
     output:
         network="results/{run}/networks/{clusters}_nodes.nc",
@@ -132,10 +148,10 @@ rule plot_capacity_map:
     input:
         network="results/{run}/networks/{clusters}_nodes.nc",
         onshore_regions="resources/regions_onshore_elec_s{simpl}_{{clusters}}.geojson".format(
-            **base
+            **config["scenario"]
         ),
         offshore_regions="resources/regions_offshore_elec_s{simpl}_{{clusters}}.geojson".format(
-            **base
+            **config["scenario"]
         ),
     output:
         map="results/{run}/figures/{clusters}_nodes/capacity_map_{kind}.{ext}",
@@ -152,7 +168,7 @@ rule plot_sequestration_map:
     input:
         network="results/{run}/networks/{clusters}_nodes.nc",
         offshore_regions="resources/regions_offshore_elec_s{simpl}_{{clusters}}.geojson".format(
-            **base
+            **config["scenario"]
         ),
     output:
         map="results/{run}/figures/{clusters}_nodes/sequestration_map.{ext}",
@@ -167,7 +183,7 @@ rule plot_operation_map:
     input:
         network="results/{run}/networks/{clusters}_nodes.nc",
         onshore_regions="resources/regions_onshore_elec_s{simpl}_{{clusters}}.geojson".format(
-            **base
+            **config["scenario"]
         ),
     resources:
         mem_mb=20000,

@@ -4,23 +4,61 @@
 # SPDX-License-Identifier: MIT
 
 half-price:
+  label: "With subsidized\nCO$_2$ Network"
   sector:
     co2network: true
     co2_network_cost_factor: 0.5
 
 projected-price:
+  label: "With\nCO$_2$ Network"
   sector:
     co2network: true
     co2_network_cost_factor: 1.0
 
 baseline:
+  label: "Without\nCO$_2$ Network"
   sector:
     co2network: false
 
 
-nofossils:
+no-h2-half-price:
+  label: "With subsidized\nCO$_2$ Network and\nno H$_2$ Network"
+  sector:
+    H2_network: false
+    co2network: true
+    co2_network_cost_factor: 0.5
+
+no-h2-projected-price:
+  label: "With\nCO$_2$ Network and\nno H$_2$ Network"
+  sector:
+    H2_network: false
+    co2network: true
+    co2_network_cost_factor: 1.0
+
+no-h2-baseline:
+  label: "Without\nCO$_2$ Network and\nno H$_2$ Network"
+  sector:
+    H2_network: false
+    co2network: false
+
+
+wo-ft-waste-heat-half-price:
+  label: "With subsidized\nCO$_2$ Network and\nno FT Waste Heat"
   sector:
     co2network: true
-    regional_co2_sequestration_potential:
-      enable: false
-    co2_sequestration_potential: 0
+    co2_network_cost_factor: 0.5
+    use_fischer_tropsch_waste_heat: false
+
+
+wo-ft-waste-heat-projected-price:
+  label: "With\nCO$_2$ Network and\nno FT Waste Heat"
+  sector:
+    co2network: true
+    co2_network_cost_factor: 1.0
+    use_fischer_tropsch_waste_heat: false
+
+wo-ft-waste-heat-baseline:
+  label: "Without\nCO$_2$ Network and\nno FT Waste Heat"
+  sector:
+    co2network: false
+    use_fischer_tropsch_waste_heat: false

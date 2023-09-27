@@ -34,7 +34,7 @@ for path in snakemake.input.networks:
     if (prod.sum() / cons.sum()).round(3) != 1:
         print(f"Warning: {kind} production and consumption are not equal.")
 
-    key = snakemake.config["labels"][n.meta["wildcards"]["run"]]
+    key = n.meta["label"]
     df[key] = pd.concat([prod, cons], keys=["Production", "Consumption"])
 
 df = pd.concat(df, axis=1)

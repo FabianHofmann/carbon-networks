@@ -1,3 +1,10 @@
+configs:
+  test: 0
+  presentation: 1
+
+
+report:
+  path: "report/submissions/ecemp/presentation/presentation"
 
 remote:
   ssh: zecm
@@ -9,24 +16,25 @@ run:
     - baseline
     - projected-price
     - half-price
+    # - wo-ft-waste-heat-baseline
+    # - wo-ft-waste-heat-projected-price
+    # - wo-ft-waste-heat-half-price
+    # - no-h2-baseline
+    # - no-h2-projected-price
+    # - no-h2-half-price
   scenarios:
     enable: true
   shared_resources: true
   disable_progressbar: true
 
 scenario:
-  simpl:
-  - ''
-  ll:
-  - v1.2
+  simpl: ''
+  ll: v1.2
   clusters:
-  - 90
-  opts:
-  - ''
-  sector_opts:
-    - Co2L0-3H-T-H-B-I-A-solar+p3-linemaxext15
-  planning_horizons:
-  - 2050
+    - 90
+  opts: ''
+  sector_opts: Co2L0-3H-T-H-B-I-A-solar+p3-linemaxext15
+  planning_horizons: 2050
 
 enable:
   retrieve: false
@@ -68,6 +76,7 @@ constants:
   additional_kinds:
     - methanol
     - oil
+    - heat
 
   oneport_comps:
     - Generator
@@ -417,9 +426,9 @@ plotting:
     hydrogen:
       region_cmap: Blues
       region_unit: TWh
-      bus_scale: 1e-8
-      branch_scale: 3e-8
-      flow_scale: 1e-5
+      bus_scale: 5e-9
+      branch_scale: 1e-8
+      flow_scale: 4e-6
       bus_sizes:
         - 100 # TWh
         - 50 # TWh
@@ -429,7 +438,7 @@ plotting:
       region_unit: Mt
       bus_scale: 2e-8
       branch_scale: 5e-8
-      flow_scale: 2e-5
+      flow_scale: 7e-5
       bus_sizes:
         - 50 # Mt
         - 20 # Mt
@@ -438,8 +447,8 @@ plotting:
       region_cmap: Reds
       region_unit: Mt
       bus_scale: 8e-8
-      branch_scale: 2e-7
-      flow_scale: 8e-5
+      branch_scale: 5e-7
+      flow_scale: 2e-3
       bus_sizes:
         - 50 # Mt
         - 20 # Mt
@@ -463,7 +472,7 @@ plotting:
     Li ion: Battery Infrastructure
     OCGT: Gas Infrastucture
     PHS: Hydro Energy
-    SMR: Hydrogen Infrastucture
+    SMR: H$_2$ Infrastucture
     SMR CC: Carbon Capt. at Point Sources
     Sabatier: Other
     V2G: Battery Infrastructure

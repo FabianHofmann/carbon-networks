@@ -28,7 +28,7 @@ for path in snakemake.input.networks:
     costs = costs.droplevel(0)[lambda x: x > 0]
     costs = costs.groupby(costs.index).sum()
 
-    key = snakemake.config["labels"][n.meta["wildcards"]["run"]]
+    key = n.meta["label"]
 
     df[key] = costs
     objectives[key] = n.objective
