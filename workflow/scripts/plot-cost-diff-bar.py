@@ -40,7 +40,7 @@ df = pd.concat(df, axis=1).fillna(0)
 norm = 1e9
 unit = "bn€/a"
 
-diff = (df[labels["baseline"]] - df[labels["projected-price"]]).div(norm)
+diff = (df[df.columns[0]] - df[df.columns[1]]).div(norm)
 
 
 fig, ax = plt.subplots(

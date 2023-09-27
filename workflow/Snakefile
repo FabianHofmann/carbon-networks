@@ -53,13 +53,15 @@ rule main:
             figure=["operation_bar", "sequestration_map"],
         ),
         expand(
-            "results/comparison/figures/{clusters}_nodes/energy_balance_bar_{kind}.pdf",
+            "results/comparison/{comparison}/figures/{clusters}_nodes/energy_balance_bar_{kind}.pdf",
+            comparison=config["comparison"],
             clusters=config["scenario"]["clusters"],
             kind=config["constants"]["kinds"]
             + config["constants"]["additional_kinds"],
         ),
         expand(
-            "results/comparison/figures/{clusters}_nodes/{figure}.pdf",
+            "results/comparison/{comparison}/figures/{clusters}_nodes/{figure}.pdf",
+            comparison=config["comparison"],
             clusters=config["scenario"]["clusters"],
             figure=["cost_bar", "cost_diff_bar", "captureshare_line"],
         ),
@@ -213,7 +215,7 @@ rule plot_energy_balance_area:
 def get_networks(w):
     return expand(
         "results/{run}/networks/{clusters}_nodes.nc",
-        run=config["run"]["name"],
+        run=config["comparison"][w.comparison],
         **w,
     )
 
@@ -227,7 +229,7 @@ rule plot_cost_bar:
     input:
         networks=get_networks,
     output:
-        map="results/comparison/figures/{clusters}_nodes/cost_bar.{ext}",
+        map="results/comparison/{comparison}/figures/{clusters}_nodes/cost_bar.{ext}",
     resources:
         mem_mb=20000,
     script:
@@ -243,7 +245,7 @@ rule plot_cost_diff_bar:
     input:
         networks=get_networks,
     output:
-        map="results/comparison/figures/{clusters}_nodes/cost_diff_bar.{ext}",
+        map="results/comparison/{comparison}/figures/{clusters}_nodes/cost_diff_bar.{ext}",
     resources:
         mem_mb=20000,
     script:
@@ -257,7 +259,11 @@ rule plot_energy_balance_bar:
     input:
         networks=get_networks,
     output:
-        map="results/comparison/figures/{clusters}_nodes/energy_balance_bar_{kind}.{ext}",
+        **{
+            kind: f"results/comparison/{{comparison}}/figures/{{clusters}}_nodes/energy_balance_bar_{kind}.{{ext}}"
+            for kind in config["constants"]["kinds"]
+            + config["constants"]["additional_kinds"]
+        },
     resources:
         mem_mb=20000,
     script:
@@ -271,29 +277,11 @@ rule plot_captureshare_line:
     input:
         networks=get_networks,
     output:
-        map="results/comparison/figures/{clusters}_nodes/captureshare_line.{ext}",
+        map="results/comparison/{comparison}/figures/{clusters}_nodes/captureshare_line.{ext}",
     resources:
         mem_mb=20000,
     script:
         "scripts/plot-captureshare-line.py"
-
-
-rule create_gifs:
-    input:
-        expand(
-            "results/comparison/gifs/{clusters}_nodes/capacity_map_{kind}.gif",
-            kind=config["constants"]["kinds"],
-            clusters=config["scenario"]["clusters"],
-        ),
-        expand(
-            "results/comparison/gifs/{clusters}_nodes/operation_map_{kind}.gif",
-            kind=config["constants"]["kinds"],
-            clusters=config["scenario"]["clusters"],
-        ),
-    output:
-        "results/comparison/gifs/{clusters}_nodes/.gifs_created",
-    shell:
-        "touch {output}"
 
 
 def get_maps(w):
@@ -308,7 +296,7 @@ rule gif_map:
     input:
         get_maps,
     output:
-        "results/comparison/gifs/{clusters}_nodes/{which}_map_{kind}.gif",
+        "results/comparison/{comparison}/gifs/{clusters}_nodes/{which}_map_{kind}.gif",
     shell:
         """
         convert -delay 100 -loop 0 -gravity South -background White -splice 0x35 -pointsize 40 -annotate +0+4 %f {input} {output}

@@ -3,15 +3,6 @@
 # SPDX-License-Identifier: CC0-1.0
 
 scenario:
-  simpl:
-  - ''
-  ll:
-  - v1.2
   clusters:
   - 40
-  opts:
-  - ''
-  sector_opts:
-    - Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15
-  planning_horizons:
-  - 2050
+  sector_opts: Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15

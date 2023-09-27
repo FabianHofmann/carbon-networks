@@ -12,7 +12,7 @@ plotting:
     figsize: [8,7]
 
   energy_balance_bar:
-    figsize: [4, 6]
+    figsize: [6, 6]
     title: false
 
   # operation_bar:
@@ -20,6 +20,10 @@ plotting:
 
   cost_bar:
     figsize: [7,5]
+
+
+  cost_diff_bar:
+    figsize: [7, 5]
 
   # capacity_map:
   #   figsize: [7, 4]

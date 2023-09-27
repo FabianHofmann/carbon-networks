@@ -176,3 +176,22 @@ def create_dummy_network(n):
     dummy.madd("Link", connections.index, **connections)
     dummy.madd("Carrier", n.carriers.index, **n.carriers)
     return dummy
+
+
+# rule create_gifs:
+#     input:
+#         # use input function here
+#         expand(
+#             "results/comparison-{comparison}/gifs/{clusters}_nodes/capacity_map_{kind}.gif",
+#             kind=config["constants"]["kinds"],
+#             clusters=config["scenario"]["clusters"],
+#         ),
+#         expand(
+#             "results/comparison-{comparison}/gifs/{clusters}_nodes/operation_map_{kind}.gif",
+#             kind=config["constants"]["kinds"],
+#             clusters=config["scenario"]["clusters"],
+#         ),
+#     output:
+#         "results/comparison-{comparison}/gifs/{clusters}_nodes/.gifs_created",
+#     shell:
+#         "touch {output}"

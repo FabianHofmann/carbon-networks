@@ -1,7 +1,6 @@
 configs:
-  test: 0
+  test: 1
   presentation: 1
-
 
 report:
   path: "report/submissions/ecemp/presentation/presentation"
@@ -10,22 +9,40 @@ remote:
   ssh: zecm
   path: /home/users/h/hofmann/scratch/projects/co2-network
 
-
 run:
   name:
     - baseline
     - projected-price
     - half-price
-    # - wo-ft-waste-heat-baseline
-    # - wo-ft-waste-heat-projected-price
-    # - wo-ft-waste-heat-half-price
-    # - no-h2-baseline
-    # - no-h2-projected-price
-    # - no-h2-half-price
+    - no-waste-heat-baseline
+    - no-waste-heat-projected-price
+    - no-waste-heat-half-price
+    - no-h2-baseline
+    - no-h2-projected-price
+    - no-h2-half-price
   scenarios:
     enable: true
   shared_resources: true
   disable_progressbar: true
+
+comparison:
+  default:
+    - baseline
+    - projected-price
+    - half-price
+  no-waste-heat:
+    - no-waste-heat-baseline
+    - no-waste-heat-projected-price
+    - no-waste-heat-half-price
+  no-h2:
+    - no-h2-baseline
+    - no-h2-projected-price
+    - no-h2-half-price
+  networks:
+    - no-h2-baseline # without H2 and CO2
+    - baseline # without CO2 with H2
+    - no-h2-projected-price # without H2 and with CO2
+    - projected-price # with H2 and CO2
 
 scenario:
   simpl: ''
@@ -56,10 +73,6 @@ solving:
 
 
 labels:
-  baseline: "Without\nCO$_2$ Network"
-  projected-price: "With\nCO$_2$ Network"
-  half-price: "With subsidized\nCO$_2$ Network"
-  nofossils: "Without\nFossil Fuels"
   carbon: "Captured Carbon"
   hydrogen: "Hydrogen"
   electricity: "Electricity"

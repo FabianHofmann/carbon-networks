@@ -42,23 +42,29 @@ no-h2-baseline:
     co2network: false
 
 
-wo-ft-waste-heat-half-price:
+no-waste-heat-half-price:
   label: "With subsidized\nCO$_2$ Network and\nno FT Waste Heat"
   sector:
     co2network: true
     co2_network_cost_factor: 0.5
     use_fischer_tropsch_waste_heat: false
+    use_methanation_waste_heat: false
+    use_methanolisation_waste_heat: false
 
 
-wo-ft-waste-heat-projected-price:
+no-waste-heat-projected-price:
   label: "With\nCO$_2$ Network and\nno FT Waste Heat"
   sector:
     co2network: true
     co2_network_cost_factor: 1.0
     use_fischer_tropsch_waste_heat: false
+    use_methanation_waste_heat: false
+    use_methanolisation_waste_heat: false
 
-wo-ft-waste-heat-baseline:
+no-waste-heat-baseline:
   label: "Without\nCO$_2$ Network and\nno FT Waste Heat"
   sector:
     co2network: false
     use_fischer_tropsch_waste_heat: false
+    use_methanation_waste_heat: false
+    use_methanolisation_waste_heat: false
