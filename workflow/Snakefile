@@ -156,7 +156,10 @@ rule plot_capacity_map:
             **config["scenario"]
         ),
     output:
-        map="results/{run}/figures/{clusters}_nodes/capacity_map_{kind}.{ext}",
+        **{
+            kind: f"results/{{run}}/figures/{{clusters}}_nodes/capacity_map_{kind}.{{ext}}"
+            for kind in config["constants"]["kinds"]
+        },
     resources:
         mem_mb=20000,
     script:
@@ -190,7 +193,10 @@ rule plot_operation_map:
     resources:
         mem_mb=20000,
     output:
-        map="results/{run}/figures/{clusters}_nodes/operation_map_{kind}.{ext}",
+        **{
+            kind: f"results/{{run}}/figures/{{clusters}}_nodes/operation_map_{kind}.{{ext}}"
+            for kind in config["constants"]["kinds"]
+        },
     script:
         "scripts/plot-operation-map.py"
 
@@ -199,10 +205,15 @@ rule plot_energy_balance_area:
     params:
         settings=config["plotting"]["energy_balance_area"],
         theme=config["plotting"]["theme"],
+        label=lambda w: config["labels"][w.run],
     input:
         network="results/{run}/networks/{clusters}_nodes.nc",
     output:
-        figure="results/{run}/figures/{clusters}_nodes/energy_balance_area_{kind}.{ext}",
+        **{
+            kind: f"results/{{run}}/figures/{{clusters}}_nodes/energy_balance_area_{kind}.{{ext}}"
+            for kind in config["constants"]["kinds"]
+            + config["constants"]["additional_kinds"]
+        },
     resources:
         mem_mb=20000,
     script:
@@ -226,6 +237,7 @@ rule plot_cost_bar:
         technology_groups_colors=config["plotting"]["technology_group_colors"],
         settings=config["plotting"]["cost_bar"],
         theme=config["plotting"]["theme"],
+        labels=config["labels"],
     input:
         networks=get_networks,
     output:
@@ -242,6 +254,7 @@ rule plot_cost_diff_bar:
         technology_groups_colors=config["plotting"]["technology_group_colors"],
         settings=config["plotting"]["cost_diff_bar"],
         theme=config["plotting"]["theme"],
+        labels=config["labels"],
     input:
         networks=get_networks,
     output:
@@ -256,6 +269,7 @@ rule plot_energy_balance_bar:
     params:
         settings=config["plotting"]["energy_balance_bar"],
         theme=config["plotting"]["theme"],
+        labels=config["labels"],
     input:
         networks=get_networks,
     output:
@@ -274,6 +288,7 @@ rule plot_captureshare_line:
     params:
         settings=config["plotting"]["captureshare_line"],
         theme=config["plotting"]["theme"],
+        labels=config["labels"],
     input:
         networks=get_networks,
     output:

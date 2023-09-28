@@ -5,4 +5,4 @@
 scenario:
   clusters:
   - 40
-  sector_opts: Co2L0-365H-T-H-B-I-A-solar+p3-linemaxext15
+  sector_opts: T-H-B-I-A-365H

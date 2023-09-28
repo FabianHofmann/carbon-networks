@@ -30,7 +30,7 @@ for path in snakemake.input.networks:
     n = import_network(path)
     balance = n.statistics.energy_balance()
 
-    key = n.meta["label"]
+    key = snakemake.params.labels[n.meta["wildcards"]["run"]]
 
     df[key] = balance
     objectives[key] = n.objective

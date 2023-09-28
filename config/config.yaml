@@ -1,5 +1,5 @@
 configs:
-  test: 1
+  test: 0
   presentation: 1
 
 report:
@@ -14,12 +14,18 @@ run:
     - baseline
     - projected-price
     - half-price
-    - no-waste-heat-baseline
-    - no-waste-heat-projected-price
-    - no-waste-heat-half-price
-    - no-h2-baseline
-    - no-h2-projected-price
-    - no-h2-half-price
+    - no-waste-heat/baseline
+    - no-waste-heat/projected-price
+    - no-waste-heat/half-price
+    - no-h2/baseline
+    - no-h2/projected-price
+    - no-h2/half-price
+    # - net-negative-0.05/baseline
+    # - net-negative-0.05/projected-price
+    # - net-negative-0.05/half-price
+    # - net-negative-0.1/baseline
+    # - net-negative-0.1/projected-price
+    # - net-negative-0.1/half-price
   scenarios:
     enable: true
   shared_resources: true
@@ -31,18 +37,26 @@ comparison:
     - projected-price
     - half-price
   no-waste-heat:
-    - no-waste-heat-baseline
-    - no-waste-heat-projected-price
-    - no-waste-heat-half-price
+    - no-waste-heat/baseline
+    - no-waste-heat/projected-price
+    - no-waste-heat/half-price
   no-h2:
-    - no-h2-baseline
-    - no-h2-projected-price
-    - no-h2-half-price
+    - no-h2/baseline
+    - no-h2/projected-price
+    - no-h2/half-price
   networks:
-    - no-h2-baseline # without H2 and CO2
+    - no-h2/baseline # without H2 and CO2
     - baseline # without CO2 with H2
-    - no-h2-projected-price # without H2 and with CO2
+    - no-h2/projected-price # without H2 and with CO2
     - projected-price # with H2 and CO2
+  # net-negative-0.05:
+  #   - net-negative-0.05/baseline
+  #   - net-negative-0.05/projected-price
+  #   - net-negative-0.05/half-price
+  # net-negative-0.1:
+  #   - net-negative-0.1/baseline
+  #   - net-negative-0.1/projected-price
+  #   - net-negative-0.1/half-price
 
 scenario:
   simpl: ''
@@ -50,12 +64,23 @@ scenario:
   clusters:
     - 90
   opts: ''
-  sector_opts: Co2L0-3H-T-H-B-I-A-solar+p3-linemaxext15
+  sector_opts: T-H-B-I-A-3H
   planning_horizons: 2050
 
 enable:
   retrieve: false
   retrieve_cutout: false
+
+co2_budget:
+  2050: 0.
+
+lines:
+  max_extension: 15_000 # MW
+  dynamic_line_rating:
+    activate: true
+
+links:
+  max_extension: 15_000 # MW
 
 costs:
   year: 2040
@@ -73,6 +98,24 @@ solving:
 
 
 labels:
+  half-price: "Cheap CO$_2$ Net"
+  projected-price: "CO$_2$ Net"
+  baseline: "No CO$_2$ Net"
+  no-h2/half-price: "Cheap CO$_2$ Net,\nNo H$_2$ Net"
+  no-h2/projected-price: "CO$_2$ Net,\nNo H$_2$ Net"
+  no-h2/baseline: "No CO$_2$ Net,\nNo H$_2$ Net"
+  no-waste-heat/half-price: "Cheap CO$_2$ Net,\nNo Waste Heat"
+  no-waste-heat/projected-price: "CO$_2$ Net,\nNo Waste Heat"
+  no-waste-heat/baseline: "No CO$_2$ Net,\nNo Waste Heat"
+  with-gas/half-price: "Cheap CO$_2$ Net,\nGas Net"
+  with-gas/projected-price: "CO$_2$ Net,\nGas Net"
+  with-gas/baseline: "No CO$_2$ Net,\nGas Net"
+  net-negative-0.05/baseline: "No CO$_2$ Net,\nNet-negative 5%"
+  net-negative-0.05/projected-price: "CO$_2$ Net,\nNet-negative 5%"
+  net-negative-0.05/half-price: "Cheap CO$_2$ Net,\nNet-negative 5%"
+  net-negative-0.1/baseline: "No CO$_2$ Net,\nNet-negative 10%"
+  net-negative-0.1/projected-price: "CO$_2$ Net,\nNet-negative 10%"
+  net-negative-0.1/half-price: "Cheap CO$_2$ Net,\nNet-negative 10%"
   carbon: "Captured Carbon"
   hydrogen: "Hydrogen"
   electricity: "Electricity"

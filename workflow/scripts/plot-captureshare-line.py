@@ -37,7 +37,7 @@ for path in snakemake.input.networks:
     )
     caps = caps["cc"] / caps.sum(1)
 
-    key = n.meta["label"]
+    key = snakemake.params.labels[n.meta["wildcards"]["run"]]
     df[key] = caps
 
 df = pd.concat(df, axis=1)
@@ -47,7 +47,7 @@ colors = n.carriers.color.dropna().rename(nice_name)
 
 fig, ax = plt.subplots(
     figsize=snakemake.params.settings["figsize"],
-    layout="constrained",
+    # layout="constrained",
     sharex=True,
 )
 
@@ -63,4 +63,5 @@ ax.legend(loc="center left", bbox_to_anchor=(1, 0.5), frameon=False)
 
 sns.despine()
 
+fig.tight_layout()
 fig.savefig(snakemake.output[0], dpi=300, bbox_inches="tight")

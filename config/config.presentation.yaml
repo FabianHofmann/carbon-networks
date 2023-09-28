@@ -33,4 +33,4 @@ plotting:
     title: false
 
   captureshare_line:
-    figsize: [4, 3]
+    figsize: [5, 5]

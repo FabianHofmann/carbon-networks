@@ -4,46 +4,46 @@
 # SPDX-License-Identifier: MIT
 
 half-price:
-  label: "With subsidized\nCO$_2$ Network"
+  label: "Cheap CO$_2$ Net"
   sector:
     co2network: true
     co2_network_cost_factor: 0.5
 
 projected-price:
-  label: "With\nCO$_2$ Network"
+  label: "CO$_2$ Net"
   sector:
     co2network: true
     co2_network_cost_factor: 1.0
 
 baseline:
-  label: "Without\nCO$_2$ Network"
+  label: "No CO$_2$ Net"
   sector:
     co2network: false
 
 
-no-h2-half-price:
-  label: "With subsidized\nCO$_2$ Network and\nno H$_2$ Network"
+no-h2/half-price:
+  label: "Cheap CO$_2$ Net,\nNo H$_2$ Net"
   sector:
     H2_network: false
     co2network: true
     co2_network_cost_factor: 0.5
 
-no-h2-projected-price:
-  label: "With\nCO$_2$ Network and\nno H$_2$ Network"
+no-h2/projected-price:
+  label: "CO$_2$ Net,\nNo H$_2$ Net"
   sector:
     H2_network: false
     co2network: true
     co2_network_cost_factor: 1.0
 
-no-h2-baseline:
-  label: "Without\nCO$_2$ Network and\nno H$_2$ Network"
+no-h2/baseline:
+  label: "No CO$_2$ Net,\nNo H$_2$ Net"
   sector:
     H2_network: false
     co2network: false
 
 
-no-waste-heat-half-price:
-  label: "With subsidized\nCO$_2$ Network and\nno FT Waste Heat"
+no-waste-heat/half-price:
+  label: "Cheap CO$_2$ Net,\nNo Waste Heat"
   sector:
     co2network: true
     co2_network_cost_factor: 0.5
@@ -52,8 +52,8 @@ no-waste-heat-half-price:
     use_methanolisation_waste_heat: false
 
 
-no-waste-heat-projected-price:
-  label: "With\nCO$_2$ Network and\nno FT Waste Heat"
+no-waste-heat/projected-price:
+  label: "CO$_2$ Net,\nNo Waste Heat"
   sector:
     co2network: true
     co2_network_cost_factor: 1.0
@@ -61,10 +61,83 @@ no-waste-heat-projected-price:
     use_methanation_waste_heat: false
     use_methanolisation_waste_heat: false
 
-no-waste-heat-baseline:
-  label: "Without\nCO$_2$ Network and\nno FT Waste Heat"
+no-waste-heat/baseline:
+  label: "No CO$_2$ Net,\nNo Waste Heat"
   sector:
     co2network: false
     use_fischer_tropsch_waste_heat: false
     use_methanation_waste_heat: false
     use_methanolisation_waste_heat: false
+
+
+with-gas/half-price:
+  label: "Cheap CO$_2$ Net,\nWith Gas"
+  sector:
+    co2network: true
+    co2_network_cost_factor: 0.5
+    gas_network: true
+
+with-gas/projected-price:
+  label: "CO$_2$ Net,\nWith Gas"
+  sector:
+    co2network: true
+    co2_network_cost_factor: 1.0
+    gas_network: true
+
+with-gas/baseline:
+  label: "No CO$_2$ Net,\nWith Gas"
+  sector:
+    co2network: false
+    gas_network: true
+
+net-negative-0.05/baseline:
+  label: "No CO$_2$ Net,\nNet-negative 5%"
+  sector:
+    co2network: false
+    co2_sequestration_potential: 400
+  co2_budget:
+    2050: -0.05
+
+net-negative-0.05/projected-price:
+  label: "CO$_2$ Net,\nNet-negative 5%"
+  sector:
+    co2network: true
+    co2_network_cost_factor: 1.0
+    co2_sequestration_potential: 400
+  co2_budget:
+    2050: -0.05
+
+net-negative-0.05/half-price:
+  label: "Cheap CO$_2$ Net,\nNet-negative 5%"
+  sector:
+    co2network: true
+    co2_network_cost_factor: 0.5
+    co2_sequestration_potential: 400
+  co2_budget:
+    2050: -0.05
+
+net-negative-0.1/baseline:
+  label: "No CO$_2$ Net,\nNet-negative 10%"
+  sector:
+    co2network: false
+    co2_sequestration_potential: 600
+  co2_budget:
+    2050: -0.1
+
+net-negative-0.1/projected-price:
+  label: "CO$_2$ Net,\nNet-negative 10%"
+  sector:
+    co2network: true
+    co2_network_cost_factor: 1.0
+    co2_sequestration_potential: 600
+  co2_budget:
+    2050: -0.1
+
+net-negative-0.1/half-price:
+  label: "Cheap CO$_2$ Net,\nNet-negative 10%"
+  sector:
+    co2network: true
+    co2_network_cost_factor: 0.5
+    co2_sequestration_potential: 600
+  co2_budget:
+    2050: -0.1
