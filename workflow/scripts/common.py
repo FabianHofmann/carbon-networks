@@ -84,11 +84,21 @@ def group_small_contributions(df, threshold=0.01):
         raise TypeError("df must be a DataFrame or Series")
 
 
-def sort_rows_by_diff(df):
+def sort_rows_by_diff(df, consider_sign=False):
+    col = df.max(axis=1) - df.min(axis=1)
+    if consider_sign:
+        col = col * np.sign(df.mean(axis=1))
     return (
-        df.assign(diff=df.max(axis=1) - df.min(axis=1))
-        .sort_values(by="diff")
-        .drop("diff", axis=1)
+        df.assign(diff=col).sort_values(by="diff", ascending=False).drop("diff", axis=1)
+    )
+
+
+def sort_rows_by_relative_diff(df, consider_sign=False):
+    col = (df.max(axis=1) - df.min(axis=1)) / df.mean(axis=1)
+    if consider_sign:
+        col = col * np.sign(df.mean(axis=1))
+    return (
+        df.assign(diff=col).sort_values(by="diff", ascending=False).drop("diff", axis=1)
     )
 
 

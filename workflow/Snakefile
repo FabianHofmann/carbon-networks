@@ -40,7 +40,7 @@ rule main:
             kind=config["constants"]["kinds"],
         ),
         expand(
-            "results/{run}/figures/{clusters}_nodes/energy_balance_area_{kind}.pdf",
+            "results/{run}/figures/{clusters}_nodes/energy_balance_area_{kind}.png",
             run=config["run"]["name"],
             clusters=config["scenario"]["clusters"],
             kind=config["constants"]["kinds"]
