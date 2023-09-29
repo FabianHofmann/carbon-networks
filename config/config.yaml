@@ -20,12 +20,12 @@ run:
     - no-h2/baseline
     - no-h2/projected-price
     - no-h2/half-price
-    # - net-negative-0.05/baseline
-    # - net-negative-0.05/projected-price
-    # - net-negative-0.05/half-price
-    # - net-negative-0.1/baseline
-    # - net-negative-0.1/projected-price
-    # - net-negative-0.1/half-price
+    - net-negative-0.05/baseline
+    - net-negative-0.05/projected-price
+    - net-negative-0.05/half-price
+    - net-negative-0.1/baseline
+    - net-negative-0.1/projected-price
+    - net-negative-0.1/half-price
   scenarios:
     enable: true
   shared_resources: true
@@ -49,14 +49,14 @@ comparison:
     - baseline # without CO2 with H2
     - no-h2/projected-price # without H2 and with CO2
     - projected-price # with H2 and CO2
-  # net-negative-0.05:
-  #   - net-negative-0.05/baseline
-  #   - net-negative-0.05/projected-price
-  #   - net-negative-0.05/half-price
-  # net-negative-0.1:
-  #   - net-negative-0.1/baseline
-  #   - net-negative-0.1/projected-price
-  #   - net-negative-0.1/half-price
+  net-negative-0.05:
+    - net-negative-0.05/baseline
+    - net-negative-0.05/projected-price
+    - net-negative-0.05/half-price
+  net-negative-0.1:
+    - net-negative-0.1/baseline
+    - net-negative-0.1/projected-price
+    - net-negative-0.1/half-price
 
 scenario:
   simpl: ''
@@ -73,6 +73,9 @@ enable:
 
 co2_budget:
   2050: 0.
+
+atlite:
+  nprocesses: 8
 
 lines:
   max_extension: 15_000 # MW

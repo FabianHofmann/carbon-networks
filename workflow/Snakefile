@@ -318,4 +318,24 @@ rule gif_map:
         """
 
 
+rule push:
+    params:
+        cluster=f"{config['remote']['ssh']}:{config['remote']['path']}",
+    shell:
+        """
+        rsync -uvarh --ignore-missing-args --files-from=.sync-send . {params.cluster}
+        """
+
+
+rule pull:
+    params:
+        cluster=f"{config['remote']['ssh']}:{config['remote']['path']}",
+    shell:
+        """
+        rsync -uvarh --no-g {params.cluster}/resources . || echo "No resources directory, skipping rsync"
+        rsync -uvarh --no-g {params.cluster}/results . || echo "No results directory, skipping rsync"
+        rsync -uvarh --no-g {params.cluster}/logs . || echo "No logs directory, skipping rsync"
+        """
+
+
 use rule * from pypsaeur
