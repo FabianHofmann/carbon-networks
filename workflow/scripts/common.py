@@ -349,7 +349,7 @@ def get_carrier_transport(n, kind, config, which="capacity"):
         Whether to return the capacity or the operation of the carriers, by default 'capacity'
     """
     weights = n.snapshot_weightings.generators
-    specs = config["constants"]["kind_to_carrier"][kind].get("transport", {})
+    specs = config["constants"]["kind_to_carrier"].get(kind, {}).get("transport", {})
     res = {}
 
     carriers = specs.get("Link", [])
@@ -447,6 +447,7 @@ def modify_carrier_names(n):
         n.one_port_components | n.branch_components | {"Bus"}
     ):
         c.df.carrier.replace(replace, "", regex=True, inplace=True)
+    n.carriers = n.carriers.sort_values("nice_name")
     n.carriers.index = n.carriers.index.to_series().replace(replace, "", regex=True)
     n.carriers.nice_name = n.carriers.nice_name.replace(replace, "", regex=True)
     n.carriers = n.carriers[~n.carriers.index.duplicated()]

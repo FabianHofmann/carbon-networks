@@ -10,7 +10,7 @@ remote:
   path: /home/users/h/hofmann/scratch/projects/co2-network
 
 run:
-  name:
+  name: &runs
     - baseline
     - projected-price
     - half-price
@@ -20,12 +20,12 @@ run:
     - no-h2/baseline
     - no-h2/projected-price
     - no-h2/half-price
-    # - net-negative-0.05/baseline
-    # - net-negative-0.05/projected-price
-    # - net-negative-0.05/half-price
-    # - net-negative-0.1/baseline
-    # - net-negative-0.1/projected-price
-    # - net-negative-0.1/half-price
+    - net-negative-0.05/baseline
+    - net-negative-0.05/projected-price
+    - net-negative-0.05/half-price
+    - net-negative-0.1/baseline
+    - net-negative-0.1/projected-price
+    - net-negative-0.1/half-price
   scenarios:
     enable: true
   shared_resources: true
@@ -49,14 +49,16 @@ comparison:
     - baseline # without CO2 with H2
     - no-h2/projected-price # without H2 and with CO2
     - projected-price # with H2 and CO2
-  # net-negative-0.05:
-  #   - net-negative-0.05/baseline
-  #   - net-negative-0.05/projected-price
-  #   - net-negative-0.05/half-price
-  # net-negative-0.1:
-  #   - net-negative-0.1/baseline
-  #   - net-negative-0.1/projected-price
-  #   - net-negative-0.1/half-price
+  net-negative-0.05:
+    - net-negative-0.05/baseline
+    - net-negative-0.05/projected-price
+    - net-negative-0.05/half-price
+  net-negative-0.1:
+    - net-negative-0.1/baseline
+    - net-negative-0.1/projected-price
+    - net-negative-0.1/half-price
+  all: *runs
+
 
 scenario:
   simpl: ''
@@ -90,6 +92,7 @@ costs:
 
 sector:
   biomass_spatial: true
+  biomass_upgrading_cc: true
   allam_cycle: true
   regional_co2_sequestration_potential:
     enable: true
@@ -190,6 +193,7 @@ constants:
       - gas
     co2:
       - co2
+
 
   kind_to_carrier:
     electricity:
@@ -399,6 +403,11 @@ plotting:
   cost_bar:
     figsize: [4, 3]
 
+  cost_bar_all:
+    figsize: [13, 6]
+    kwargs:
+      rot: 90
+
   cost_diff_bar:
     figsize: [5, 5]
 
@@ -511,6 +520,36 @@ plotting:
       bus_sizes:
         - 50 # Mt
         - 20 # Mt
+      branch_sizes: null
+    heat:
+      region_cmap: Oranges
+      region_unit: TWh
+      bus_scale: 1e-8
+      branch_scale: 1e-8
+      flow_scale: 1e-5
+      bus_sizes:
+        - 100 # TWh
+        - 50 # TWh
+      branch_sizes: null
+    methanol:
+      region_cmap: Greens
+      region_unit: TWh
+      bus_scale: 1e-8
+      branch_scale: 1e-8
+      flow_scale: 1e-5
+      bus_sizes:
+        - 100 # TWh
+        - 50 # TWh
+      branch_sizes: null
+    oil:
+      region_cmap: Greys
+      region_unit: TWh
+      bus_scale: 1e-8
+      branch_scale: 1e-8
+      flow_scale: 1e-5
+      bus_sizes:
+        - 100 # TWh
+        - 50 # TWh
       branch_sizes: null
 
   captureshare_line:
