@@ -22,7 +22,7 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_energy_balance_area",
         ext="pdf",
-        clusters=90,
+        clusters=40,
         run="projected-price",
     )
 

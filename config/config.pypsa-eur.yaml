@@ -1,0 +1,43 @@
+scenario:
+  simpl: ''
+  ll: v1.2
+  clusters:
+    - 90
+  opts: ''
+  sector_opts: T-H-B-I-A-3H
+  planning_horizons: 2050
+
+enable:
+  retrieve: true
+  retrieve_cutout: false
+  retrieve_databundle: false
+
+co2_budget:
+  2050: 0.
+
+atlite:
+  nprocesses: 8
+
+lines:
+  max_extension: 15_000 # MW
+  dynamic_line_rating:
+    activate: true
+
+links:
+  max_extension: 15_000 # MW
+
+costs:
+  year: 2040
+
+sector:
+  biomass_spatial: true
+  biomass_upgrading_cc: true
+  allam_cycle: true
+  regional_co2_sequestration_potential:
+    enable: true
+  co2_spatial: true
+  gas_network: false
+
+solving:
+  walltime: 2-00:00:00
+  mem: 120000

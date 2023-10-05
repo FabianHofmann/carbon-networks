@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_operation_bar",
-        kind="hydrogen",
+        kind="carbon",
         run="half-price",
         clusters=40,
         ext="pdf",
@@ -108,5 +108,5 @@ for kind, ax in zip(kinds, axes):
     sns.despine()
     ax.set_ylabel(unit)
 
-fig.tight_layout()
+# fig.tight_layout()
 fig.savefig(snakemake.output[0], dpi=300, bbox_inches="tight")

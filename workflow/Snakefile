@@ -2,6 +2,7 @@ import pathlib
 
 
 configfile: "workflow/subworkflows/pypsa-eur/config/config.default.yaml"
+configfile: "config/config.pypsa-eur.yaml"
 configfile: "config/config.yaml"
 
 

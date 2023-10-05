@@ -14,17 +14,17 @@ region_alpha = 0.8
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
-        "plot_transmission_bar", ext="pdf", clusters=90, comparison="default"
+        "plot_transmission_bar", ext="pdf", clusters=40, comparison="all"
     )
 
 sns.set_theme(**snakemake.params["theme"])
 
 df = {}
-objectives = {}
+carriers = []
 for path in snakemake.input.networks:
     n = import_network(path)
 
-    is_transport = get_transmission_links(n)
+    is_transport = get_transmission_links(n, with_eu=True)
     transport_carriers = [
         *n.links.carrier[is_transport].unique(),
         *n.lines.carrier.unique(),
@@ -38,9 +38,11 @@ for path in snakemake.input.networks:
     key = snakemake.params.labels[n.meta["wildcards"]["run"]]
 
     df[key] = transmission
+    carriers.append(n.carriers)
 
 data = pd.concat(df, axis=1)
-colors = n.carriers.set_index("nice_name").color.to_dict()
+carriers = pd.concat(carriers).drop_duplicates()
+colors = carriers.set_index("nice_name").color.to_dict()
 
 norm = 1e9
 data = sort_rows_by_diff(data).div(norm)
@@ -56,7 +58,7 @@ kwargs = {**defaults, **snakemake.params.settings.get("kwargs", {})}
 data[::-1].T.plot(ax=ax, color=colors, **kwargs)
 
 ax.axhline(0, color="k", lw=1)
-ax.set_ylabel("Transport Volume [pWh] / [Mt]")
+ax.set_ylabel("Transport Volume [pWh] / [Gt]")
 ax.grid(axis="y", alpha=0.5)
 handles, labels = ax.get_legend_handles_labels()
 ax.legend().remove()

@@ -109,8 +109,10 @@ def assert_carriers_existent(n, carriers, c):
         )
 
 
-def get_transmission_links(n):
+def get_transmission_links(n, with_eu=False):
     # only choose transmission links
+    if with_eu:
+        return n.links.bus0.map(n.buses.location) != n.links.bus1.map(n.buses.location)
     return (
         (n.links.bus0.map(n.buses.location) != n.links.bus1.map(n.buses.location))
         & ~n.links.bus0.map(n.buses.location).str.contains("EU")
@@ -165,7 +167,12 @@ def get_carrier_production(n, kind, config, which="capacity"):
 
         port = int(bus[-1])
         links = n.links.query("carrier in @carriers")
-        assert_carriers_existent(n, carriers, "Link")
+        check_carriers = set(carriers)
+        if not n.meta["sector"]["co2network"]:
+            check_carriers = check_carriers - {"co2 pipeline"}
+        if not n.meta["sector"]["gas_network"]:
+            check_carriers = check_carriers - {"gas pipeline", "gas pipeline new"}
+        assert_carriers_existent(n, check_carriers, "Link")
         groups = [links[bus].map(location), links.carrier]
         if which == "capacity":
             df = get_p_nom_opt_eff(links, bus).groupby(groups).sum()
