@@ -13,8 +13,8 @@ import matplotlib.pyplot as plt
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_operation_bar",
-        kind="carbon",
-        run="half-price",
+        kind="co2",
+        run="net-negative-0.05/baseline",
         clusters=40,
         ext="pdf",
     )

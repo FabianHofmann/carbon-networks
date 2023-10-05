@@ -103,6 +103,11 @@ def sort_rows_by_relative_diff(df, consider_sign=False):
 
 
 def assert_carriers_existent(n, carriers, c):
+    if c == "Link":
+        if not n.meta["sector"]["co2network"]:
+            carriers = set(carriers) - {"co2 pipeline"}
+        if not n.meta["sector"]["gas_network"]:
+            carriers = set(carriers) - {"gas pipeline", "gas pipeline new"}
     if not set(carriers).issubset(n.df(c).carrier.unique()):
         logger.warning(
             f"Carriers {set(carriers) - set(n.df(c).carrier)} are not in the component {c}."
@@ -167,12 +172,7 @@ def get_carrier_production(n, kind, config, which="capacity"):
 
         port = int(bus[-1])
         links = n.links.query("carrier in @carriers")
-        check_carriers = set(carriers)
-        if not n.meta["sector"]["co2network"]:
-            check_carriers = check_carriers - {"co2 pipeline"}
-        if not n.meta["sector"]["gas_network"]:
-            check_carriers = check_carriers - {"gas pipeline", "gas pipeline new"}
-        assert_carriers_existent(n, check_carriers, "Link")
+        assert_carriers_existent(n, carriers, "Link")
         groups = [links[bus].map(location), links.carrier]
         if which == "capacity":
             df = get_p_nom_opt_eff(links, bus).groupby(groups).sum()
