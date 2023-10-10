@@ -31,7 +31,7 @@ region_alpha = 0.8
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_operation_map",
-        run="baseline",
+        run="with-gas/baseline",
         clusters=90,
         ext="png",
     )

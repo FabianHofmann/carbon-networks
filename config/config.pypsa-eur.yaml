@@ -36,8 +36,13 @@ sector:
   regional_co2_sequestration_potential:
     enable: true
   co2_spatial: true
-  gas_network: false
+  gas_network: true
+  H2_network: false
+  co2network: false
+  district_heating:
+    progress:
+      2050: 0.8
 
 solving:
   walltime: 2-00:00:00
-  mem: 120000
+  mem: 150000
