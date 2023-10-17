@@ -8,7 +8,7 @@ scenario:
   planning_horizons: 2050
 
 enable:
-  retrieve: true
+  retrieve: false
   retrieve_cutout: false
   retrieve_databundle: false
 
@@ -44,5 +44,5 @@ sector:
       2050: 0.8
 
 solving:
-  walltime: 2-00:00:00
+  walltime: 4-00:00:00
   mem: 150000

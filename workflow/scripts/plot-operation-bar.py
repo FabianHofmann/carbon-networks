@@ -14,7 +14,7 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_operation_bar",
         kind="co2",
-        run="net-negative-0.05/baseline",
+        run="co2-only",
         clusters=40,
         ext="pdf",
     )

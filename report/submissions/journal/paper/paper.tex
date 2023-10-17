@@ -38,7 +38,10 @@ natbib=true % natbib compatibility mode (\citep and~\citet still work)
 \newcommand{\hydrogen}{H$_2$}
 
 \graphicspath{
-    {paper-figures},
+    % {paper-figures}
+    {figures}
+    {../../../../results/}
+    {results/}
 }
 
 \begin{document}
@@ -58,7 +61,7 @@ natbib=true % natbib compatibility mode (\citep and~\citet still work)
 
 \begin{abstract}
     The transition to a carbon-neutral European economy is a pressing challenge that demands coordinated action across various energy sectors, particularly in emissions-intensive industries like heavy manufacturing.
-    A gap exists in understanding how comprehensive carbon management technologies, including carbon capture, transport, use, and storage, can be effectively integrated into a European energy system for climate neutrality.
+    A gap exists in understanding how comprehensive carbon management technologies, including carbon capture, transport, use, and storage, can be effectively integrated and interact with new infrastructures such as a hydrogen transportation network.
     To address this, our study employs optimization techniques to design the first cost-optimal European energy system that fully incorporates carbon management technologies, hydrogen transport and storage, and renewable energy sources with a high spatial and temporal resolution.
     Our findings reveal that implementing carbon management technologies can offer systemic flexibility to the European energy system. Specifically, a carbon transport network facilitates point source carbon capture, thereby reducing the necessity for direct air capture installation. The cost reduction of  average annual savings of €xx billion.
     Overall, our work demonstrates the cost-effectiveness of a multi-grid system that includes both hydrogen and carbon transport networks and power grid expansion to achieve climate neutrality in Europe.
@@ -90,32 +93,62 @@ In this paper, we present a detailed study of the European energy system for 205
 \section{Methodology}
 \label{sec:methodology}
 
-To model the detailed expansion of the carbon network, we use the open-source PyPSA-Eur-Sec~\cite{PyPSAEurSecSectorCoupledOpen2023} model. This is a fully sector-coupled model with high spatial and temporal resolution and detailed transmission infrastructure for electricity, hydrogen, methane, and carbon networks. The model enables joint optimization of investment and operational decisions for generation, storage, conversion, and transmission infrastructures. For our study, we use a model representation with 90~geographic regions for Europe and 4 hourly time resolution to capture the dynamics of material flow between carbon sources and sinks while ensuring computational feasibility.
+The study is conducted on the basis of the open-source, capacity-expansion model PyPSA-Eur~\cite{horschPyPSAEurOpenOptimisation2018,brownSynergiesSectorCoupling2018,PyPSAEurSecSectorCoupledOpen2023}. The model optimizes the design and operation of the European energy system, encompassing the power, heat, industry, waste, and transport sectors. In our configuration, the model's time horizon spans one year with a temporal resolution of 3 hours and a spatial resolution of 90 regions. Each of the regions consists of a complex subsystem with technologies for supplying, converting, storing and transporting energy. This includes carbon neutral power supply from wind, solar, biomass and hydro. The regional renewable capacity expansion is limited by land-use restrictions, calculated from with atlite~\cite{hofmannAtliteLightweightPython2021}.
 
+
+
+
+%
+The PyPSA-Eur model integrates exogenous assumptions for energy demand on an hourly basis, the annual sums of which are shown in figure~\ref{fig:total-demand-bar}. Among those, the energy demand time-series for power, transport, heat, gas at rural, urban and industrial sites as well as for the agriculture sector are defined per region. Additionally, demands for kerosene for aviation, methanol for shipping as well of naphta for industry are aggregated and must be met by the sum of all regional supplies.
+Taking non-abatable emissions from fossil-based industrial processes into account, the system emits of 152~Mt \carbon{} per year, which can optionally be captured through corresponding investments.
+
+
+Carbon-neutral energy is provided by wind, solar, biomass and hydro. Solar and wind power can be expanded according to land-use constrained in alignment with
+
+, modeling the transmission and expansion of electricity (on extra-high voltage level), gas, and optionally \hydrogen{} and \carbon{}.
+
+
+
+\begin{figure}
+    \includegraphics[width=\linewidth]{baseline/figures/90_nodes/total-demand-bar.png}
+    \caption{Exogenous demand assumptions. The figure shows the total amount of yearly energy demands for each energy carrier and type of end-consumer considered in the model.}
+    \label{fig:total-demand-bar}
+\end{figure}
+
+
+Biomass usage in each region is bound by its biomass potential, but inter-regional biomass transport is permitted with transport costs considered. We restrict the electric transmission system's expansion to 20\% of its current capacity, acknowledging the challenges in inaugurating new transmission projects. The geographical spread of emissions from various industries is derived from~\cite{piamanzGeoreferencedIndustrialSites2018}, totaling 158~Mt \carbon{} annually.
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{sequestration_map.png}
+    \includegraphics[width=\linewidth]{baseline/figures/90_nodes/sequestration_map.pdf}
     \caption{Sequestration map}
     \label{fig:sequestration_map}
 \end{figure}
 
-
-The PyPSA-Eur-Sec model incorporates exogenous assumptions for regional energy demand across various sectors, including power, industry, transport, buildings, and agriculture. This covers energy demand for shipping and aviation, as well as non-energy feedstocks for the chemical industry. In order to address climate neutrality targets, we establish a binding upper limit for zero emissions, consistent with the EU's 2050 target. The usage of biomass in each region is constrained by its biomass potential; however, biomass transport between regions is permitted, and the model takes transport costs into account. Additionally, we restrict the expansion of the electric transmission system to 20\% of its current capacity to account for challenges in establishing new transmission projects. The geographical distribution of process emissions from various industries, such as cement, chemical, paper and printing, glass, and steel, along with refineries, is obtained from~\cite{piamanzGeoreferencedIndustrialSites2018}, amounting to a total of 158~Mt \carbon{} per year.
-% TODO: Mention exogenous decisions on carbon capture and 90% rates here for industry.
-
-
-
-For carbon sequestration, we only consider offshore sites as potential sinks (refer to Figure~\ref{fig:sequestration_map}). This is partly because offshore storage potentials tends to be larger than onshore potential, and partly due to public safety concerns surrounding carbon storage infrastructure projects near populated areas. We adopt conservative assumptions when estimating storage potential, capping the total potential at 25~Mt per site and calculating annual storage availability over a 25-year period.
+For carbon sequestration, we only consider offshore sites as potential sinks, referencing Figure~\ref{fig:sequestration_map}. This choice favors offshore storage due to its typically larger capacity compared to onshore and concerns over public safety for infrastructure near populated areas. Our estimates for storage potential are conservative, limiting total potential to 25~Mt per site, calculating annual storage availability over 25 years, and capping the total sequestered \carbon{} to 200~Mt/a.
 % TODO: what defines a site?
 
 
 
-Regarding carbon utilization, our model incorporates three drop-in fuel production technologies: methanation, methanolization, and Fischer-Tropsch (FT) synthesis. Once processed, the fuels are available for unrestricted use and can be transported across regions. Synthetic methane serves as a substitute for natural gas or biogas and is utilized in combined heat and power (CHP) plants, gas boilers for residential heating, or to fulfill the gas requirements of the industry. Synthetic methanol is employed to decarbonize fuel demand in the marine industry. Lastly, FT fuels can replace fossil oil for producing naphtha in the industry and kerosene for aviation or serve as machinery oil in agriculture.
+Regarding carbon utilization, our model features three drop-in fuel production technologies: methanation, methanolization, and Fischer-Tropsch synthesis. Processed fuels have no usage restrictions. Methane is transported through the gas network, while methanol and FT-synfuel can be transferred inter-regionally without additional costs. Synthetic methane substitutes natural gas or biogas, serving combined heat and power plants, residential heating gas boilers, or industrial gas needs. Synthetic methanol decarbonizes marine industry fuel demands, and FT fuels replace fossil oil for naphtha production, aviation kerosene, or agricultural machinery oil.
 
-All technology cost assumptions for the year 2050 are derived from a unified open-source technology database~\cite{lisazeyenPyPSATechnologydataTechnology2023}.
+All technology cost assumptions for 2040 are sourced from an open-source database~\cite{lisazeyenPyPSATechnologydataTechnology2023}.
 
-To investigate the influence of carbon sequestration on the optimal configuration of carbon management technologies, we incrementally vary the global carbon sequestration potential from 200~Mt to 1000~Mt per year in steps of 200~Mt.
+Addressing climate targets, we define three \carbon{} target scenarios:
+\begin{itemize}
+    \item[] \textit{Net-zero:} Annual net-zero emissions, aligning with the EU's 2050 target.
+    \item[] \textit{5\% Net-negative:} Annual net-negative emissions of 5\% of 1990 emissions or 230~Mt \carbon{}.
+    \item[] \textit{10\% Net-negative:} 10\% of 1990 emissions net-negative annually, or 460~Mt \carbon{}.
+\end{itemize}
+Unless otherwise mentioned, our reference is the Net-zero scenario. For 5\% Net-negative and 10\% Net-negative scenarios, the carbon sequestration potential is adjusted to 400~Mt/a and 600~Mt/a, respectively.
+
+Beyond \carbon{} targets, we consider four expansion scenarios:
+\begin{itemize}
+    \item[] \textit{Baseline:} Neither \carbon{} nor \hydrogen{} networks are constructed.
+    \item[] \textit{\hydrogen{}-Net:} Only the \hydrogen{} network is developed.
+    \item[] \textit{\carbon{}-Net:} Only the \carbon{} network is developed.
+    \item[] \textit{Full:} Both \carbon{} and \hydrogen{} networks are developed.
+\end{itemize}
 
 
 
@@ -125,7 +158,7 @@ To investigate the influence of carbon sequestration on the optimal configuratio
 
 \begin{figure*}[ht!]
     \centering
-    \includegraphics*[width=\linewidth]{cost_area.pdf}
+    % \includegraphics*[width=\linewidth]{cost_area.pdf}
     \caption[short]{Total annual system cost for the sector-coupled system with different levels of carbon sequestration potential, with (left) and without (right) \carbon{} network. "Gas Infrastructure" combines gas facilities for power and heat production, "H$_2$ Infrastructure" combines H$_2$ production, transport and re-electrification. Regardless of the implementation of a \carbon{} network, the system cost decrease as sequestration increases. Due to an increased flexibility from fossil carriers with subsequent sequestration, the need for FT synthesis and \hydrogen{} electrolysis and the corresponding renewable power supply is reduced.
         % TODO: mention details on the grouped technologies
     }
@@ -144,7 +177,7 @@ Note that technologies with a ``*`` are explicitly augmented technologies with i
 %
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{operation_area_carbon_co2network.pdf}
+    % \includegraphics[width=\linewidth]{operation_area_carbon_co2network.pdf}
     \caption{Balance of captured \carbon{} for the optimal operation with \carbon{} network. Technologies with "*" are explicitly augmented technologies to capture carbon emissions.}
     \label{fig:operation_area_carbon_co2network}
 \end{figure}
@@ -154,7 +187,7 @@ Figure~\ref{fig:operation_area_carbon_co2network} confirms our previous results 
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{operation_area_hydrogen_co2network.pdf}
+    % \includegraphics[width=\linewidth]{operation_area_hydrogen_co2network.pdf}
     \caption{Balance of \hydrogen{} production and consumption with \carbon{} network.}
     % TODO: make colors of gas and gas* more distinct
     \label{fig:operation_area_hydrogen_co2network}
@@ -162,7 +195,7 @@ Figure~\ref{fig:operation_area_carbon_co2network} confirms our previous results 
 %
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{operation_area_co2_co2network.pdf}
+    % \includegraphics[width=\linewidth]{operation_area_co2_co2network.pdf}
     \caption{Balance of atmospheric \carbon{} emissions for the optimal operation with \carbon{} network.}
     \label{fig:operation_area_co2_co2network}
 \end{figure}
@@ -179,7 +212,7 @@ With \carbon{} transport, all technologies except for SMR and Gas CHP are nearly
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=\linewidth]{captureshare_line.pdf}
+    % \includegraphics[width=\linewidth]{captureshare_line.pdf}
     \caption{Share of facilities with integrated carbon capture as a function of sequestration potential in a system with and without \carbon{} transport.}
     \label{fig:captureshare_line}
 \end{figure}
@@ -198,7 +231,7 @@ Finally, the deployment of carbon capture technologies in a system with high seq
 
 \begin{figure*}[ht!]
     \centering
-    \includegraphics[width=\linewidth]{operation_map_carbon_co2network_1000.png}
+    % \includegraphics[width=\linewidth]{operation_map_carbon_co2network_1000.png}
     \caption{Optimal operation per sector for a sequestration of 1000~Mt/a. The left side shows the combined carbon supply from carbon capture facilities and the carbon network flow, while the right side illustrates regional carbon usage together with the flow.}
     % TODO: make colors more distinct
     \label{fig:operation_map_noco2network_1000}

@@ -10,6 +10,7 @@ dconf
 
 # generated files
 results/
+archive/
 resources/
 data/
 playaround/

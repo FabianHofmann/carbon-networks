@@ -488,6 +488,7 @@ def add_carrier_nice_names(n):
         "Ac": "AC",
         "Dc": "DC",
         "Sabatier": "Methanation",
+        "Land Transport Ev": "Electric Vehicles",
         "Agriculture Machinery Oil Emissions": "Agriculture Emissions",
         "Oil Emissions": "Aviation and Petrochemical\nEmissions",
         "Allam": "Allam Cycle",
