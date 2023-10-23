@@ -54,28 +54,41 @@ rule main:
             + config["constants"]["additional_kinds"],
         ),
         expand(
-            "results/{run}/figures/{clusters}_nodes/{figure}.pdf",
+            "results/{run}/figures/{clusters}_nodes/{figure}.png",
             run=config["run"]["name"],
             clusters=config["scenario"]["clusters"],
-            figure=["operation_bar", "sequestration_map"],
+            figure=["operation_bar", "sequestration_map", "capacity_country_bar"],
         ),
         expand(
-            "results/comparison/{comparison}/figures/{clusters}_nodes/energy_balance_bar_{kind}.pdf",
+            "results/comparison/{comparison}/figures/{clusters}_nodes/energy_balance_bar_{kind}.png",
             comparison=config["comparison"],
             clusters=config["scenario"]["clusters"],
             kind=config["constants"]["kinds"]
             + config["constants"]["additional_kinds"],
         ),
         expand(
-            "results/comparison/{comparison}/figures/{clusters}_nodes/{figure}.pdf",
+            "results/comparison/{comparison}/figures/{clusters}_nodes/{figure}.png",
             comparison=list(config["comparison"]) + ["all"],
             clusters=config["scenario"]["clusters"],
             figure=[
                 "cost_bar",
-                "cost_diff_bar",
                 "captureshare_line",
                 "transmission_bar",
             ],
+        ),
+        expand(
+            "results/difference/{difference}/figures/{clusters}_nodes/{figure}.png",
+            difference=config["difference"],
+            clusters=config["scenario"]["clusters"],
+            figure=[
+                "cost_bar",
+                "capacity_map",
+            ],
+        ),
+        expand(
+            "results/comparison/emission-reduction/figures/{clusters}_nodes/objective_heatmap.{ext}",
+            clusters=config["scenario"]["clusters"],
+            ext=["png", "pdf"],
         ),
     output:
         "results/.main",
@@ -175,6 +188,20 @@ rule plot_capacity_map:
         "scripts/plot-capacity-map.py"
 
 
+rule plot_capacity_country_bar:
+    params:
+        settings=config["plotting"]["capacity_country_bar"],
+        theme=config["plotting"]["theme"],
+    input:
+        network="results/{run}/networks/{clusters}_nodes.nc",
+    output:
+        map="results/{run}/figures/{clusters}_nodes/capacity_country_bar.{ext}",
+    resources:
+        mem_mb=20000,
+    script:
+        "scripts/plot-capacity-country-bar.py"
+
+
 rule plot_sequestration_map:
     params:
         settings=config["plotting"]["sequestration_map"],
@@ -233,7 +260,7 @@ rule plot_energy_balance_area:
 # COMPARISON
 
 
-def get_networks(w):
+def get_comparison_networks(w):
     return expand(
         "results/{run}/networks/{clusters}_nodes.nc",
         run=config["comparison"][w.comparison],
@@ -241,17 +268,36 @@ def get_networks(w):
     )
 
 
+def is_wide(w):
+    return len(config["comparison"][w.comparison]) > 4
+
+
+rule plot_objectice_heatmap:
+    params:
+        settings=config["plotting"]["objective_heatmap"],
+        theme=config["plotting"]["theme"],
+        labels=config["labels"],
+    input:
+        networks=get_comparison_networks,
+    output:
+        figure="results/comparison/{comparison}/figures/{clusters}_nodes/objective_heatmap.{ext}",
+    resources:
+        mem_mb=20000,
+    script:
+        "scripts/plot-objective-heatmap.py"
+
+
 rule plot_cost_bar:
     params:
         technology_groups=config["plotting"]["technology_groups"],
         technology_groups_colors=config["plotting"]["technology_group_colors"],
-        settings=lambda w: config["plotting"]["cost_bar_all"]
-        if w.comparison == "all"
+        settings=lambda w: config["plotting"]["cost_bar_wide"]
+        if is_wide(w)
         else config["plotting"]["cost_bar"],
         theme=config["plotting"]["theme"],
         labels=config["labels"],
     input:
-        networks=get_networks,
+        networks=get_comparison_networks,
     output:
         map="results/comparison/{comparison}/figures/{clusters}_nodes/cost_bar.{ext}",
     resources:
@@ -264,13 +310,13 @@ rule plot_transmission_bar:
     params:
         technology_groups=config["plotting"]["technology_groups"],
         technology_groups_colors=config["plotting"]["technology_group_colors"],
-        settings=lambda w: config["plotting"]["cost_bar_all"]
-        if w.comparison == "all"
+        settings=lambda w: config["plotting"]["cost_bar_wide"]
+        if is_wide(w)
         else config["plotting"]["cost_bar"],
         theme=config["plotting"]["theme"],
         labels=config["labels"],
     input:
-        networks=get_networks,
+        networks=get_comparison_networks,
     output:
         map="results/comparison/{comparison}/figures/{clusters}_nodes/transmission_bar.{ext}",
     resources:
@@ -279,30 +325,15 @@ rule plot_transmission_bar:
         "scripts/plot-transmission-bar.py"
 
 
-rule plot_cost_diff_bar:
-    params:
-        technology_groups=config["plotting"]["technology_groups"],
-        technology_groups_colors=config["plotting"]["technology_group_colors"],
-        settings=config["plotting"]["cost_diff_bar"],
-        theme=config["plotting"]["theme"],
-        labels=config["labels"],
-    input:
-        networks=get_networks,
-    output:
-        map="results/comparison/{comparison}/figures/{clusters}_nodes/cost_diff_bar.{ext}",
-    resources:
-        mem_mb=20000,
-    script:
-        "scripts/plot-cost-diff-bar.py"
-
-
 rule plot_energy_balance_bar:
     params:
-        settings=config["plotting"]["energy_balance_bar"],
+        settings=lambda w: config["plotting"]["energy_balance_bar_wide"]
+        if is_wide(w)
+        else config["plotting"]["energy_balance_bar"],
         theme=config["plotting"]["theme"],
         labels=config["labels"],
     input:
-        networks=get_networks,
+        networks=get_comparison_networks,
     output:
         **{
             kind: f"results/comparison/{{comparison}}/figures/{{clusters}}_nodes/energy_balance_bar_{kind}.{{ext}}"
@@ -321,13 +352,56 @@ rule plot_captureshare_line:
         theme=config["plotting"]["theme"],
         labels=config["labels"],
     input:
-        networks=get_networks,
+        networks=get_comparison_networks,
     output:
         map="results/comparison/{comparison}/figures/{clusters}_nodes/captureshare_line.{ext}",
     resources:
         mem_mb=20000,
     script:
         "scripts/plot-captureshare-line.py"
+
+
+# DIFFERENCE
+
+
+def get_difference_networks(w):
+    return expand(
+        "results/{run}/networks/{clusters}_nodes.nc",
+        run=config["difference"][w.difference],
+        **w,
+    )
+
+
+rule plot_cost_diff_bar:
+    params:
+        technology_groups=config["plotting"]["technology_groups"],
+        technology_groups_colors=config["plotting"]["technology_group_colors"],
+        settings=config["plotting"]["cost_diff_bar"],
+        theme=config["plotting"]["theme"],
+        labels=config["labels"],
+    input:
+        networks=get_difference_networks,
+    output:
+        map="results/difference/{difference}/figures/{clusters}_nodes/cost_bar.{ext}",
+    resources:
+        mem_mb=20000,
+    script:
+        "scripts/plot-cost-diff-bar.py"
+
+
+rule plot_cost_diff_map:
+    params:
+        settings=config["plotting"]["cost_diff_map"],
+        theme=config["plotting"]["theme"],
+        labels=config["labels"],
+    input:
+        networks=get_difference_networks,
+    output:
+        map="results/difference/{difference}/figures/{clusters}_nodes/capacity_map.{ext}",
+    resources:
+        mem_mb=20000,
+    script:
+        "scripts/plot-cost-diff-map.py"
 
 
 def get_maps(w):

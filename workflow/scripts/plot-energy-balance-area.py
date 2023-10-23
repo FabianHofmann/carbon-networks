@@ -22,8 +22,8 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_energy_balance_area",
         ext="pdf",
-        clusters=40,
-        run="projected-price",
+        clusters=90,
+        run="co2-only",
     )
 
 sns.set_theme(**snakemake.params["theme"])

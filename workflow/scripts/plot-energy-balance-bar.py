@@ -25,7 +25,6 @@ config = snakemake.config
 norm = 1e6
 
 df = {}
-objectives = {}
 for path in snakemake.input.networks:
     n = import_network(path)
     balance = n.statistics.energy_balance()
@@ -33,7 +32,6 @@ for path in snakemake.input.networks:
     key = snakemake.params.labels[n.meta["wildcards"]["run"]]
 
     df[key] = balance
-    objectives[key] = n.objective
 
 
 df = pd.concat(df, axis=1)
@@ -55,7 +53,7 @@ for kind, output in snakemake.output.items():
     fig, ax = plt.subplots(1, 1, figsize=snakemake.params.settings["figsize"])
 
     colors = n.carriers.set_index("nice_name").color.to_dict()
-    ds.T.plot.bar(color=colors, ax=ax, stacked=True, alpha=0.8, lw=0, rot=0)
+    ds.T.plot.bar(color=colors, ax=ax, stacked=True, alpha=0.8, lw=0, rot=90)
 
     ax.axhline(0, color="k", lw=1)
     ax.set_ylabel(f"{label} [{unit}]")

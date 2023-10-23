@@ -124,7 +124,7 @@ for kind, output in snakemake.output.items():
 
         ax.set_extent(snakemake.config["plotting"]["extent"])
         if snakemake.params.settings.get("title", True):
-            ax.set_title(config["labels"][kind] + " " + tag.title())
+            ax.set_title(config["labels"].get(kind, kind.title()) + " " + tag.title())
 
         legend_bus_sizes = specs["bus_sizes"]
         if legend_bus_sizes is not None:

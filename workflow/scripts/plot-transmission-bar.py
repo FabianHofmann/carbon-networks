@@ -24,7 +24,7 @@ carriers = []
 for path in snakemake.input.networks:
     n = import_network(path)
 
-    is_transport = get_transmission_links(n, with_eu=True)
+    is_transport = get_transmission_links(n, with_eu=False)
     transport_carriers = [
         *n.links.carrier[is_transport].unique(),
         *n.lines.carrier.unique(),
@@ -52,13 +52,13 @@ fig, ax = plt.subplots(
 )
 
 
-defaults = dict(kind="bar", stacked=True, lw=0, rot=0, alpha=0.8)
+defaults = dict(kind="bar", stacked=True, lw=0, rot=90, alpha=0.8)
 
 kwargs = {**defaults, **snakemake.params.settings.get("kwargs", {})}
 data[::-1].T.plot(ax=ax, color=colors, **kwargs)
 
 ax.axhline(0, color="k", lw=1)
-ax.set_ylabel("Transport Volume [pWh] / [Gt]")
+ax.set_ylabel("Transport Volume [pWh]/[Gt]")
 ax.grid(axis="y", alpha=0.5)
 handles, labels = ax.get_legend_handles_labels()
 ax.legend().remove()

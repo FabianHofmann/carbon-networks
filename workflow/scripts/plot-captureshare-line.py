@@ -56,6 +56,7 @@ df.mul(100).T.plot(
     ax=ax,
     color=colors.to_dict(),
     alpha=0.8,
+    rot=90,
 )
 ax.set_ylabel(f"CC share [%]")
 ax.grid(axis="y", alpha=0.5)

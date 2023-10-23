@@ -46,7 +46,7 @@ natbib=true % natbib compatibility mode (\citep and~\citet still work)
 
 \begin{document}
 
-\title{Designing a \carbon{} Network for a Net-Zero European Energy System}
+\title{From Net-Zero to Net-Negative: Assessing \hydrogen{} and \carbon{} Network Strategies in Europe}
 
 \author{
     Fabian Hofmann, Christoph Tries, Fabian Neumann, Lisa Zeyen, Tom Brown \\
@@ -95,12 +95,9 @@ In this paper, we present a detailed study of the European energy system for 205
 
 The study is conducted on the basis of the open-source, capacity-expansion model PyPSA-Eur~\cite{horschPyPSAEurOpenOptimisation2018,brownSynergiesSectorCoupling2018,PyPSAEurSecSectorCoupledOpen2023}. The model optimizes the design and operation of the European energy system, encompassing the power, heat, industry, waste, and transport sectors. In our configuration, the model's time horizon spans one year with a temporal resolution of 3 hours and a spatial resolution of 90 regions. Each of the regions consists of a complex subsystem with technologies for supplying, converting, storing and transporting energy. This includes carbon neutral power supply from wind, solar, biomass and hydro. The regional renewable capacity expansion is limited by land-use restrictions, calculated from with atlite~\cite{hofmannAtliteLightweightPython2021}.
 
-
-
-
 %
 The PyPSA-Eur model integrates exogenous assumptions for energy demand on an hourly basis, the annual sums of which are shown in figure~\ref{fig:total-demand-bar}. Among those, the energy demand time-series for power, transport, heat, gas at rural, urban and industrial sites as well as for the agriculture sector are defined per region. Additionally, demands for kerosene for aviation, methanol for shipping as well of naphta for industry are aggregated and must be met by the sum of all regional supplies.
-Taking non-abatable emissions from fossil-based industrial processes into account, the system emits of 152~Mt \carbon{} per year, which can optionally be captured through corresponding investments.
+Taking non-abatable emissions from fossil-based industrial processes, aviation, shipping and agriculture into account, the system emits of 633~Mt \carbon{} per year, 153~Mt of which are industrial emissions which can optionally be captured through corresponding investments.
 
 
 Carbon-neutral energy is provided by wind, solar, biomass and hydro. Solar and wind power can be expanded according to land-use constrained in alignment with

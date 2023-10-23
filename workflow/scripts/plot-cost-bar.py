@@ -12,7 +12,9 @@ alpha = 1
 region_alpha = 0.8
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
-    snakemake = mock_snakemake("plot_cost_bar", ext="pdf", clusters=90)
+    snakemake = mock_snakemake(
+        "plot_cost_bar", ext="pdf", clusters=90, comparison="default"
+    )
 
 sns.set_theme(**snakemake.params["theme"])
 
@@ -35,7 +37,8 @@ for path in snakemake.input.networks:
 df = pd.concat(df, axis=1)
 
 groups = snakemake.config["plotting"]["technology_groups"]
-groups = {n.carriers.nice_name.get(k, k): v for k, v in groups.items()}
+groups = {v: groups[k] for k, v in n.carriers.nice_name.drop("").items()}
+
 grouped = df.groupby(groups).sum()
 grouped = grouped[grouped.max(axis=1) > 5e4]
 
@@ -53,7 +56,7 @@ fig, ax = plt.subplots(
 )
 
 
-defaults = dict(kind="bar", stacked=True, lw=0, rot=0, alpha=0.8)
+defaults = dict(kind="bar", stacked=True, lw=0, rot=90, alpha=0.8)
 
 kwargs = {**defaults, **snakemake.params.settings.get("kwargs", {})}
 grouped.T.plot(ax=ax, color=colors, **kwargs)

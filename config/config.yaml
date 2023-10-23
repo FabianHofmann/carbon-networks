@@ -1,6 +1,6 @@
 configs:
   test: 0
-  presentation: 1
+  presentation: 0
 
 report:
   path: "report/submissions/ecemp/presentation/presentation"
@@ -69,6 +69,16 @@ comparison:
     - h2-only
     - half-price/full
   all: *runs
+difference:
+  default:
+    - co2-only
+    - h2-only
+  net-negative-0.05:
+    - net-negative-0.05/co2-only
+    - net-negative-0.05/h2-only
+  net-negative-0.1:
+    - net-negative-0.1/co2-only
+    - net-negative-0.1/h2-only
 
 
 labels:
@@ -89,6 +99,10 @@ labels:
   net-negative-0.1/co2-only: "CO$_2$ Net,\nNet-negative 10%"
   net-negative-0.1/h2-only: "H$_2$ Net,\nNet-negative 10%"
   net-negative-0.1/full: "CO$_2$ & H$_2$ Net,\nNet-negative 10%"
+
+  net-neutral: "NN"
+  net-negative-0.05: "NN 5%"
+  net-negative-0.1: "NN 10%"
 
   carbon: "Captured Carbon"
   hydrogen: "Hydrogen"
@@ -369,6 +383,9 @@ plotting:
   energy_balance_bar:
     figsize: [4, 3.5]
 
+  energy_balance_bar_wide:
+    figsize: [10, 3.5]
+
   energy_balance_area:
     figsize: [8, 3.5]
 
@@ -378,12 +395,16 @@ plotting:
   cost_bar:
     figsize: [4, 3]
 
-  cost_bar_all:
-    figsize: [13, 6]
-    kwargs:
-      rot: 90
+  cost_bar_wide:
+    figsize: [8, 3]
+
+  objective_heatmap:
+    figsize: [6, 6]
 
   cost_diff_bar:
+    figsize: [5, 5]
+
+  capacity_country_bar:
     figsize: [5, 5]
 
   capacity_map:
@@ -527,6 +548,14 @@ plotting:
         - 50 # TWh
       branch_sizes: null
 
+  capacity_diff_map:
+    figsize: [10, 5]
+    bus_scale: 0.5
+    bus_sizes:
+      - 5
+      - 10
+
+
   captureshare_line:
     figsize: [5, 2]
 
@@ -561,13 +590,17 @@ plotting:
     battery storage: Battery Infrastructure
     biogas: Bioenergy
     biogas to gas: Bioenergy
+    biogas to gas CC: Bioenergy
     biomass boiler: Bioenergy
     co2: CO$_2$ Infrastucture
+    CO2 pipeline: CO$_2$ Infrastucture
     co2 sequestered: CO$_2$ Infrastucture
     co2 stored: CO$_2$ Infrastucture
     electricity: Electricity Grid
     electricity distribution grid: Electricity Grid
     gas: Gas Infrastucture
+    gas pipeline: Gas Infrastucture
+    gas pipeline new: Gas Infrastucture
     gas CHP: Gas Infrastucture
     gas CHP CC: Carbon Capt. at Point Sources
     gas boiler: Gas Infrastucture
@@ -576,6 +609,7 @@ plotting:
     geothermal: Other
     ground heat pump: Heat Pump
     heat: Other
+    heat waste: Other
     home battery: Battery Infrastructure
     home battery charger: Battery Infrastructure
     home battery discharger: Battery Infrastructure
