@@ -404,6 +404,13 @@ plotting:
   cost_diff_bar:
     figsize: [5, 5]
 
+  cost_diff_map:
+    figsize: [10, 5]
+    bus_scale: 0.5
+    bus_sizes:
+      - 5
+      - 10
+
   capacity_country_bar:
     figsize: [5, 5]
 
@@ -547,13 +554,6 @@ plotting:
         - 100 # TWh
         - 50 # TWh
       branch_sizes: null
-
-  capacity_diff_map:
-    figsize: [10, 5]
-    bus_scale: 0.5
-    bus_sizes:
-      - 5
-      - 10
 
 
   captureshare_line:

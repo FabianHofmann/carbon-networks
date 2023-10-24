@@ -21,7 +21,7 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
 sns.set_theme(**snakemake.params["theme"])
 config = snakemake.config
 labels = config["labels"]
-specs = config["plotting"]["capacity_diff_map"]
+specs = config["plotting"]["cost_diff_map"]
 
 df = {}
 carriers = []
