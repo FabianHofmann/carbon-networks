@@ -28,9 +28,16 @@ carriers = []
 for path in snakemake.input.networks:
     n = import_network(path)
     s = n.statistics
-    costs = s.capex(groupby=s.get_bus_and_carrier) + s.opex(
-        groupby=s.get_bus_and_carrier
-    )
+
+    # TODO: ensure this weird adjustment is not necessary anymore
+    is_dac = n.links.carrier == "DAC"
+    n.links.loc[is_dac, "bus0"] = n.links.loc[is_dac, "bus1"]
+
+    capex = n.statistics.capex(groupby=s.get_bus_and_carrier)
+    opex = n.statistics.opex(aggregate_time="sum", groupby=s.get_bus_and_carrier)
+
+    costs = capex.add(opex, fill_value=0)
+
     key = snakemake.params.labels[n.meta["wildcards"]["run"]]
 
     df[key] = costs
@@ -77,7 +84,8 @@ for ax, ds, col in zip(axes.flat, [pos, neg], df.columns):
         geomap="10m",
         margin=0.2,
     )
-    ax.set_title(f"Higher Spendings {col}")
+    title = col.replace("\n", " ")
+    ax.set_title(f"Higher Spendings {title}")
 
     legend_bus_sizes = specs["bus_sizes"]
     if legend_bus_sizes is not None:
@@ -106,7 +114,7 @@ add_legend_patches(
 
 ax.set_extent(snakemake.config["plotting"]["extent"])
 
-# fig.tight_layout()
+fig.tight_layout()
 fig.savefig(
     snakemake.output[0],
     dpi=300,

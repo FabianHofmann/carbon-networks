@@ -8,12 +8,17 @@ scenario:
   planning_horizons: 2050
 
 enable:
-  retrieve: false
-  retrieve_cutout: false
-  retrieve_databundle: false
+  retrieve: true
+  retrieve_cutout: true
+  retrieve_databundle: true
 
 co2_budget:
   2050: 0.
+
+
+renewable:
+  onwind:
+    capacity_per_sqkm: 1.2
 
 atlite:
   nprocesses: 8

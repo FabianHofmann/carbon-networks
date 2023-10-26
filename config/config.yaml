@@ -1,13 +1,15 @@
 configs:
-  test: 0
+  test: 1
   presentation: 0
 
 report:
   path: "report/submissions/ecemp/presentation/presentation"
 
 remote:
-  ssh: zecm
-  path: /home/users/h/hofmann/scratch/projects/co2-network
+  # ssh: zecm
+  # path: /home/users/h/hofmann/scratch/projects/co2-network
+  ssh: z1
+  path: /home/htc/mhofmann/projects/co2-network
 
 run:
   name: &runs
@@ -79,6 +81,24 @@ difference:
   net-negative-0.1:
     - net-negative-0.1/co2-only
     - net-negative-0.1/h2-only
+  emission-reduction-0.05-co2-only:
+    - co2-only
+    - net-negative-0.05/co2-only
+  emission-reduction-0.05-h2-only:
+    - h2-only
+    - net-negative-0.05/h2-only
+  emission-reduction-0.05-full:
+    - full
+    - net-negative-0.05/full
+  emission-reduction-0.1-co2-only:
+    - co2-only
+    - net-negative-0.1/co2-only
+  emission-reduction-0.1-h2-only:
+    - h2-only
+    - net-negative-0.1/h2-only
+  emission-reduction-0.1-full:
+    - full
+    - net-negative-0.1/full
 
 
 labels:

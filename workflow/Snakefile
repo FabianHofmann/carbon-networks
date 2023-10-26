@@ -82,7 +82,7 @@ rule main:
             clusters=config["scenario"]["clusters"],
             figure=[
                 "cost_bar",
-                "capacity_map",
+                "cost_map",
             ],
         ),
         expand(
@@ -397,7 +397,7 @@ rule plot_cost_diff_map:
     input:
         networks=get_difference_networks,
     output:
-        map="results/difference/{difference}/figures/{clusters}_nodes/capacity_map.{ext}",
+        map="results/difference/{difference}/figures/{clusters}_nodes/cost_map.{ext}",
     resources:
         mem_mb=20000,
     script:
