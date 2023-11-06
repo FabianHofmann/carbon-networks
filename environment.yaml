@@ -3,7 +3,7 @@ channels:
     - conda-forge
     - bioconda
 dependencies:
-    - python
+    - python>=3.11
     - pip
 
     - pre-commit
@@ -17,11 +17,14 @@ dependencies:
     - jupyterlab
 
     - seaborn
+    - plotly
+
 
     - pypsa>=0.25.1
     - atlite>=0.2.9
     - dask
     - gurobi
+    - python-kaleido
 
     # Dependencies of the workflow itself
     - xlrd
@@ -33,7 +36,7 @@ dependencies:
     - yaml
     - pytables
     - lxml
-    - powerplantmatching>=0.5.5
+    - powerplantmatching>=0.5.8
     - numpy<1.24
     - pandas
     - geopandas>=0.11.0

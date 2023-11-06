@@ -8,9 +8,14 @@ scenario:
   planning_horizons: 2050
 
 enable:
-  retrieve: true
+  retrieve: false
   retrieve_cutout: true
   retrieve_databundle: true
+
+
+electricity:
+  powerplants_filter: (DateOut >= 2050 or DateOut != DateOut) and not (Country in ['Germany', 'Switzerland', 'Austria', 'Belgium'] and Fueltype == 'Nuclear')
+
 
 co2_budget:
   2050: 0.
@@ -49,5 +54,5 @@ sector:
       2050: 0.8
 
 solving:
-  walltime: 4-00:00:00
+  walltime: 2-00:00:00
   mem: 150000

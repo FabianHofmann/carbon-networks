@@ -82,6 +82,9 @@ natbib=true % natbib compatibility mode (\citep and~\citet still work)
 
 In net-zero economies, carbon capture is regarded as a crucial technology for offsetting emissions from hard-to-abate sectors and unavoidable emissions from land use and agriculture. Capturing carbon at point sources and from the atmosphere via Direct Air Capture (DAC) presents new opportunities for producing drop-in fuels such as methane, methanol, or carbon-neutral liquid hydrocarbons. This process is known as Carbon Capture and Utilization (CCU). Additionally, storing carbon in geological formations is referred to as Carbon Capture and Storage (CCS). Together with carbon transport, these technologies are grouped under the term carbon management and are part of the so-called New Carbon Economy~\cite{arniehellerNewCarbonEconomy2019}.
 
+
+The European Union's aim to become climate-neutral by 2050 require
+
 For Europe, the Capture Map~\cite{ToolsGreenTransition} estimates a potential of 1.4~Gt of carbon capture from point sources per year. In combination with large sequestration potentials as stated in~\cite{weiProposedGlobalLayout2021}, this highlights the vast potential for decarbonization. Recently, policymakers and industry in Europe have been committing to carbon management projects, planning the first infrastructure components, and developing business models for emerging sectors of the economy~\cite{adomaitisEquinorRWEBuild2023,apnewswireGermanyDrawLegislation2023,KohlenstoffKannKlimaschutz2023,OGETESJoin2022,TESHydrogenLife2023}. Business models from companies like Tree Energy Solutions~\cite{TESHydrogenLife2023}, Carbfix~\cite{WeTurnCO2}, and Equinor~\cite{adomaitisEquinorRWEBuild2023} advertise carbon management hubs that provide green hydrogen, methane, or synfuels on the one hand and offer \carbon{} offtake on the other hand. In this context, the need for an international strategy, analogous to the European Hydrogen Backbone~\cite{gasforclimateEuropeanHydrogenBackbone2022}, becomes apparent to coordinate and support deep decarbonization efforts. Important insights to formulate such a strategy can be gained from energy system models that provide a holistic view of the energy system and its technological interactions. To this end, a number of optimization tools have been developed in recent years to model synergies between various carbon management technologies~\cite{bakkenLinearModelsOptimization2008,morbeeOptimisedDeploymentEuropean2012,oeiModelingCarbonCapture2014,elahiMultiperiodLeastCost2014,burandtDecarbonizingChinaEnergy2019,middletonSimCCSOpensourceTool2020,bjerketvedtOptimalDesignCost2020,weiProposedGlobalLayout2021,damoreOptimalDesignEuropean2021,becattiniCarbonDioxideCapture2022}. In contrast to Integrated Assessment Models, these tools account for the spatial distribution of carbon sources and sinks.
 % A comprehensive example is found in~\cite{becattiniCarbonDioxideCapture2022}, which presents a mixed-integer model to optimize the time-evolution of a \carbon{} transport system in Switzerland, connecting to a remote sequestration site in Norway.
 However, the models are often limited with regard to both geographical scope and detail. While representing a single country with spatial resolution may neglect synergies of international cooperation, a coarse grained representation of multiple countries may neglect important geographical properties.
@@ -100,9 +103,16 @@ The PyPSA-Eur model integrates exogenous assumptions for energy demand on an hou
 Taking non-abatable emissions from fossil-based industrial processes, aviation, shipping and agriculture into account, the system emits of 633~Mt \carbon{} per year, 153~Mt of which are industrial emissions which can optionally be captured through corresponding investments.
 
 
-Carbon-neutral energy is provided by wind, solar, biomass and hydro. Solar and wind power can be expanded according to land-use constrained in alignment with
+Carbon-neutral energy is provided by wind, solar, biomass and hydro. Weather-dependent power potentials for solar, wind and hydro per region and time-stamp are calculated from reanalysis and satellite data sets Copernicus ERA5~\cite{hersbachERA5GlobalReanalysis2020} and Surface Radiation Data Set - Heliosat~\cite{pfeifrothSurfaceRadiationData2017}  using the open-source tool~\cite{hofmannAtliteLightweightPython2021}.
+Solar and wind power can be expanded in alignment with eligible land-use restrictions calculated on the basis of~\cite{eeaCorineLandCover2012,eeaNatura2000Data2016}. The biomass potential is calculated from the European Commission's Joint Research Centre's ENSPRESO database~\cite{enspreso_database} and the JRC-EU-TIMES model~\cite{instituteforenergyandtransportjointresearchcentreJRCEUTIMESModelBioenergy2015}. Its usage in each region is bound by its biomass potential, but inter-regional biomass transport is permitted with transport costs considered.
 
-, modeling the transmission and expansion of electricity (on extra-high voltage level), gas, and optionally \hydrogen{} and \carbon{}.
+
+Salt caverns for \hydrogen{} storage are derived from~\cite{caglayanTechnicalPotentialSalt2020}.
+
+Industrial energy demand and excess heat potentials are calculated per node on the basis of~\cite{hotmaps_industrial_db}.
+
+
+% use https://pypsa-eur.readthedocs.io/en/latest/licenses.html
 
 
 
@@ -113,7 +123,7 @@ Carbon-neutral energy is provided by wind, solar, biomass and hydro. Solar and w
 \end{figure}
 
 
-Biomass usage in each region is bound by its biomass potential, but inter-regional biomass transport is permitted with transport costs considered. We restrict the electric transmission system's expansion to 20\% of its current capacity, acknowledging the challenges in inaugurating new transmission projects. The geographical spread of emissions from various industries is derived from~\cite{piamanzGeoreferencedIndustrialSites2018}, totaling 158~Mt \carbon{} annually.
+We restrict the electric transmission system's expansion to 20\% of its current capacity, acknowledging the challenges in inaugurating new transmission projects. The geographical spread of emissions from various industries is derived from~\cite{piamanzGeoreferencedIndustrialSites2018}, totaling 158~Mt \carbon{} annually.
 
 \begin{figure}[h]
     \centering
@@ -133,9 +143,9 @@ All technology cost assumptions for 2040 are sourced from an open-source databas
 
 Addressing climate targets, we define three \carbon{} target scenarios:
 \begin{itemize}
-    \item[] \textit{Net-zero:} Annual net-zero emissions, aligning with the EU's 2050 target.
-    \item[] \textit{5\% Net-negative:} Annual net-negative emissions of 5\% of 1990 emissions or 230~Mt \carbon{}.
-    \item[] \textit{10\% Net-negative:} 10\% of 1990 emissions net-negative annually, or 460~Mt \carbon{}.
+    \item[] Net-Zero: aligning with the EU's 2050 emission targets. Also denoted as NZ.
+    \item[] Net-Negative~5\%: relative to 1990 emissions, equaling 230~Mt \carbon{}. Also denoted as NN~5\%.
+    \item[] Net-Negative~10\%: relative to 1990 emissions, equaling 460~Mt \carbon. Also denoted as NN~10\%.
 \end{itemize}
 Unless otherwise mentioned, our reference is the Net-zero scenario. For 5\% Net-negative and 10\% Net-negative scenarios, the carbon sequestration potential is adjusted to 400~Mt/a and 600~Mt/a, respectively.
 
@@ -155,9 +165,8 @@ Beyond \carbon{} targets, we consider four expansion scenarios:
 
 \begin{figure*}[ht!]
     \centering
-    % \includegraphics*[width=\linewidth]{cost_area.pdf}
-    \caption[short]{Total annual system cost for the sector-coupled system with different levels of carbon sequestration potential, with (left) and without (right) \carbon{} network. "Gas Infrastructure" combines gas facilities for power and heat production, "H$_2$ Infrastructure" combines H$_2$ production, transport and re-electrification. Regardless of the implementation of a \carbon{} network, the system cost decrease as sequestration increases. Due to an increased flexibility from fossil carriers with subsequent sequestration, the need for FT synthesis and \hydrogen{} electrolysis and the corresponding renewable power supply is reduced.
-        % TODO: mention details on the grouped technologies
+    \includegraphics*[width=\linewidth]{comparison/default/figures/90_nodes/cost_bar.png}
+    \caption[short]{Total annual system cost for the European energy system for the different scenarios subdivided into groups of technologies. While the `Baseline' scenario has neither a \hydrogen{} or \carbon{} network, `Full' is allowed to expand both. "Gas Infrastructure" combines gas facilities for power and heat production, "H$_2$ Infrastructure" combines H$_2$ production, transport and re-electrification. The
     }
     \label{fig:cost_area}
 \end{figure*}
@@ -180,7 +189,7 @@ Note that technologies with a ``*`` are explicitly augmented technologies with i
 \end{figure}
 
 
-Figure~\ref{fig:operation_area_carbon_co2network} confirms our previous results and shows that FT synthesis production decreases with sequestration availability. At the same time, integrated carbon capture from Gas Combined Heat and Power (CHP) plants, Allam Cycle plants, Steam Methane Reforming (SMR) and DAC increases. Other technologies are constant across varying levels of sequestration due to different reasons: biomass is bound by its maximum available potential (as reported in~\cite{europeancommissionjointresearchcentreENSPRESOBIOMASS2019}); the industry processes with their associated emissions are set to fixed values; the methanol production is bound by a lower limit representing the demand from the shipping sector.
+Figure~\ref{fig:operation_area_carbon_co2network} confirms our previous results and shows that FT synthesis production decreases with sequestration availability. At the same time, integrated carbon capture from Gas Combined Heat and Power (CHP) plants, Allam Cycle plants, Steam Methane Reforming (SMR) and DAC increases. Other technologies are constant across varying levels of sequestration due to different reasons: biomass is bound by its maximum available potential (as reported in~\cite{enspreso_database}); the industry processes with their associated emissions are set to fixed values; the methanol production is bound by a lower limit representing the demand from the shipping sector.
 
 \begin{figure}[h]
     \centering

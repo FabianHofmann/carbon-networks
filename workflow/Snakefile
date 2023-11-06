@@ -57,7 +57,12 @@ rule main:
             "results/{run}/figures/{clusters}_nodes/{figure}.png",
             run=config["run"]["name"],
             clusters=config["scenario"]["clusters"],
-            figure=["operation_bar", "sequestration_map", "capacity_country_bar"],
+            figure=[
+                "operation_bar",
+                "sequestration_map",
+                "capacity_country_bar",
+                "sankey_diagramm",
+            ],
         ),
         expand(
             "results/comparison/{comparison}/figures/{clusters}_nodes/energy_balance_bar_{kind}.png",
@@ -255,6 +260,20 @@ rule plot_energy_balance_area:
         mem_mb=20000,
     script:
         "scripts/plot-energy-balance-area.py"
+
+
+rule plot_sankey_diagramm:
+    params:
+        settings=config["plotting"].get("sankey_diagramm"),
+        label=lambda w: config["labels"][w.run],
+    input:
+        network="results/{run}/networks/{clusters}_nodes.nc",
+    output:
+        map="results/{run}/figures/{clusters}_nodes/sankey_diagramm.{ext}",
+    resources:
+        mem_mb=20000,
+    script:
+        "scripts/plot-sankey-diagramm.py"
 
 
 # COMPARISON

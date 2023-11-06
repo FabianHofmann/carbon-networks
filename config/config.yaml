@@ -1,5 +1,5 @@
 configs:
-  test: 1
+  test: 0
   presentation: 0
 
 report:
@@ -9,7 +9,7 @@ remote:
   # ssh: zecm
   # path: /home/users/h/hofmann/scratch/projects/co2-network
   ssh: z1
-  path: /home/htc/mhofmann/projects/co2-network
+  path: /home/htc/mhofmann/SCRATCH/projects/co2-network
 
 run:
   name: &runs
@@ -102,27 +102,28 @@ difference:
 
 
 labels:
-  baseline: "No CO$_2$ / H$_2$ Net"
-  co2-only: "CO$_2$ Net Only"
-  h2-only: "H$_2$ Net Only"
-  full: "CO$_2$ & H$_2$ Net"
+  baseline: "Baseline"
+  co2-only: "CO$_2$ Net"
+  h2-only: "H$_2$ Net"
+  full: "Full"
 
   half-price/co2-only: "Cheap CO$_2$ Net"
   half-price/full: "H$_2$ & Cheap CO$_2$ Net"
 
-  net-negative-0.05/baseline: "No CO$_2$ / H$_2$ Net,\nNet-negative 5%"
-  net-negative-0.05/co2-only: "CO$_2$ Net,\nNet-negative 5%"
-  net-negative-0.05/h2-only: "H$_2$ Net,\nNet-negative 5%"
-  net-negative-0.05/full: "CO$_2$ & H$_2$ Net,\nNet-negative 5%"
-
-  net-negative-0.1/baseline: "No CO$_2$ / H$_2$ Net,\nNet-negative 10%"
-  net-negative-0.1/co2-only: "CO$_2$ Net,\nNet-negative 10%"
-  net-negative-0.1/h2-only: "H$_2$ Net,\nNet-negative 10%"
-  net-negative-0.1/full: "CO$_2$ & H$_2$ Net,\nNet-negative 10%"
-
-  net-neutral: "NN"
+  net-neutral: "NZ"
   net-negative-0.05: "NN 5%"
   net-negative-0.1: "NN 10%"
+
+  net-negative-0.05/baseline: "Baseline - NN 5%"
+  net-negative-0.05/co2-only: "CO$_2$ Net - NN 5%"
+  net-negative-0.05/h2-only: "H$_2$ Net - NN 5%"
+  net-negative-0.05/full: "Full - NN 5%"
+
+  net-negative-0.1/baseline: "Baseline - NN 10%"
+  net-negative-0.1/co2-only: "CO$_2$ Net - NN 10%"
+  net-negative-0.1/h2-only: "H$_2$ Net - NN 10%"
+  net-negative-0.1/full: "Full - NN 10%"
+
 
   carbon: "Captured Carbon"
   hydrogen: "Hydrogen"
@@ -206,6 +207,7 @@ constants:
           - solar
           - ror
           - solar rooftop
+          - nuclear
         Link:
           bus1:
             - OCGT
@@ -519,7 +521,7 @@ plotting:
       region_unit: TWh
       bus_scale: 5e-9
       branch_scale: 1e-8
-      flow_scale: 4e-6
+      flow_scale: 6e-6
       bus_sizes:
         - 100 # TWh
         - 50 # TWh
@@ -643,6 +645,7 @@ plotting:
     methanol: Methanol
     methanolisation: Methanolisation
     naphtha for industry: Other
+    nuclear: Nuclear
     offwind: Wind
     oil: Oil
     oil emissions: Other
@@ -686,3 +689,4 @@ plotting:
     Solar: "#ffe066"
     Process Emissions: '#222222'
     Other: '#aaaaaa'
+    Nuclear: '#ff8c00'

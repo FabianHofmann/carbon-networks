@@ -17,7 +17,12 @@ from common import (
 )
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
-    snakemake = mock_snakemake("plot_energy_balance_bar", ext="pdf", clusters=40)
+    snakemake = mock_snakemake(
+        "plot_energy_balance_bar",
+        ext="pdf",
+        clusters=40,
+        comparison="net-negative-0.05",
+    )
 
 sns.set_theme(**snakemake.params["theme"])
 
@@ -48,6 +53,8 @@ for kind, output in snakemake.output.items():
     ds = ds[ds.round(2) != 0].droplevel(0).dropna(how="all").fillna(0)
     ds = ds.groupby(level=0).sum()
     ds = ds.sort_values(ds.columns[0], ascending=False)
+    if kind == "co2":
+        ds.drop("CO$_2$", inplace=True, errors="ignore")
     # ds = sort_rows_by_diff(ds)
 
     fig, ax = plt.subplots(1, 1, figsize=snakemake.params.settings["figsize"])

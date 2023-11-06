@@ -8,11 +8,7 @@ from pypsa.plot import add_legend_circles, add_legend_patches, add_legend_lines
 from common import (
     import_network,
     mock_snakemake,
-    get_carrier_storage,
-    get_carrier_transport,
-    get_carrier_production,
 )
-import geopandas as gpd
 
 
 column = "Optimal Capacity"
