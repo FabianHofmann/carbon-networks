@@ -31,7 +31,7 @@ region_alpha = 0.8
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_operation_map",
-        run="with-gas/baseline",
+        run="full",
         clusters=90,
         ext="png",
     )
@@ -50,9 +50,14 @@ transport_carriers = [
 ]
 transport_carriers = n.carriers.nice_name[transport_carriers]
 
-balance = n.statistics.energy_balance(aggregate_bus=False)
-balance = balance.rename(n.buses.location, level=3)
-dispatch = balance.drop(transport_carriers, level=1)
+# TODO: ensure this weird adjustment is not necessary anymore
+dac = n.links.index[n.links.carrier == "DAC"]
+n.links.loc[dac, ["bus0", "bus2"]] = n.links.loc[dac, ["bus2", "bus0"]].values
+n.links.loc[dac, ["", "bus2"]] = n.links.loc[dac, ["bus2", "bus0"]].values
+n.links_t.p0[dac], n.links_t.p2[dac] = n.links_t.p2[dac], n.links_t.p0[dac].values
+
+s = n.statistics
+
 
 for kind, output in snakemake.output.items():
 
@@ -65,8 +70,12 @@ for kind, output in snakemake.output.items():
     )
 
     carriers = config["constants"]["carrier_to_buses"].get(kind, [kind])
-    carriers = list(set(carriers) & set(dispatch.index.get_level_values(2)))
-    df = dispatch.loc[:, :, carriers].groupby(level=[3, 1]).sum()
+
+    grouper = s.groupers.get_bus_and_carrier
+    df = s.dispatch(bus_carrier=carriers, groupby=grouper)
+    df = df.drop(transport_carriers, level=2, errors="ignore")
+    df = df.rename(lambda x: x.replace(" CC", ""), level=2)
+    df = df.groupby(level=[1, 2]).sum().rename(n.buses.location, level=0)
 
     tags = ["production", "consumption"]
 
@@ -107,6 +116,15 @@ for kind, output in snakemake.output.items():
             margin=0.2,
             color_geomap={"border": "darkgrey", "coastline": "darkgrey"},
             geomap="10m",
+        )
+        regions.plot(
+            ax=ax,
+            facecolor="whitesmoke",
+            edgecolor="darkgrey",
+            linewidth=0,
+            alpha=region_alpha,
+            transform=ccrs.PlateCarree(),
+            aspect="equal",
         )
 
         gen_carriers = (

@@ -12,7 +12,8 @@ import matplotlib.pyplot as plt
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_captureshare_line",
-        clusters=40,
+        comparison="default",
+        clusters=90,
         ext="png",
     )
 
@@ -41,6 +42,8 @@ for path in snakemake.input.networks:
     df[key] = caps
 
 df = pd.concat(df, axis=1)
+df = df[df.sum().sort_values().index]
+df = df.reindex(df.iloc[:, 0].sort_values().index, axis=0)
 
 nice_name = n.carriers.nice_name
 colors = n.carriers.color.dropna().rename(nice_name)
@@ -48,7 +51,6 @@ colors = n.carriers.color.dropna().rename(nice_name)
 fig, ax = plt.subplots(
     figsize=snakemake.params.settings["figsize"],
     # layout="constrained",
-    sharex=True,
 )
 
 df.mul(100).T.plot(
@@ -57,10 +59,19 @@ df.mul(100).T.plot(
     color=colors.to_dict(),
     alpha=0.8,
     rot=90,
+    marker="o",
+    ls="-",
 )
 ax.set_ylabel(f"CC share [%]")
 ax.grid(axis="y", alpha=0.5)
-ax.legend(loc="center left", bbox_to_anchor=(1, 0.5), frameon=False)
+handles, labels = ax.get_legend_handles_labels()
+ax.legend(
+    handles[::-1],
+    labels[::-1],
+    loc="center left",
+    bbox_to_anchor=(1, 0.5),
+    frameon=False,
+)
 
 sns.despine()
 

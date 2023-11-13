@@ -1,12 +1,11 @@
 import os
-from pathlib import Path
-import seaborn as sns
+
 import matplotlib.pyplot as plt
 import pandas as pd
+import seaborn as sns
 from common import (
     import_network,
     mock_snakemake,
-    sort_rows_by_diff,
 )
 
 alpha = 1

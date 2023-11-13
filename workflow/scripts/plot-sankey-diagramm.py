@@ -18,7 +18,7 @@ pio.renderers.default = "svg"
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
-        "plot_sankey_diagramm", ext="png", clusters=90, run="co2-only"
+        "plot_sankey_diagramm", ext="png", clusters=90, run="h2-only"
     )
 
 
@@ -33,11 +33,11 @@ carbon_content = {
     "co2": 1,
     "co2 sequestered": 1,
     "oil": 0.26,
-    "gas for industry": 0.2,
+    "gas for industry": 0,
     "methanol": 0.248009559,
     "process emissions": 1,
     # "solid biomass": 0, # is net neutral
-    # "biogas": 0.0, # is net neutral
+    # "biogas": 0., # is net neutral
     # "solid biomass for industry": 0, # is net neutral
 }
 
@@ -64,7 +64,7 @@ source = source.rename(index=rename, level=2).groupby(level=[0, 1, 2]).sum()
 
 
 drop = source.index.intersection(target.index)
-drop = drop[~drop.get_level_values(2).str.contains("pipeline")]
+# drop = drop[~drop.get_level_values(2).str.contains("pipeline")]
 # test for net neutrality
 # assert source.loc[drop].round(0).equals(target.loc[drop].round(0))
 source = source.drop(drop)
@@ -77,49 +77,46 @@ target = target.drop(drop)
 target = target.reset_index(0, name="value").rename(columns={"level_0": "target"})
 source = source.reset_index(0, name="value").rename(columns={"level_0": "source"})
 
-data = target.assign(source=source.source.reindex(target.index)).dropna(
-    subset=["source"]
-)
-data = data.droplevel(0)
+data = target.assign(source=source.source.reindex(target.index))
+data["source"] = data.source.fillna("fossil " + data.target.loc[["Generator"]])
+data = data.droplevel(0).dropna(subset=["source"])
 data = data[data.value > 10]
+data = data.sort_values(by="value", ascending=True)
 
+carriers = n.carriers.copy()
+fossils = data.source[data.source.str.startswith("fossil")]
+fossils_map = fossils.str.replace("fossil ", "")
+carriers = pd.concat([carriers, carriers.loc[fossils_map].rename(index=fossils)])
+carriers.loc[fossils, "nice_name"] = "Fossil " + carriers.loc[fossils, "nice_name"]
 
 int_map = {v: k for k, v in enumerate(set([*data.source, *data.target]))}
-labels = n.carriers.nice_name[int_map.keys()].str.replace("$_2$", "₂")
-colors = n.carriers.color[int_map.keys()]
-link_color = n.carriers.color[data.value.index]
-link_label = n.carriers.nice_name[data.index].str.replace("$_2$", "₂")
+labels = carriers.nice_name[int_map.keys()].str.replace("$_2$", "₂")
+colors = carriers.color[int_map.keys()]
+link_color = carriers.color[data.value.index]
+link_label = carriers.nice_name[data.index].str.replace("$_2$", "₂")
 link_label["oil emissions"] = "Aviation & Petrochemicals"
 link_meta = pd.concat([link_color, link_label], axis=1)
 link_meta.drop_duplicates(inplace=True)
 link_meta.sort_values(by="nice_name", inplace=True)
-
 # Define the links
+
 source = data.source.replace(int_map)
 target = data.target.replace(int_map)
-value = data.value
+value = data.value.round(0).astype(int)
 
+print(data)
 # Create the Sankey diagram
-# Create a new list of labels with a white color
-shadow_labels = [
-    '<span style="color:black; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white;">{}</span>'.format(
-        label
-    )
-    for label in labels
-]
-
-
 fig = go.Figure(
     data=go.Sankey(
+        arrangement="freeform",
         node=dict(
             pad=15,
             thickness=20,
             line=dict(color="black", width=0.5),
-            label=shadow_labels,
+            label=labels,
             color=colors,
         ),
         link=dict(source=source, target=target, value=value, color=link_color),
-        legend="legend",
     )
 )
 
@@ -135,7 +132,6 @@ for label, color in zip(link_meta.nice_name, link_meta.color):
         )
     )
 
-# Update the layout
 fig.update_layout(
     font=dict(size=12),
     xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
@@ -149,8 +145,14 @@ fig.update_layout(
         x=0.5,
         traceorder="normal",
         itemsizing="constant",
+        bgcolor="rgba(255,255,255,0.8)",
     ),
-    margin=dict(l=20, r=20, t=20, b=20),
+    margin=dict(l=30, r=30, t=30, b=30),
+    autosize=False,
+    width=800,
+    height=500,
 )
 
-fig.write_image(snakemake.output[0], width=800, height=600)
+
+fig.show()
+fig.write_image(snakemake.output[0], scale=3)

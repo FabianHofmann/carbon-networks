@@ -79,6 +79,7 @@ rule main:
                 "cost_bar",
                 "captureshare_line",
                 "transmission_bar",
+                "transmission_cost_bar",
             ],
         ),
         expand(
@@ -97,9 +98,11 @@ rule main:
         ),
     output:
         "results/.main",
+        # "results/figures.zip",
     shell:
         """
         touch {output}
+        # zip -u {output} {input}
         """
 
 
@@ -329,9 +332,9 @@ rule plot_transmission_bar:
     params:
         technology_groups=config["plotting"]["technology_groups"],
         technology_groups_colors=config["plotting"]["technology_group_colors"],
-        settings=lambda w: config["plotting"]["cost_bar_wide"]
+        settings=lambda w: config["plotting"]["transmission_cost_bar_wide"]
         if is_wide(w)
-        else config["plotting"]["cost_bar"],
+        else config["plotting"]["transmission_cost_bar"],
         theme=config["plotting"]["theme"],
         labels=config["labels"],
     input:
@@ -342,6 +345,25 @@ rule plot_transmission_bar:
         mem_mb=20000,
     script:
         "scripts/plot-transmission-bar.py"
+
+
+rule plot_transmission_cost_bar:
+    params:
+        technology_groups=config["plotting"]["technology_groups"],
+        technology_groups_colors=config["plotting"]["technology_group_colors"],
+        settings=lambda w: config["plotting"]["transmission_cost_bar_wide"]
+        if is_wide(w)
+        else config["plotting"]["transmission_cost_bar"],
+        theme=config["plotting"]["theme"],
+        labels=config["labels"],
+    input:
+        networks=get_comparison_networks,
+    output:
+        map="results/comparison/{comparison}/figures/{clusters}_nodes/transmission_cost_bar.{ext}",
+    resources:
+        mem_mb=20000,
+    script:
+        "scripts/plot-transmission-cost-bar.py"
 
 
 rule plot_energy_balance_bar:
@@ -415,6 +437,9 @@ rule plot_cost_diff_map:
         labels=config["labels"],
     input:
         networks=get_difference_networks,
+        regions="resources/regions_onshore_elec_s{simpl}_{{clusters}}.geojson".format(
+            **config["scenario"]
+        ),
     output:
         map="results/difference/{difference}/figures/{clusters}_nodes/cost_map.{ext}",
     resources:

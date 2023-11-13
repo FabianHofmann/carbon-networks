@@ -27,12 +27,11 @@ config = snakemake.config
 df = {}
 for path in snakemake.input.networks:
     n = import_network(path)
-    balance = n.statistics.energy_balance()
 
     # key = snakemake.params.labels[n.meta["wildcards"]["run"]]
     key = n.meta["wildcards"]["run"]
 
-    df[key] = n.objective
+    df[key] = n.statistics.capex().sum() + n.statistics.opex().sum()
 
 df = pd.Series(df)
 
@@ -56,8 +55,7 @@ sns.heatmap(
     cbar=False,
     annot=annot,
     fmt="",
-    annot_kws={"fontsize": 11},
+    annot_kws={"fontsize": 9},
 )
 # fig.tight_layout()
-
 fig.savefig(snakemake.output[0])

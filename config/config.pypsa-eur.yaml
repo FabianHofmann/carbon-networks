@@ -56,3 +56,24 @@ sector:
 solving:
   walltime: 2-00:00:00
   mem: 150000
+
+
+plotting:
+  tech_colors:
+      biogas: '#0e803d'
+      biomass: '#008020'
+      solid biomass: '#008020'
+      solid biomass transport: '#008020'
+      solid biomass for industry: '#008010'
+      solid biomass for industry CC: '#00600c'
+      solid biomass for industry co2 from atmosphere: '#008008'
+      solid biomass for industry co2 to stored: '#00600c'
+      urban central solid biomass CHP: '#007008'
+      urban central solid biomass CHP CC: '#004008'
+      biomass boiler: '#006030'
+      residential rural biomass boiler: '#006030'
+      residential urban decentral biomass boiler: '#006020'
+      services rural biomass boiler: '#006030'
+      services urban decentral biomass boiler: '#004020'
+      SMR: '#870c71'
+      SMR CC: '#4f1745'

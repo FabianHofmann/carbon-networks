@@ -53,6 +53,7 @@ def import_network(path):
     overrides = override_component_attrs(override_dir)
     n = pypsa.Network(path, override_component_attrs=overrides)
     sanitize_locations(n)
+    update_colors(n)
     fill_missing_carriers(n)
     modify_carrier_names(n)
     add_carrier_nice_names(n)
@@ -169,7 +170,6 @@ def get_carrier_production(n, kind, config, which="capacity"):
 
     buses = specs.get("Link", [])
     for bus, carriers in buses.items():
-
         port = int(bus[-1])
         links = n.links.query("carrier in @carriers")
         assert_carriers_existent(n, carriers, "Link")
@@ -251,7 +251,6 @@ def get_carrier_consumption(n, kind, config, which="capacity"):
 
     buses = specs.get("Link", [])
     for bus, carriers in buses.items():
-
         port = int(bus[-1])
         assert_carriers_existent(n, carriers, "Link")
         links = n.links.query("carrier in @carriers")
@@ -458,6 +457,14 @@ def modify_carrier_names(n):
     n.carriers.index = n.carriers.index.to_series().replace(replace, "", regex=True)
     n.carriers.nice_name = n.carriers.nice_name.replace(replace, "", regex=True)
     n.carriers = n.carriers[~n.carriers.index.duplicated()]
+
+
+def update_colors(n):
+    config = yaml.load(
+        open(root / "config" / "config.pypsa-eur.yaml"), yaml.CFullLoader
+    )
+    colors = pd.Series(config["plotting"]["tech_colors"])
+    n.carriers.color.update(colors)
 
 
 def get_carrier_mapper(n):

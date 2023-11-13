@@ -13,7 +13,7 @@ region_alpha = 0.8
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
-        "plot_cost_bar", ext="pdf", clusters=90, comparison="default"
+        "plot_cost_bar", ext="png", clusters=90, comparison="default"
     )
 
 sns.set_theme(**snakemake.params["theme"])
@@ -49,14 +49,16 @@ unit = "bn€/a"
 sort_by_color = (
     lambda df: df.assign(color=colors).sort_values(by="color").drop("color", axis=1)
 )
-grouped = sort_rows_by_diff(grouped).div(norm)
+grouped = sort_rows_by_diff(grouped).div(norm)[::-1]
+rename = {"Carbon Capt. at Point Sources": "Carbon Capture\nat Point Sources"}
+grouped = grouped.rename(rename, axis=0)
+colors = {rename.get(k, k): v for k, v in colors.items()}
 
 fig, ax = plt.subplots(
     1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"
 )
 
-
-defaults = dict(kind="bar", stacked=True, lw=0, rot=90, alpha=0.8)
+defaults = dict(kind="bar", stacked=True, rot=90, lw=0.2, alpha=0.8)
 
 kwargs = {**defaults, **snakemake.params.settings.get("kwargs", {})}
 grouped.T.plot(ax=ax, color=colors, **kwargs)

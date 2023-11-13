@@ -57,7 +57,9 @@ for kind, output in snakemake.output.items():
         ds.drop("CO$_2$", inplace=True, errors="ignore")
     # ds = sort_rows_by_diff(ds)
 
-    fig, ax = plt.subplots(1, 1, figsize=snakemake.params.settings["figsize"])
+    fig, ax = plt.subplots(
+        1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"
+    )
 
     colors = n.carriers.set_index("nice_name").color.to_dict()
     ds.T.plot.bar(color=colors, ax=ax, stacked=True, alpha=0.8, lw=0, rot=90)

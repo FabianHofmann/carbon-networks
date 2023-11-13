@@ -65,6 +65,10 @@ comparison:
     - full
     - net-negative-0.05/full
     - net-negative-0.1/full
+  emission-reduction-full:
+    - full
+    - net-negative-0.05/full
+    - net-negative-0.1/full
   subsidy:
     - baseline
     - half-price/co2-only
@@ -105,7 +109,7 @@ labels:
   baseline: "Baseline"
   co2-only: "CO$_2$ Net"
   h2-only: "H$_2$ Net"
-  full: "Full"
+  full: "Hybrid"
 
   half-price/co2-only: "Cheap CO$_2$ Net"
   half-price/full: "H$_2$ & Cheap CO$_2$ Net"
@@ -114,15 +118,15 @@ labels:
   net-negative-0.05: "NN 5%"
   net-negative-0.1: "NN 10%"
 
-  net-negative-0.05/baseline: "Baseline - NN 5%"
-  net-negative-0.05/co2-only: "CO$_2$ Net - NN 5%"
-  net-negative-0.05/h2-only: "H$_2$ Net - NN 5%"
-  net-negative-0.05/full: "Full - NN 5%"
+  net-negative-0.05/baseline: "Baseline (NN 5%)"
+  net-negative-0.05/co2-only: "CO$_2$ Net (NN 5%)"
+  net-negative-0.05/h2-only: "H$_2$ Net (NN 5%)"
+  net-negative-0.05/full: "Hybrid (NN 5%)"
 
-  net-negative-0.1/baseline: "Baseline - NN 10%"
-  net-negative-0.1/co2-only: "CO$_2$ Net - NN 10%"
-  net-negative-0.1/h2-only: "H$_2$ Net - NN 10%"
-  net-negative-0.1/full: "Full - NN 10%"
+  net-negative-0.1/baseline: "Baseline (NN 10%)"
+  net-negative-0.1/co2-only: "CO$_2$ Net (NN 10%)"
+  net-negative-0.1/h2-only: "H$_2$ Net (NN 10%)"
+  net-negative-0.1/full: "Hybrid (NN 10%)"
 
 
   carbon: "Captured Carbon"
@@ -403,7 +407,7 @@ plotting:
     figsize: [6,6]
 
   energy_balance_bar:
-    figsize: [4, 3.5]
+    figsize: [2.8, 3.5]
 
   energy_balance_bar_wide:
     figsize: [10, 3.5]
@@ -415,13 +419,19 @@ plotting:
     figsize: [10, 10]
 
   cost_bar:
-    figsize: [4, 3]
+    figsize: [2.6, 3.5]
 
   cost_bar_wide:
     figsize: [8, 3]
 
+  transmission_cost_bar:
+    figsize: [2.6, 2.5]
+
+  transmission_cost_bar_wide:
+    figsize: [8, 2.5]
+
   objective_heatmap:
-    figsize: [6, 6]
+    figsize: [3.5, 3.]
 
   cost_diff_bar:
     figsize: [5, 5]
@@ -429,70 +439,116 @@ plotting:
   cost_diff_map:
     figsize: [10, 5]
     bus_scale: 0.5
+    branch_scale: 20
     bus_sizes:
       - 5
       - 10
+    branch_sizes:
+      - 0.5
 
   capacity_country_bar:
     figsize: [5, 5]
 
   capacity_map:
-    figsize: [10, 8]
+    figsize: [6, 6]
     electricity:
+      unit: GW
+      unit_conversion: 1e-3
+      region_unit: TWh
+      region_unit_conversion: 1e-6
       region_cmap: Greens
-      region_unit: TWh
-      bus_scale: 5e-6
-      branch_scale: 2e-4
+      bus_scale: 5e-3
+      branch_scale: 2e-1
       bus_sizes:
-        - 50000
-        - 100000
+        - 50
+        - 10
       branch_sizes:
-        - 5000
-        - 10000
+        - 5
+        - 10
     gas:
+      unit: GW
+      unit_conversion: 1e-3
+      region_unit: TWh
+      region_unit_conversion: 1e-6
       region_cmap: Purples
-      region_unit: TWh
-      bus_scale: 5e-7
-      branch_scale: 5e-5
+      bus_scale: 5e-4
+      branch_scale: 5e-2
       bus_sizes:
-        - 500000
-        - 1000000
+        - 500
+        - 1000
       branch_sizes:
-        - 10000
-        - 20000
-    hydrogen:
+        - 10
+        - 20
+    # hydrogen:
+    #   unit: GW
+    #   unit_conversion: 1e-3
+    #   region_unit: TWh
+    #   region_unit_conversion: 1e-6
+    #   region_cmap: Blues
+    #   bus_scale: 2e-2
+    #   branch_scale: 1e-1
+    #   bus_sizes:
+    #     - 5
+    #     - 10
+    #   branch_sizes:
+    #     - 5
+    #     - 10
+    # carbon: # USE THIS FOR ENERGY FLOW (combustion energy content in co2)
+    #   unit: GW
+    #   unit_conversion: 2.26e-3 # 0.272 tonne C / tonne CO2 * 8.33 MWh / tonne C (Higher Heating Value)
+    #   region_unit: TWh
+    #   region_unit_conversion: 2.26e-6
+    #   region_cmap: Reds
+    #   bus_scale: 2e-2
+    #   branch_scale: 1e-1
+    #   bus_sizes:
+    #     - 5
+    #     - 10
+    #   branch_sizes:
+    #     - 5
+    #     - 10
+    hydrogen:    # USE THIS FOR MASS FLOW
+      unit: kt/h
+      unit_conversion: 0.03e-3 # 0.03 kg / kWh => 1 kg H2 = 33.3 kWh
+      region_unit: kt
+      region_unit_conversion: 0.03e-3 # 0.03 kg / kWh => 1 kg H2 = 33.3 kWh
       region_cmap: Blues
-      region_unit: TWh
-      bus_scale: 4e-5
-      branch_scale: 2e-4
+      bus_scale: 2e-1
+      branch_scale: 8e-1
       bus_sizes:
-        - 5000
-        - 10000
+        - 2
+        - 5
       branch_sizes:
-        - 5000
-        - 10000
+        - 1
+        - 2
     carbon:
-      region_cmap: Reds
+      unit: kt/h
+      unit_conversion: 1e-3
       region_unit: Mt
-      bus_scale: 1e-4
-      branch_scale: 8e-4
+      region_unit_conversion: 1e-6
+      region_cmap: Reds
+      bus_scale: 2e-1
+      branch_scale: 8e-1
       bus_sizes:
-        - 5000
-        - 10000
+        - 2
+        - 5
       branch_sizes:
-        - 1000
-        - 2000
+        - 1
+        - 2
     co2:
-      region_cmap: Reds
+      unit: kt/h
+      unit_conversion: 1e-3
       region_unit: Mt
-      bus_scale: 1e-4
-      branch_scale: 2e-3
+      region_unit_conversion: 1e-6
+      region_cmap: Reds
+      bus_scale: 1e-1
+      branch_scale: 2
       bus_sizes:
-        - 5000
-        - 10000
+        - 5
+        - 10
       branch_sizes:
-        - 1000
-        - 2000
+        - 1
+        - 2
 
   operation_map:
     figsize: [10, 8]
@@ -520,8 +576,8 @@ plotting:
       region_cmap: Blues
       region_unit: TWh
       bus_scale: 5e-9
-      branch_scale: 1e-8
-      flow_scale: 6e-6
+      branch_scale: 6e-9
+      flow_scale: 8e-6
       bus_sizes:
         - 100 # TWh
         - 50 # TWh
@@ -579,7 +635,7 @@ plotting:
 
 
   captureshare_line:
-    figsize: [5, 2]
+    figsize: [4, 2]
 
   technology_groups:
     AC: Electricity Grid
