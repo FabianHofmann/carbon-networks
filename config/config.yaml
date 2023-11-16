@@ -146,6 +146,7 @@ constants:
     - methanol
     - oil
     - heat
+    - biogas
 
   oneport_comps:
     - Generator
@@ -551,20 +552,22 @@ plotting:
         - 2
 
   operation_map:
-    figsize: [10, 8]
+    figsize: [10, 6]
     electricity:
+      unit: GW
       region_cmap: Greens
-      region_unit: TWh
+      region_unit: €/MWh
       bus_scale: 4e-9
-      branch_scale: 1e-8
-      flow_scale: 8e-6
+      branch_scale: 2e-8
+      flow_scale: 1e-5
       bus_sizes:
         - 500 # TWh
         - 100 # TWh
       branch_sizes: null
     gas:
+      unit: GW
       region_cmap: Purples
-      region_unit: TWh
+      region_unit: €/MWh
       bus_scale: 1e-8
       branch_scale: 1e-8
       flow_scale: 4e-6
@@ -573,8 +576,9 @@ plotting:
         - 10 # TWh
       branch_sizes: null
     hydrogen:
+      unit: GW
       region_cmap: Blues
-      region_unit: TWh
+      region_unit: €/MWh
       bus_scale: 5e-9
       branch_scale: 6e-9
       flow_scale: 8e-6
@@ -583,8 +587,9 @@ plotting:
         - 50 # TWh
       branch_sizes: null
     carbon:
-      region_cmap: Reds
-      region_unit: Mt
+      unit: Mt/h
+      region_cmap: Purples
+      region_unit: €/t
       bus_scale: 2e-8
       branch_scale: 5e-8
       flow_scale: 7e-5
@@ -593,8 +598,9 @@ plotting:
         - 20 # Mt
       branch_sizes: null
     co2:
-      region_cmap: Reds
-      region_unit: Mt
+      unit: Mt/h
+      region_cmap: Purples
+      region_unit: €/t
       bus_scale: 8e-8
       branch_scale: 5e-7
       flow_scale: 2e-3
@@ -603,8 +609,9 @@ plotting:
         - 20 # Mt
       branch_sizes: null
     heat:
+      unit: GW
       region_cmap: Oranges
-      region_unit: TWh
+      region_unit: €/MWh
       bus_scale: 1e-8
       branch_scale: 1e-8
       flow_scale: 1e-5
@@ -613,8 +620,20 @@ plotting:
         - 50 # TWh
       branch_sizes: null
     methanol:
+      unit: GW
       region_cmap: Greens
-      region_unit: TWh
+      region_unit: €/MWh
+      bus_scale: 1e-8
+      branch_scale: 1e-8
+      flow_scale: 1e-5
+      bus_sizes:
+        - 100 # TWh
+        - 50 # TWh
+      branch_sizes: null
+    biogas:
+      unit: GW
+      region_cmap: Greens
+      region_unit: €/MWh
       bus_scale: 1e-8
       branch_scale: 1e-8
       flow_scale: 1e-5
@@ -623,8 +642,9 @@ plotting:
         - 50 # TWh
       branch_sizes: null
     oil:
+      unit: GW
       region_cmap: Greys
-      region_unit: TWh
+      region_unit: €/MWh
       bus_scale: 1e-8
       branch_scale: 1e-8
       flow_scale: 1e-5

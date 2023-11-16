@@ -104,7 +104,6 @@ source = data.source.replace(int_map)
 target = data.target.replace(int_map)
 value = data.value.round(0).astype(int)
 
-print(data)
 # Create the Sankey diagram
 fig = go.Figure(
     data=go.Sankey(

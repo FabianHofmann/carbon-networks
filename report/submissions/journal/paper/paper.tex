@@ -107,25 +107,11 @@ In this paper, we present a detailed study of the European energy system for 205
 \section{Methodology}
 \label{sec:methodology}
 
-The study is conducted on the basis of the open-source, capacity-expansion model PyPSA-Eur~\cite{horschPyPSAEurOpenOptimisation2018,brownSynergiesSectorCoupling2018,PyPSAEurSecSectorCoupledOpen2023}. The model optimizes the design and operation of the European energy system, encompassing the power, heat, industry, waste, and transport sectors. In our configuration, the model's time horizon spans one year with a temporal resolution of 3 hours and a spatial resolution of 90 regions. Each of the regions consists of a complex subsystem with technologies for supplying, converting, storing and transporting energy. This includes carbon neutral power supply from wind, solar, biomass and hydro. The regional renewable capacity expansion is limited by land-use restrictions, calculated from with atlite~\cite{hofmannAtliteLightweightPython2021}.
+The study is conducted on the basis of the open-source, capacity-expansion model PyPSA-Eur~\cite{horschPyPSAEurOpenOptimisation2018,brownSynergiesSectorCoupling2018,PyPSAEurSecSectorCoupledOpen2023}.
+The model optimizes the design and operation of the European energy system, encompassing the power, heat, industry, waste, and transport sectors.
 
-%
-The PyPSA-Eur model integrates exogenous assumptions for energy demand on an hourly basis, the annual sums of which are shown in figure~\ref{fig:total-demand-bar}. Among those, the energy demand time-series for power, transport, heat, gas at rural, urban and industrial sites as well as for the agriculture sector are defined per region. Additionally, demands for kerosene for aviation, methanol for shipping as well of naphta for industry are aggregated and must be met by the sum of all regional supplies.
-Taking non-abatable emissions from fossil-based industrial processes, aviation, shipping and agriculture into account, the system emits of 633~Mt \carbon{} per year, 153~Mt of which are industrial emissions which can optionally be captured through corresponding investments.
-
-
-Carbon-neutral energy is provided by wind, solar, biomass and hydro. Weather-dependent power potentials for solar, wind and hydro per region and time-stamp are calculated from reanalysis and satellite data sets Copernicus ERA5~\cite{hersbachERA5GlobalReanalysis2020} and Surface Radiation Data Set - Heliosat~\cite{pfeifrothSurfaceRadiationData2017}  using the open-source tool~\cite{hofmannAtliteLightweightPython2021}.
-Solar and wind power can be expanded in alignment with eligible land-use restrictions calculated on the basis of~\cite{eeaCorineLandCover2012,eeaNatura2000Data2016}. The biomass potential is calculated from the European Commission's Joint Research Centre's ENSPRESO database~\cite{enspreso_database} and the JRC-EU-TIMES model~\cite{instituteforenergyandtransportjointresearchcentreJRCEUTIMESModelBioenergy2015}. Its usage in each region is bound by its biomass potential, but inter-regional biomass transport is permitted with transport costs considered.
-
-
-Salt caverns for \hydrogen{} storage are derived from~\cite{caglayanTechnicalPotentialSalt2020}.
-
-Industrial energy demand and excess heat potentials are calculated per node on the basis of~\cite{hotmaps_industrial_db}.
-
-
+In our configuration, the model's time horizon spans one year with a temporal resolution of 3 hours and a spatial resolution of 90 regions. Each of the regions consists of a complex subsystem with technologies for supplying, converting, storing and transporting energy. Exogenous assumptions on energy demand and non-abatable emissions are taken from various sources~\cite{piamanzGeoreferencedIndustrialSites2018,muehlenpfordtTimeSeries2019,mantzosJRCIDEES20152018,NationalEmissionsReported2023,EurostatCompleteEnergyBalance,uwekrienDemandlib2023}. The energy demand for electricity, transport, biomass, heat and gas are defined per region and time-step with heat demand being regionally subdivided into shares of urban, rural and industrial sites. Demands for aviation kerosene, methanol for shipping and naphtha for industry are aggregated in the system scope and kept constant throughout all time-steps. We show the sum of all energy demands in \ref{fig:total-demand-bar}. The system emits of 633~Mt \carbon{} per year through non-abatable emissions from industry, aviation, shipping and agriculture into account, 153~Mt of which are fossil-based industrial emissions. Industrial energy demand and excess heat potentials are calculated per node on the basis of~\cite{hotmaps_industrial_db}.
 % use https://pypsa-eur.readthedocs.io/en/latest/licenses.html
-
-
 
 \begin{figure}
     \includegraphics[width=\linewidth]{baseline/figures/90_nodes/total-demand-bar.png}
@@ -133,8 +119,25 @@ Industrial energy demand and excess heat potentials are calculated per node on t
     \label{fig:total-demand-bar}
 \end{figure}
 
+Endogenous assumptions include the expansion of renewable energy sources, storage technologies, and transmission capacities.
+The model considers the various energy carriers like electricity, hydrogen, methan, methanol, liquid hydrocarbons and biomass, together with conversions technologies to convert these into each other.
+Carbon-neutral electricity is provided by wind, solar, biomass, hydro and nuclear power plants. Weather-dependent power potentials for solar, wind and hydro are calculated from reanalysis and satellite data sets~\cite{hersbachERA5GlobalReanalysis2020,pfeifrothSurfaceRadiationData2017}  per region and time-stamp, using the open-source tool Atlite~\cite{hofmannAtliteLightweightPython2021}.
+Solar and wind power can be expanded in alignment with eligible land-use restrictions calculated on the basis of~\cite{eeaCorineLandCover2012,eeaNatura2000Data2016}. We restrict the electric transmission system's expansion to 20\% of its current capacity, acknowledging the challenges in inaugurating new transmission projects.
+The regional use of biomass is restricted by its feasible potential derived from~\cite{enspreso_database,instituteforenergyandtransportjointresearchcentreJRCEUTIMESModelBioenergy2015}. Inter-regional biomass transport is permitted with transport costs considered.
+Hydrogen can be gained from electrolysis and steam methane reforming (SMR). Salt caverns for \hydrogen{} storage are derived from~\cite{caglayanTechnicalPotentialSalt2020}.
 
-We restrict the electric transmission system's expansion to 20\% of its current capacity, acknowledging the challenges in inaugurating new transmission projects. The geographical spread of emissions from various industries is derived from~\cite{piamanzGeoreferencedIndustrialSites2018}, totaling 158~Mt \carbon{} annually.
+\dots
+
+% carbon capture technologies
+Carbon capture technologies are represented by a set of augmented technologies with integrated carbon capture. These include Allam Cycle, Gas CHP, SMR, DAC, biomass, biogas and capture of process emissions from industry.
+
+Regarding carbon utilization, our model features three drop-in fuel production technologies: methanation, methanolization, and Fischer-Tropsch synthesis. Processed fuels have no usage restrictions. Methane is transported through the gas network, while methanol and FT-synfuel can be transferred inter-regionally without additional costs. Synthetic methane substitutes natural gas or biogas, serving combined heat and power plants, residential heating gas boilers, or industrial gas needs. Synthetic methanol decarbonizes marine industry fuel demands, and FT fuels replace fossil oil for naphtha production, aviation kerosene, or agricultural machinery oil.
+For carbon sequestration, we only consider offshore sites as potential sinks. This choice favors offshore storage due to its typically larger capacity compared to onshore and concerns over public safety for infrastructure near populated areas. Our estimates for storage potential are conservative, limiting total potential to 25~Mt per site, calculating annual storage availability over 25 years, and capping the total sequestered \carbon{} to 200~Mt/a.
+
+
+All technology cost assumptions for 2040 are sourced from an open-source database~\cite{lisazeyenPyPSATechnologydataTechnology2023}.
+
+
 
 % \begin{figure}[h]
 %     \centering
@@ -143,14 +146,8 @@ We restrict the electric transmission system's expansion to 20\% of its current 
 %     \label{fig:sequestration_map}
 % \end{figure}
 
-For carbon sequestration, we only consider offshore sites as potential sinks. This choice favors offshore storage due to its typically larger capacity compared to onshore and concerns over public safety for infrastructure near populated areas. Our estimates for storage potential are conservative, limiting total potential to 25~Mt per site, calculating annual storage availability over 25 years, and capping the total sequestered \carbon{} to 200~Mt/a.
-% TODO: what defines a site?
 
 
-
-Regarding carbon utilization, our model features three drop-in fuel production technologies: methanation, methanolization, and Fischer-Tropsch synthesis. Processed fuels have no usage restrictions. Methane is transported through the gas network, while methanol and FT-synfuel can be transferred inter-regionally without additional costs. Synthetic methane substitutes natural gas or biogas, serving combined heat and power plants, residential heating gas boilers, or industrial gas needs. Synthetic methanol decarbonizes marine industry fuel demands, and FT fuels replace fossil oil for naphtha production, aviation kerosene, or agricultural machinery oil.
-
-All technology cost assumptions for 2040 are sourced from an open-source database~\cite{lisazeyenPyPSATechnologydataTechnology2023}.
 
 Addressing climate targets, we define three \carbon{} target scenarios:
 \begin{itemize}
@@ -178,15 +175,6 @@ Beyond \carbon{} targets, we consider four expansion scenarios:
 
 
 
-\begin{figure}
-    \centering
-    \includegraphics*[width=0.8\linewidth]{comparison/emission-reduction/figures/90_nodes/objective_heatmap.png}
-    \caption{Total annual system cost for the different scenarios and \carbon{} targets. While the `Baseline' scenario has neither a \hydrogen{} or \carbon{} network, `Hybrid' is allowed to expand both.}
-    \label{fig:objective_heatmap}
-\end{figure}
-
-
-
 
 \begin{figure}[ht!]
     \centering
@@ -195,36 +183,16 @@ Beyond \carbon{} targets, we consider four expansion scenarios:
     }
     \label{fig:cost_area}
 \end{figure}
+
+
 %
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{comparison/default/figures/90_nodes/captureshare_line.png}
     \caption{Share of facilities with integrated carbon capture as a function of emission targets for system with \hydrogen{} and \carbon{} network.}
+    % A CO2 network unlock BECSS potentials, most biomass emissions are captured at point sources and transported to sequestration sites. cite~\cite{rosaAssessmentCarbonDioxide2021}
     \label{fig:captureshare_line}
 \end{figure}
-
-
-\begin{figure*}[h]
-    \centering
-    \begin{subfigure}{.5\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{full/figures/90_nodes/capacity_map_carbon.png}
-        \caption{\carbon{} Sector.}
-        \label{fig:capacity_map_carbon_co2}
-    \end{subfigure}%
-    \hfill
-    \begin{subfigure}{.5\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{full/figures/90_nodes/capacity_map_hydrogen.png}
-        \caption{\hydrogen{} Sector.}
-        \label{fig:capacity_map_hydrogen_co2}
-    \end{subfigure}
-    \caption{Optimal production and transport capacities of the carbon and hydrogen sector in a net-zero energy system in Europe with both \carbon{} and \hydrogen{} network expansion (Hybrid).
-        % Carbon network looks the same as in~\cite{morbeeOptimisedDeploymentEuropean2012}: two backbones, one in the nothern Europe other in south east.
-    }
-    \label{fig:capacity_maps}
-\end{figure*}
-
 
 \begin{figure*}
     \centering
@@ -245,6 +213,52 @@ Beyond \carbon{} targets, we consider four expansion scenarios:
 \end{figure*}
 
 
+\begin{figure*}[h]
+    \centering
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{full/figures/90_nodes/capacity_map_carbon.png}
+        \caption{\carbon{} Sector.}
+        \label{fig:capacity_map_carbon_co2}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{full/figures/90_nodes/capacity_map_hydrogen.png}
+        \caption{\hydrogen{} Sector.}
+        \label{fig:capacity_map_hydrogen_co2}
+    \end{subfigure}
+    \caption{Optimal production and transport capacities of the carbon and hydrogen sector in a net-zero energy system in Europe with both \carbon{} and \hydrogen{} network expansion (Hybrid).
+    % Carbon network looks the same as in~\cite{morbeeOptimisedDeploymentEuropean2012}: two backbones, one in the nothern Europe other in south east.
+    }
+    \label{fig:capacity_maps}
+\end{figure*}
+
+
+\begin{figure}
+    \centering
+    \includegraphics*[width=0.8\linewidth]{comparison/emission-reduction/figures/90_nodes/objective_heatmap.png}
+    \caption{Total annual system cost for the different scenarios and \carbon{} targets. While the `Baseline' scenario has neither a \hydrogen{} or \carbon{} network, `Hybrid' is allowed to expand both.}
+    \label{fig:objective_heatmap}
+\end{figure}
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{comparison/emission-reduction-full/figures/90_nodes/transmission_cost_bar.png}
+    \caption{Annual transmission system cost as a function of the net carbon removal scenarios considered in the study.}
+    \label{fig:transmission_cost_bar}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{net-negative-0.1/full/figures/90_nodes/sankey_diagramm.png}
+    \caption{Sankey diagram of the optimal operation for a net-negative 10\% scenario.}
+    \label{fig:sankey_diagramm}
+\end{figure}
+
+
 
 First, we analyze the optimal deployment of technologies and their associated costs at different levels of carbon sequestration potential. Figure~\ref{fig:cost_area} displays the annual system cost per technology group for the sector-coupled model at various sequestration levels, both with and without a \carbon{} network. The costs are calculated as the sum of the annualized investment and operational costs for all technologies. Starting from the left, we observe that the majority of system costs are associated with the deployment of renewable energy sources, heating, hydrogen technologies, and the electricity grid. Costs for fossil fuels and carbon capture and transport technologies are relatively low. In terms of capacities, 200~GW of offshore wind, 3930~GW of solar PV, 1910~GW of onshore wind, and 1650~GW of electrolysis are installed in this setup.
 In both cases, with and without \carbon{} transport, total costs decrease as the sequestration potential increases. At high sequestration rates, fossil fuels such as gas and oil are kept in the system. This reduces the need for synthetic FT fuel, which requires significant renewable energy sources. Simultaneously, the system deploys more \carbon{} removal technologies, such as DAC and Bioenergy with carbon capture (included in "Carbon Capture Technologies"), to offset emissions from fossil fuels.
@@ -255,31 +269,9 @@ The cost reduction when going to high sequestration in a system with \carbon{} t
 To further investigate the switch in technologies, we analyze the annual operation of the system for different sequestration potentials. Figures~\ref{fig:operation_area_carbon_co2network}, \ref{fig:operation_area_hydrogen_co2network} and \ref{fig:operation_area_co2_co2network} show the balances of captured carbon, hydrogen and atmospheric \carbon{} in the system with \carbon{} transport as a function of the sequestration potential respectively. The areas in the positive segment indicate gross production of the respective commodity, while the areas in the negative segment indicate gross consumption.
 Note that technologies with a ``*`` are explicitly augmented technologies with integrated carbon capture.
 %
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=\linewidth]{comparison/emission-reduction-full/figures/90_nodes/transmission_cost_bar.png}
-    \caption{Annual transmission system cost as a function of the net carbon removal scenarios considered in the study.}
-    \label{fig:transmission_cost_bar}
-\end{figure}
-
 
 Figure~\ref{fig:operation_area_carbon_co2network} confirms our previous results and shows that FT synthesis production decreases with sequestration availability. At the same time, integrated carbon capture from Gas Combined Heat and Power (CHP) plants, Allam Cycle plants, Steam Methane Reforming (SMR) and DAC increases. Other technologies are constant across varying levels of sequestration due to different reasons: biomass is bound by its maximum available potential (as reported in~\cite{enspreso_database}); the industry processes with their associated emissions are set to fixed values; the methanol production is bound by a lower limit representing the demand from the shipping sector.
 
-\begin{figure}[h]
-    \centering
-    % \includegraphics[width=\linewidth]{operation_area_hydrogen_co2network.pdf}
-    \caption{Balance of \hydrogen{} production and consumption with \carbon{} network.}
-    % TODO: make colors of gas and gas* more distinct
-    \label{fig:operation_area_hydrogen_co2network}
-\end{figure}
-%
-\begin{figure}[h]
-    \centering
-    % \includegraphics[width=\linewidth]{operation_area_co2_co2network.pdf}
-    \caption{Balance of atmospheric \carbon{} emissions for the optimal operation with \carbon{} network.}
-    \label{fig:operation_area_co2_co2network}
-\end{figure}
-%
 % TODO: kerosine emissions from fossil based kerosine are not taken into account by the system.
 Figure~\ref{fig:operation_area_hydrogen_co2network} shows that hydrogen production decreases by about 50\% when going from 200~Mt/a sequestration to 1000~Mt/a. In the last segment, hydrogen production from SMR starts to replace hydrogen production from electrolysis. Correspondingly, hydrogen demand for FT synthetic fuel production disappears, leaving only hydrogen demand for the shipping, industry and transport sector. Finally, Figure~\ref{fig:operation_area_co2_co2network} shows that the balance of the atmospheric \carbon{}. Note that the absolute value in the atmospheric \carbon{} hardly changes with the sequestration potential. This is because the switch from FT to fossil fuels is mirrored by a switch from using captured \carbon{} from biomass and DAC for FT synthesis to sequestering it underground. The net increase in DAC is solely due to an increase in unabated emissions from gas boilers.
 
@@ -290,12 +282,6 @@ To answer the question of how carbon capture technologies at point sources chang
 Figure~\ref{fig:captureshare_line} shows the share of a given technology that is equipped with integrated carbon capture, i.e., carbon capture at point source, for both with and without \carbon{} transport network.
 With \carbon{} transport, all technologies except for SMR and Gas CHP are nearly fully equipped with CC across all sequestration potentials. As a result of sequestration, the share of SMR with carbon capture rises from 50\% to 100\%, and that of CHP from 0\% to 26\%. The technologies behave differently without carbon transport: besides the fact that capturing at point source is less attractive overall, their carbon capture shares rise more slowly as sequestration increases. The carbon capture share for process emissions even decreases. This is primarily due to the fact that as sequestration increases, the system relies more heavily on DAC and SMR with CC that can be flexibly placed near the sequestration sites.
 
-\begin{figure}[h]
-    \centering
-    % \includegraphics[width=\linewidth]{captureshare_line.pdf}
-    \caption{Share of facilities with integrated carbon capture as a function of sequestration potential in a system with and without \carbon{} transport.}
-    \label{fig:captureshare_line}
-\end{figure}
 
 Building on the analysis of optimal operation for varying sequestration potentials, we explore the spatial distribution of carbon capture and transport technologies for the most "optimistic" case of 1000~Mt/a sequestration potential and a carbon transport network.
 
@@ -307,15 +293,6 @@ Looking at the transport of \carbon{} across the system, we observe that the car
 As shown on the right, methanol production using captured carbon is primarily located in the United Kingdom, Ireland, and South Spain.
 
 Finally, the deployment of carbon capture technologies in a system with high sequestration rates contrasts with the deployment of CCU facilities in a system with low carbon sequestration. On the one hand, with high sequestration, carbon capture management in the system is mainly driven by the location of the sequestration sites, leading to a spatially centralized deployment of carbon capture technologies. On the other hand, with low sequestration rates the use of CCU in a system is distributed more evenly across the system.
-
-
-\begin{figure*}[ht!]
-    \centering
-    % \includegraphics[width=\linewidth]{operation_map_carbon_co2network_1000.png}
-    \caption{Optimal operation per sector for a sequestration of 1000~Mt/a. The left side shows the combined carbon supply from carbon capture facilities and the carbon network flow, while the right side illustrates regional carbon usage together with the flow.}
-    % TODO: make colors more distinct
-    \label{fig:operation_map_noco2network_1000}
-\end{figure*}
 
 
 \section{Limitations}

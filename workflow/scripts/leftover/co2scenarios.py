@@ -219,7 +219,6 @@ def load_main(scenarios=None, rename=True):
         df = df.groupby(df.index.map(rename_techs_tyndp)).sum()
 
     to_drop = df.index[df.max(axis=1).fillna(0.0) < 1.2]
-    print(to_drop)
     df.drop(to_drop, inplace=True)
 
     order = preferred_order.intersection(df.index).append(

@@ -77,3 +77,4 @@ plotting:
       services urban decentral biomass boiler: '#004020'
       SMR: '#870c71'
       SMR CC: '#4f1745'
+      AC: rosybrown

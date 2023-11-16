@@ -11,27 +11,23 @@ import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-from pypsa.plot import add_legend_circles, add_legend_patches, add_legend_lines
+from pypsa.plot import add_legend_circles, add_legend_patches
+from matplotlib.gridspec import GridSpec
 from common import (
     import_network,
     mock_snakemake,
     get_transmission_links,
-    get_carrier_consumption,
     get_carrier_transport,
-    get_carrier_production,
 )
 import geopandas as gpd
 
 
 warnings.filterwarnings("ignore", category=UserWarning)
-alpha = 1
-region_alpha = 0.8
-
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_operation_map",
-        run="full",
+        run="h2-only",
         clusters=90,
         ext="png",
     )
@@ -42,6 +38,9 @@ n = import_network(snakemake.input.network)
 regions = gpd.read_file(snakemake.input.onshore_regions).set_index("name")
 which = "operation"
 config = snakemake.config
+
+alpha = 1
+region_alpha = 0.6
 
 is_transport = get_transmission_links(n)
 transport_carriers = [
@@ -58,16 +57,17 @@ n.links_t.p0[dac], n.links_t.p2[dac] = n.links_t.p2[dac], n.links_t.p0[dac].valu
 
 s = n.statistics
 
-
 for kind, output in snakemake.output.items():
 
-    fig, axes = plt.subplots(
-        1,
-        2,
-        figsize=snakemake.params.settings["figsize"],
-        squeeze=False,
-        subplot_kw={"projection": ccrs.EqualEarth()},
-    )
+    # Create a GridSpec object
+    gs = GridSpec(1, 2, width_ratios=[20, 20])
+
+    fig = plt.figure(figsize=snakemake.params.settings["figsize"])
+
+    # Create the first axes in the first column
+    ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.EqualEarth())
+    ax2 = fig.add_subplot(gs[0, 1], projection=ccrs.EqualEarth())
+    axes = [ax1, ax2]
 
     carriers = config["constants"]["carrier_to_buses"].get(kind, [kind])
 
@@ -79,13 +79,13 @@ for kind, output in snakemake.output.items():
 
     tags = ["production", "consumption"]
 
-    for tag, ax in zip(tags, axes.flatten()):
+    for tag, ax in zip(tags, axes):
         specs = config["plotting"]["operation_map"][kind]
         bus_scale = float(specs["bus_scale"])
         branch_scale = float(specs["branch_scale"])
         flow_scale = float(specs["flow_scale"])
         legend_kwargs = {"loc": "upper left", "frameon": False}
-        unit = specs["region_unit"]
+        unit = specs["unit"]
 
         if tag == "production":
             bus_sizes = df[df > 0]
@@ -117,10 +117,28 @@ for kind, output in snakemake.output.items():
             color_geomap={"border": "darkgrey", "coastline": "darkgrey"},
             geomap="10m",
         )
+
+        buses = n.buses.query("carrier in @carriers").index
+        price = (
+            n.buses_t.marginal_price.mean()
+            .reindex(buses)
+            .rename(n.buses.location)
+            .groupby(level=0)
+            .mean()
+        )
+        if kind == "carbon":
+            price = price - n.global_constraints.mu["CO2Limit"]
+
+        regions["price"] = price.reindex(regions.index).fillna(0)
+        region_unit = specs["region_unit"]
+        cmap = specs["region_cmap"]
+
+        vmin, vmax = regions.price.min(), regions.price.max()
         regions.plot(
             ax=ax,
-            facecolor="whitesmoke",
-            edgecolor="darkgrey",
+            column="price",
+            cmap=cmap,
+            edgecolor="None",
             linewidth=0,
             alpha=region_alpha,
             transform=ccrs.PlateCarree(),
@@ -154,7 +172,21 @@ for kind, output in snakemake.output.items():
             )
 
     fig.tight_layout()
+    sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(vmin=vmin, vmax=vmax))
+    title = kind.title() if kind != "carbon" else f"Capturing {kind.title()}"
+    cbr = fig.colorbar(
+        sm,
+        ax=axes,
+        label=f"Average Price of {title} [{region_unit}]",
+        shrink=0.6,
+        pad=0.03,
+        aspect=30,
+        alpha=region_alpha,
+    )
+    cbr.outline.set_edgecolor("None")
+
     fig.savefig(
         output,
         dpi=300,
+        bbox_inches="tight",
     )
