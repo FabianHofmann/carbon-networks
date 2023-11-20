@@ -2,6 +2,7 @@
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{cuted}  % Add the cuted package
 \usepackage{caption}
+\captionsetup{font=small}
 \usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
@@ -37,6 +38,10 @@ natbib=true % natbib compatibility mode (\citep and~\citet still work)
 % make abbreviation for co2
 \newcommand{\carbon}{CO$_2$}
 \newcommand{\hydrogen}{H$_2$}
+\newcommand{\scbase}{Baseline scenario}
+\newcommand{\scCO}{CO$_2$~Grid scenario}
+\newcommand{\scH}{H$_2$~Grid scenario}
+\newcommand{\schybrid}{Hybrid scenario}
 
 \graphicspath{
     % {paper-figures}
@@ -76,7 +81,7 @@ natbib=true % natbib compatibility mode (\citep and~\citet still work)
 \label{sec:introduction}
 
 
-An integrated management of both hydrogen and carbon is considered a crucial component to achieve climate neutrality in energy systems including hard-to-abate sectors. Hydrogen offers an efficient way to transport and store energy from different sources. Carbon, on the other hand, can be effectively captured from industrial processes and the combustion of both fossil and synthetic fuels through Carbon Capture (CC) techniques or harvested directly from the atmosphere using Direct-Air Capture (DAC). Additionally, it can be stored in geological formations, a process known as carbon sequestration or carbon capture and storage (CCS). In combination, both together build the basis for climate-neutral fuels like methane, methanol or Fischer-Tropsch fuels, central to Power-to-X (PtX) and Carbon Capture and Utilization (CCU) strategies.
+An integrated management of both hydrogen and carbon is considered a crucial component to achieve climate neutrality in energy systems including hard-to-abate sectors. Hydrogen offers an efficient way to transport and store energy from different sources. Carbon, on the other hand, can be effectively captured from industrial processes and the combustion of both fossil and synthetic fuels through Carbon Capture (CC) techniques or harvested directly from the atmosphere using Direct Air Capture (DAC). Additionally, it can be stored in geological formations, a process known as carbon sequestration or carbon capture and storage (CCS). In combination, both together build the basis for climate-neutral fuels like methane, methanol or Fischer-Tropsch fuels, central to Power-to-X (PtX) and Carbon Capture and Utilization (CCU) strategies.
 
 Recently, policymakers and industry in Europe have been committing to both hydrogen and carbon management projects, planning infrastructure components, and developing business models for emerging sectors of the economy. With the European Union's goal of achieving climate neutrality by 2050, a wide range of programs, funding models and initiatives have been established in this regard~\cite{eu2023netzero,europeangreendeal,europeaninnovationfund}. Initiatives like the European Hydrogen Backbone~\cite{gasforclimateEuropeanHydrogenBackbone2022} or the Hydrogen infrastructure Map~\cite{H2InfrastructureMap} showcase the potential of hydrogen as a fuel and energy carrier. At the same time, business models from companies like Tree Energy Solutions~\cite{TESHydrogenLife2023}, Carbfix~\cite{WeTurnCO2}, and Equinor~\cite{adomaitisEquinorRWEBuild2023} advertise carbon management hubs that provide green hydrogen, methane, or synfuels on the one hand and offer \carbon{} offtake on the other hand. For Europe, the Capture Map~\cite{ToolsGreenTransition} estimates a potential of 1.4~Gt of carbon capture from point sources per year. In combination with large sequestration potentials as stated in~\cite{weiProposedGlobalLayout2021}, this highlights the vast potential for decarbonization. The Northern Lights project in Norway~\cite{NorthernLightsWhat} is planning with a 1.5 Mt/a co2 transport and sequestration capacity to be operating in 2024, expanding to a targeted scale of 5 Mt/a sequestration by 2030.
 To this end, the Clean Air Task Force underlines the importance of a carbon transport system in Europe to facilitate the carbon economy~\cite{lockwoodEuropeanStrategyCarbon}.
@@ -114,25 +119,25 @@ The regional use of biomass is restricted by its feasible potential derived from
 
 Hydrogen can be gained from electrolysis and steam methane reforming (SMR). Geological distribution and potentials for \hydrogen storage in salt caverns are derived from~\cite{caglayanTechnicalPotentialSalt2020}. Re-electrification of hydrogen is possible via fuel cells. If enabled, hydrogen can be transported via pipelines between regions which can be expanded without limit. The topology of the \hydrogen network is mirroring the topology of the electricity network.
 
-Carbon capture (CC) technologies consist of a range of augmented technologies with integrated carbon capture. These include Allam Cycle Power Plants, Gas Combined Heat and Power Plant (CHP), Steam Methan Reforming (SMR), Direc-Air Capture (DAC), biomass combustion, biogas combustion and capture of process emissions from industry.
-
 Our model features three drop-in fuel production technologies for carbon utilization: methanation, methanolization, and Fischer-Tropsch synthesis. The processed fuels are not limited in their total quantity of use or production. Methane is transported through the gas network, while methanol and FT-synfuel can be transferred inter-regionally without additional costs. Synthetic methane substitutes natural gas or biogas, serving combined heat and power plants, residential heating gas boilers, or industrial gas needs. Synthetic methanol decarbonizes marine industry fuel demands, and FT fuels replace fossil oil for naphtha production, aviation kerosene, or agricultural machinery oil.
+
+To supply carbon needed for CS and CU, the system can choose to deploy carbon capture technology at various point sources, or centralized DAC facilities. The concept of a ``merit order for captured carbon'' plays a pivotal role in optimizing and prioritizing the deployment of carbon capture technologies based on their economic feasibility. This merit order ranks all CC technologies according to their relative costs to capture a ton of carbon (see Figure~X). At the lower end of the cost spectrum, CC technologies applied to process emissions, such as those from cement, offer a cost-effective starting point. Following this, biomass combined heat and power (CHP) systems provide a dual benefit of energy production and carbon capture. Moving up the scale, gas used in industrial applications and biomass employed for industrial processes represent more costly yet viable options to capture carbon. DAC, an emerging technology capable of extracting \carbon{} directly from the atmosphere, stands at a higher cost level due to its current technological and operational expenses. Finally, biogas-to-gas upgrading, a process that refines biogas to natural gas quality, typically incurs the highest costs in the merit order per ton of captured \carbon{} but offers a flexible (yet carbon emitting) energy source as a product. This merit order framework is crucial for strategically deploying necessary carbon capture solutions while balancing economic considerations.
+
 We only consider offshore sites as potential sinks for carbon sequestration. This choice favors offshore storage due to its typically larger capacity compared to onshore and concerns over public safety for infrastructure near populated areas. Our estimates for storage potential are conservative, limiting total potential to 25~Mt per site, calculating annual storage availability over 25 years, and capping the total sequestered \carbon{} to 200~Mt/a. All technology cost assumptions for 2040 are sourced from an open-source database~\cite{lisazeyenPyPSATechnologydataTechnology2023}.
 
 
 Addressing climate targets, we define three \carbon{} target scenarios:
 \begin{itemize}
     \item[] \textit{Net-Zero}: aligning with the EU's 2050 emission targets. Also denoted as NZ.
-    \item[] \textit{Net-Negative~5\%}: relative to 1990 emissions, equaling 230~Mt \carbon{}. Also denoted as NN~5\%.
-    \item[] \textit{Net-Negative~10\%}: relative to 1990 emissions, equaling 460~Mt \carbon. Also denoted as NN~10\%.
+    \item[] \textit{Net-Negative}: 10\% net-negative emissions relative to 1990 levels, equaling 460~Mt \carbon{} annually. Also denoted as NN.
 \end{itemize}
 Unless otherwise mentioned, our reference is the Net-zero scenario. For 5\% Net-negative and 10\% Net-negative scenarios, the carbon sequestration potential is adjusted to 400~Mt/a and 600~Mt/a, respectively.
 
 Beyond \carbon{} targets, we consider four expansion scenarios:
 \begin{itemize}
     \item[] \textit{Baseline:} Neither \carbon{} nor \hydrogen{} networks are constructed.
-    \item[] \textit{\hydrogen{}-Net:} Only the \hydrogen{} network is developed.
-    \item[] \textit{\carbon{}-Net:} Only the \carbon{} network is developed.
+    \item[] \textit{\hydrogen{}~Grid:} Only the \hydrogen{} network is developed.
+    \item[] \textit{\carbon{}~Grid:} Only the \carbon{} network is developed.
     \item[] \textit{Hybrid:} Both \carbon{} and \hydrogen{} networks are developed.
 \end{itemize}
 
@@ -142,7 +147,7 @@ Beyond \carbon{} targets, we consider four expansion scenarios:
 \label{sec:results}
 
 
-The comprehensive analysis of the European energy system scenarios in 2050 highlights significant variations in system costs and technology deployment across the different network strategies, as depicted in Figure \ref{fig:cost_bar}. The system cost decomposition for the Baseline, CO2-Net, H2-Net, and Hybrid scenarios are visualized as stacked bar plots, facilitating an insightful comparison of the economic implications of each scenario.
+Focusing first on the NZ scenarios, we can highlight significant variations in system costs and technology deployment depending on the network strategy employed (see Figure~\ref{fig:cost_bar}).
 
 \begin{figure}[ht!]
     \centering
@@ -151,16 +156,13 @@ The comprehensive analysis of the European energy system scenarios in 2050 highl
     \label{fig:cost_bar}
 \end{figure}
 
-In the Baseline scenario, the absence of dedicated hydrogen and carbon networks necessitates a heavy reliance on local renewable generation and storage solutions, reflected in the substantial investments in solar and wind capacities.
-The cost of carbon removal technologies, CC and DAC, also forms a significant portion of the overall expenses. However, this scenario's limitations are apparent, as the lack of transport networks for hydrogen and carbon leads to higher system costs due to inefficiencies and lost opportunities for optimization.
+System cost differences between the scenarios are driven by renewable energy resources (solar, wind and bioenergy), the \carbon{} and \hydrogen{} networks, as well as carbon capture technologies (DAC and CC at point sources).
+In the Baseline scenario, the absence of dedicated carbon and hydrogen transport networks requires the system to deploy carbon production technologies (DAC and CC at point sources) in the regions with carbon sequestration sites, and small amounts of hydrogen production technologies (mainly electrolysis) in each region to meet local hydrogen demand for industry and land transport fuel cells.
+For CU and its respective carbon and hydrogen demands, the system chooses the sites where on-site production of carbon, hydrogen and the synthesis process is cheapest. This leads to renewable resources and storage solutions being deployed not necessarily in the regions with the best resources or lowest costs for clean electricity generation, but where they are situated closer to the energy demand locations of electrolysers and DAC.
+Thus, total system costs in the baseline scenario are highest, while the scenarios with additional transport options for carbon and hydrogen achieve a more efficient system allocation and lower total system costs.
 
-
-Transitioning to the CO2-Net scenario, we observe a significant cost reduction and a shift in cost allocation.
-The implementation of a \carbon{} transport network (\textit{\carbon{}-Net}) facilitates efficient point-source carbon capture, substantially reducing the dependency on direct air capture (DAC) technologies. The improved carbon management infrastructure also allows for a more strategic deployment of renewables, particularly in areas with high sequestration potential, leading to cost savings in renewable generation and storage.
-
-The H2-Net scenario underscores the pivotal role of hydrogen infrastructure. The creation of a hydrogen transport network enables the cost-effective delivery of hydrogen from regions with a surplus of cheap renewable energy to high-demand industrial centers. This scenario shows a pronounced decrease in investments in solar and gas  infrastructure.
-
-While the cost-reduction in the Hybrid scenario compared to the \hydrogen-Net scenario is marginal, the allocation of costs reveals a propagation of reduced DAC facilities and increased CC at point sources. The Hybrid scenario relies much heavier on investments into the \hydrogen network which outweigh investments in the \carbon{} network by a factor 4.
+We can now closer examine the cost reductions and shifts in cost allocation when shifting from the baseline scenario to the other three network scenarios.
+The implementation of a \carbon{} transport network (\textit{\carbon{}~Grid}) facilitates efficient point-source carbon capture, substantially reducing the dependency on DAC technologies. While DAC supplies around 50\% of the carbon needed in the Baseline scenario (400 Mt \carbon{}, see Figure~\ref{fig:balance_captured_carbon}), in the \scCO scenario, DAC is only used to supply around 20\% of the carbon (150 Mt \carbon{}). The remaining carbon is supplied by additional carbon capture technology on all plants burning biomass in industry facilities and in CHPs as well as all industry facilities using gas (see Figure~\ref{fig:captureshare_line}), because the cost to deploy on-site carbon capture technology is relatively cheaper than DAC. The \carbon{} transport network enables the transport of carbon from the locations of the cheapest captured carbon supply sources to the locations of the carbon demand sinks at CU amd CS sites, reducing the need for expensive DAC. The improved carbon management infrastructure also allows for a more strategic deployment of renewables, particularly in areas with high sequestration potential, leading to cost savings in renewable generation and storage.
 
 
 \begin{figure}
@@ -172,20 +174,18 @@ While the cost-reduction in the Hybrid scenario compared to the \hydrogen-Net sc
 \end{figure}
 
 
-
-With the cost reduction across the different system setups, the utilization of carbon capture technologies varies significantly, as depicted in Figure \ref{fig:captureshare_line}. This variation highlights how the implementation of \hydrogen{} and \carbon{} networks unlocks specific carbon capture potentials.
-
-While the share of CC share for the combustion of upgraded biogas (100\%) and Gas in CHP (0\%) remains unchanged across all scenarios, the introduction of a
-
-
 \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{comparison/default/figures/90_nodes/energy_balance_bar_carbon.png}
     \caption{Balance of captured carbon across all system setups. Positive values indicate carbon capture, negative values indicate carbon consumption.}
     % A CO2 network unlock BECSS potentials, most biomass emissions are captured at point sources and transported to sequestration sites. cite~\cite{rosaAssessmentCarbonDioxide2021}
-    \label{fig:captureshare_line}
+    \label{fig:balance_captured_carbon}
 \end{figure}
 
+
+The \hydrogen{}~Grid scenario underscores the pivotal role of hydrogen infrastructure. The creation of a hydrogen transport network enables the cost-effective delivery of hydrogen from regions with a surplus of cheap renewable energy to high-demand industrial centers. This scenario shows a pronounced decrease in investments in solar and gas  infrastructure. The \hydrogen{} network reduces DAC similarly to the \carbon{} network, but still produces 200 Mt of carbon from DAC. CC technology on process emissions increases from 90\% to 100\%, on biomass CHPs from 60\% to 100\%, and on facilities using gas in industry from 50\% to 75\%. CC on biomass use in industry remains at 50\%, same as the \scbase. This variation highlights how the implementation of \hydrogen{} and \carbon{} networks unlocks specific carbon capture potentials.
+
+While the cost-reduction in the Hybrid scenario compared to the \hydrogen~Grid scenario is marginal, the allocation of costs reveals a propagation of reduced DAC facilities and increased CC at point sources. The Hybrid scenario relies much heavier on investments into the \hydrogen network which outweigh investments in the \carbon{} network by a factor of 4.
 
 %
 
@@ -254,7 +254,7 @@ While the share of CC share for the combustion of upgraded biogas (100\%) and Ga
 \end{figure}
 
 
-
+[Start of old version]
 First, we analyze the optimal deployment of technologies and their associated costs at different levels of carbon sequestration potential. Figure~\ref{fig:cost_area} displays the annual system cost per technology group for the sector-coupled model at various sequestration levels, both with and without a \carbon{} network. The costs are calculated as the sum of the annualized investment and operational costs for all technologies. Starting from the left, we observe that the majority of system costs are associated with the deployment of renewable energy sources, heating, hydrogen technologies, and the electricity grid. Costs for fossil fuels and carbon capture and transport technologies are relatively low. In terms of capacities, 200~GW of offshore wind, 3930~GW of solar PV, 1910~GW of onshore wind, and 1650~GW of electrolysis are installed in this setup.
 In both cases, with and without \carbon{} transport, total costs decrease as the sequestration potential increases. At high sequestration rates, fossil fuels such as gas and oil are kept in the system. This reduces the need for synthetic FT fuel, which requires significant renewable energy sources. Simultaneously, the system deploys more \carbon{} removal technologies, such as DAC and Bioenergy with carbon capture (included in "Carbon Capture Technologies"), to offset emissions from fossil fuels.
 
