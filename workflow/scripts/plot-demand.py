@@ -53,7 +53,7 @@ color = n.carriers.set_index("nice_name").color.to_dict()
 
 
 fig, ax = plt.subplots(figsize=(5, 4))
-df.T.plot.bar(stacked=True, color=color, xlabel="", ylabel="Energy demand [pWh]", ax=ax)
+df.T.plot.bar(stacked=True, color=color, xlabel="", ylabel="Energy demand [PWh]", ax=ax)
 ax.legend(title="", frameon=False, bbox_to_anchor=(0, 1.2), loc="upper left")
 
 sns.despine()
