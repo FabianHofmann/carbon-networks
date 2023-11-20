@@ -79,4 +79,4 @@ fig.legend(
     frameon=False,
     ncol=1,
 )
-fig.savefig(snakemake.output[0], bbox_inches="tight", dpi=300)
+fig.savefig(snakemake.output[0], dpi=300)

@@ -42,15 +42,15 @@ for path in snakemake.input.networks:
     df[key] = caps
 
 df = pd.concat(df, axis=1)
-df = df[df.sum().sort_values().index]
+# df = df[df.sum().sort_values().index]
 df = df.reindex(df.iloc[:, 0].sort_values().index, axis=0)
 
 nice_name = n.carriers.nice_name
 colors = n.carriers.color.dropna().rename(nice_name)
-
+# %%
 fig, ax = plt.subplots(
     figsize=snakemake.params.settings["figsize"],
-    # layout="constrained",
+    layout="constrained",
 )
 
 df.mul(100).T.plot(
@@ -75,5 +75,4 @@ ax.legend(
 
 sns.despine()
 
-fig.tight_layout()
-fig.savefig(snakemake.output[0], dpi=300, bbox_inches="tight")
+fig.savefig(snakemake.output[0], dpi=300)

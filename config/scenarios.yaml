@@ -34,21 +34,21 @@ half-price/full:
 
 net-negative-0.05/baseline:
   sector:
-    co2_sequestration_potential: 400
+    co2_sequestration_potential: 430.7056
   co2_budget:
     2050: -0.05
 
 net-negative-0.05/co2-only:
   sector:
     co2network: true
-    co2_sequestration_potential: 400
+    co2_sequestration_potential: 430.7056
   co2_budget:
     2050: -0.05
 
 net-negative-0.05/h2-only:
   sector:
     H2_network: true
-    co2_sequestration_potential: 400
+    co2_sequestration_potential: 430.7056
   co2_budget:
     2050: -0.05
 
@@ -56,27 +56,27 @@ net-negative-0.05/full:
   sector:
     H2_network: true
     co2network: true
-    co2_sequestration_potential: 400
+    co2_sequestration_potential: 430.7056
   co2_budget:
     2050: -0.05
 
 net-negative-0.1/baseline:
   sector:
-    co2_sequestration_potential: 600
+    co2_sequestration_potential: 661.4112
   co2_budget:
     2050: -0.1
 
 net-negative-0.1/co2-only:
   sector:
     co2network: true
-    co2_sequestration_potential: 600
+    co2_sequestration_potential: 661.4112
   co2_budget:
     2050: -0.1
 
 net-negative-0.1/h2-only:
   sector:
     H2_network: true
-    co2_sequestration_potential: 600
+    co2_sequestration_potential: 661.4112
   co2_budget:
     2050: -0.1
 
@@ -84,6 +84,6 @@ net-negative-0.1/full:
   sector:
     H2_network: true
     co2network: true
-    co2_sequestration_potential: 600
+    co2_sequestration_potential: 661.4112
   co2_budget:
     2050: -0.1

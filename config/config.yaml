@@ -416,6 +416,10 @@ plotting:
   energy_balance_area:
     figsize: [8, 3.5]
 
+
+  captureshare_line:
+    figsize: [5, 2]
+
   operation_bar:
     figsize: [10, 10]
 
@@ -653,10 +657,6 @@ plotting:
         - 50 # TWh
       branch_sizes: null
 
-
-  captureshare_line:
-    figsize: [4, 2]
-
   technology_groups:
     AC: Electricity Grid
     BEV charger: Battery Infrastructure
@@ -664,7 +664,7 @@ plotting:
     DC: Electricity Grid
     Fischer-Tropsch: Fischer-Tropsch
     H2: H$_2$ Infrastucture
-    H2 Electrolysis: H$_2$ Infrastucture
+    H2 Electrolysis: Electrolysis
     H2 Fuel Cell: H$_2$ Infrastucture
     H2 Store: H$_2$ Infrastucture
     H2 for industry: H$_2$ Infrastucture
@@ -674,7 +674,7 @@ plotting:
     PHS: Hydro Energy
     SMR: H$_2$ Infrastucture
     SMR CC: Carbon Capt. at Point Sources
-    Sabatier: Other
+    Sabatier: Methanation
     V2G: Battery Infrastructure
     agriculture electricity: Other
     agriculture heat: Other
@@ -688,7 +688,7 @@ plotting:
     battery storage: Battery Infrastructure
     biogas: Bioenergy
     biogas to gas: Bioenergy
-    biogas to gas CC: Bioenergy
+    biogas to gas CC: Carbon Capt. at Point Sources
     biomass boiler: Bioenergy
     co2: CO$_2$ Infrastucture
     CO2 pipeline: CO$_2$ Infrastucture
@@ -727,9 +727,9 @@ plotting:
     oil emissions: Other
     onwind: Wind
     other: Other
-    process emissions: Process Emissions
+    process emissions: Other
     process emissions CC: Carbon Capt. at Point Sources
-    resistive heater: Resistive Heater
+    resistive heater: Other
     ror: Other
     shipping methanol: Shipping
     shipping methanol emissions: Shipping
@@ -741,16 +741,17 @@ plotting:
     solid biomass CHP CC: Carbon Capt. at Point Sources
     solid biomass for industry: Bioenergy
     solid biomass for industry CC: Carbon Capt. at Point Sources
-    water tanks: Water Tanks
-    water tanks charger: Water Tanks
-    water tanks discharger: Water Tanks
+    water tanks: Other
+    water tanks charger: Other
+    water tanks discharger: Other
   technology_group_colors:
     Hydro Energy: "#298c81"
     Battery Infrastructure: "#ace37f"
     Resistive Heater: "#d8f9b8"
     Methanolisation: "#57aac1"
-    Water Tanks: "#e69487"
+    Methanation: "#e69487"
     Electricity Grid: "#97ad8c"
+    Electrolysis: "#b3e6ff"
     CO$_2$ Infrastucture: "#cc99ff"
     Carbon Capt. at Point Sources: "#f29dae"
     Heat Pump: "#2fb537"
