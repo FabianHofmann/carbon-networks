@@ -78,7 +78,6 @@ rule main:
             figure=[
                 "cost_bar",
                 "captureshare_line",
-                "transmission_bar",
                 "transmission_cost_bar",
             ],
         ),
@@ -89,6 +88,14 @@ rule main:
             figure=[
                 "cost_bar",
                 "cost_map",
+            ],
+        ),
+        expand(
+            "results/difference/comparison/{comparison}/figures/{clusters}_nodes/{figure}.png",
+            comparison=config["difference-comparison"],
+            clusters=config["scenario"]["clusters"],
+            figure=[
+                "cost_bar",
             ],
         ),
         expand(
@@ -328,25 +335,6 @@ rule plot_cost_bar:
         "scripts/plot-cost-bar.py"
 
 
-rule plot_transmission_bar:
-    params:
-        technology_groups=config["plotting"]["technology_groups"],
-        technology_groups_colors=config["plotting"]["technology_group_colors"],
-        settings=lambda w: config["plotting"]["transmission_cost_bar_wide"]
-        if is_wide(w)
-        else config["plotting"]["transmission_cost_bar"],
-        theme=config["plotting"]["theme"],
-        labels=config["labels"],
-    input:
-        networks=get_comparison_networks,
-    output:
-        map="results/comparison/{comparison}/figures/{clusters}_nodes/transmission_bar.{ext}",
-    resources:
-        mem_mb=20000,
-    script:
-        "scripts/plot-transmission-bar.py"
-
-
 rule plot_transmission_cost_bar:
     params:
         technology_groups=config["plotting"]["technology_groups"],
@@ -446,6 +434,39 @@ rule plot_cost_diff_map:
         mem_mb=20000,
     script:
         "scripts/plot-cost-diff-map.py"
+
+
+# DIFFERENCE COMPARISON
+def get_difference_comparison_networks(w):
+    return expand(
+        "results/{run}/networks/{clusters}_nodes.nc",
+        run=[
+            network
+            for k in config["difference-comparison"][w.comparison]
+            for network in config["difference"][k]
+        ],
+        **w,
+    )
+
+
+rule plot_cost_compare_diff_bar:
+    params:
+        technology_groups=config["plotting"]["technology_groups"],
+        technology_groups_colors=config["plotting"]["technology_group_colors"],
+        settings=config["plotting"]["cost_compare_diff_bar"],
+        theme=config["plotting"]["theme"],
+        labels=config["labels"],
+    input:
+        networks=get_difference_comparison_networks,
+    output:
+        figure="results/difference/comparison/{comparison}/figures/{clusters}_nodes/cost_bar.{ext}",
+    resources:
+        mem_mb=20000,
+    script:
+        "scripts/plot-cost-compare-diff-bar.py"
+
+
+# OTHER
 
 
 def get_maps(w):

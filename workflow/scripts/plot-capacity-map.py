@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+from matplotlib import colormaps
 import cartopy.crs as ccrs
 from pypsa.plot import add_legend_circles, add_legend_patches, add_legend_lines
 from common import (
@@ -103,7 +104,7 @@ for kind, output in snakemake.output.items():
 
     regions.color = regions.color * region_unit_conversion
 
-    region_cmap = plt.cm.get_cmap(region_cmap)
+    region_cmap = colormaps.get_cmap(region_cmap)
     # Create an array of colors from the "Reds" colormap
     cmap = region_cmap(np.linspace(0, 1, 256))
     # Create a new colormap that starts with white and transitions to the colors in "Reds"

@@ -13,7 +13,7 @@ region_alpha = 0.8
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
-        "plot_cost_diff_bar", ext="pdf", clusters=90, difference="default"
+        "plot_cost_diff_bar", ext="png", clusters=90, difference="default"
     )
 
 sns.set_theme(**snakemake.params["theme"])
@@ -21,7 +21,6 @@ labels = snakemake.config["labels"]
 
 
 df = {}
-objectives = {}
 carriers = []
 for path in snakemake.input.networks:
     n = import_network(path)
@@ -35,7 +34,6 @@ for path in snakemake.input.networks:
     key = snakemake.params.labels[n.meta["wildcards"]["run"]]
 
     df[key] = costs
-    objectives[key] = n.objective
     carriers.append(n.carriers)
 
 df = pd.concat(df, axis=1).fillna(0)
@@ -62,4 +60,4 @@ ax.grid(axis="both", alpha=0.5)
 ax.set_title(f"Cost difference ({df.columns[0]} - {df.columns[1]})")
 
 sns.despine(left=True)
-fig.savefig(snakemake.output[0], bbox_inches="tight", dpi=300)
+fig.savefig(snakemake.output[0], dpi=300)

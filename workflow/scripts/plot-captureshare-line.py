@@ -47,7 +47,7 @@ df = df.reindex(df.iloc[:, 0].sort_values().index, axis=0)
 
 nice_name = n.carriers.nice_name
 colors = n.carriers.color.dropna().rename(nice_name)
-# %%
+
 fig, ax = plt.subplots(
     figsize=snakemake.params.settings["figsize"],
     layout="constrained",

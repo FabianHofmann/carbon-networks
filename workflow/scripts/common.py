@@ -106,7 +106,9 @@ def sort_rows_by_relative_diff(df, consider_sign=False):
 def assert_carriers_existent(n, carriers, c):
     if c == "Link":
         if not n.meta["sector"]["co2network"]:
-            carriers = set(carriers) - {"co2 pipeline"}
+            carriers = set(carriers) - {"CO2 pipeline"}
+        if not n.meta["sector"]["H2_network"]:
+            carriers = set(carriers) - {"H2 pipeline"}
         if not n.meta["sector"]["gas_network"]:
             carriers = set(carriers) - {"gas pipeline", "gas pipeline new"}
     if not set(carriers).issubset(n.df(c).carrier.unique()):
@@ -456,6 +458,9 @@ def modify_carrier_names(n):
     n.carriers = n.carriers.sort_values("nice_name")
     n.carriers.index = n.carriers.index.to_series().replace(replace, "", regex=True)
     n.carriers.nice_name = n.carriers.nice_name.replace(replace, "", regex=True)
+    n.carriers.nice_name = n.carriers.nice_name.replace(
+        "solid biomass", "biomass", regex=True
+    )
     n.carriers = n.carriers[~n.carriers.index.duplicated()]
 
 

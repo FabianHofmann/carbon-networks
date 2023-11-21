@@ -8,6 +8,7 @@ Created on Wed Sep 20 18:11:52 2023
 import os
 import pandas as pd
 import pypsa
+import textwrap
 import matplotlib.pyplot as plt
 import seaborn as sns
 from common import (
@@ -19,15 +20,17 @@ from common import (
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_energy_balance_bar",
-        ext="pdf",
-        clusters=40,
-        comparison="net-negative-0.05",
+        ext="png",
+        clusters=90,
+        comparison="default",
     )
 
 sns.set_theme(**snakemake.params["theme"])
 
 config = snakemake.config
 norm = 1e6
+wrapper = textwrap.TextWrapper(width=25)
+
 
 df = {}
 for path in snakemake.input.networks:
@@ -55,7 +58,7 @@ for kind, output in snakemake.output.items():
     ds = ds.sort_values(ds.columns[0], ascending=False)
     if kind == "co2":
         ds.drop("CO$_2$", inplace=True, errors="ignore")
-    # ds = sort_rows_by_diff(ds)
+    ds = sort_rows_by_diff(ds)[::-1]
 
     fig, ax = plt.subplots(
         1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"
@@ -72,14 +75,14 @@ for kind, output in snakemake.output.items():
 
     # legend control is nasty
     by = ds.columns[0]
-    pindex = ds[ds.gt(0).any(axis=1)].sort_values(by, ascending=True).index
-    nindex = ds[ds.le(0).any(axis=1)].sort_values(by, ascending=False).index
+    pindex = ds[ds.round(0).gt(0).any(axis=1)].index[::-1]
+    nindex = ds[ds.round(0).lt(0).any(axis=1)].index
     h, l = ax.get_legend_handles_labels()
     order = [*pindex, *[i for i in nindex if i not in pindex]]
     legend = pd.Series(h, index=l).reindex(order)
     ax.legend(
         legend.values,
-        legend.index,
+        [wrapper.fill(text=label) for label in legend.index],
         loc="center left",
         bbox_to_anchor=(1, 0.5),
         frameon=False,
@@ -87,4 +90,4 @@ for kind, output in snakemake.output.items():
     )
 
     sns.despine()
-    fig.savefig(output, dpi=300, bbox_inches="tight")
+    fig.savefig(output, dpi=300)

@@ -17,7 +17,7 @@ rename = {"DC": "DC Line", "AC": "AC Line", "Gas Pipeline New": "Gas Pipeline"}
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_transmission_bar",
-        ext="pdf",
+        ext="png",
         clusters=90,
         comparison="emission-reduction-full",
     )
@@ -80,10 +80,7 @@ ax.set_xlabel(data.columns.name)
 ax.grid(axis="y", alpha=0.5)
 handles, labels = ax.get_legend_handles_labels()
 ax.legend().remove()
-
-
-sns.despine()
-fig.legend(
+ax.legend(
     handles[::-1],
     labels[::-1],
     loc="center left",
@@ -91,4 +88,6 @@ fig.legend(
     frameon=False,
     ncol=1,
 )
-fig.savefig(snakemake.output[0], bbox_inches="tight", dpi=300)
+
+sns.despine()
+fig.savefig(snakemake.output[0], dpi=300)
