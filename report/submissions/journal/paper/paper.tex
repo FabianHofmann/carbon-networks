@@ -81,6 +81,7 @@ natbib=true % natbib compatibility mode (\citep and~\citet still work)
 \end{abstract}
 
 
+\section{Introduction}
 
 An integrated management of both hydrogen and carbon is considered a crucial component to achieve climate neutrality in energy systems including hard-to-abate sectors. Hydrogen offers an efficient way to transport and store energy from different sources. Carbon, on the other hand, can be effectively captured from industrial processes and the combustion of both fossil and synthetic fuels through Carbon Capture (CC) techniques or harvested directly from the atmosphere using Direct Air Capture (DAC). Additionally, it can be stored in geological formations, a process known as carbon sequestration or carbon capture and storage (CCS). In combination, both together build the basis for climate-neutral fuels like methane, methanol or Fischer-Tropsch fuels, central to Power-to-X (PtX) and Carbon Capture and Utilization (CCU) strategies.
 
@@ -208,7 +209,7 @@ While the cost-reduction in the Hybrid scenario compared to the \hydrogen~Grid s
 \end{figure*}
 
 
-\subsection*{}
+\subsection*{Superiority of \hydrogen{} network}
 
 Examining the cost-reductions across the different models raises an important question: why is the hydrogen network more cost-effective than its carbon counterpart, and how does it achieve similar cost reductions as the hybrid model? To answer this question, it is crucial to understand the underlying mechanisms and geographical implications of the two transportation systems. Fig.~\ref{fig:operation_map_carbon} maps the average production, consumption and flow in the carbon sector for the \carbongrid model. Fig. \ref{fig:operation_map_hydrogen} shows equivalent quantities in the hydrogen sector for the \hydrogengrid model. In each region, circles divide into contributions from technologies, and their sizes correspond proportionally to production on the left and consumption on the right. The region's colors represent the average price of the considered carrier.
 The two fundamental differences between the grid strategies are quickly evident: The \carbongrid model captures large amounts of carbon from bioenergy and industrial processes, especially in central and eastern Europe, at low cost. The carbon grid transports cheap carbon to regions where it is sequestered in offshore caverns or processed into synfuel, methane and methanol together with cheaply available green hydrogen. End-use primarily depends on the quality of renewable resources. In Italy, Greece, North Germany, and Denmark, the transported carbon is predominantly sequestered and reused to some extent. Conversely, in Spain and the United Kingdom, which both have high renewable potentials, the transported carbon is fully utilized, complementing air-captured carbon. Thus, the implementation of a \carbon network allows for connecting regions with abundant, low-price carbon to regions with carbon scarcity where in the absence of a \carbon network DAC facilities had to provide most carbon.
@@ -218,7 +219,7 @@ The \hydrogengrid on the other hand, transports cheap hydrogen from regions with
 
 
 % Therefore, one can conclude that a \carbon network favors a decentralized CC and a CU centralized at regions with abundant renewable resources. A \hydrogen network favors a centralized electrolysis system at regions with abundant renewable resources and a decentralized CU system.
-These findings highlight the pivotal advantage of the \hydrogen network in contrast to the \carbon network. Central Europe with its industrial clusters and dense population is characterized by a scarcity in energy and a surplus and abundance of \carbon. While the \carbon network cost-efficiently resolves the surplus of carbon, the hydrogen resolves both the energy scarcity and the carbon surplus.
+These findings highlight the pivotal advantage of the \hydrogen network in contrast to the \carbon network. Central Europe with its industrial clusters and dense population is characterized by a scarcity in hydrogen and a surplus and abundance of \carbon. While the \carbon network cost-efficiently resolves the surplus of carbon, the hydrogen resolves both the energy scarcity and the carbon surplus.
 
 \begin{figure*}[h]
     \centering
@@ -240,6 +241,9 @@ These findings highlight the pivotal advantage of the \hydrogen network in contr
     }
     \label{fig:capacity_maps}
 \end{figure*}
+
+
+\subsection*{Flexibility gains through hybrid configuration}
 
 As depicted in Fig.~\ref{fig:capacity_maps}, the hybrid model incorporates the advantages from the a large hydrogen network and complements it with a carbon network. Mirroring the behavior of \hydrogengrid model, it transports hydrogen from Western regions like Spain and the UK to Central Europe, with a centralized electrolysis and decentralized carbon utilization. The carbon network complements this by transporting cheap carbon to sequestration sites in the North Sea, Baltic Sea, Greece, and Italy, minimizing the need for Direct Air Capture (DAC) at these locations. A notable aspect of the hybrid model is the lack of overlap in the routes used by the hydrogen and carbon networks. The advantages of this model include a broader range of technologies contributing to its robustness, reduced reliance on DAC (which may be costlier than anticipated), and less land use for wind and solar due to the decreased necessity for DAC.
 
