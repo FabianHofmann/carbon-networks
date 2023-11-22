@@ -595,8 +595,8 @@ plotting:
       region_cmap: Purples
       region_unit: €/MWh
       bus_scale: 1e-8
-      branch_scale: 1e-8
-      flow_scale: 4e-6
+      branch_scale: 5e-9
+      flow_scale: 6e-6
       bus_sizes:
         - 50 # TWh
         - 10 # TWh

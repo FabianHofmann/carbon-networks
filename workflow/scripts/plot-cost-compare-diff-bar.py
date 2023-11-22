@@ -6,7 +6,8 @@ import seaborn as sns
 from common import (
     import_network,
     mock_snakemake,
-    sort_rows_by_relative_diff,
+    sort_rows_by_diff,
+    get_ordered_handles_labels,
 )
 
 alpha = 1
@@ -50,10 +51,10 @@ unit = "bn€/a"
 
 groups = snakemake.config["plotting"]["technology_groups"]
 groups = {v: groups[k] for k, v in n.carriers.nice_name.drop("").items()}
-grouped = diff.groupby(groups).sum().div(norm)
+grouped = diff.mul(-1).groupby(groups).sum().div(norm)
 # grouped = grouped[grouped.max(axis=1) > 5e4]
 colors = snakemake.config["plotting"]["technology_group_colors"]
-grouped = sort_rows_by_relative_diff(grouped)[::-1]
+grouped = sort_rows_by_diff(grouped)
 rename = {"Carbon Capt. at Point Sources": "Carbon Capture\nat Point Sources"}
 grouped = grouped.rename(rename, axis=0)
 colors = {rename.get(k, k): v for k, v in colors.items()}
@@ -62,9 +63,9 @@ fig, ax = plt.subplots(
     1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"
 )
 
-grouped = grouped[grouped.round(0).ne(0).any(axis=1)].sort_values(by=grouped.columns[0])
-grouped.T.mul(-1).plot(
-    kind="bar", stacked=True, ax=ax, color=colors, lw=0, legend=False, alpha=0.8
+grouped = grouped[grouped.round(0).ne(0).any(axis=1)]
+grouped.T.plot(
+    kind="bar", stacked=True, ax=ax, color=colors, lw=0, legend=True, alpha=0.8
 )
 
 # ax.vlines(0, -0.5, len(diff) - 0.5, color="k", lw=0.5)
@@ -72,11 +73,10 @@ grouped.T.mul(-1).plot(
 ax.set_ylabel(f"Net Investment Change [{unit}]")
 ax.set_xlabel("")
 ax.grid(axis="y", alpha=0.5)
-handles, labels = ax.get_legend_handles_labels()
+
 ax.legend().remove()
 ax.legend(
-    handles,
-    labels,
+    *get_ordered_handles_labels(ax, grouped),
     loc="center left",
     bbox_to_anchor=(1, 0.45),
     frameon=False,

@@ -7,6 +7,7 @@ Created on Wed Jan 18 13:55:01 2023
 """
 import os
 from pathlib import Path
+import textwrap
 import warnings
 import pypsa
 from pypsa.descriptors import Dict
@@ -85,22 +86,51 @@ def group_small_contributions(df, threshold=0.01):
         raise TypeError("df must be a DataFrame or Series")
 
 
-def sort_rows_by_diff(df, consider_sign=False):
-    col = df.max(axis=1) - df.min(axis=1)
-    if consider_sign:
-        col = col * np.sign(df.mean(axis=1))
-    return (
-        df.assign(diff=col).sort_values(by="diff", ascending=False).drop("diff", axis=1)
+def sort_rows_by_diff(df: pd.DataFrame):
+    means = df.mean(axis=1)
+    df_pos = df[means > 0]
+    df_neg = df[means <= 0]
+
+    col_pos = df_pos.max(axis=1) - df_pos.min(axis=1)
+    col_neg = df_neg.max(axis=1) - df_neg.min(axis=1)
+
+    df_pos = (
+        df_pos.assign(diff=col_pos)
+        .sort_values(by="diff", ascending=True)
+        .drop("diff", axis=1)
+    )
+    df_neg = (
+        df_neg.assign(diff=col_neg)
+        .sort_values(by="diff", ascending=True)
+        .drop("diff", axis=1)
     )
 
+    return pd.concat([df_neg, df_pos])
 
-def sort_rows_by_relative_diff(df, consider_sign=False):
+
+def sort_rows_by_relative_diff(df: pd.DataFrame, consider_sign=False):
     col = (df.max(axis=1) - df.min(axis=1)) / df.mean(axis=1)
     if consider_sign:
         col = col * np.sign(df.mean(axis=1))
     return (
         df.assign(diff=col).sort_values(by="diff", ascending=False).drop("diff", axis=1)
     )
+
+
+def get_ordered_handles_labels(ax, data, wrap=20):
+    """
+    Use this for stacked bar plots with negative values.
+    """
+    handles, labels = ax.get_legend_handles_labels()
+    legend_data = pd.Series(handles, index=labels)
+    is_negative = data.mean(1).lt(0)
+    res = pd.concat([legend_data[~is_negative][::-1], legend_data[is_negative]])
+    res = res[~res.index.duplicated()]
+    if wrap:
+        wrapper = textwrap.TextWrapper(width=wrap)
+        res.rename(wrapper.fill, inplace=True)
+
+    return res.values, res.index
 
 
 def assert_carriers_existent(n, carriers, c):

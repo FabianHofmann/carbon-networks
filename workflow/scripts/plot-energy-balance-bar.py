@@ -15,6 +15,7 @@ from common import (
     import_network,
     mock_snakemake,
     sort_rows_by_diff,
+    get_ordered_handles_labels,
 )
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
@@ -58,7 +59,7 @@ for kind, output in snakemake.output.items():
     ds = ds.sort_values(ds.columns[0], ascending=False)
     if kind == "co2":
         ds.drop("CO$_2$", inplace=True, errors="ignore")
-    ds = sort_rows_by_diff(ds)[::-1]
+    ds = sort_rows_by_diff(ds)
 
     fig, ax = plt.subplots(
         1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"
@@ -73,16 +74,10 @@ for kind, output in snakemake.output.items():
     if snakemake.params.settings.get("title", True):
         ax.set_title(f"{label} Balance")
 
-    # legend control is nasty
-    by = ds.columns[0]
-    pindex = ds[ds.round(0).gt(0).any(axis=1)].index[::-1]
-    nindex = ds[ds.round(0).lt(0).any(axis=1)].index
-    h, l = ax.get_legend_handles_labels()
-    order = [*pindex, *[i for i in nindex if i not in pindex]]
-    legend = pd.Series(h, index=l).reindex(order)
+    handles, labels = get_ordered_handles_labels(ax, ds, wrap=25)
     ax.legend(
-        legend.values,
-        [wrapper.fill(text=label) for label in legend.index],
+        handles,
+        labels,
         loc="center left",
         bbox_to_anchor=(1, 0.5),
         frameon=False,
