@@ -40,10 +40,10 @@ natbib=true % natbib compatibility mode (\citep and~\citet still work)
 \newcommand{\hydrogen}{H$_2$}
 \newcommand{\hydrogengrid}{\hydrogen{}--Grid}
 \newcommand{\carbongrid}{\carbon{}--Grid}
-\newcommand{\scbase}{Baseline scenario}
-\newcommand{\scCO}{CO$_2$~Grid scenario}
-\newcommand{\scH}{H$_2$~Grid scenario}
-\newcommand{\schybrid}{Hybrid scenario}
+\newcommand{\modBase}{Baseline model}
+\newcommand{\modCO}{CO$_2$-Grid model}
+\newcommand{\modH}{H$_2$-Grid model}
+\newcommand{\modHybrid}{Hybrid model}
 
 \graphicspath{
     % {paper-figures}
@@ -154,17 +154,17 @@ Focusing first on the net-zero scenario, we can highlight significant variations
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=\linewidth]{comparison/default/figures/90_nodes/cost_bar.png}
-    \caption[short]{Total annual system cost for the European energy system for the different scenarios subdivided into groups of technologies. While the `Baseline' scenario has neither a \hydrogen{} or \carbon{} network, `Hybrid' is allowed to expand both. "Gas Infrastructure" combines gas facilities for power and heat production, "H$_2$ Infrastructure" combines H$_2$ production, transport and re-electrification. "Carbon Capture at Point Sources" combines all technologies with integrated carbon capture.}
+    \caption[short]{Total annual system cost for the European energy system for the different models subdivided into groups of technologies. While the `Baseline' model has neither a \hydrogen{} or \carbon{} network, `Hybrid' is allowed to expand both. "Gas Infrastructure" combines gas facilities for power and heat production, "H$_2$ Infrastructure" combines H$_2$ production, transport and re-electrification. "Carbon Capture at Point Sources" combines all technologies with integrated carbon capture.}
     \label{fig:cost_bar}
 \end{figure}
 
-System cost differences between the scenarios are driven by renewable energy resources (solar, wind and bioenergy), the \carbon{} and \hydrogen{} networks, as well as carbon capture technologies (DAC and CC at point sources).
-In the Baseline scenario, the absence of dedicated carbon and hydrogen transport networks requires the system to deploy carbon production technologies (DAC and CC at point sources) in the regions with carbon sequestration sites, and small amounts of hydrogen production technologies (mainly electrolysis) in each region to meet local hydrogen demand for industry and land transport fuel cells.
-For CU and its respective carbon and hydrogen demands, the system chooses the sites where on-site production of carbon, hydrogen and the synthesis process is cheapest. This leads to renewable resources and storage solutions being deployed not necessarily in the regions with the best resources or lowest costs for clean electricity generation, but where they are situated closer to the energy demand locations of electrolysers and DAC.
-Thus, total system costs in the baseline scenario are highest, while the scenarios with additional transport options for carbon and hydrogen achieve a more efficient system allocation and lower total system costs.
+System cost differences between the models are driven by renewable energy resources (solar, wind, and bioenergy), the \carbon{} and \hydrogen{} networks, as well as carbon capture technologies (DAC and CC at point sources).
+In the Baseline model, the absence of dedicated carbon and hydrogen transport networks requires the system to deploy carbon production technologies (DAC and CC at point sources) in the regions with carbon sequestration sites, and small amounts of hydrogen production technologies (mainly electrolysis) in each region to meet local hydrogen demand for industry and land transport fuel cells.
+For CU and its respective carbon and hydrogen demands, the system chooses the sites where on-site production of carbon, hydrogen and the synthesis process is cheapest. This leads to renewable resources and storage solutions being deployed not necessarily in the regions with the best resources or lowest costs for clean electricity generation, but where they are situated closer to the locations with carbon supply from CC at point sources, and to the locations of energy demand for electrolysers and DAC.
+Thus, total system costs in the Baseline model are highest, while the models with additional transport options for carbon and hydrogen achieve a more efficient system allocation and lower total system costs.
 
-We can now closer examine the cost reductions and shifts in cost allocation when shifting from the baseline scenario to the other three network scenarios.
-The implementation of a \carbon{} transport network (\textit{\carbon{}~Grid}) facilitates efficient point-source carbon capture, substantially reducing the dependency on DAC technologies. While DAC supplies around 50\% of the carbon needed in the Baseline scenario (400 Mt \carbon{}, see Fig.~\ref{fig:balance_captured_carbon}), in the \scCO scenario, DAC is only used to supply around 20\% of the carbon (150 Mt \carbon{}). The remaining carbon is supplied by additional carbon capture technology on all plants burning biomass in industry facilities and in CHPs as well as all industry facilities using gas (see Fig.~\ref{fig:captureshare_line}), because the cost to deploy on-site carbon capture technology is relatively cheaper than DAC. The \carbon{} transport network enables the transport of carbon from the locations of the cheapest captured carbon supply sources to the locations of the carbon demand sinks at CU amd CS sites, reducing the need for expensive DAC. The improved carbon management infrastructure also allows for a more strategic deployment of renewables, particularly in areas with high sequestration potential, leading to cost savings in renewable generation and storage.
+We can now closer examine the cost reductions and shifts in cost allocation when shifting from the Baseline model to the other three network models.
+The implementation of a \carbon{} transport network (\textit{\carbon{}~Grid}) facilitates efficient point-source carbon capture, substantially reducing the dependency on DAC technologies. While DAC supplies around 50\% of the carbon needed in the Baseline model (400 Mt \carbon{}, see Fig.~\ref{fig:balance_captured_carbon}), in the \modCO{}, DAC is only used to supply around 20\% of the carbon (150 Mt \carbon{}). The remaining carbon is supplied by additional carbon capture technology on all plants burning biomass in industry facilities and in CHPs as well as all industry facilities using gas (see Fig.~\ref{fig:captureshare_line}), because the cost to deploy on-site carbon capture technology is relatively cheaper than DAC. The \carbon{} transport network enables the transport of carbon from the locations of the cheapest captured carbon supply sources to the locations of the carbon demand sinks at CU amd CS sites, reducing the need for expensive DAC. The improved carbon management infrastructure also allows for a more strategic deployment of renewables, particularly in areas that combine high quality renewables and high sequestration potentials, leading to system-wide cost savings in renewable generation and storage.
 
 
 \begin{figure}[h]
@@ -185,9 +185,9 @@ The implementation of a \carbon{} transport network (\textit{\carbon{}~Grid}) fa
 \end{figure}
 
 
-The \hydrogen{}~Grid scenario underscores the pivotal role of hydrogen infrastructure. The creation of a hydrogen transport network enables the cost-effective delivery of hydrogen from regions with a surplus of cheap renewable energy to high-demand industrial centers. This scenario shows a pronounced decrease in investments in solar and gas  infrastructure. The \hydrogen{} network reduces DAC similarly to the \carbon{} network, but still produces 200 Mt of carbon from DAC. CC technology on process emissions increases from 90\% to 100\%, on biomass CHPs from 60\% to 100\%, and on facilities using gas in industry from 50\% to 75\%. CC on biomass use in industry remains at 50\%, same as the \scbase. This variation highlights how the implementation of \hydrogen{} and \carbon{} networks unlocks specific carbon capture potentials.
+The \hydrogen{}-Grid model underscores the pivotal role of hydrogen infrastructure. The creation of a hydrogen transport network enables the cost-effective delivery of hydrogen from regions with a surplus of cheap renewable energy to high-demand industrial centers. This model shows a pronounced decrease in investments in solar generation and gas infrastructure. The \hydrogen{} network reduces DAC similarly to the \carbon{} network, but still produces 200 Mt of carbon from DAC. CC technology on process emissions increases from 90\% to 100\%, on biomass CHPs from 60\% to 100\%, and on facilities using gas in industry from 50\% to 75\%. CC on biomass use in industry remains at 50\%, same as the \modCO{} (see Figure~\ref{fig:captureshare_line}). This variation highlights how the implementation of \hydrogen{} and \carbon{} networks unlocks specific carbon capture potentials.
 
-While the cost-reduction in the Hybrid scenario compared to the \hydrogen~Grid scenario is marginal, the allocation of costs reveals a propagation of reduced DAC facilities and increased CC at point sources. The Hybrid scenario relies much heavier on investments into the \hydrogen{} network which outweigh investments in the \carbon{} network by a factor of 4.
+While the cost-reduction in the Hybrid model compared to the \hydrogen-Grid model is marginal, the allocation of costs reveals a propagation of reduced DAC facilities and increased CC at point sources. The Hybrid model relies slightly less on investments into the \hydrogen{} network than the \modH, but adds some investments into the \carbon{} network. Still, investments into the \hydrogen{} network outweigh investments into the \carbon{} network by a factor of four.
 
 
 \begin{figure*}[h]
