@@ -79,6 +79,9 @@ difference:
   default:
     - co2-only
     - h2-only
+  h2-only-full:
+    - h2-only
+    - full
   net-negative-0.05:
     - net-negative-0.05/co2-only
     - net-negative-0.05/h2-only

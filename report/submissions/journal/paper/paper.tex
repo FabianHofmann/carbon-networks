@@ -224,39 +224,46 @@ The \hydrogengrid{} on the other hand, transports cheap hydrogen from regions wi
 % Therefore, one can conclude that a \carbon{} network favors a decentralized CC and a CU centralized at regions with abundant renewable resources. A \hydrogen{} network favors a centralized electrolysis system at regions with abundant renewable resources and a decentralized CU system.
 These findings explain the advantage of the \hydrogen{} network in contrast to the \carbon{} network. Central Europe with its industrial clusters and dense population is characterized by a scarcity in hydrogen and a surplus and abundance of \carbon. While the \carbon{} network cost-efficiently resolves the surplus of carbon in Central Europe by exporting it to regions with cheap renewable resources to produce synfuels, it needs to supply direct hydrogen demand in Central Europe (for industry and fuel cell land transport) with expensive local hydrogen production. The hydrogen network resolves both the energy scarcity by supplying hydrogen demand in Central Europe with cheap hydrogen imported from Spain and Great Britain, and the carbon surplus by transporting hydrogen to the sites with cheaper carbon available in Central Europe, and producing FT fuels highly decentralized throughout all of Central Europe.
 
-\begin{figure*}[h]
+
+\subsection*{Flexibility gains through hybrid configuration}
+
+\begin{figure*}[h!]
     \centering
-    \begin{subfigure}{.5\textwidth}
-        \centering
-        \includegraphics[width=\linewidth]{full/figures/90_nodes/capacity_map_carbon.png}
-        \caption{\carbon{} Sector.}
-        \label{fig:capacity_map_carbon_co2}
-    \end{subfigure}%
-    \hfill
-    \begin{subfigure}{.5\textwidth}
+    \begin{subfigure}{.49\textwidth}
         \centering
         \includegraphics[width=\linewidth]{full/figures/90_nodes/capacity_map_hydrogen.png}
         \caption{\hydrogen{} Sector.}
         \label{fig:capacity_map_hydrogen_co2}
     \end{subfigure}
+    \hfill
+    \begin{subfigure}{.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{full/figures/90_nodes/capacity_map_carbon.png}
+        \caption{\carbon{} Sector.}
+        \label{fig:capacity_map_carbon_co2}
+    \end{subfigure}%
     \caption{Optimal production and transport capacities of the carbon and hydrogen sector in a net-zero energy system in Europe with both \carbon{} and \hydrogen{} network expansion (Hybrid).
     % Carbon network looks the same as in~\cite{morbeeOptimisedDeploymentEuropean2012}: two backbones, one in the nothern Europe other in south east.
     }
     \label{fig:capacity_maps}
 \end{figure*}
 
+% increased BECCS, decreased DACS
+% decreased methanation
 
-\subsection*{Flexibility gains through hybrid configuration}
+The Hybrid model combines the advantages of both hydrogen and carbon networks. While the topology of the \hydrogen{}-grid roughly corresponds to that of the \hydrogen grid model, the \carbon{}-grid plays more of a complementary role. Fig.~\ref{fig:capacity_maps} shows the capacities of the two grids in the hybrid model, with the production and transport capacities given in kt/h. Note that despite similar overall capacities, the investment in the hydrogen infrastructure is four times the investment in the carbon infrastructure.
 
-As depicted in Fig.~\ref{fig:capacity_maps}, the hybrid model incorporates the advantages from the a large hydrogen network and complements it with a carbon network. The carbon network unlocks cheap carbon in landlocked locations like  Poland, Bulgaria, and Austria and transports it to sequestration sites in the North Sea, Baltic Sea, Greece, and Italy, minimizing the need for DAC directly at the sequestration sites. At the same time, there is reduced need to transport hydrogen from Western regions like Spain and the UK to Central Europe. 
 
-A notable aspect of the hybrid model is the lack of overlap in the routes used by the hydrogen and carbon networks. The advantages of this model include a broader range of technologies contributing to its robustness, reduced reliance on DAC (which may be costlier than anticipated), and less land use for wind and solar due to the decreased necessity for DAC.
+Similar to the \hydrogengrid model, the Hybrid model takes advantage of a large hydrogen network that enables hydrogen to be transported from centralized production sites in western regions such as Spain and the UK to decentralized FT production sites across the continent.
+The carbon network supplements this with smaller clusters of networks. In addition to a larger carbon grid cluster in Central Europe, which transports carbon to the North Sea, the system is building three large linear carbon routes. These transport carbon from Romania and Bulgaria to Greece, from northern Italy to central Italy and from Hungary, the Czech Republic and Poland to the Baltic Sea. These enable the system to transport cheaply available carbon from inland biomass sources and sequester it (see Fig.~\ref{fig:captureshare_line}). This reduces the need for DAC in the system and the sequestration sites are shifted to the end points of the carbon networks. Second-order effects can be seen in the shift in FT production compared to the \hydrogengrid model. Regions that have both good renewable resources and sequestration potential could now forego sequestration and use local process emissions for FT production, as can be observed in Ireland. A more detailed of differences between the \hydrogengrid and the Hybrid model can be found in Fig.~.
 
-In summary, sequestration moves to sites with or close to the cheapest carbon sources. Adding the carbon network unlocks cheap inland carbon point sources to be transported to sequestration. FT fuel production moves to sites with or close to cheap hydrogen. The model prefers sites with locally available carbon from point sources and transport hydrogen from nearby cheap hydrogen producing locations, rather than transporting the carbon to the hydrogen site.
 
-Furthermore, there are qualitative advantages to building out both a hydrogen and a carbon network that are not captured in the strict cost-benefit calculation employed in our optimization model. The resulting system may be more resilient towards unknown future developments in technologies, geopolitics, or policy goals.
+A notable aspect of the hybrid model is the lack of overlap in the hydrogen and carbon network topologies which is tightly connected to the nodal carbon strategy. Depending on the exogeneous need in hydrogen for example from industry, and the costs for locally produced carbon, a region can either import hydrogen to produce FT fuels or export carbon.
+\dots
 
-% extend on flexibility gains
+Despite only small decrease in cost in comparison to the \hydrogengrid model, hybrid approach brings several advantages. These include a broader range of technologies contributing to its robustness, reduced reliance on DAC, which may be costlier than anticipated in the cost projections, and less land use for wind and solar due to the decreased necessity for DAC. The increase used of biomass with carbon capture, transport and sequestration leads to slight cost advantages in comparison to the \hydrogengrid model.
+
+
 
 \subsection*{Net-Negative Scenarios}
 
@@ -267,38 +274,35 @@ Furthermore, there are qualitative advantages to building out both a hydrogen an
     \label{fig:net-negative_cost_bar}
 \end{figure}
 
+
 We now examine the case of moving from a net zero emissions target to a net emissions reduction target. Fig.~\ref{fig:net-negative_cost_bar} illustrates the shift in investments for the \hydrogengrid{} and the Hybrid model between the net-zero and the net-negative scenario.
 
+Both systems show a stron increase in DAC
 
-
-
-The \hydrogengrid{} model emphasizes a substantial investment in hydrogen infrastructure, signifying a strategic bet on hydrogen's role in decarbonization. There is also a significant allocation for methanation and the expansion of electricity grids, underscoring the integration of hydrogen production with renewable energy sources.
-
-
-% The Hybrid model, in contrast, adopts a more balanced investment approach, with notable allocations not just to hydrogen infrastructure but also to wind, solar, and CO2 infrastructure, as well as direct air capture (DAC) technology. This suggests a more comprehensive strategy that leverages a variety of technologies and energy sources to achieve emission reductions. The distributed investment in the Hybrid model indicates a systemic approach to decarbonization, integrating renewable generation, energy storage, carbon capture, and hydrogen production to address both energy and carbon management challenges.
-
-
-
-\section{Limitations}
-\label{sec:limitations}
-
-Despite the detailed model representation, there are some limitations to the validity of the results. The model itself is based on a linearized optimization with perfect foresight for the entire modeling year. In reality, long-term energy demand and renewable supply can only be roughly estimated, while short-term predictions still entail some uncertainty. The model's perfect foresight may lead to non-reproducible behavior, such as precisely aligning energy storage with future energy shortages at a specific point in time.
-
-The technology costs used in the model rely on cost projections that incorporate reductions based on learning rates. These learning rates are derived from historical data, which may not necessarily be indicative of future trends. The model does not account for uncertainties arising from disruptive market behavior, such as the gas price peak that occurred in 2022.
-
-% TODO: which fixed rate? you mean that all emissions are captured by exogenous assumption or that we assume 90% of carbon can be captured?
-% Furthermore, the model assumes a fixed rate for industrial process emissions, which cannot be altered through investments. This simplification may not accurately represent real-world scenarios, where many industries are considering adopting low-carbon processes and technologies. The transport of fuel (FT, gas, oil) between the regions is not unlimited which may overestimate the flexibility provided by these commodities.
-
-Lastly, the model's spatial and temporal resolution is insufficient to capture all relevant dynamics. Variations in renewable energy supply and energy demand below the applied time resolution, as well as more detailed interregional energy transport constraints, are currently not considered in the optimization. Transitioning to an hourly representation and a higher spatial resolution would increase the model's computational time and complexity, but would also enhance its robustness and validity.
 
 \section{Conclusion}
 \label{sec:conclusion}
 
-In this study, we investigated the impact of a \carbon{} transport system with different carbon sequestration potentials on the optimal configuration of technologies in a fully sector-coupled energy system in Europe, focusing on the deployment of carbon capture and Utilization (CCU) and Carbon Capture and Storage (CCS) technologies. Our results indicate that increasing carbon sequestration potential leads to a decrease in total system costs, with a more pronounced cost reduction observed when a carbon transport network is present. Higher sequestration rates result in a shift from CCU and hydrogen infrastructure towards CCS and unabated fossil fuel usage compensated by carbon dioxide removal elsewhere in the system, particularly based on direct air and biomass carbon capture with sequestration.
 
-Furthermore, we observed that with a \carbon{} transport network, the system tends to build out more carbon capture at point sources. With an increased sequestration potential, the share of technologies equipped with integrated carbon capture rises, particularly for Steam Methane Reforming (SMR) and Gas Combined Heat and Power (CHP) plants. Independent of a setup with or without \carbon{} transport, the spatial distribution of carbon capture technologies becomes more centralized, with installations concentrated near sequestration sites.
 
-Despite limitations of the study considering fixed model assumptions and cost uncertainties, our findings contribute valuable insights into the role of a carbon transport system and carbon sequestration potential in the transition towards a climate-neutral and net-negative energy system. As Europe strives to achieve its 2050 climate neutrality target, understanding the interplay between carbon sequestration, CCU, and CCS technologies will be crucial for the design of effective policies and strategies.
+In this study\dots
+
+\dots
+
+Despite the detailed model representation, there are some limitations to the validity of the results. The model itself is based on a linearized optimization with perfect foresight for the entire modeling year. In reality, long-term energy demand and renewable supply can only be roughly estimated, while short-term predictions still entail some uncertainty. The model's perfect foresight may lead to non-reproducible behavior, such as precisely aligning energy storage with future energy shortages at a specific point in time.
+
+The technology costs used in the model rely on cost projections that incorporate reductions based on learning rates. These learning rates are derived from historical data, which may not necessarily be indicative of future trends. In particular, cost assumptions on DAC, electrolysis and \hydrogen{} pipeline costs, could have a strong impact in the model results.
+
+The modelling results are heavily driven by the demand and emissions from industrial clusters. Allowing the model to relocate these and/or incorporate flexibility measures, may lead to less dependency on both \hydrogen{} and \carbon{} networks.
+
+The technological flexibilities in the carbon sector might not be exploited to full extent. Therefore, the \carbon{} transport via truck or ship is not considered. Fischer-Tropsch facilities require to run on baseload with at least 90\% of their nominal capacity.
+
+\dots
+
+
+
+% TODO: which fixed rate? you mean that all emissions are captured by exogenous assumption or that we assume 90% of carbon can be captured?
+% Furthermore, the model assumes a fixed rate for industrial process emissions, which cannot be altered through investments. This simplification may not accurately represent real-world scenarios, where many industries are considering adopting low-carbon processes and technologies. The transport of fuel (FT, gas, oil) between the regions is not unlimited which may overestimate the flexibility provided by these commodities.
 
 
 \printbibliography
@@ -306,27 +310,35 @@ Despite limitations of the study considering fixed model assumptions and cost un
 \appendix
 
 
-% \begin{figure*}
-%     \centering
-%     \includegraphics[width=\linewidth]{net-negative-0.1/full/figures/90_nodes/sankey_diagramm.png}
-%     \caption{Sankey diagram of the optimal operation for a net-negative 10\% scenario.}
-%     \label{fig:sankey_diagramm}
-% \end{figure*}
+\begin{figure*}
+    \centering
+    \includegraphics[width=\linewidth]{net-negative-0.1/full/figures/90_nodes/sankey_diagramm.png}
+    \caption{Sankey diagram of the optimal operation for a net-negative 10\% scenario.}
+    \label{fig:sankey_diagramm}
+\end{figure*}
 
-% \begin{figure}
-%     \centering
-%     \includegraphics*[width=0.8\linewidth]{comparison/emission-reduction/figures/90_nodes/objective_heatmap.png}
-%     \caption{Total annual system cost for the different scenarios and \carbon{} targets. While the `Baseline' scenario has neither a \hydrogen{} or \carbon{} network, `Hybrid' is allowed to expand both.}
-%     \label{fig:objective_heatmap}
-% \end{figure}
+\begin{figure}
+    \centering
+    \includegraphics*[width=0.8\linewidth]{comparison/emission-reduction/figures/90_nodes/objective_heatmap.png}
+    \caption{Total annual system cost for the different scenarios and \carbon{} targets. While the `Baseline' scenario has neither a \hydrogen{} or \carbon{} network, `Hybrid' is allowed to expand both.}
+    \label{fig:objective_heatmap}
+\end{figure}
 
 
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=\linewidth]{comparison/emission-reduction-full/figures/90_nodes/transmission_cost_bar.png}
-%     \caption{Annual transmission system cost as a function of the net carbon removal scenarios considered in the study.}
-%     \label{fig:transmission_cost_bar}
-% \end{figure}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{comparison/emission-reduction-full/figures/90_nodes/transmission_cost_bar.png}
+    \caption{Annual transmission system cost as a function of the net carbon removal scenarios considered in the study.}
+    \label{fig:transmission_cost_bar}
+\end{figure}
+
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=\linewidth]{difference/h2-only-full/figures/90_nodes/cost_map.png}
+    \caption{Difference in cost investments between \hydrogengrid and Hybrid model. The left subfigure shows higher spendings per technology and region and transport system for the \hydrogengrid model, the right shows higher spendings in the Hydrid model.}
+    \label{fig:cost_map_difference}
+\end{figure}
 
 
 \end{document}

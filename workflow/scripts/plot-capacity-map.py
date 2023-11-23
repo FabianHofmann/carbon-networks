@@ -98,9 +98,11 @@ for kind, output in snakemake.output.items():
             offshore_regions.assign(color=offshore_data),
         ]
         regions = pd.concat(regions)
+        capacity = "sequestration capacity"
     else:
         region_data = region_data.groupby(level=0).sum()
         regions = onshore_regions.assign(color=region_data)
+        capacity = "storage capacity"
 
     regions.color = regions.color * region_unit_conversion
 
@@ -125,7 +127,7 @@ for kind, output in snakemake.output.items():
         linewidth=0.0,
         legend=True,
         legend_kwds={
-            "label": kind.title() + f" storage capacity [{region_unit}]",
+            "label": kind.title() + f" {capacity} [{region_unit}]",
             "orientation": "horizontal",
             "shrink": 0.8,
             "pad": 0.05,
