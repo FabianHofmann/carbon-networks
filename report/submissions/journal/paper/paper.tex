@@ -38,8 +38,8 @@ natbib=true % natbib compatibility mode (\citep and~\citet still work)
 % make abbreviation for co2
 \newcommand{\carbon}{CO$_2$}
 \newcommand{\hydrogen}{H$_2$}
-\newcommand{\hydrogengrid}{\hydrogen{}--Grid}
 \newcommand{\carbongrid}{\carbon{}--Grid}
+\newcommand{\hydrogengrid}{\hydrogen{}--Grid}
 \newcommand{\modBase}{Baseline model}
 \newcommand{\modCO}{CO$_2$-Grid model}
 \newcommand{\modH}{H$_2$-Grid model}
@@ -59,6 +59,7 @@ natbib=true % natbib compatibility mode (\citep and~\citet still work)
 
 
 \title{From Net-Zero to Net-Negative: Assessing \hydrogen{} and \carbon{} Network Strategies in Europe}
+% \title{Synthetic fuels in Europe: Transport Hydrogen to Carbon, or Carbon to Hydrogen?}
 
 \author{
     Fabian Hofmann, Christoph Tries, Fabian Neumann, Lisa Zeyen, Tom Brown \\
@@ -72,10 +73,10 @@ natbib=true % natbib compatibility mode (\citep and~\citet still work)
 \maketitle
 
 \begin{abstract}
-    The transition to a carbon-neutral European economy is a pressing challenge that demands coordinated action across various energy sectors, particularly in emissions-intensive industries like heavy manufacturing. While management of both \hydrogen{} and \carbon{} is considered a critical component of this transition, a gap exists in understanding how new hydrogen infrastructures effectively interact with comprehensive carbon management technologies, including carbon capture, transport, use, and storage. In particular, the role of a carbon transport network as a complementing or substituting infrastructure to hydrogen transport remains unclear. To address this gap, our study employs optimization techniques to design the first cost-optimal European energy system that fully incorporates carbon management technologies, hydrogen transport and storage, and renewable energy sources with a high spatial and temporal resolution considering all energy intensive sectors.
-    Our findings reveal that in a either-or scenario, the hydrogen network is superior to the carbon network as it enables the transportation cheap hydrogen inland to serve industrial processes and carbon capture and utilization at point sources. A carbon network facilitates point-source carbon capture and reduces the need for direct air capture, but leaves the scarcity of hydrogen in energy-intensive regions such as industrial clusters.
+    The transition to a carbon-neutral European economy is a pressing challenge that demands coordinated action across various energy sectors, particularly in emissions-intensive industries like heavy manufacturing. While management of both \carbon{} and \hydrogen{} is considered a critical component of this transition, a gap exists in understanding how new hydrogen infrastructures effectively interact with comprehensive carbon management technologies, including carbon capture, transport, use, and storage. In particular, the role of a carbon transport network as a complementing or substituting infrastructure to hydrogen transport remains unclear. To address this gap, our study employs optimization techniques to design the first cost-optimal European energy system that fully incorporates carbon management technologies, hydrogen transport and storage, and renewable energy sources with a high spatial and temporal resolution considering all energy intensive sectors.
+    Our findings reveal that in a either-or scenario, the hydrogen network is superior to the carbon network as it enables the transportation cheap hydrogen inland to serve industrial processes and carbon capture and utilization at point sources. A carbon network facilitates point-source carbon capture and reduces the need for direct air capture, but leaves the scarcity of low-cost hydrogen in energy-intensive regions such as industrial clusters.
     However, in a hybrid scenario, the carbon network is a cost-effective complement to the hydrogen network facilitating carbon capture at point sources and transport to sequestration sites.
-    We show that theses findings holds true against the backdrop of a net-zero energy system, as well as scenarios where the net-negative emissions are 5\% and 10\% lower than the 1990 baseline levels.
+    We show that theses findings holds true against the backdrop of a net-zero energy system as well as a scenario with net-negative emissions.
     Overall, our work demonstrates the cost-effectiveness of a multi-grid system that includes both hydrogen and carbon transport networks and power grid expansion to achieve climate neutrality in Europe.
     The paper underpins the need for a complementing hydrogen network and \carbon{} network to achieve climate neutrality.
 \end{abstract}
@@ -83,19 +84,19 @@ natbib=true % natbib compatibility mode (\citep and~\citet still work)
 
 \section{Introduction}
 
-An integrated management of both hydrogen and carbon is considered a crucial component to achieve climate neutrality in energy systems including hard-to-abate sectors. Hydrogen offers an efficient way to transport and store energy from different sources. Carbon, on the other hand, can be effectively captured from industrial processes and the combustion of both fossil and synthetic fuels through Carbon Capture (CC) techniques or harvested directly from the atmosphere using Direct Air Capture (DAC). Additionally, it can be stored in geological formations, a process known as carbon sequestration or carbon capture and storage (CCS). In combination, both together build the basis for climate-neutral fuels like methane, methanol or Fischer-Tropsch fuels, central to Power-to-X (PtX) and Carbon Capture and Utilization (CCU) strategies.
+An integrated management of both hydrogen and carbon is considered a crucial component to achieve climate neutrality in energy systems including hard-to-abate sectors. Hydrogen offers an efficient way to transport and store energy from different sources. Carbon, on the other hand, can be effectively captured from industrial processes and the combustion of biomass, fossil fuels, and synthetic fuels through Carbon Capture (CC) techniques, or harvested directly from the atmosphere using Direct Air Capture (DAC). Additionally, it can be stored in geological formations, a process known as carbon capture and sequestration (CCS). In combination, \carbon{} and \hydrogen{} networks build the basis for climate-neutral fuels needed for aviation, shipping and industrial feedstocks, and are central to Power-to-X (PtX) and Carbon Capture and Utilization (CCU) strategies.
 
 Recently, policymakers and industry in Europe have been committing to both hydrogen and carbon management projects, planning infrastructure components, and developing business models for emerging sectors of the economy. With the European Union's goal of achieving climate neutrality by 2050, a wide range of programs, funding models and initiatives have been established in this regard~\cite{eu2023netzero,europeangreendeal,europeaninnovationfund}. Initiatives like the European Hydrogen Backbone~\cite{gasforclimateEuropeanHydrogenBackbone2022} or the Hydrogen infrastructure Map~\cite{H2InfrastructureMap} showcase the potential of hydrogen as a fuel and energy carrier. At the same time, business models from companies like Tree Energy Solutions~\cite{TESHydrogenLife2023}, Carbfix~\cite{WeTurnCO2}, and Equinor~\cite{adomaitisEquinorRWEBuild2023} advertise carbon management hubs that provide green hydrogen, methane, or synfuels on the one hand and offer \carbon{} offtake on the other hand. For Europe, the Capture Map~\cite{ToolsGreenTransition} estimates a potential of 1.4~Gt of carbon capture from point sources per year. In combination with large sequestration potentials as stated in~\cite{weiProposedGlobalLayout2021}, this highlights the vast potential for decarbonization. The Northern Lights project in Norway~\cite{NorthernLightsWhat} is planning with a 1.5 Mt/a co2 transport and sequestration capacity to be operating in 2024, expanding to a targeted scale of 5 Mt/a sequestration by 2030.
 To this end, the Clean Air Task Force underlines the importance of a carbon transport system in Europe to facilitate the carbon economy~\cite{lockwoodEuropeanStrategyCarbon}.
 
 
-However, up to this point, it remains unclear how the two management systems of hydrogen and carbon may complement or replace each other, particularly when it comes to their transport systems. A hydrogen network facilitates the transport of energy from renewable sources to regions with high energy demand, also enabling Carbon Capture and Utilization (CCU) from specific point sources. On the other hand, the carbon transport system allows for capturing and transporting carbon from areas with high emissions to regions with significant sequestration potential and abundant renewable sources, thereby enabling cost-effective CCU.
-In the literature, the two network approaches and underlying technologies have been discussed in a number of publications, all of which, however, dealt with the isolated effects~\cite{bakkenLinearModelsOptimization2008,morbeeOptimisedDeploymentEuropean2012,stewartFeasibilityEuropeanwideIntegrated2014,oeiModelingCarbonCapture2014,elahiMultiperiodLeastCost2014,burandtDecarbonizingChinaEnergy2019,middletonSimCCSOpensourceTool2020,bjerketvedtOptimalDesignCost2020,weiProposedGlobalLayout2021,damoreOptimalDesignEuropean2021,becattiniCarbonDioxideCapture2022}. In contrast to Integrated Assessment Models, the underlying optimization tools account for the spatial distribution of carbon sources and sinks which are crucial provide a holistic view of the energy system and its technological interactions.. The work in~\cite{neumannBenefitsHydrogenNetwork2022} examines the effect of a hydrogen network in Europe... (extend on hydrogen literature)
+However, up to this point, it remains unclear how the two management systems of hydrogen and carbon may complement or replace each other, particularly when it comes to their transport systems. A hydrogen network facilitates the transport of energy from renewable sources to regions with high energy demand, also enabling CCU at the site of point-source capture. On the other hand, the carbon transport system allows for capturing and transporting carbon from areas with high emissions to regions with significant sequestration potential and abundant renewable sources, thereby enabling cost-effective CCU.
+In the literature, the two network approaches and underlying technologies have been discussed in a number of publications, all of which, however, dealt with the isolated effects~\cite{bakkenLinearModelsOptimization2008,morbeeOptimisedDeploymentEuropean2012,stewartFeasibilityEuropeanwideIntegrated2014,oeiModelingCarbonCapture2014,elahiMultiperiodLeastCost2014,burandtDecarbonizingChinaEnergy2019,middletonSimCCSOpensourceTool2020,bjerketvedtOptimalDesignCost2020,weiProposedGlobalLayout2021,damoreOptimalDesignEuropean2021,bec attiniCarbonDioxideCapture2022}. In contrast to Integrated Assessment Models, the underlying optimization tools account for the spatial distribution of carbon sources and sinks which are crucial provide a holistic view of the energy system and its technological interactions.. The work in~\cite{neumannBenefitsHydrogenNetwork2022} examines the effect of a hydrogen network in Europe... (extend on hydrogen literature)
 The publication by Morbee et al.~\cite{morbeeOptimisedDeploymentEuropean2012} optimizes the topology and capacity of a \carbon{} network in Europe, but only considers the power sector without co-optimizing renewable deployment.
 Another comprehensive example is found in~\cite{becattiniCarbonDioxideCapture2022}, which presents a mixed-integer model to optimize the time-evolution of a \carbon{} transport system in Switzerland, connecting to a remote sequestration site in Norway. To this end, it is often argued that \carbon{} pipelines are a mature technology with an expected high learning rate, given the wide-spread installations in US and Canada for enhanced oil recovery~\cite{righettiSitingCarbonDioxide2017,friedmannNETZEROGEOSPHERICRETURN}.
 % However, the models are often limited with regard to both geographical scope and detail. While representing a single country with spatial resolution may neglect synergies of international cooperation, a coarse grained representation of multiple countries may neglect important geographical properties.
 
-To our knowledge, no study has yet considered the co-optimization and comprehensive assessment of both \hydrogen{} and \carbon{} networks in a fully sector-coupled energy system. However, we argue that such an assessment is strongly needed to avoid suboptimal investments and to identify synergies between hydrogen and carbon management technologies. In this paper, we present a detailed study of the European energy system for 2050, which includes high geographical resolution and a comprehensive representation of carbon management technologies. The study is conducted using the PyPSA-Eur energy system model and encompasses all relevant energy sectors. We enable the system to optimize the design of renewable energy sources and storage technologies, as well as the transmission of electricity, \hydrogen{}, methane, and \carbon{}. We show that the dynamics of carbon capture, transport, use, and storage in different regions are highly dependent on the availability of renewable energy, \carbon{} pipelines and sequestration sinks. Our evaluation focuses on the transport dynamics of \carbon{} and \hydrogen{} through their respective networks on the European continent. We also analyze how an energy system with limited annual sequestration potential prioritizes decarbonization and fuel switching in various sectors, and how the construction of carbon networks varies based on different levels of available sequestration potential.
+To our knowledge, no study has yet considered the co-optimization and comprehensive assessment of both \carbon{} and \hydrogen{} networks in a fully sector-coupled energy system. However, we argue that such an assessment is strongly needed to avoid suboptimal investments and to identify synergies between hydrogen and carbon management technologies. In this paper, we present a detailed study of the European energy system for 2050, which includes high geographical resolution and a comprehensive representation of carbon management technologies. The study is conducted using the PyPSA-Eur energy system model and encompasses all relevant energy sectors. We explore competition between \carbon{} and \hydrogen{} networks by adding them separately. Our evaluation focuses on the transport dynamics of \carbon{} and \hydrogen{} through their respective networks on the European continent. We also analyze how an energy system with limited annual sequestration potential prioritizes decarbonization and fuel switching in various sectors, and how the construction of carbon networks varies based on different levels of available sequestration potential.
 
 
 \section{Methodology}
@@ -106,7 +107,7 @@ The model optimizes the design and operation of the European energy system, enco
 
 \begin{figure}
     \includegraphics[width=\linewidth]{baseline/figures/90_nodes/total-demand-bar.png}
-    \caption{Exogenous demand assumptions. The figure shows the total amount of yearly energy demands for each energy carrier and type of end-consumer considered in the model.}
+    \caption{Exogenous demand assumptions. The figure shows the total amount of yearly energy demands for each energy carrier and type of end-consumer considered in the model. }
     \label{fig:total-demand-bar}
 \end{figure}
 %
@@ -138,8 +139,8 @@ Unless otherwise mentioned, our reference is the Net-zero scenario. For 5\% Net-
 Beyond \carbon{} targets, we consider four expansion scenarios, referred to as models:
 \begin{itemize}
     \item[] \textit{Baseline:} Neither \carbon{} nor \hydrogen{} networks are constructed.
-    \item[] \textit{\hydrogengrid:} Only the \hydrogen{} network is developed.
     \item[] \textit{\carbongrid:} Only the \carbon{} network is developed.
+    \item[] \textit{\hydrogengrid:} Only the \hydrogen{} network is developed.
     \item[] \textit{Hybrid:} Both \carbon{} and \hydrogen{} networks are developed.
 \end{itemize}
 
@@ -154,7 +155,7 @@ Focusing first on the net-zero scenario, we can highlight significant variations
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=\linewidth]{comparison/default/figures/90_nodes/cost_bar.png}
-    \caption[short]{Total annual system cost for the European energy system for the different models subdivided into groups of technologies. While the `Baseline' model has neither a \hydrogen{} or \carbon{} network, `Hybrid' is allowed to expand both. "Gas Infrastructure" combines gas facilities for power and heat production, "H$_2$ Infrastructure" combines H$_2$ production, transport and re-electrification. "Carbon Capture at Point Sources" combines all technologies with integrated carbon capture.}
+    \caption[short]{Total annual system cost for the European energy system for the different models subdivided into groups of technologies. While the `Baseline' model has neither a \carbon{} nor a \hydrogen{} network, `Hybrid' is allowed to expand both. "Gas Infrastructure" combines gas facilities for power and heat production, "H$_2$ Infrastructure" combines H$_2$ production, transport and re-electrification. "Carbon Capture at Point Sources" combines all technologies with integrated carbon capture.}
     \label{fig:cost_bar}
 \end{figure}
 
@@ -185,7 +186,7 @@ The implementation of a \carbon{} transport network (\textit{\carbon{}~Grid}) fa
 \end{figure}
 
 
-The \hydrogen{}-Grid model underscores the pivotal role of hydrogen infrastructure. The creation of a hydrogen transport network enables the cost-effective delivery of hydrogen from regions with a surplus of cheap renewable energy to high-demand industrial centers. This model shows a pronounced decrease in investments in solar generation and gas infrastructure. The \hydrogen{} network reduces DAC similarly to the \carbon{} network, but still produces 200 Mt of carbon from DAC. CC technology on process emissions increases from 90\% to 100\%, on biomass CHPs from 60\% to 100\%, and on facilities using gas in industry from 50\% to 75\%. CC on biomass use in industry remains at 50\%, same as the \modCO{} (see Figure~\ref{fig:captureshare_line}). This variation highlights how the implementation of \hydrogen{} and \carbon{} networks unlocks specific carbon capture potentials.
+The \hydrogen{}-Grid model underscores the pivotal role of hydrogen infrastructure. The creation of a hydrogen transport network enables the cost-effective delivery of hydrogen from regions with a surplus of cheap renewable energy to high-demand industrial centers. This model shows a pronounced decrease in investments in solar generation and gas infrastructure. The \hydrogen{} network reduces DAC similarly to the \carbon{} network, but still produces 200 Mt of carbon from DAC. CC technology on process emissions increases from 90\% to 100\%, on biomass CHPs from 60\% to 100\%, and on facilities using gas in industry from 50\% to 75\%. CC on biomass use in industry remains at 50\%, same as the \modCO{} (see Figure~\ref{fig:captureshare_line}). This variation highlights how the implementation of \carbon{} and \hydrogen{} networks unlocks specific carbon capture potentials.
 
 While the cost-reduction in the Hybrid model compared to the \hydrogen-Grid model is marginal, the allocation of costs reveals a propagation of reduced DAC facilities and increased CC at point sources. The Hybrid model relies slightly less on investments into the \hydrogen{} network than the \modH, but adds some investments into the \carbon{} network. Still, investments into the \hydrogen{} network outweigh investments into the \carbon{} network by a factor of four.
 
@@ -293,7 +294,7 @@ Despite the detailed model representation, there are some limitations to the val
 
 The technology costs used in the model rely on cost projections that incorporate reductions based on learning rates. These learning rates are derived from historical data, which may not necessarily be indicative of future trends. In particular, cost assumptions on DAC, electrolysis and \hydrogen{} pipeline costs, could have a strong impact in the model results.
 
-The modelling results are heavily driven by the demand and emissions from industrial clusters. Allowing the model to relocate these and/or incorporate flexibility measures, may lead to less dependency on both \hydrogen{} and \carbon{} networks.
+The modelling results are heavily driven by the demand and emissions from industrial clusters. Allowing the model to relocate these and/or incorporate flexibility measures, may lead to less dependency on both \carbon{} and \hydrogen{} networks.
 
 The technological flexibilities in the carbon sector might not be exploited to full extent. Therefore, the \carbon{} transport via truck or ship is not considered. Fischer-Tropsch facilities require to run on baseload with at least 90\% of their nominal capacity.
 
@@ -320,7 +321,7 @@ The technological flexibilities in the carbon sector might not be exploited to f
 \begin{figure}
     \centering
     \includegraphics*[width=0.8\linewidth]{comparison/emission-reduction/figures/90_nodes/objective_heatmap.png}
-    \caption{Total annual system cost for the different scenarios and \carbon{} targets. While the `Baseline' scenario has neither a \hydrogen{} or \carbon{} network, `Hybrid' is allowed to expand both.}
+    \caption{Total annual system cost for the different scenarios and \carbon{} targets. While the `Baseline' scenario has neither a \carbon{} nor a \hydrogen{} network, `Hybrid' is allowed to expand both.}
     \label{fig:objective_heatmap}
 \end{figure}
 
