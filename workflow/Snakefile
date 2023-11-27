@@ -372,6 +372,7 @@ rule plot_transmission_cost_bar:
         map="results/comparison/{comparison}/figures/{clusters}_nodes/transmission_cost_bar.{ext}",
     resources:
         mem_mb=20000,
+        threads=2,
     script:
         "scripts/plot-transmission-cost-bar.py"
 

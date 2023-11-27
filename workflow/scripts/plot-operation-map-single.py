@@ -62,8 +62,8 @@ draw_legend = snakemake.params.settings["legend"].get(run, True)
 
 for kind, output in snakemake.output.items():
 
-    # Create a GridSpec object
-    # gs = GridSpec(1, 2, width_ratios=[20, 20])
+    # if kind != "hydrogen":
+    # continue
 
     figsize = snakemake.params.settings["figsize"]
     figsize = figsize["single"] if draw_legend else figsize["single_wo_legend"]
@@ -86,7 +86,7 @@ for kind, output in snakemake.output.items():
     legend_kwargs = {"loc": "upper left", "frameon": False}
     unit = specs["unit"]
 
-    bus_sizes = df
+    bus_sizes = df.sort_index()
     branch_widths = get_carrier_transport(n, kind, config, which)
     flow = pd.concat(branch_widths)
     branch_carriers = get_carrier_transport(n, kind, config, "carrier")
@@ -128,11 +128,21 @@ for kind, output in snakemake.output.items():
     region_unit = specs["region_unit"]
     cmap = specs["region_cmap"]
 
-    vmin, vmax = regions.price.min(), regions.price.max()
+    if "vmin" in specs:
+        vmin = float(specs["vmin"])
+    else:
+        vmin = regions.price.min()
+    if "vmax" in specs:
+        vmax = float(specs["vmax"])
+    else:
+        vmax = regions.price.max()
+
     regions.plot(
         ax=ax,
         column="price",
         cmap=cmap,
+        vmin=vmin,
+        vmax=vmax,
         edgecolor="None",
         linewidth=0,
         alpha=region_alpha,
@@ -141,17 +151,54 @@ for kind, output in snakemake.output.items():
     )
 
     if draw_legend:
-        gen_carriers = (
-            n.carriers.set_index("nice_name")
-            .loc[bus_sizes.index.unique(1)]
-            .sort_values("color")
+        sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(vmin=vmin, vmax=vmax))
+        title = kind.title() if kind != "carbon" else f"Capturing {kind.title()}"
+        cbr = fig.colorbar(
+            sm,
+            ax=ax,
+            label=f"Average Price of {title} [{region_unit}]",
+            shrink=1,
+            pad=0.03,
+            aspect=50,
+            alpha=region_alpha,
+            orientation="horizontal",
         )
+        cbr.outline.set_edgecolor("None")
+
+        pad = 0.18
+        carriers = n.carriers.set_index("nice_name")
+        prod_carriers = bus_sizes[bus_sizes > 0].index.unique("carrier").sort_values()
+        cons_carriers = (
+            bus_sizes[bus_sizes < 0]
+            .index.unique("carrier")
+            .difference(prod_carriers)
+            .sort_values()
+        )
+
         add_legend_patches(
             ax,
-            gen_carriers.color,
-            gen_carriers.index,
+            carriers.color[prod_carriers],
+            prod_carriers,
             patch_kw={"alpha": alpha},
-            legend_kw={"bbox_to_anchor": (0, 0), "ncol": 2, **legend_kwargs},
+            legend_kw={
+                "bbox_to_anchor": (0, -pad),
+                "ncol": 1,
+                "title": "Production",
+                **legend_kwargs,
+            },
+        )
+
+        add_legend_patches(
+            ax,
+            carriers.color[cons_carriers],
+            cons_carriers,
+            patch_kw={"alpha": alpha},
+            legend_kw={
+                "bbox_to_anchor": (0.5, -pad),
+                "ncol": 1,
+                "title": "Consumption",
+                **legend_kwargs,
+            },
         )
 
     ax.set_extent(snakemake.config["plotting"]["extent"])
@@ -166,19 +213,6 @@ for kind, output in snakemake.output.items():
             [f"{s} {unit}" for s in legend_bus_sizes],
             legend_kw={"bbox_to_anchor": (0, 1), **legend_kwargs},
         )
-
-    sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(vmin=vmin, vmax=vmax))
-    title = kind.title() if kind != "carbon" else f"Capturing {kind.title()}"
-    cbr = fig.colorbar(
-        sm,
-        ax=ax,
-        label=f"Average Price of {title} [{region_unit}]",
-        shrink=0.6,
-        pad=0.03,
-        aspect=30,
-        alpha=region_alpha,
-    )
-    cbr.outline.set_edgecolor("None")
 
     fig.savefig(
         output,

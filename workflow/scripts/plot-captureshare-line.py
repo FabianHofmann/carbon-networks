@@ -1,4 +1,5 @@
 import os
+import re
 from pathlib import Path
 from common import (
     import_network,
@@ -7,7 +8,7 @@ from common import (
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+from matplotlib.patches import Patch
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
@@ -23,11 +24,15 @@ config = snakemake.config
 which = "capacity"
 
 
-df = {}
+share = {}
+cf = {}
 for path in snakemake.input.networks:
     n = import_network(path)
-    capacity = n.statistics.optimal_capacity()
-    capacity = capacity.droplevel(0)[lambda x: x > 0]
+    key = snakemake.params.labels[n.meta["wildcards"]["run"]]
+
+    s = n.statistics
+    capacity = s.optimal_capacity()
+    capacity = capacity.Link[lambda x: x > 0]
 
     switch_techs = capacity.index[capacity.index.str.contains(" CC")]
     caps = pd.DataFrame(
@@ -37,41 +42,59 @@ for path in snakemake.input.networks:
         }
     )
     caps = caps["cc"] / caps.sum(1)
+    share[key] = caps.rename_axis("Carrier")
 
-    key = snakemake.params.labels[n.meta["wildcards"]["run"]]
-    df[key] = caps
+    def groupby(n, c: str, nice_names) -> pd.Series:
+        return (
+            n.df(c).carrier.replace(" CC", "", regex=True).replace(n.carriers.nice_name)
+        )
 
-df = pd.concat(df, axis=1)
-# df = df[df.sum().sort_values().index]
-df = df.reindex(df.iloc[:, 0].sort_values().index, axis=0)
+    cf[key] = s.capacity_factor(groupby=groupby).Link[caps.index].rename_axis("Carrier")
 
-nice_name = n.carriers.nice_name
-colors = n.carriers.color.dropna().rename(nice_name)
+share = pd.concat(share, axis=1, names="Model")
+cf = pd.concat(cf, axis=1, names="Model")
 
+data = pd.concat(
+    [df.mul(100).stack() for df in [cf, share]],
+    axis=1,
+    keys=["Capacity Factor", "CC Share [%]"],
+).reset_index()
+# %%
 fig, ax = plt.subplots(
     figsize=snakemake.params.settings["figsize"],
     layout="constrained",
 )
 
-df.mul(100).T.plot(
-    kind="line",
+nice_name = n.carriers.nice_name
+colors = n.carriers.color.dropna().rename(nice_name)
+
+
+plot = sns.scatterplot(
     ax=ax,
-    color=colors.to_dict(),
-    alpha=0.8,
-    rot=90,
-    marker="o",
-    ls="-",
+    data=data,
+    x="Model",
+    y="CC Share [%]",
+    size="Capacity Factor",
+    hue="Carrier",
+    # style="Carrier",
+    palette=colors.to_dict(),
+    legend="auto",
 )
-ax.set_ylabel(f"CC share [%]")
-ax.grid(axis="y", alpha=0.5)
 handles, labels = ax.get_legend_handles_labels()
+labels = [l + " %" if re.match(r"^\d+$", l) else l for l in labels]
+
+pos = labels.index("Capacity Factor")
+handles.insert(pos, Patch(facecolor="none", edgecolor="none", alpha=0))
+labels.insert(pos, "")
+
+# Add the invisible handles and labels to the legend
 ax.legend(
-    handles[::-1],
-    labels[::-1],
-    loc="center left",
-    bbox_to_anchor=(1, 0.5),
-    frameon=False,
+    handles, labels, loc="center left", bbox_to_anchor=(1.0, 0.5), frameon=False, ncol=1
 )
+ax.grid(axis="y", alpha=0.5)
+ax.set_xlabel("")
+
+plt.xticks(rotation=90)
 
 sns.despine()
 

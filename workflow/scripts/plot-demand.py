@@ -26,11 +26,11 @@ rename_bus_carrier = {
     "solid biomass for industry": "biomass",
     "gas for industry": "gas",
     "low voltage": "electricity",
-    "services rural heat": "heat",
-    "urban central heat": "heat",
-    "residential rural heat": "heat",
-    "residential urban decentral heat": "heat",
-    "services urban decentral heat": "heat",
+    "services rural heat": "Low-Temperature\nHeat",
+    "urban central heat": "Low-Temperature\nHeat",
+    "residential rural heat": "Low-Temperature\nHeat",
+    "residential urban decentral heat": "Low-Temperature\nHeat",
+    "services urban decentral heat": "Low-Temperature\nHeat",
     "Li ion": "electricity",
 }
 
