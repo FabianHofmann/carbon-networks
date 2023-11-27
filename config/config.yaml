@@ -581,7 +581,12 @@ plotting:
         - 2
 
   operation_map:
-    figsize: [10, 6]
+    figsize:
+      single: [5, 6]
+      single_wo_legend: [5, 4]
+      double: [10, 6]
+    legend:
+      co2-only: False
     electricity:
       unit: GW
       region_cmap: Greens

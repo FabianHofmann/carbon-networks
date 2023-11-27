@@ -40,7 +40,8 @@ rule main:
             kind=config["constants"]["kinds"],
         ),
         expand(
-            "results/{run}/figures/{clusters}_nodes/operation_map_{kind}.png",
+            "results/{run}/figures/{clusters}_nodes/{figure}_{kind}.png",
+            figure=["operation_map", "operation_map_single"],
             run=config["run"]["name"],
             clusters=config["scenario"]["clusters"],
             kind=config["constants"]["kinds"]
@@ -251,6 +252,27 @@ rule plot_operation_map:
         },
     script:
         "scripts/plot-operation-map.py"
+
+
+rule plot_operation_map_single:
+    params:
+        settings=config["plotting"]["operation_map"],
+        theme=config["plotting"]["theme"],
+    input:
+        network="results/{run}/networks/{clusters}_nodes.nc",
+        onshore_regions="resources/regions_onshore_elec_s{simpl}_{{clusters}}.geojson".format(
+            **config["scenario"]
+        ),
+    resources:
+        mem_mb=20000,
+    output:
+        **{
+            kind: f"results/{{run}}/figures/{{clusters}}_nodes/operation_map_single_{kind}.{{ext}}"
+            for kind in config["constants"]["kinds"]
+            + config["constants"]["additional_kinds"]
+        },
+    script:
+        "scripts/plot-operation-map-single.py"
 
 
 rule plot_energy_balance_area:

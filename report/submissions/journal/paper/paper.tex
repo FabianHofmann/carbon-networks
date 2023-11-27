@@ -174,10 +174,9 @@ The implementation of a \carbon{} transport network (\textit{\carbon{}~Grid}) fa
     \caption{Share of facilities with integrated carbon capture for different system setups for the net-zero emission scenario.}
     % A CO2 network unlock BECSS potentials, most biomass emissions are captured at point sources and transported to sequestration sites. cite~\cite{rosaAssessmentCarbonDioxide2021}
     \label{fig:captureshare_line}
-\end{figure}
+\end{figure}%
 
-
-\begin{figure}[h]
+\begin{figure}[ht!]
     \centering
     \includegraphics[width=\linewidth]{comparison/default/figures/90_nodes/energy_balance_bar_carbon.png}
     \caption{Balance of captured carbon across all system setups. Positive values indicate carbon capture, negative values indicate carbon consumption.}
@@ -190,18 +189,19 @@ The \hydrogen{}-Grid model underscores the pivotal role of hydrogen infrastructu
 
 While the cost-reduction in the Hybrid model compared to the \hydrogen-Grid model is marginal, the allocation of costs reveals a propagation of reduced DAC facilities and increased CC at point sources. The Hybrid model relies slightly less on investments into the \hydrogen{} network than the \modH, but adds some investments into the \carbon{} network. Still, investments into the \hydrogen{} network outweigh investments into the \carbon{} network by a factor of four.
 
+\subsection*{Superiority of \hydrogen{} network}
 
-\begin{figure*}[h]
+\begin{figure*}[ht!]
     \centering
-    \begin{subfigure}{\linewidth}
+    \begin{subfigure}{0.9\linewidth}
         \centering
-        \includegraphics[width=0.95\linewidth]{co2-only/figures/90_nodes/operation_map_carbon.png}
+        \includegraphics[width=\linewidth]{co2-only/figures/90_nodes/operation_map_carbon.png}
         \caption{\carbon{} Sector.}
         \label{fig:operation_map_carbon}
     \end{subfigure}
-    \begin{subfigure}{\linewidth}
+    \begin{subfigure}{0.9\linewidth}
         \centering
-        \includegraphics[width=0.95\linewidth]{h2-only/figures/90_nodes/operation_map_hydrogen.png}
+        \includegraphics[width=\linewidth]{h2-only/figures/90_nodes/operation_map_hydrogen.png}
         \caption{\hydrogen{} Sector.}
         \label{fig:operation_map_hydrogen}
     \end{subfigure}
@@ -209,8 +209,6 @@ While the cost-reduction in the Hybrid model compared to the \hydrogen-Grid mode
     \label{fig:operation_map}
 \end{figure*}
 
-
-\subsection*{Superiority of \hydrogen{} network}
 
 Examining the cost-reductions across the different models raises an important question: why is the hydrogen network more cost-effective than its carbon counterpart, and how does it achieve similar cost reductions as the hybrid model? To answer this question, it is crucial to understand the underlying mechanisms and geographical implications of the two transportation systems. Fig.~\ref{fig:operation_map_carbon} maps the average production, consumption and flow in the carbon sector for the \carbongrid{} model. Fig. \ref{fig:operation_map_hydrogen} shows equivalent quantities in the hydrogen sector for the \hydrogengrid{} model. In each region, circles divide into contributions from technologies, and their sizes correspond proportionally to production on the left and consumption on the right. The region's colors represent the average price of the considered carrier.
 
@@ -228,7 +226,7 @@ These findings explain the advantage of the \hydrogen{} network in contrast to t
 
 \subsection*{Flexibility gains through hybrid configuration}
 
-\begin{figure*}[h!]
+\begin{figure*}[ht!]
     \centering
     \begin{subfigure}{.49\textwidth}
         \centering
@@ -255,12 +253,12 @@ These findings explain the advantage of the \hydrogen{} network in contrast to t
 The Hybrid model combines the advantages of both hydrogen and carbon networks. While the topology of the \hydrogen{}-grid roughly corresponds to that of the \hydrogen grid model, the \carbon{}-grid plays more of a complementary role. Fig.~\ref{fig:capacity_maps} shows the capacities of the two grids in the hybrid model, with the production and transport capacities given in kt/h. Note that despite similar overall capacities, the investment in the hydrogen infrastructure is four times the investment in the carbon infrastructure.
 
 
-Similar to the \hydrogengrid model, the Hybrid model takes advantage of a large hydrogen network that enables hydrogen to be transported from centralized production sites in western regions such as Spain and the UK to decentralized FT production sites across the continent.
+Similar to the \hydrogengrid model, the Hybrid model takes advantage of a large hydrogen network that enables hydrogen to be transported from centralized production sites in western regions such as Spain to decentralized FT production sites across the continent. However, in the Hybrid model hydrogen in the UK is used locally to produce synfuels, and less hydrogen is transported to Central Europe.
 The carbon network supplements this with smaller clusters of networks. In addition to a larger carbon grid cluster in Central Europe, which transports carbon to the North Sea, the system is building three large linear carbon routes. These transport carbon from Romania and Bulgaria to Greece, from northern Italy to central Italy and from Hungary, the Czech Republic and Poland to the Baltic Sea. These enable the system to transport cheaply available carbon from inland biomass sources and sequester it (see Fig.~\ref{fig:captureshare_line}). This reduces the need for DAC in the system and the sequestration sites are shifted to the end points of the carbon networks. Second-order effects can be seen in the shift in FT production compared to the \hydrogengrid model. Regions that have both good renewable resources and sequestration potential could now forego sequestration and use local process emissions for FT production, as can be observed in Ireland. A more detailed of differences between the \hydrogengrid and the Hybrid model can be found in Fig.~.
 
 
-A notable aspect of the hybrid model is the lack of overlap in the hydrogen and carbon network topologies which is tightly connected to the nodal carbon strategy. Depending on the exogeneous need in hydrogen for example from industry, and the costs for locally produced carbon, a region can either import hydrogen to produce FT fuels or export carbon.
-\dots
+A notable aspect of the hybrid model is the lack of overlap in the hydrogen and carbon network topologies which is tightly connected to the nodal carbon strategy. Depending on the exogeneous need in hydrogen for example from industry, and the costs for locally produced carbon, a region can either import hydrogen to produce FT fuels or export carbon, but it will neither import one and export the other nor import or export both.
+
 
 Despite only small decrease in cost in comparison to the \hydrogengrid model, hybrid approach brings several advantages. These include a broader range of technologies contributing to its robustness, reduced reliance on DAC, which may be costlier than anticipated in the cost projections, and less land use for wind and solar due to the decreased necessity for DAC. The increase used of biomass with carbon capture, transport and sequestration leads to slight cost advantages in comparison to the \hydrogengrid model.
 
@@ -268,7 +266,7 @@ Despite only small decrease in cost in comparison to the \hydrogengrid model, hy
 
 \subsection*{Net-Negative Scenarios}
 
-\begin{figure}[h]
+\begin{figure}[htb!]
     \centering
     \includegraphics[width=0.9\linewidth]{difference/comparison/emission-reduction-0.1/figures/90_nodes/cost_bar.png}
     \caption[short]{Net change in investments when tightening the \carbon{} emission target from net-zero to net-negative 10\% of 1990s emissions.}
@@ -326,7 +324,7 @@ The technological flexibilities in the carbon sector might not be exploited to f
 \end{figure}
 
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{comparison/emission-reduction-full/figures/90_nodes/transmission_cost_bar.png}
     \caption{Annual transmission system cost as a function of the net carbon removal scenarios considered in the study.}
@@ -334,12 +332,12 @@ The technological flexibilities in the carbon sector might not be exploited to f
 \end{figure}
 
 
-\begin{figure}[h]
+\begin{figure*}[ht]
     \centering
     \includegraphics[width=\linewidth]{difference/h2-only-full/figures/90_nodes/cost_map.png}
     \caption{Difference in cost investments between \hydrogengrid and Hybrid model. The left subfigure shows higher spendings per technology and region and transport system for the \hydrogengrid model, the right shows higher spendings in the Hydrid model.}
     \label{fig:cost_map_difference}
-\end{figure}
+\end{figure*}
 
 
 \end{document}

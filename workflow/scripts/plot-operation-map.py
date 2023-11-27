@@ -62,7 +62,7 @@ for kind, output in snakemake.output.items():
     # Create a GridSpec object
     gs = GridSpec(1, 2, width_ratios=[20, 20])
 
-    fig = plt.figure(figsize=snakemake.params.settings["figsize"])
+    fig = plt.figure(figsize=snakemake.params.settings["figsize"]["double"])
 
     # Create the first axes in the first column
     ax1 = fig.add_subplot(gs[0, 0], projection=ccrs.EqualEarth())
