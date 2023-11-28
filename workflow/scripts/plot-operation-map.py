@@ -67,7 +67,7 @@ for kind, output in snakemake.output.items():
 
     grouper = s.groupers.get_bus_and_carrier
     df = s.dispatch(bus_carrier=carriers, groupby=grouper)
-    df = df.drop(transport_carriers, level=2, errors="ignore")
+    df.Link = df.Link.drop(transport_carriers, level=1, errors="ignore")
     df = df.rename(lambda x: x.replace(" CC", ""), level=2)
     df = df.groupby(level=[1, 2]).sum().rename(n.buses.location, level=0)
 

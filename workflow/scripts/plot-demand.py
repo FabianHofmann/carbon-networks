@@ -44,8 +44,10 @@ carrier_order = demand.loc[
     :, demand.groupby(level=1).sum().sort_values().index
 ].index.get_level_values(0)
 
+
 df = demand.unstack().div(1e9)
 df = df[df.sum().sort_values().index].loc[carrier_order]
+df = df.rename({"Heat": "Low-T Heat", "Oil": "Carbonaceous\nFuel"}, axis=1)
 
 color = n.carriers.set_index("nice_name").color.to_dict()
 

@@ -135,6 +135,7 @@ for kind, output in snakemake.output.items():
             "alpha": region_alpha,
         },
     )
+
     ax.set_extent(snakemake.config["plotting"]["extent"])
 
     legend_bus_sizes = specs["bus_sizes"]

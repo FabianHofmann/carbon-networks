@@ -7,6 +7,7 @@ Created on Thu Nov 24 10:14:48 2022
 """
 import os
 import warnings
+import textwrap
 import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -23,6 +24,7 @@ import geopandas as gpd
 
 
 warnings.filterwarnings("ignore", category=UserWarning)
+wrapper = textwrap.TextWrapper(width=18)
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
@@ -41,17 +43,16 @@ alpha = 1
 region_alpha = 0.6
 which = "operation"
 
-
 # %%
 fig, axes = plt.subplots(
     2,
     2,
-    figsize=(10, 10),
+    figsize=(7, 9),
     subplot_kw={"projection": ccrs.EqualEarth()},
     layout="constrained",
 )
 
-for n, axs, draw_legend in zip(networks, axes, [False, True]):
+for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
     is_transport = get_transmission_links(n)
     transport_carriers = [
         *n.links.carrier[is_transport].unique(),
@@ -62,7 +63,6 @@ for n, axs, draw_legend in zip(networks, axes, [False, True]):
     s = n.statistics
 
     for kind, ax in zip(["carbon", "hydrogen"], axs):
-
         carriers = config["constants"]["carrier_to_buses"].get(kind, [kind])
 
         grouper = s.groupers.get_bus_and_carrier
@@ -145,7 +145,7 @@ for n, axs, draw_legend in zip(networks, axes, [False, True]):
             title = kind.title() if kind != "carbon" else f"Capturing {kind.title()}"
             cbr = fig.colorbar(
                 sm,
-                ax=ax,
+                ax=axes[0] if kind == "carbon" else axes[1],
                 label=f"Average Price of {title} [{region_unit}]",
                 shrink=0.8,
                 pad=0.03,
@@ -170,10 +170,10 @@ for n, axs, draw_legend in zip(networks, axes, [False, True]):
             add_legend_patches(
                 ax,
                 carriers.color[prod_carriers],
-                prod_carriers,
+                prod_carriers.map(wrapper.fill),
                 patch_kw={"alpha": alpha},
                 legend_kw={
-                    "bbox_to_anchor": (0, -pad),
+                    "bbox_to_anchor": (1, 1),
                     "ncol": 1,
                     "title": "Production",
                     **legend_kwargs,
@@ -183,10 +183,10 @@ for n, axs, draw_legend in zip(networks, axes, [False, True]):
             add_legend_patches(
                 ax,
                 carriers.color[cons_carriers],
-                cons_carriers,
+                cons_carriers.map(wrapper.fill),
                 patch_kw={"alpha": alpha},
                 legend_kw={
-                    "bbox_to_anchor": (0.5, -pad),
+                    "bbox_to_anchor": (1, 0.4),
                     "ncol": 1,
                     "title": "Consumption",
                     **legend_kwargs,
@@ -198,7 +198,7 @@ for n, axs, draw_legend in zip(networks, axes, [False, True]):
             ax,
             [s * bus_scale * 1e6 for s in legend_bus_sizes],
             [f"{s} {unit}" for s in legend_bus_sizes],
-            legend_kw={"bbox_to_anchor": (0, 1), **legend_kwargs},
+            legend_kw={"bbox_to_anchor": (0, 1), "frameon": True, "loc": "upper left"},
         )
         # ax.set_title(config["labels"].get(kind, kind.title()) + " Operation")
 
