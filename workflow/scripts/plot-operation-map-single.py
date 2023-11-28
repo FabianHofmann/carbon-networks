@@ -12,7 +12,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 from pypsa.plot import add_legend_circles, add_legend_patches
-from matplotlib.gridspec import GridSpec
 from common import (
     import_network,
     mock_snakemake,
@@ -34,7 +33,7 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
 
 sns.set_theme(**snakemake.params["theme"])
 
-n = import_network(snakemake.input.network)
+n = import_network(snakemake.input.network, revert_dac=True)
 regions = gpd.read_file(snakemake.input.onshore_regions).set_index("name")
 which = "operation"
 config = snakemake.config
@@ -49,26 +48,19 @@ transport_carriers = [
 ]
 transport_carriers = n.carriers.nice_name[transport_carriers]
 
-# TODO: ensure this weird adjustment is not necessary anymore
-dac = n.links.index[n.links.carrier == "DAC"]
-n.links.loc[dac, ["bus0", "bus2"]] = n.links.loc[dac, ["bus2", "bus0"]].values
-n.links.loc[dac, ["", "bus2"]] = n.links.loc[dac, ["bus2", "bus0"]].values
-n.links_t.p0[dac], n.links_t.p2[dac] = n.links_t.p2[dac], n.links_t.p0[dac].values
-
 s = n.statistics
 
 run = snakemake.wildcards.run
-draw_legend = snakemake.params.settings["legend"].get(run, True)
 
 for kind, output in snakemake.output.items():
-
     # if kind != "hydrogen":
     # continue
 
-    figsize = snakemake.params.settings["figsize"]
-    figsize = figsize["single"] if draw_legend else figsize["single_wo_legend"]
+    figsize = snakemake.params.settings["figsize"]["single"]
     fig, ax = plt.subplots(
-        figsize=figsize, subplot_kw={"projection": ccrs.EqualEarth()}
+        figsize=figsize,
+        subplot_kw={"projection": ccrs.EqualEarth()},
+        layout="constrained",
     )
 
     carriers = config["constants"]["carrier_to_buses"].get(kind, [kind])
@@ -78,6 +70,7 @@ for kind, output in snakemake.output.items():
     df = df.drop(transport_carriers, level=2, errors="ignore")
     df = df.rename(lambda x: x.replace(" CC", ""), level=2)
     df = df.groupby(level=[1, 2]).sum().rename(n.buses.location, level=0)
+    df = df[df.abs() > 1]
 
     specs = config["plotting"]["operation_map"][kind]
     bus_scale = float(specs["bus_scale"])
@@ -150,56 +143,55 @@ for kind, output in snakemake.output.items():
         aspect="equal",
     )
 
-    if draw_legend:
-        sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(vmin=vmin, vmax=vmax))
-        title = kind.title() if kind != "carbon" else f"Capturing {kind.title()}"
-        cbr = fig.colorbar(
-            sm,
-            ax=ax,
-            label=f"Average Price of {title} [{region_unit}]",
-            shrink=1,
-            pad=0.03,
-            aspect=50,
-            alpha=region_alpha,
-            orientation="horizontal",
-        )
-        cbr.outline.set_edgecolor("None")
+    sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(vmin=vmin, vmax=vmax))
+    title = kind.title() if kind != "carbon" else f"Capturing {kind.title()}"
+    cbr = fig.colorbar(
+        sm,
+        ax=ax,
+        label=f"Average Price of {title} [{region_unit}]",
+        shrink=1,
+        pad=0.03,
+        aspect=50,
+        alpha=region_alpha,
+        orientation="horizontal",
+    )
+    cbr.outline.set_edgecolor("None")
 
-        pad = 0.18
-        carriers = n.carriers.set_index("nice_name")
-        prod_carriers = bus_sizes[bus_sizes > 0].index.unique("carrier").sort_values()
-        cons_carriers = (
-            bus_sizes[bus_sizes < 0]
-            .index.unique("carrier")
-            .difference(prod_carriers)
-            .sort_values()
-        )
+    pad = 0.18
+    carriers = n.carriers.set_index("nice_name")
+    prod_carriers = bus_sizes[bus_sizes > 0].index.unique("carrier").sort_values()
+    cons_carriers = (
+        bus_sizes[bus_sizes < 0]
+        .index.unique("carrier")
+        .difference(prod_carriers)
+        .sort_values()
+    )
 
-        add_legend_patches(
-            ax,
-            carriers.color[prod_carriers],
-            prod_carriers,
-            patch_kw={"alpha": alpha},
-            legend_kw={
-                "bbox_to_anchor": (0, -pad),
-                "ncol": 1,
-                "title": "Production",
-                **legend_kwargs,
-            },
-        )
+    add_legend_patches(
+        ax,
+        carriers.color[prod_carriers],
+        prod_carriers,
+        patch_kw={"alpha": alpha},
+        legend_kw={
+            "bbox_to_anchor": (0, -pad),
+            "ncol": 1,
+            "title": "Production",
+            **legend_kwargs,
+        },
+    )
 
-        add_legend_patches(
-            ax,
-            carriers.color[cons_carriers],
-            cons_carriers,
-            patch_kw={"alpha": alpha},
-            legend_kw={
-                "bbox_to_anchor": (0.5, -pad),
-                "ncol": 1,
-                "title": "Consumption",
-                **legend_kwargs,
-            },
-        )
+    add_legend_patches(
+        ax,
+        carriers.color[cons_carriers],
+        cons_carriers,
+        patch_kw={"alpha": alpha},
+        legend_kw={
+            "bbox_to_anchor": (0.5, -pad),
+            "ncol": 1,
+            "title": "Consumption",
+            **legend_kwargs,
+        },
+    )
 
     ax.set_extent(snakemake.config["plotting"]["extent"])
     if snakemake.params.settings.get("title", True):
@@ -217,5 +209,4 @@ for kind, output in snakemake.output.items():
     fig.savefig(
         output,
         dpi=300,
-        bbox_inches="tight",
     )

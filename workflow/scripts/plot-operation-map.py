@@ -34,7 +34,7 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
 
 sns.set_theme(**snakemake.params["theme"])
 
-n = import_network(snakemake.input.network)
+n = import_network(snakemake.input.network, revert_dac=True)
 regions = gpd.read_file(snakemake.input.onshore_regions).set_index("name")
 which = "operation"
 config = snakemake.config
@@ -48,12 +48,6 @@ transport_carriers = [
     *n.lines.carrier.unique(),
 ]
 transport_carriers = n.carriers.nice_name[transport_carriers]
-
-# TODO: ensure this weird adjustment is not necessary anymore
-dac = n.links.index[n.links.carrier == "DAC"]
-n.links.loc[dac, ["bus0", "bus2"]] = n.links.loc[dac, ["bus2", "bus0"]].values
-n.links.loc[dac, ["", "bus2"]] = n.links.loc[dac, ["bus2", "bus0"]].values
-n.links_t.p0[dac], n.links_t.p2[dac] = n.links_t.p2[dac], n.links_t.p0[dac].values
 
 s = n.statistics
 

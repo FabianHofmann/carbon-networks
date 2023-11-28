@@ -50,7 +50,7 @@ def set_scenario_config(snakemake):
         update_config(snakemake.config, scenario_config[snakemake.wildcards.run])
 
 
-def import_network(path):
+def import_network(path, revert_dac=False):
     overrides = override_component_attrs(override_dir)
     n = pypsa.Network(path, override_component_attrs=overrides)
     sanitize_locations(n)
@@ -62,6 +62,15 @@ def import_network(path):
     if n.carriers.notnull().all().all() and (n.carriers != "").all().all():
         warnings.warn("Some carriers have no color or nice_name")
     n.carriers = n.carriers.sort_values(["color"])
+
+    if revert_dac:
+        dac = n.links.index[n.links.carrier == "DAC"]
+        n.links.loc[dac, ["bus0", "bus2"]] = n.links.loc[dac, ["bus2", "bus0"]].values
+        n.links.loc[dac, ["", "bus2"]] = n.links.loc[dac, ["bus2", "bus0"]].values
+        n.links_t.p0[dac], n.links_t.p2[dac] = (
+            n.links_t.p2[dac],
+            n.links_t.p0[dac].values,
+        )
     return n
 
 

@@ -104,9 +104,11 @@ rule main:
             clusters=config["scenario"]["clusters"],
             ext=["png", "pdf"],
         ),
+        # dedicated plots
+        "results/comparison/single-technologies/figures/90_nodes/operation_map_dedicated.png",
     output:
-        "results/.main",
         # "results/figures.zip",
+        "results/.main",
     shell:
         """
         touch {output}
@@ -487,6 +489,33 @@ rule plot_cost_compare_diff_bar:
         mem_mb=20000,
     script:
         "scripts/plot-cost-compare-diff-bar.py"
+
+
+# DEDICATED PLOTS
+# this section contains plots that are not fully parameterized and serve a dedicated purpose for the paper
+
+
+rule plot_operation_map_dedicated:
+    """
+    Plot for dedicated comparison between carbon and hydrogen infrastucture.
+    """
+    params:
+        settings=config["plotting"]["operation_map"],
+        theme=config["plotting"]["theme"],
+    input:
+        networks=[
+            "results/{run}/networks/{{clusters}}_nodes.nc".format(run=run)
+            for run in ["co2-only", "h2-only"]
+        ],
+        onshore_regions="resources/regions_onshore_elec_s{simpl}_{{clusters}}.geojson".format(
+            **config["scenario"]
+        ),
+    resources:
+        mem_mb=20000,
+    output:
+        figure="results/comparison/single-technologies/figures/{clusters}_nodes/operation_map_dedicated.{ext}",
+    script:
+        "scripts/plot-operation-map-dedicated.py"
 
 
 # OTHER

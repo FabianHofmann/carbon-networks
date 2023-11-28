@@ -18,18 +18,18 @@ run:
     - h2-only
     - full
 
-    - net-negative-0.05/baseline
-    - net-negative-0.05/co2-only
-    - net-negative-0.05/h2-only
-    - net-negative-0.05/full
+    # - net-negative-0.05/baseline
+    # - net-negative-0.05/co2-only
+    # - net-negative-0.05/h2-only
+    # - net-negative-0.05/full
 
     - net-negative-0.1/baseline
     - net-negative-0.1/co2-only
     - net-negative-0.1/h2-only
     - net-negative-0.1/full
 
-    - half-price/co2-only
-    - half-price/full
+    # - half-price/co2-only
+    # - half-price/full
 
   scenarios:
     enable: true
@@ -42,11 +42,11 @@ comparison:
     - co2-only
     - h2-only
     - full
-  net-negative-0.05:
-    - net-negative-0.05/baseline
-    - net-negative-0.05/co2-only
-    - net-negative-0.05/h2-only
-    - net-negative-0.05/full
+  # net-negative-0.05:
+  #   - net-negative-0.05/baseline
+  #   - net-negative-0.05/co2-only
+  #   - net-negative-0.05/h2-only
+  #   - net-negative-0.05/full
   net-negative-0.1:
     - net-negative-0.1/baseline
     - net-negative-0.1/co2-only
@@ -584,10 +584,7 @@ plotting:
     title: False
     figsize:
       single: [5, 6]
-      single_wo_legend: [5, 4]
       double: [10, 6]
-    legend:
-      co2-only: False
     electricity:
       unit: GW
       region_cmap: Greens
@@ -624,6 +621,8 @@ plotting:
         - 50 # TWh
       branch_sizes: null
     carbon:
+      vmin: 100
+      vmax: 160
       unit: Mt/h
       region_cmap: Purples
       region_unit: €/t

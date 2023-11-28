@@ -59,7 +59,7 @@ data = pd.concat(
     axis=1,
     keys=["Capacity Factor", "CC Share [%]"],
 ).reset_index()
-# %%
+
 fig, ax = plt.subplots(
     figsize=snakemake.params.settings["figsize"],
     layout="constrained",
@@ -99,3 +99,33 @@ plt.xticks(rotation=90)
 sns.despine()
 
 fig.savefig(snakemake.output[0], dpi=300)
+
+# ALTERATIVE PLOT
+# fig, ax = plt.subplots(
+#     figsize=snakemake.params.settings["figsize"],
+#     layout="constrained",
+# )
+# plot = sns.scatterplot(
+#     ax=ax,
+#     data=data,
+#     style="Model",
+#     y="CC Share [%]",
+#     x="Capacity Factor",
+#     hue="Carrier",
+#     palette=colors.to_dict(),
+#     legend="auto",
+# )
+# ax.legend(loc="center left", bbox_to_anchor=(1.0, 0.5), frameon=False, ncol=1)
+# x = data["Capacity Factor"]
+# y = data["CC Share [%]"]
+# ax.plot(
+#     [x.min(), x.max()],
+#     [y.min(), y.max()],
+#     ls="--",
+#     color="grey",
+#     alpha=0.5,
+#     zorder=-1,
+# )
+# ax.set_xlabel("Capacity Factor [%]")
+# sns.despine()
+# fig.savefig(snakemake.output[0], dpi=300)
