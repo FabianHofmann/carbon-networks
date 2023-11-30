@@ -44,6 +44,7 @@ unit = "bn€/a"
 
 diff = (df[df.columns[0]] - df[df.columns[1]]).div(norm)
 
+# %%
 
 fig, ax = plt.subplots(
     1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"
@@ -52,6 +53,15 @@ fig, ax = plt.subplots(
 diff = diff[diff.round(0) != 0].sort_values()
 colors = carriers.set_index("nice_name").color[diff.index]
 diff.plot(kind="barh", ax=ax, color=colors, lw=0, legend=False)
+for container in ax.containers:
+    if abs(container.datavalues).sum() > diff.abs().sum().sum() / 20:
+        ax.bar_label(
+            container,
+            label_type="center",
+            fontsize=7,
+            color="grey",
+            labels=diff.round(0).astype(int),
+        )
 
 ax.vlines(0, -0.5, len(diff) - 0.5, color="k", lw=0.5)
 ax.set_xlabel(f"Cost benefit [{unit}]")

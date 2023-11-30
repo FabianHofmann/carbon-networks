@@ -126,6 +126,10 @@ def sort_rows_by_relative_diff(df: pd.DataFrame, consider_sign=False):
     )
 
 
+def groupby_carrier_across_cc(n, c, nice_names) -> pd.Series:
+    return n.df(c).carrier.replace(" CC", "", regex=True).replace(n.carriers.nice_name)
+
+
 def get_ordered_handles_labels(ax, data, wrap=20):
     """
     Use this for stacked bar plots with negative values.

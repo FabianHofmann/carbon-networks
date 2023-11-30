@@ -16,6 +16,7 @@ from common import (
     mock_snakemake,
     sort_rows_by_diff,
     get_ordered_handles_labels,
+    groupby_carrier_across_cc,
 )
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
@@ -29,9 +30,6 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
 sns.set_theme(**snakemake.params["theme"])
 
 config = snakemake.config
-norm = 1e6
-wrapper = textwrap.TextWrapper(width=25)
-
 
 df = {}
 for path in snakemake.input.networks:
@@ -44,13 +42,27 @@ for path in snakemake.input.networks:
 
 
 df = pd.concat(df, axis=1)
+df = df.rename(lambda k: k.replace(" CC", ""), level=1).groupby(level=[0, 1, 2]).sum()
 
+# %%
 for kind, output in snakemake.output.items():
 
     kind_to_carrier = {"hydrogen": "H2", "carbon": "co2 stored", "electricity": "AC"}
     carrier = kind_to_carrier.get(kind, kind)
     label = config["labels"].get(kind, kind.title())
-    unit = "TWh" if kind not in ["carbon", "co2"] else "Mt"
+
+    if kind in ["carbon", "co2"]:
+        unit = "Mt/a"
+        norm = 1e6
+        fmt = ".0f"
+    elif kind in ["electricity", "hydrogen", "heat", "oil"]:
+        unit = "PWh"
+        norm = 1e9
+        fmt = ".2f"
+    else:
+        unit = "TWh"
+        norm = 1e6
+        fmt = ".0f"
 
     ds = df.xs(carrier, level=2)
     ds = ds.div(norm)
@@ -67,6 +79,18 @@ for kind, output in snakemake.output.items():
 
     colors = n.carriers.set_index("nice_name").color.to_dict()
     ds.T.plot.bar(color=colors, ax=ax, stacked=True, alpha=0.8, lw=0, rot=90)
+    total = ds[ds > 0].sum()
+    pad = ax.get_ylim()[1] * 0.01
+    for i, val in enumerate(total):
+        ax.text(
+            i,
+            val + pad,
+            f"{val:{fmt}}",
+            ha="center",
+            va="bottom",
+            fontsize=8,
+            color="grey",
+        )
 
     ax.axhline(0, color="k", lw=1)
     ax.set_ylabel(f"{label} [{unit}]")
@@ -74,7 +98,7 @@ for kind, output in snakemake.output.items():
     if snakemake.params.settings.get("title", True):
         ax.set_title(f"{label} Balance")
 
-    handles, labels = get_ordered_handles_labels(ax, ds, wrap=25)
+    handles, labels = get_ordered_handles_labels(ax, ds, wrap=22)
     ax.legend(
         handles,
         labels,

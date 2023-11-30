@@ -4,6 +4,7 @@ from pathlib import Path
 from common import (
     import_network,
     mock_snakemake,
+    groupby_carrier_across_cc,
 )
 import pandas as pd
 import seaborn as sns
@@ -44,12 +45,11 @@ for path in snakemake.input.networks:
     caps = caps["cc"] / caps.sum(1)
     share[key] = caps.rename_axis("Carrier")
 
-    def groupby(n, c: str, nice_names) -> pd.Series:
-        return (
-            n.df(c).carrier.replace(" CC", "", regex=True).replace(n.carriers.nice_name)
-        )
-
-    cf[key] = s.capacity_factor(groupby=groupby).Link[caps.index].rename_axis("Carrier")
+    cf[key] = (
+        s.capacity_factor(groupby=groupby_carrier_across_cc)
+        .Link[caps.index]
+        .rename_axis("Carrier")
+    )
 
 share = pd.concat(share, axis=1, names="Model")
 cf = pd.concat(cf, axis=1, names="Model")
@@ -79,6 +79,10 @@ plot = sns.scatterplot(
     # style="Carrier",
     palette=colors.to_dict(),
     legend="auto",
+    alpha=0.8,
+    marker="o",
+    sizes=(10, 100),
+    linewidth=0.3,
 )
 handles, labels = ax.get_legend_handles_labels()
 labels = [l + " %" if re.match(r"^\d+$", l) else l for l in labels]
@@ -89,7 +93,12 @@ labels.insert(pos, "")
 
 # Add the invisible handles and labels to the legend
 ax.legend(
-    handles, labels, loc="center left", bbox_to_anchor=(1.0, 0.5), frameon=False, ncol=1
+    handles,
+    labels,
+    loc="center left",
+    bbox_to_anchor=(1.0, 0.5),
+    frameon=False,
+    ncol=1,
 )
 ax.grid(axis="y", alpha=0.5)
 ax.set_xlabel("")

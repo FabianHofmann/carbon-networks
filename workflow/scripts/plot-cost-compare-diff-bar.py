@@ -3,6 +3,7 @@ import os
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+import math
 from common import (
     import_network,
     mock_snakemake,
@@ -58,6 +59,7 @@ grouped = sort_rows_by_diff(grouped)
 rename = {"Carbon Capt. at Point Sources": "Carbon Capture\nat Point Sources"}
 grouped = grouped.rename(rename, axis=0)
 colors = {rename.get(k, k): v for k, v in colors.items()}
+# %%
 
 fig, ax = plt.subplots(
     1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"
@@ -67,6 +69,15 @@ grouped = grouped[grouped.round(0).ne(0).any(axis=1)]
 grouped.T.plot(
     kind="bar", stacked=True, ax=ax, color=colors, lw=0, legend=True, alpha=0.8
 )
+for container in ax.containers:
+    if abs(container.datavalues).sum() > grouped.abs().sum().sum() / 20:
+        ax.bar_label(
+            container,
+            fmt=lambda x: int(round(x, 0)),
+            label_type="center",
+            fontsize=7,
+            color="grey",
+        )
 
 # ax.vlines(0, -0.5, len(diff) - 0.5, color="k", lw=0.5)
 

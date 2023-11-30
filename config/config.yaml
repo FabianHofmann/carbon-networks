@@ -129,8 +129,8 @@ difference-comparison:
 
 labels:
   baseline: "Baseline"
-  co2-only: "CO$_2$ Grid"
-  h2-only: "H$_2$ Grid"
+  co2-only: "CO$_2$-Grid"
+  h2-only: "H$_2$-Grid"
   full: "Hybrid"
 
   half-price/co2-only: "Cheap CO$_2$ Grid"
@@ -141,14 +141,14 @@ labels:
   net-negative-0.1: "NN 10%"
 
   net-negative-0.05/baseline: "Baseline (NN 5%)"
-  net-negative-0.05/co2-only: "CO$_2$ Grid (NN 5%)"
-  net-negative-0.05/h2-only: "H$_2$ Grid (NN 5%)"
+  net-negative-0.05/co2-only: "CO$_2$-Grid (NN 5%)"
+  net-negative-0.05/h2-only: "H$_2$-Grid (NN 5%)"
   net-negative-0.05/full: "Hybrid (NN 5%)"
 
-  net-negative-0.1/baseline: "Baseline (NN 10%)"
-  net-negative-0.1/co2-only: "CO$_2$ Grid (NN 10%)"
-  net-negative-0.1/h2-only: "H$_2$ Grid (NN 10%)"
-  net-negative-0.1/full: "Hybrid (NN 10%)"
+  net-negative-0.1/baseline: "Baseline (NN)"
+  net-negative-0.1/co2-only: "CO$_2$-Grid (NN)"
+  net-negative-0.1/h2-only: "H$_2$-Grid (NN)"
+  net-negative-0.1/full: "Hybrid (NN)"
 
 
   carbon: "Captured Carbon"
@@ -430,12 +430,14 @@ plotting:
     figsize: [6,6]
 
   energy_balance_bar:
+    title: False
     figsize: [4, 3.5]
 
   energy_balance_bar_wide:
     figsize: [10, 3.5]
 
   energy_balance_area:
+    title: False
     figsize: [8, 3.5]
 
 

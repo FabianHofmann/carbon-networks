@@ -107,12 +107,12 @@ rule main:
         # dedicated plots
         "results/comparison/single-technologies/figures/90_nodes/operation_map_dedicated.png",
     output:
-        # "results/figures.zip",
-        "results/.main",
+        "results/figures.zip",
+        # "results/.main",
     shell:
         """
-        touch {output}
-        # zip -u {output} {input}
+        # touch {output}
+        zip -u {output} {input}
         """
 
 

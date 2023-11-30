@@ -1,4 +1,5 @@
 import os
+import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -49,10 +50,11 @@ unit = "bn€/a"
 sort_by_color = (
     lambda df: df.assign(color=colors).sort_values(by="color").drop("color", axis=1)
 )
-grouped = sort_rows_by_diff(grouped).div(norm)[::-1]
+grouped = sort_rows_by_diff(grouped).div(norm)
 rename = {"Carbon Capt. at Point Sources": "Carbon Capture\nat Point Sources"}
 grouped = grouped.rename(rename, axis=0)
 colors = {rename.get(k, k): v for k, v in colors.items()}
+
 # %%
 fig, ax = plt.subplots(
     1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"
@@ -61,11 +63,43 @@ fig, ax = plt.subplots(
 defaults = dict(kind="bar", stacked=True, rot=90, lw=0.2, alpha=0.8)
 
 kwargs = {**defaults, **snakemake.params.settings.get("kwargs", {})}
+
 grouped.T.plot(ax=ax, color=colors, **kwargs)
+for container in ax.containers:
+    if container.datavalues.sum() > grouped.sum().sum() / 20:
+        ax.bar_label(
+            container,
+            label_type="center",
+            fmt=lambda x: int(round(x, 0)),
+            fontsize=7,
+            color="grey",
+        )
+
+if snakemake.wildcards.comparison == "default":
+    pad = 5
+    total = grouped.sum()
+    baseline = total["Baseline"]
+    decrease = 1 - total / baseline
+    for i, (val, y) in enumerate(zip(decrease, total)):
+        if val > 0:
+            ax.text(
+                i,
+                y + pad,
+                f"{-val:.1%}",
+                ha="center",
+                va="bottom",
+                fontsize=7,
+                color="gray",
+            )
+
 
 ax.axhline(0, color="k", lw=1)
 ax.set_ylabel(f"System cost [{unit}]")
-ax.grid(axis="y", alpha=0.5)
+
+# ax.grid(axis="y", alpha=0.5)
+
+plt.xticks(rotation=90)
+
 handles, labels = ax.get_legend_handles_labels()
 ax.legend().remove()
 ax.legend(

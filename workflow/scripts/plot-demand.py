@@ -18,7 +18,7 @@ n = import_network(
 )
 s = n.statistics
 
-
+# %%
 demand = s.withdrawal(groupby=s.groupers.get_carrier_and_bus_carrier).Load
 
 
@@ -26,17 +26,18 @@ rename_bus_carrier = {
     "solid biomass for industry": "biomass",
     "gas for industry": "gas",
     "low voltage": "electricity",
-    "services rural heat": "Low-Temperature\nHeat",
-    "urban central heat": "Low-Temperature\nHeat",
-    "residential rural heat": "Low-Temperature\nHeat",
-    "residential urban decentral heat": "Low-Temperature\nHeat",
-    "services urban decentral heat": "Low-Temperature\nHeat",
+    "heat": "low-t heat",
     "Li ion": "electricity",
+    "oil": "carbonaceous\nfuel",
 }
-
+rename_carrier = {
+    "Heat": "Residential and Services Heat",
+    "Electricity": "Residential and Services Elec.",
+}
 
 demand = (
     demand.rename(rename_bus_carrier, level=1)
+    .rename(rename_carrier, level=0)
     .rename(str.title, level=1)
     .rename(n.carriers.nice_name, level=0)
 )
@@ -47,17 +48,18 @@ carrier_order = demand.loc[
 
 df = demand.unstack().div(1e9)
 df = df[df.sum().sort_values().index].loc[carrier_order]
-df = df.rename({"Heat": "Low-T Heat", "Oil": "Carbonaceous\nFuel"}, axis=1)
 
-color = n.carriers.set_index("nice_name").color.to_dict()
+color = n.carriers.set_index("nice_name").rename(rename_carrier).color.to_dict()
 
 
 fig, ax = plt.subplots(figsize=(5, 4))
 df.T.plot.bar(stacked=True, color=color, xlabel="", ylabel="Energy demand [PWh]", ax=ax)
+pad = 0.01
+for i, val in enumerate(df.sum()):
+    ax.text(i, val + pad, f"{val:.2f}", ha="center", va="bottom", fontsize=8, color="k")
+
 ax.legend(title="", frameon=False, bbox_to_anchor=(0, 1.2), loc="upper left")
-
 sns.despine()
-
 
 fig.savefig(
     "/home/fabian/papers/co2-network/results/baseline/figures/90_nodes/total-demand-bar.png",

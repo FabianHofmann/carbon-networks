@@ -120,6 +120,8 @@ for kind, output in snakemake.output.items():
             .groupby(level=0)
             .mean()
         )
+        # TODO: add load weighting here
+
         if kind == "carbon":
             price = price - n.global_constraints.mu["CO2Limit"]
 
