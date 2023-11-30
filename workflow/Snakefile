@@ -190,7 +190,7 @@ rule plot_capacity_map:
     resources:
         mem_mb=20000,
     script:
-        "scripts/plot-capacity-map.py"
+        "scripts/plot_capacity_map.py"
 
 
 rule plot_capacity_country_bar:
@@ -204,7 +204,7 @@ rule plot_capacity_country_bar:
     resources:
         mem_mb=20000,
     script:
-        "scripts/plot-capacity-country-bar.py"
+        "scripts/plot_capacity_country_bar.py"
 
 
 rule plot_sequestration_map:
@@ -219,7 +219,7 @@ rule plot_sequestration_map:
     output:
         map="results/{run}/figures/{clusters}_nodes/sequestration_map.{ext}",
     script:
-        "scripts/plot-sequestration-map.py"
+        "scripts/plot_sequestration_map.py"
 
 
 rule plot_balance_map:
@@ -240,7 +240,7 @@ rule plot_balance_map:
             + config["constants"]["additional_kinds"]
         },
     script:
-        "scripts/plot-balance-map.py"
+        "scripts/plot_balance_map.py"
 
 
 rule plot_balance_map_single:
@@ -261,7 +261,7 @@ rule plot_balance_map_single:
             + config["constants"]["additional_kinds"]
         },
     script:
-        "scripts/plot-balance-map-single.py"
+        "scripts/plot_balance_map_single.py"
 
 
 rule plot_balance_area:
@@ -280,7 +280,7 @@ rule plot_balance_area:
     resources:
         mem_mb=20000,
     script:
-        "scripts/plot-energy-balance-area.py"
+        "scripts/plot_balance_area.py"
 
 
 rule plot_sankey_diagramm:
@@ -294,7 +294,7 @@ rule plot_sankey_diagramm:
     resources:
         mem_mb=20000,
     script:
-        "scripts/plot-sankey-diagramm.py"
+        "scripts/plot_sankey_diagramm.py"
 
 
 # COMPARISON
@@ -324,7 +324,7 @@ rule plot_objectice_heatmap:
     resources:
         mem_mb=20000,
     script:
-        "scripts/plot-objective-heatmap.py"
+        "scripts/plot_objective_heatmap.py"
 
 
 rule plot_cost_bar:
@@ -343,7 +343,7 @@ rule plot_cost_bar:
     resources:
         mem_mb=20000,
     script:
-        "scripts/plot-cost-bar.py"
+        "scripts/plot_cost_bar.py"
 
 
 rule plot_transmission_cost_bar:
@@ -363,7 +363,7 @@ rule plot_transmission_cost_bar:
         mem_mb=20000,
         threads=2,
     script:
-        "scripts/plot-transmission-cost-bar.py"
+        "scripts/plot_transmission_cost_bar.py"
 
 
 rule plot_balance_bar:
@@ -384,7 +384,7 @@ rule plot_balance_bar:
     resources:
         mem_mb=20000,
     script:
-        "scripts/plot-energy-balance-bar.py"
+        "scripts/plot_energy_balance_bar.py"
 
 
 rule plot_captureshare_line:
@@ -399,7 +399,7 @@ rule plot_captureshare_line:
     resources:
         mem_mb=20000,
     script:
-        "scripts/plot-captureshare-line.py"
+        "scripts/plot_captureshare_line.py"
 
 
 # DIFFERENCE
@@ -427,7 +427,7 @@ rule plot_cost_diff_bar:
     resources:
         mem_mb=20000,
     script:
-        "scripts/plot-cost-diff-bar.py"
+        "scripts/plot_cost_diff_bar.py"
 
 
 rule plot_cost_diff_map:
@@ -445,7 +445,7 @@ rule plot_cost_diff_map:
     resources:
         mem_mb=20000,
     script:
-        "scripts/plot-cost-diff-map.py"
+        "scripts/plot_cost_diff_map.py"
 
 
 # DIFFERENCE COMPARISON
@@ -475,7 +475,7 @@ rule plot_cost_compare_diff_bar:
     resources:
         mem_mb=20000,
     script:
-        "scripts/plot-cost-compare-diff-bar.py"
+        "scripts/plot_cost_compare_diff_bar.py"
 
 
 # DEDICATED PLOTS
@@ -502,7 +502,7 @@ rule plot_balance_map_dedicated:
     output:
         figure="results/comparison/single-technologies/figures/{clusters}_nodes/balance_map_dedicated.{ext}",
     script:
-        "scripts/plot-balance-map-dedicated.py"
+        "scripts/plot_balance_map_dedicated.py"
 
 
 # OTHER
