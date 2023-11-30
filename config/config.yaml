@@ -421,8 +421,12 @@ plotting:
     context: paper
     font: sans-serif
     rc:
-      patch.linewidth: 0.1
+      patch.linewidth: 0.2
       savefig.bbox: "tight"
+      ytick.left: True
+      ytick.major.width: 0.4
+      ytick.major.size: 2.5
+      xtick.major.pad: 0
 
   extent: [-12,  30,  35 ,  73]
 

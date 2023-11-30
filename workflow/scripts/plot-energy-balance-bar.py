@@ -7,8 +7,6 @@ Created on Wed Sep 20 18:11:52 2023
 """
 import os
 import pandas as pd
-import pypsa
-import textwrap
 import matplotlib.pyplot as plt
 import seaborn as sns
 from common import (
@@ -16,7 +14,6 @@ from common import (
     mock_snakemake,
     sort_rows_by_diff,
     get_ordered_handles_labels,
-    groupby_carrier_across_cc,
 )
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
@@ -44,9 +41,7 @@ for path in snakemake.input.networks:
 df = pd.concat(df, axis=1)
 df = df.rename(lambda k: k.replace(" CC", ""), level=1).groupby(level=[0, 1, 2]).sum()
 
-# %%
 for kind, output in snakemake.output.items():
-
     kind_to_carrier = {"hydrogen": "H2", "carbon": "co2 stored", "electricity": "AC"}
     carrier = kind_to_carrier.get(kind, kind)
     label = config["labels"].get(kind, kind.title())
@@ -78,7 +73,7 @@ for kind, output in snakemake.output.items():
     )
 
     colors = n.carriers.set_index("nice_name").color.to_dict()
-    ds.T.plot.bar(color=colors, ax=ax, stacked=True, alpha=0.8, lw=0, rot=90)
+    ds.T.plot.bar(color=colors, ax=ax, stacked=True, alpha=0.8, rot=90)
     total = ds[ds > 0].sum()
     pad = ax.get_ylim()[1] * 0.01
     for i, val in enumerate(total):
@@ -94,7 +89,7 @@ for kind, output in snakemake.output.items():
 
     ax.axhline(0, color="k", lw=1)
     ax.set_ylabel(f"{label} [{unit}]")
-    ax.grid(axis="y", alpha=0.5)
+    # ax.grid(axis="y", alpha=0.5)
     if snakemake.params.settings.get("title", True):
         ax.set_title(f"{label} Balance")
 

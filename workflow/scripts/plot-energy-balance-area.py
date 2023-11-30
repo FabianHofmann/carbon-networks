@@ -27,6 +27,7 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     )
 
 sns.set_theme(**snakemake.params["theme"])
+plt.rc("patch", linewidth=0)
 
 config = snakemake.config
 kind_to_carrier = {"hydrogen": "H2", "carbon": "co2 stored", "electricity": "AC"}

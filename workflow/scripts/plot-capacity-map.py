@@ -39,6 +39,7 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     )
 
 sns.set_theme(**snakemake.params["theme"])
+plt.rc("patch", linewidth=0.1)
 
 n = import_network(snakemake.input.network)
 offshore_regions = gpd.read_file(snakemake.input.offshore_regions).set_index("name")

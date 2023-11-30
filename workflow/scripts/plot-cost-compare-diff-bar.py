@@ -59,16 +59,20 @@ grouped = sort_rows_by_diff(grouped)
 rename = {"Carbon Capt. at Point Sources": "Carbon Capture\nat Point Sources"}
 grouped = grouped.rename(rename, axis=0)
 colors = {rename.get(k, k): v for k, v in colors.items()}
-# %%
+
+snakemake = mock_snakemake(
+    "plot_cost_compare_diff_bar", ext="png", clusters=90, comparison="baseline"
+)
+
+sns.set_theme(**snakemake.params["theme"])
+
 
 fig, ax = plt.subplots(
     1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"
 )
 
 grouped = grouped[grouped.round(0).ne(0).any(axis=1)]
-grouped.T.plot(
-    kind="bar", stacked=True, ax=ax, color=colors, lw=0, legend=True, alpha=0.8
-)
+grouped.T.plot(kind="bar", stacked=True, ax=ax, color=colors, legend=True, alpha=0.8)
 for container in ax.containers:
     if abs(container.datavalues).sum() > grouped.abs().sum().sum() / 20:
         ax.bar_label(
@@ -79,11 +83,10 @@ for container in ax.containers:
             color="grey",
         )
 
-# ax.vlines(0, -0.5, len(diff) - 0.5, color="k", lw=0.5)
-
+ax.axhline(0, color="black", lw=0.5)
 ax.set_ylabel(f"Net Investment Change [{unit}]")
 ax.set_xlabel("")
-ax.grid(axis="y", alpha=0.5)
+# ax.grid(axis="y", alpha=0.5)
 
 ax.legend().remove()
 ax.legend(
