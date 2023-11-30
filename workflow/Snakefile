@@ -60,7 +60,7 @@ rule main:
             clusters=config["scenario"]["clusters"],
             figure=[
                 "sequestration_map",
-                "capacity_country_bar",
+                "capacity_bar_country",
                 "sankey_diagramm",
             ],
         ),
@@ -78,7 +78,7 @@ rule main:
             figure=[
                 "cost_bar",
                 "captureshare_line",
-                "transmission_cost_bar",
+                "cost_bar_transmission",
             ],
         ),
         expand(
@@ -193,18 +193,18 @@ rule plot_capacity_map:
         "scripts/plot_capacity_map.py"
 
 
-rule plot_capacity_country_bar:
+rule plot_capacity_bar_country:
     params:
-        settings=config["plotting"]["capacity_country_bar"],
+        settings=config["plotting"]["capacity_bar_country"],
         theme=config["plotting"]["theme"],
     input:
         network="results/{run}/networks/{clusters}_nodes.nc",
     output:
-        map="results/{run}/figures/{clusters}_nodes/capacity_country_bar.{ext}",
+        map="results/{run}/figures/{clusters}_nodes/capacity_bar_country.{ext}",
     resources:
         mem_mb=20000,
     script:
-        "scripts/plot_capacity_country_bar.py"
+        "scripts/plot_capacity_bar_country.py"
 
 
 rule plot_sequestration_map:
@@ -346,24 +346,24 @@ rule plot_cost_bar:
         "scripts/plot_cost_bar.py"
 
 
-rule plot_transmission_cost_bar:
+rule plot_cost_bar_transmission:
     params:
         technology_groups=config["plotting"]["technology_groups"],
         technology_groups_colors=config["plotting"]["technology_group_colors"],
-        settings=lambda w: config["plotting"]["transmission_cost_bar_wide"]
+        settings=lambda w: config["plotting"]["cost_bar_transmission_wide"]
         if is_wide(w)
-        else config["plotting"]["transmission_cost_bar"],
+        else config["plotting"]["cost_bar_transmission"],
         theme=config["plotting"]["theme"],
         labels=config["labels"],
     input:
         networks=get_comparison_networks,
     output:
-        map="results/comparison/{comparison}/figures/{clusters}_nodes/transmission_cost_bar.{ext}",
+        map="results/comparison/{comparison}/figures/{clusters}_nodes/cost_bar_transmission.{ext}",
     resources:
         mem_mb=20000,
         threads=2,
     script:
-        "scripts/plot_transmission_cost_bar.py"
+        "scripts/plot_cost_bar_transmission.py"
 
 
 rule plot_balance_bar:
@@ -413,11 +413,11 @@ def get_difference_networks(w):
     )
 
 
-rule plot_cost_diff_bar:
+rule plot_cost_bar_diff:
     params:
         technology_groups=config["plotting"]["technology_groups"],
         technology_groups_colors=config["plotting"]["technology_group_colors"],
-        settings=config["plotting"]["cost_diff_bar"],
+        settings=config["plotting"]["cost_bar_diff"],
         theme=config["plotting"]["theme"],
         labels=config["labels"],
     input:
@@ -427,12 +427,12 @@ rule plot_cost_diff_bar:
     resources:
         mem_mb=20000,
     script:
-        "scripts/plot_cost_diff_bar.py"
+        "scripts/plot_cost_bar_diff.py"
 
 
-rule plot_cost_diff_map:
+rule plot_cost_map_diff:
     params:
-        settings=config["plotting"]["cost_diff_map"],
+        settings=config["plotting"]["cost_map_diff"],
         theme=config["plotting"]["theme"],
         labels=config["labels"],
     input:
@@ -445,7 +445,7 @@ rule plot_cost_diff_map:
     resources:
         mem_mb=20000,
     script:
-        "scripts/plot_cost_diff_map.py"
+        "scripts/plot_cost_map_diff.py"
 
 
 # DIFFERENCE COMPARISON
@@ -461,11 +461,11 @@ def get_difference_comparison_networks(w):
     )
 
 
-rule plot_cost_compare_diff_bar:
+rule plot_cost_bar_compare_diff:
     params:
         technology_groups=config["plotting"]["technology_groups"],
         technology_groups_colors=config["plotting"]["technology_group_colors"],
-        settings=config["plotting"]["cost_compare_diff_bar"],
+        settings=config["plotting"]["cost_bar_compare_diff"],
         theme=config["plotting"]["theme"],
         labels=config["labels"],
     input:
@@ -475,7 +475,7 @@ rule plot_cost_compare_diff_bar:
     resources:
         mem_mb=20000,
     script:
-        "scripts/plot_cost_compare_diff_bar.py"
+        "scripts/plot_cost_bar_compare_diff.py"
 
 
 # DEDICATED PLOTS

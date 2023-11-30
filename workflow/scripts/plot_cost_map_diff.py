@@ -16,7 +16,7 @@ region_alpha = 0.8
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
-        "plot_cost_diff_map",
+        "plot_cost_map_diff",
         ext="png",
         clusters=90,
         difference="emission-reduction-0.1-full",
@@ -27,7 +27,7 @@ plt.rc("patch", linewidth=0.1)
 
 config = snakemake.config
 labels = config["labels"]
-specs = config["plotting"]["cost_diff_map"]
+specs = config["plotting"]["cost_map_diff"]
 
 networks = [import_network(path) for path in snakemake.input.networks]
 regions = gpd.read_file(snakemake.input.regions).set_index("name")

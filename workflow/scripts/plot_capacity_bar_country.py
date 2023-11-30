@@ -18,7 +18,7 @@ region_alpha = 0.8
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
-        "plot_capacity_country_bar",
+        "plot_capacity_bar_country",
         run="baseline",
         clusters=90,
         ext="pdf",

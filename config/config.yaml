@@ -453,19 +453,19 @@ plotting:
   cost_bar_wide:
     figsize: [8, 3]
 
-  transmission_cost_bar:
+  cost_bar_transmission:
     figsize: [4, 2.5]
 
-  transmission_cost_bar_wide:
+  cost_bar_transmission_wide:
     figsize: [8, 2.5]
 
   objective_heatmap:
     figsize: [3.5, 3.]
 
-  cost_diff_bar:
+  cost_bar_diff:
     figsize: [4, 5]
 
-  cost_diff_map:
+  cost_map_diff:
     figsize: [10, 5]
     bus_scale: 0.5
     branch_scale: 20
@@ -475,10 +475,10 @@ plotting:
     branch_sizes:
       - 0.5
 
-  cost_compare_diff_bar:
+  cost_bar_compare_diff:
     figsize: [4, 4]
 
-  capacity_country_bar:
+  capacity_bar_country:
     figsize: [4, 5]
 
   capacity_map:

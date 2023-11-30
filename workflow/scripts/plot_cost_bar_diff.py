@@ -13,7 +13,7 @@ region_alpha = 0.8
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
-        "plot_cost_diff_bar", ext="png", clusters=90, difference="default"
+        "plot_cost_bar_diff", ext="png", clusters=90, difference="default"
     )
 
 sns.set_theme(**snakemake.params["theme"])

@@ -22,7 +22,7 @@ plotting:
     figsize: [7,5]
 
 
-  cost_diff_bar:
+  cost_bar_diff:
     figsize: [7, 5]
 
   # capacity_map:

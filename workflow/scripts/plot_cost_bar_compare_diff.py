@@ -16,7 +16,7 @@ region_alpha = 0.8
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
-        "plot_cost_compare_diff_bar", ext="png", clusters=90, comparison="baseline"
+        "plot_cost_bar_compare_diff", ext="png", clusters=90, comparison="baseline"
     )
 
 sns.set_theme(**snakemake.params["theme"])
@@ -61,7 +61,7 @@ grouped = grouped.rename(rename, axis=0)
 colors = {rename.get(k, k): v for k, v in colors.items()}
 
 snakemake = mock_snakemake(
-    "plot_cost_compare_diff_bar", ext="png", clusters=90, comparison="baseline"
+    "plot_cost_bar_compare_diff", ext="png", clusters=90, comparison="baseline"
 )
 
 sns.set_theme(**snakemake.params["theme"])
