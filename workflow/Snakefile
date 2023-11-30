@@ -41,14 +41,14 @@ rule main:
         ),
         expand(
             "results/{run}/figures/{clusters}_nodes/{figure}_{kind}.png",
-            figure=["operation_map", "operation_map_single"],
+            figure=["balance_map", "balance_map_single"],
             run=config["run"]["name"],
             clusters=config["scenario"]["clusters"],
             kind=config["constants"]["kinds"]
             + config["constants"]["additional_kinds"],
         ),
         expand(
-            "results/{run}/figures/{clusters}_nodes/energy_balance_area_{kind}.png",
+            "results/{run}/figures/{clusters}_nodes/balance_area_{kind}.png",
             run=config["run"]["name"],
             clusters=config["scenario"]["clusters"],
             kind=config["constants"]["kinds"]
@@ -59,14 +59,13 @@ rule main:
             run=config["run"]["name"],
             clusters=config["scenario"]["clusters"],
             figure=[
-                "operation_bar",
                 "sequestration_map",
                 "capacity_country_bar",
                 "sankey_diagramm",
             ],
         ),
         expand(
-            "results/comparison/{comparison}/figures/{clusters}_nodes/energy_balance_bar_{kind}.png",
+            "results/comparison/{comparison}/figures/{clusters}_nodes/balance_bar_{kind}.png",
             comparison=config["comparison"],
             clusters=config["scenario"]["clusters"],
             kind=config["constants"]["kinds"]
@@ -105,7 +104,7 @@ rule main:
             ext=["png", "pdf"],
         ),
         # dedicated plots
-        "results/comparison/single-technologies/figures/90_nodes/operation_map_dedicated.png",
+        "results/comparison/single-technologies/figures/90_nodes/balance_map_dedicated.png",
     output:
         "results/figures.zip",
         # "results/.main",
@@ -171,18 +170,6 @@ rule get_all_solved_networks:
         ),
 
 
-rule plot_operation_bar:
-    params:
-        settings=config["plotting"]["operation_bar"],
-        theme=config["plotting"]["theme"],
-    input:
-        network="results/{run}/networks/{clusters}_nodes.nc",
-    output:
-        map="results/{run}/figures/{clusters}_nodes/operation_bar.{ext}",
-    script:
-        "scripts/plot-operation-bar.py"
-
-
 rule plot_capacity_map:
     params:
         settings=config["plotting"]["capacity_map"],
@@ -235,9 +222,9 @@ rule plot_sequestration_map:
         "scripts/plot-sequestration-map.py"
 
 
-rule plot_operation_map:
+rule plot_balance_map:
     params:
-        settings=config["plotting"]["operation_map"],
+        settings=config["plotting"]["balance_map"],
         theme=config["plotting"]["theme"],
     input:
         network="results/{run}/networks/{clusters}_nodes.nc",
@@ -248,17 +235,17 @@ rule plot_operation_map:
         mem_mb=20000,
     output:
         **{
-            kind: f"results/{{run}}/figures/{{clusters}}_nodes/operation_map_{kind}.{{ext}}"
+            kind: f"results/{{run}}/figures/{{clusters}}_nodes/balance_map_{kind}.{{ext}}"
             for kind in config["constants"]["kinds"]
             + config["constants"]["additional_kinds"]
         },
     script:
-        "scripts/plot-operation-map.py"
+        "scripts/plot-balance-map.py"
 
 
-rule plot_operation_map_single:
+rule plot_balance_map_single:
     params:
-        settings=config["plotting"]["operation_map"],
+        settings=config["plotting"]["balance_map"],
         theme=config["plotting"]["theme"],
     input:
         network="results/{run}/networks/{clusters}_nodes.nc",
@@ -269,24 +256,24 @@ rule plot_operation_map_single:
         mem_mb=20000,
     output:
         **{
-            kind: f"results/{{run}}/figures/{{clusters}}_nodes/operation_map_single_{kind}.{{ext}}"
+            kind: f"results/{{run}}/figures/{{clusters}}_nodes/balance_map_single_{kind}.{{ext}}"
             for kind in config["constants"]["kinds"]
             + config["constants"]["additional_kinds"]
         },
     script:
-        "scripts/plot-operation-map-single.py"
+        "scripts/plot-balance-map-single.py"
 
 
-rule plot_energy_balance_area:
+rule plot_balance_area:
     params:
-        settings=config["plotting"]["energy_balance_area"],
+        settings=config["plotting"]["balance_area"],
         theme=config["plotting"]["theme"],
         label=lambda w: config["labels"][w.run],
     input:
         network="results/{run}/networks/{clusters}_nodes.nc",
     output:
         **{
-            kind: f"results/{{run}}/figures/{{clusters}}_nodes/energy_balance_area_{kind}.{{ext}}"
+            kind: f"results/{{run}}/figures/{{clusters}}_nodes/balance_area_{kind}.{{ext}}"
             for kind in config["constants"]["kinds"]
             + config["constants"]["additional_kinds"]
         },
@@ -379,18 +366,18 @@ rule plot_transmission_cost_bar:
         "scripts/plot-transmission-cost-bar.py"
 
 
-rule plot_energy_balance_bar:
+rule plot_balance_bar:
     params:
-        settings=lambda w: config["plotting"]["energy_balance_bar_wide"]
+        settings=lambda w: config["plotting"]["balance_bar_wide"]
         if is_wide(w)
-        else config["plotting"]["energy_balance_bar"],
+        else config["plotting"]["balance_bar"],
         theme=config["plotting"]["theme"],
         labels=config["labels"],
     input:
         networks=get_comparison_networks,
     output:
         **{
-            kind: f"results/comparison/{{comparison}}/figures/{{clusters}}_nodes/energy_balance_bar_{kind}.{{ext}}"
+            kind: f"results/comparison/{{comparison}}/figures/{{clusters}}_nodes/balance_bar_{kind}.{{ext}}"
             for kind in config["constants"]["kinds"]
             + config["constants"]["additional_kinds"]
         },
@@ -495,12 +482,12 @@ rule plot_cost_compare_diff_bar:
 # this section contains plots that are not fully parameterized and serve a dedicated purpose for the paper
 
 
-rule plot_operation_map_dedicated:
+rule plot_balance_map_dedicated:
     """
     Plot for dedicated comparison between carbon and hydrogen infrastucture.
     """
     params:
-        settings=config["plotting"]["operation_map"],
+        settings=config["plotting"]["balance_map"],
         theme=config["plotting"]["theme"],
     input:
         networks=[
@@ -513,9 +500,9 @@ rule plot_operation_map_dedicated:
     resources:
         mem_mb=20000,
     output:
-        figure="results/comparison/single-technologies/figures/{clusters}_nodes/operation_map_dedicated.{ext}",
+        figure="results/comparison/single-technologies/figures/{clusters}_nodes/balance_map_dedicated.{ext}",
     script:
-        "scripts/plot-operation-map-dedicated.py"
+        "scripts/plot-balance-map-dedicated.py"
 
 
 # OTHER

@@ -433,23 +433,19 @@ plotting:
   sequestration_map:
     figsize: [6,6]
 
-  energy_balance_bar:
+  balance_bar:
     title: False
     figsize: [4, 3.5]
 
-  energy_balance_bar_wide:
+  balance_bar_wide:
     figsize: [10, 3.5]
 
-  energy_balance_area:
+  balance_area:
     title: False
     figsize: [8, 3.5]
 
-
   captureshare_line:
     figsize: [4, 3]
-
-  operation_bar:
-    figsize: [10, 10]
 
   cost_bar:
     figsize: [4, 4]
@@ -586,7 +582,7 @@ plotting:
         - 1
         - 2
 
-  operation_map:
+  balance_map:
     title: False
     figsize:
       single: [5, 6]

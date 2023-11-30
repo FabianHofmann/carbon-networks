@@ -11,7 +11,7 @@ plotting:
   sequestration_map:
     figsize: [8,7]
 
-  energy_balance_bar:
+  balance_bar:
     figsize: [6, 6]
     title: false
 

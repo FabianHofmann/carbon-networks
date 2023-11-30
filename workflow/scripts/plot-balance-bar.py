@@ -18,7 +18,7 @@ from common import (
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
-        "plot_energy_balance_bar",
+        "plot_balance_bar",
         ext="png",
         clusters=90,
         comparison="default",
@@ -31,7 +31,7 @@ config = snakemake.config
 df = {}
 for path in snakemake.input.networks:
     n = import_network(path)
-    balance = n.statistics.energy_balance()
+    balance = n.statistics.balance()
 
     key = snakemake.params.labels[n.meta["wildcards"]["run"]]
 
