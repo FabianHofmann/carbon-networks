@@ -173,26 +173,16 @@ Focusing first on the Net-Zero scenario, we can highlight notable characteristic
     \label{fig:cost_bar}
 \end{figure}
 
-<<<<<<< HEAD
 Total annual system costs in the Baseline model are highest, totalling \label{}803 billion euros. The models with additional transport options for carbon and hydrogen achieve a more efficient system allocation and lower total system costs, with around \label{}2\% cost reductions (\label{}781 billion euros) for the \carbon{} network, and around \label{}4\% cost reductions for the \hydrogen{} network and the hybrid scenario (\label{}765 and \label{}764 billion euros, respectively).
 
-In all models, almost half of the system costs are spent on primary electricity production from wind and solar power (\label{}45\% or \label{}360 of \label{}799 billion euros total costs in the Baseline model), with another \label{}12\% (\label{}100 billion euros) spent on hydro, nuclear and biomass. Costs for energy transport networks for electricity, gas, hydrogen and carbon are below \label{}12\% (\label{}100 billion euros for the Baseline model), with the electricity grid making up more of the system costs than the other three networks combined in all models. System costs spent on carbonaceous fuel production (only considering investment costs, not the carbon, hydrogen and electricity inputs) are around \label{}3\% (\label{}25 billion euros) in each model, while electrolysis makes up around \label{}5\% (\label{}40 billion euros). Heat pump installations make up around \label{}8\% (60 billion euros).
+In all models, almost half of the system costs are spent on primary electricity production from wind and solar power (\label{}45\% or \label{}360 of \label{}799 billion euros total costs in the Baseline model), with another \label{}12\% (\label{}100 billion euros) spent on hydro, nuclear and biomass. Costs for energy transport networks for electricity, gas, hydrogen and carbon are below \label{}12\% (\label{}100 billion euros for the Baseline model), with the electricity grid making up more of the system costs than the other three networks combined in all models. Capital expenditures on carbonaceous fuel production are around \label{}3\% (\label{}25 billion euros) in each model, while electrolysis makes up around \label{}5\% (\label{}40 billion euros). Heat pump installations make up around \label{}8\% (60 billion euros).
 
 System cost differences between the models are driven by renewable energy resources (solar, wind, and bioenergy), the \carbon{} and \hydrogen{} networks, as well as carbon capture technologies (DAC and CC at point sources).
 In the Baseline model, the absence of dedicated carbon and hydrogen transport networks means that the system cannot use all the CC potentials of geographically fixed point sources, but instead needs to deploy more DAC in the locations where carbon is needed for CS and CU.
 Naturally, costs for the \carbon{} and \hydrogen{} networks differ between models as they are being deployed.
 Finally, we see that the Baseline model deploys more wind and solar than the network models. This is driven by two aspects of the electrolytic hydrogen production: First, the Baseline model deploys more methanation, leading to a larger endogenous hydrogen demand and thus more electricity production. And second, in the network models, the electrolysis is deployed at sites with better renewable resources, thus decreasing the total investments in solar and wind power necessary to run the electrolysis.
-=======
-% This section is much too long. It should only be descriptive with respect, not interpretive, what do we see in the graph? what are the biggest contributions and differences? it only introduces and doesn\t answer why.
 
-
-System cost differences between the models are driven by renewable energy resources, the \carbon{} and \hydrogen{} networks, as well as carbon capture technologies, i.e., DAC and CC at point sources.
-In the Baseline model, the absence of dedicated carbon and hydrogen transport networks requires the system to deploy carbon capture technologies in the regions with carbon sequestration sites, and distributed amounts of hydrogen production technologies in each region to meet local hydrogen demand for industry and fuel cells in heavy-duty land transport vehicles.
-For CU and its respective carbon and hydrogen demands, the system chooses the sites where on-site production of carbon, hydrogen as well as the inputs and by-product outputs (e.g., waste heat) of the synthesis process have the lowest cost (or highest value). This leads to renewable resources and storage solutions being deployed not necessarily in the regions with the best resources or lowest costs for clean electricity generation, but where they are situated closer to the endogenously defined locations of energy demand for electrolysers and DAC.
-Thus, total annual system costs in the Baseline model are highest, totalling \label{}803 billion euros (see Fig.~\ref{fig:objective_heatmap}). The models with additional transport options for carbon and hydrogen achieve a more efficient system allocation and lower total system costs, with around \label{}2\% cost reductions (\label{}781 billion euros) for the \carbon{} network, and around \label{}4\% cost reductions for the \hydrogen{} network and the hybrid scenario (\label{}765 and \label{}764 billion euros, respectively).
->>>>>>> 766e826 (follow up renaming;)
-
-\subsection*{Unlocking Point-Source Carbon Capture}
+\subsection*{Transport systems unlock point-source carbon capture}
 
 We can now closer examine the carbon capture activity when shifting from the \modBase{} to the other three network models.
 CU is always deployed in the regions where carbon, hydrogen as well as the inputs and by-product outputs (e.g., waste heat) of the synthesis processes have the lowest cost (or highest value). In the \modBase{}, this means combining the lowest-cost CC source (process emissions) with electrolysis in all regions, even if the renewable resources are poor and electrolysis costs are thus relatively high (e.g., non-coastal regions in Germany). In regions with medium-quality renewables (e.g., France and Scandinavia), CC biomass is also deployed -- and combined with medium-price electrolytic hydrogen -- to run additional CU. But the largest volumes of CU are deployed in the regions with the best renewables and lowest-cost electrolysis (e.g., Iberian Peninsula and British Isles), where all point-source CC potentials are exhausted and additionally necessary carbon is sourced from high-cost DAC.
@@ -201,15 +191,6 @@ In the \modH{}, the hydrogen network enables the system to transport low-cost hy
 CC technology on process emissions increases from \label{}90\% to \label{}100\%, on biomass in industry from \label{}65\% to \label{}100\%, and on facilities using gas in industry from \label{}40\% to \label{}75\%. CC on biomass CHPs increases slightly from \label{}45\% to \label{}50\% (see Fig.~\ref{fig:captureshare_line}).
 
 In the \modCO{}, a similar effect is achieved by transporting the carbon from unused low-cost biomass CC potentials to the sites where the lowest-cost hydrogen is produced.
-
-\begin{figure}[ht!]
-    \centering
-    \includegraphics[width=\linewidth]{comparison/default/figures/90_nodes/balance_bar_carbon.png}
-    \caption{Balance of captured carbon across all system setups. Positive values indicate carbon capture, negative values indicate carbon consumption.}
-    % A CO2 network unlock BECSS potentials, most biomass emissions are captured at point sources and transported to sequestration sites. cite~\cite{rosaAssessmentCarbonDioxide2021}
-    \label{fig:balance_captured_carbon}
-\end{figure}
-
 
 
 \begin{figure}[h]
@@ -220,7 +201,6 @@ In the \modCO{}, a similar effect is achieved by transporting the carbon from un
     \label{fig:captureshare_line}
 \end{figure}%
 
-<<<<<<< HEAD
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=\linewidth]{comparison/default/figures/90_nodes/balance_bar_carbon.png}
@@ -230,8 +210,6 @@ In the \modCO{}, a similar effect is achieved by transporting the carbon from un
 \end{figure}
 
 Now we turn to how carbon for CS is sourced by the different models. In the \modBase{}, because of the absence of a carbon network, all carbon that is sequestered (200 Mt, the same in each model) needs to be captured in the regions with access to an offshore CS site. The \modBase{} deploys all available low-cost point-source CC in these regions, and adds DAC in the sequestration locations with the lowest-cost electricity. In other words, the \modBase{} uses the atmosphere as a substitute carbon transport pathway, allowing \CO{} from inland point sources to escape into the atmosphere, and extracting it again from the atmosphere with DAC at the offshore locations.
-=======
->>>>>>> 766e826 (follow up renaming;)
 
 In the \modCO{}, the carbon network enables the system to capture carbon from low-cost point sources and transport it to the sequestration sites, trading off CC costs with transport costs. Together with the reduction of DAC for CU explained above, this contributes to the reduction of DAC from almost \label{}400 Mt in the Baseline model to \label{}150 Mt in the \modCO{} (see Fig.~\ref{fig:balance_captured_carbon}). The CC share on process emissions, gas and biomass use in industry, as well as biomass CHPs increase to 100\% (see Fig.~\ref{fig:captureshare_line}). The increased CC from point sources compared to the \modH{} thus derives from more CC on gas for industry and biomass CHPs.
 
@@ -242,7 +220,7 @@ The creation of a \hydrogen{} network enables the cost-effective delivery of hyd
 This highlights how both the implementation of a \carbon{} or a \hydrogen{} network unlocks low-cost carbon capture potentials at geographically fixed point sources across the continent.
 
 
-\subsection*{Superiority of \hydrogen{} network}
+\subsection*{\hydrogen{}--Network enables decentral carbon utilization}
 
 % \begin{figure*}[ht!]
 %     \centering
@@ -292,7 +270,7 @@ And finally, the \carbongrid{} model spends 7 billion euros more on gas boilers,
 The costs of the respective networks, on the other hand, are almost equal: the \carbongrid{} model spends 8 billion euros on the \carbon{} network, while the \hydrogengrid{} model even spends 10 billion euros on the \hydrogen{} network. These factors add up to account for 14 billion euros of the difference of 20 billion euros in system costs between the two scenarios (785 billion euros for the \carbongrid{} and 765 billion euros for the \hydrogengrid{} model, see Fig.~\ref{fig:objective_heatmap}).
 
 
-\subsection*{Flexibility gains through hybrid configuration}
+\subsection*{Hybrid configuration provides flexibilities}
 
 \begin{figure*}[ht!]
     \centering
@@ -330,7 +308,7 @@ Despite only small decrease in cost in comparison to the \hydrogengrid{} model, 
 
 
 
-\subsection*{}
+\subsection*{Net-negativity amplifies DAC and Bioenergy with CU and CS}
 
 \begin{figure}[htb!]
     \centering
@@ -339,46 +317,22 @@ Despite only small decrease in cost in comparison to the \hydrogengrid{} model, 
     \label{fig:net-negative_cost_bar}
 \end{figure}
 
-In transitioning from a net zero to a net emissions reduction target, significant investment shifts occur in the \hydrogengrid{} and Hybrid models, as depicted in Fig.~\ref{fig:net-negative_cost_bar}, which shows the net investment changes per technology group. This scenario imposes a net carbon removal of 460 Mt/a, with both models incurring a similar net cost increase - 95 billion €/a for \hydrogengrid{} and 96 billion €/a for Hybrid, balancing the earlier cost advantage of the Hybrid model. Both models invest relatively evenly in additional DAC, wind and heat pump systems, with DAC accounting for more than a third of the additional system costs.  The \hydrogengrid{} model invests relatively less in new solar installations and more in new carbon capture technologies and bioenergy. Both models show a decrease in gas infrastructure due to the tighter net carbon emission target.
 
-For both models strategies for additional carbon removal focusses on DAC at coastal regions where sequestration is possible. The new DAC installations increase the demand in local heat supply provided by heat pumps and power supply from the vicinity provided by new solar and wind installations.
-At the same time, the reduction in fossil gas imports due to a stricter limitations of fossil emissions is compensated by additional heat supply from heat pumps, power supply from additional solar and wind installations as well as biogas-to-gas installations across all Central and Eastern European countries. For both scenarios, the latter provides additional carbon capture potential.
-
-The difference in absolute investment changes between the two models, regionally displayed in Fig.~\ref{fig:net-negative_cost_map}, is linked to the availability to capture, transport and store the carbon released from the bio-energetic input. While the \hydrogengrid{} model has to rely solely on large, centralized DAC facilities to remove the additional carbon, the Hybrid model has the flexibility to capture all bio-energy related carbon input. With the substitution
-
-
-\begin{figure*}[htb!]
-    \centering
-    \includegraphics[width=\linewidth]{difference/net-negative-0.1-h2-only-full/figures/90_nodes/cost_map.png}
-    \caption[short]{Net difference in investments between the \hydrogengrid{} model and the Hybrid model for the Net-Negative scenario.}
-    \label{fig:net-negative_cost_map}
-\end{figure*}
+In transitioning from a net zero to a net emissions reduction target, a continuation of investment trends are perceived. Fig.~\ref{fig:net-negative_cost_bar} shows the net investment changes per technology group for the \hydrogengrid{} and Hybrid. The scenario imposes a net carbon removal of 460 Mt/a, with both models incurring a similar net cost increase - 95 billion €/a for \hydrogengrid{} and 96 billion €/a for Hybrid, balancing the earlier cost advantage of the Hybrid model. Both models invest relatively evenly in additional DAC, wind and heat pump systems, with DAC accounting for more than a third of the additional system costs. These remove carbon directly at sequestration sites at the coast, in particular in Portugal and UK, together with heat and power from new heat pumps at site and new solar and wind installation in the vicinity.
+More heat pumps, solar and wind installations across all Central and Eastern European countries as well as biogas-to-gas installations compensate for the reduction of fossil gas based heating and powering. Reduced usage of gas in general lower the investments in gas infrastructure in both models.
+Fundamental difference in investment strategies occur in the carbon capture sector: In contrast to the \hydrogengrid{} model, the Hybrid model continues the strategy of sequestering carbon captured and transported from bio-energetic inputs, expanding the carbon transport routes from Central and Eastern Europe to the near shores. At the same time, carbonaceous fuel production in Central Europe partially moves to Spain and UK, where it uses carbon from new DAC facilities without the installation of a \carbon{} network. At the same time, solar based electrolysis in France, Nothern Italy and Switzerland expands requiring more solar capacities but less hydrogen imports from the Iberian Peninsula.
+The \hydrogengrid{} model on the other hand, expands decentralized CU systems from the Net-Zero scenario, which are now increasingly supplied with carbon from biogas-to-gas facilities, showing up in both "Bioenergy" and "Carbon Capture at Point Sources" cost-contributions. The centralized DAC facilities at sequestration sites are more expanded than in the Hybrid model and are requiring additional heat from biomass CHPs.
 
 
-% similar changes in both models:
-% - DAC at coast in combination with sequestration and heat supply from additional heat pumps and power supply from additional renewable in the vicinity
-% - less gas boilers import from LNG terminals, more heat supply from heat pumps (Gas effect)
-% - additional distributed power installation across all countries enable more distributed electrolysis and compensate for the loss of gas boilers which are replaced by heat pumps
-% - more biogas and biogas to gas in central and eastern europe with additional co2 capture to compensate for less fossil gas imports (Gas effect)
+These findings highlight the continuation of trends of the two systemic approaches, which are interchangable at marginal cost-difference: While a stand-alone \hydrogen{} grid combines well with highly centralized DAC and decentralized CU with bioenergy as primary carbon source, the complementation with a \carbon{} grid promotes combining DAC and CU where good renewable resources are and collecting, transporting and sequestering carbon from decentral bioenergetic processes.
 
-% -> main slacks to remove carbon from the atmosphere: DAC together with additional power and heat supply
-% -> replace fossil gas based heating with heat pumps and biogas to gas with additional carbon capture
-
-individual strategy hydrogengrid model:
-- strong focus on centralized DAC, particularly in UK and Greece which require additional heating and power from biomass CHPs
-- no change in decentralized FT fuel production in central europe
-- decentral carbon sources are now more provided by biogas to gas
-
--> concentrated DAC with additional biomass CHPs at sequestration sites, more BECCU based on biogas to gas
-
-
-individual hybrid model:
-- decreased hydrogen production and export from Iberian Peninsula to central europe and more synfuel production in Iberian Peninsula
-- less FT fuel production in central europe (BE), decentral carbon is instead transported to close by sequestration sites
-- additional carbon captured from biogas to gas is transported to sequestration sites in the baltic sea and Greek sea
-
--> more investment in carbon network, and CC at point sources, less in hydrogen network and decentralized CU, increased BECCS from biogas to gas
-
+% The difference in absolute investment changes between the two models, regionally displayed in Fig.~\ref{fig:net-negative_cost_map}.
+% \begin{figure*}[htb!]
+%     \centering
+%     \includegraphics[width=\linewidth]{difference/net-negative-0.1-h2-only-full/figures/90_nodes/cost_map.png}
+%     \caption[short]{Net difference in investments between the \hydrogengrid{} model and the Hybrid model for the Net-Negative scenario.}
+%     \label{fig:net-negative_cost_map}
+% \end{figure*}
 
 
 \section{Conclusion}
