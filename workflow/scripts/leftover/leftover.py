@@ -187,7 +187,7 @@ def create_dummy_network(n):
 #             clusters=config["scenario"]["clusters"],
 #         ),
 #         expand(
-#             "results/comparison-{comparison}/gifs/{clusters}_nodes/operation_map_{kind}.gif",
+#             "results/comparison-{comparison}/gifs/{clusters}_nodes/balance_map_{kind}.gif",
 #             kind=config["constants"]["kinds"],
 #             clusters=config["scenario"]["clusters"],
 #         ),

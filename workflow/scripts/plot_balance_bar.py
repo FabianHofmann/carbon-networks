@@ -12,7 +12,7 @@ import seaborn as sns
 from common import (
     import_network,
     mock_snakemake,
-    sort_rows_by_diff,
+    sort_rows_by_relative_diff,
     get_ordered_handles_labels,
 )
 
@@ -20,8 +20,8 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_balance_bar",
         ext="png",
-        clusters=90,
-        comparison="default",
+        clusters=40,
+        comparison="emission-reduction-full",
     )
 
 sns.set_theme(**snakemake.params["theme"])
@@ -31,14 +31,14 @@ config = snakemake.config
 df = {}
 for path in snakemake.input.networks:
     n = import_network(path)
-    balance = n.statistics.balance()
+    balance = n.statistics.energy_balance()
 
     key = snakemake.params.labels[n.meta["wildcards"]["run"]]
 
     df[key] = balance
 
 
-df = pd.concat(df, axis=1)
+df = pd.concat(df, axis=1).fillna(0)
 df = df.rename(lambda k: k.replace(" CC", ""), level=1).groupby(level=[0, 1, 2]).sum()
 
 for kind, output in snakemake.output.items():
@@ -60,13 +60,15 @@ for kind, output in snakemake.output.items():
         fmt = ".0f"
 
     ds = df.xs(carrier, level=2)
-    ds = ds.div(norm)
-    ds = ds[ds.round(2) != 0].droplevel(0).dropna(how="all").fillna(0)
+    ds = ds.div(norm).droplevel(0)
+    reduced = ds.where(ds.round(2) != 0).dropna(how="all").fillna(0)
+    if not reduced.empty:
+        ds = reduced
     ds = ds.groupby(level=0).sum()
     ds = ds.sort_values(ds.columns[0], ascending=False)
     if kind == "co2":
         ds.drop("CO$_2$", inplace=True, errors="ignore")
-    ds = sort_rows_by_diff(ds)
+    ds = sort_rows_by_relative_diff(ds)
 
     fig, ax = plt.subplots(
         1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"

@@ -18,47 +18,16 @@ full:
     H2_network: true
     co2network: true
 
-
 half-price/co2-only:
   sector:
     co2network: true
     co2_network_cost_factor: 0.5
-
 
 half-price/full:
   sector:
     H2_network: true
     co2network: true
     co2_network_cost_factor: 0.5
-
-
-net-negative-0.05/baseline:
-  sector:
-    co2_sequestration_potential: 430.7056
-  co2_budget:
-    2050: -0.05
-
-net-negative-0.05/co2-only:
-  sector:
-    co2network: true
-    co2_sequestration_potential: 430.7056
-  co2_budget:
-    2050: -0.05
-
-net-negative-0.05/h2-only:
-  sector:
-    H2_network: true
-    co2_sequestration_potential: 430.7056
-  co2_budget:
-    2050: -0.05
-
-net-negative-0.05/full:
-  sector:
-    H2_network: true
-    co2network: true
-    co2_sequestration_potential: 430.7056
-  co2_budget:
-    2050: -0.05
 
 net-negative-0.1/baseline:
   sector:
@@ -85,5 +54,103 @@ net-negative-0.1/full:
     H2_network: true
     co2network: true
     co2_sequestration_potential: 661.4112
+  co2_budget:
+    2050: -0.1
+
+
+# with fuel cell land transport eq. old setup
+
+w-fc/baseline:
+  sector:
+    land_transport_fuel_cell_share:
+      2050: 0.15
+    land_transport_electric_share:
+      2050: 0.85
+
+w-fc/co2-only:
+  sector:
+    co2network: true
+    land_transport_fuel_cell_share:
+      2050: 0.15
+    land_transport_electric_share:
+      2050: 0.85
+
+w-fc/h2-only:
+  sector:
+    H2_network: true
+    land_transport_fuel_cell_share:
+      2050: 0.15
+    land_transport_electric_share:
+      2050: 0.85
+
+w-fc/full:
+  sector:
+    H2_network: true
+    co2network: true
+    land_transport_fuel_cell_share:
+      2050: 0.15
+    land_transport_electric_share:
+      2050: 0.85
+
+w-fc/half-price/co2-only:
+  sector:
+    co2network: true
+    co2_network_cost_factor: 0.5
+    land_transport_fuel_cell_share:
+      2050: 0.15
+    land_transport_electric_share:
+      2050: 0.85
+
+w-fc/half-price/full:
+  sector:
+    H2_network: true
+    co2network: true
+    co2_network_cost_factor: 0.5
+    land_transport_fuel_cell_share:
+      2050: 0.15
+    land_transport_electric_share:
+      2050: 0.85
+
+w-fc/net-negative-0.1/baseline:
+  sector:
+    co2_sequestration_potential: 661.4112
+    land_transport_fuel_cell_share:
+      2050: 0.15
+    land_transport_electric_share:
+      2050: 0.85
+  co2_budget:
+    2050: -0.1
+
+w-fc/net-negative-0.1/co2-only:
+  sector:
+    co2network: true
+    co2_sequestration_potential: 661.4112
+    land_transport_fuel_cell_share:
+      2050: 0.15
+    land_transport_electric_share:
+      2050: 0.85
+  co2_budget:
+    2050: -0.1
+
+w-fc/net-negative-0.1/h2-only:
+  sector:
+    H2_network: true
+    co2_sequestration_potential: 661.4112
+    land_transport_fuel_cell_share:
+      2050: 0.15
+    land_transport_electric_share:
+      2050: 0.85
+  co2_budget:
+    2050: -0.1
+
+w-fc/net-negative-0.1/full:
+  sector:
+    H2_network: true
+    co2network: true
+    co2_sequestration_potential: 661.4112
+    land_transport_fuel_cell_share:
+      2050: 0.15
+    land_transport_electric_share:
+      2050: 0.85
   co2_budget:
     2050: -0.1

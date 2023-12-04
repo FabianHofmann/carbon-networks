@@ -7,16 +7,17 @@ import math
 from common import (
     import_network,
     mock_snakemake,
-    sort_rows_by_diff,
+    sort_rows_by_relative_diff,
     get_ordered_handles_labels,
 )
 
-alpha = 1
-region_alpha = 0.8
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
-        "plot_cost_bar_compare_diff", ext="png", clusters=90, comparison="baseline"
+        "plot_cost_bar_compare_diff",
+        ext="png",
+        clusters=90,
+        comparison="emission-reduction-0.1",
     )
 
 sns.set_theme(**snakemake.params["theme"])
@@ -55,24 +56,18 @@ groups = {v: groups[k] for k, v in n.carriers.nice_name.drop("").items()}
 grouped = diff.mul(-1).groupby(groups).sum().div(norm)
 # grouped = grouped[grouped.max(axis=1) > 5e4]
 colors = snakemake.config["plotting"]["technology_group_colors"]
-grouped = sort_rows_by_diff(grouped)
+grouped = sort_rows_by_relative_diff(grouped)
 rename = {"Carbon Capt. at Point Sources": "Carbon Capture\nat Point Sources"}
 grouped = grouped.rename(rename, axis=0)
 colors = {rename.get(k, k): v for k, v in colors.items()}
-
-snakemake = mock_snakemake(
-    "plot_cost_bar_compare_diff", ext="png", clusters=90, comparison="baseline"
-)
-
-sns.set_theme(**snakemake.params["theme"])
-
+# %%
 
 fig, ax = plt.subplots(
     1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"
 )
 
 grouped = grouped[grouped.round(0).ne(0).any(axis=1)]
-grouped.T.plot(kind="bar", stacked=True, ax=ax, color=colors, legend=True, alpha=0.8)
+grouped.T.plot(kind="bar", stacked=True, ax=ax, color=colors, legend=True, alpha=0.9)
 for container in ax.containers:
     if abs(container.datavalues).sum() > grouped.abs().sum().sum() / 20:
         ax.bar_label(
@@ -82,6 +77,13 @@ for container in ax.containers:
             fontsize=7,
             color="grey",
         )
+pad = ax.get_ylim()[1] * 0.02
+bbox = {"boxstyle": "circle", "facecolor": "none", "pad": 0.2, "edgecolor": "k"}
+for i in range(len(grouped.columns)):
+    col = grouped.iloc[:, i]
+    val = col.sum().round(0).astype(int)
+    y = col[col.ge(0)].sum() + pad
+    ax.text(i, y, f"{val:g}", ha="center", va="bottom", fontsize=7, bbox=bbox)
 
 ax.axhline(0, color="black", lw=0.5)
 ax.set_ylabel(f"Net Investment Change [{unit}]")

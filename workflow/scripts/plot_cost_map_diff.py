@@ -14,6 +14,7 @@ from common import (
 alpha = 1
 region_alpha = 0.8
 
+
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_cost_map_diff",
@@ -28,6 +29,8 @@ plt.rc("patch", linewidth=0.1)
 config = snakemake.config
 labels = config["labels"]
 specs = config["plotting"]["cost_map_diff"]
+cutoff_bus = specs["cutoff_bus"]
+cutoff_branch = specs["cutoff_branch"]
 
 networks = [import_network(path) for path in snakemake.input.networks]
 regions = gpd.read_file(snakemake.input.regions).set_index("name")
@@ -59,26 +62,28 @@ df_bus = pd.concat(df_bus, axis=1).fillna(0)
 df_branch = pd.concat(df_branch, axis=1).fillna(0)
 carriers = pd.concat(carriers).drop_duplicates()
 colors = carriers.set_index("nice_name").color
-# color_branch = color_branch.map(colors)
 
-norm = 1e9
-unit = "bn€/a"
+norm_bus = 1e9
+unit_bus = "bn€/a"
+norm_branch = 1e6
+unit_branch = "M€/a"
 
-diff_bus = (df_bus[df_bus.columns[0]] - df_bus[df_bus.columns[1]]).div(norm)
+diff_bus = df_bus.diff(axis=1)[df_bus.columns[1]]
+diff_bus = diff_bus[diff_bus.abs() > cutoff_bus]
+diff_bus = diff_bus.div(norm_bus)
 diff_bus = diff_bus.rename(n.buses.location, level=1)
-diff_bus = diff_bus[diff_bus.round(0) != 0].droplevel(0)
+diff_bus = diff_bus.droplevel(0)
 drop = ["H$_2$ Pipeline", "CO$_2$ Pipeline", "AC", "Heat Waste", "Gas Pipeline"]
-diff_bus = diff_bus.drop(drop, level=1, errors="ignore")
+diff_bus = diff_bus.drop(drop, level="carrier", errors="ignore")
+
 pos_bus = diff_bus[diff_bus > 0].abs()
 neg_bus = diff_bus[diff_bus < 0].abs()
 
-diff_branch = (df_branch[df_branch.columns[0]] - df_branch[df_branch.columns[1]]).div(
-    norm
-)
-diff_bus = diff_bus[diff_bus.round(0) != 0]
+diff_branch = df_branch.diff(axis=1)[df_branch.columns[1]]
+diff_branch = diff_branch[diff_branch.abs() > cutoff_branch].div(norm_branch)
 pos_branch = diff_branch[diff_branch > 0].abs()
 neg_branch = diff_branch[diff_branch < 0].abs()
-# %%
+
 fig, axes = plt.subplots(
     1,
     2,
@@ -91,15 +96,19 @@ branch_scale = float(specs["branch_scale"])
 alpha = 1
 
 for ax, ds_bus, ds_branch, col, n in zip(
-    axes.flat, [pos_bus, neg_bus], [pos_branch, neg_branch], df_bus.columns, networks
+    axes.flat, [neg_bus, pos_bus], [neg_branch, pos_branch], df_bus.columns, networks
 ):
     links = n.links.index.intersection(ds_branch.Link.index)
     link_widths = ds_branch.Link[links]
     link_colors = n.links.carrier[links].map(n.carriers.color)
 
-    lines = n.lines.index.intersection(ds_branch.Line.index)
-    line_widths = ds_branch.Line[lines]
-    line_colors = n.lines.carrier[lines].map(n.carriers.color)
+    if "Line" in ds_branch.index.unique(0):
+        lines = n.lines.index.intersection(ds_branch.Line.index)
+        line_widths = ds_branch.Line[lines]
+        line_colors = n.lines.carrier[lines].map(n.carriers.color)
+    else:
+        line_widths = pd.Series()
+        line_colors = pd.Series()
 
     n.plot(
         bus_sizes=ds_bus * bus_scale,
@@ -134,19 +143,23 @@ for ax, ds_bus, ds_branch, col, n in zip(
         add_legend_circles(
             ax,
             [s * bus_scale for s in legend_bus_sizes],
-            [f"{s} {unit}" for s in legend_bus_sizes],
-            legend_kw={"bbox_to_anchor": (0, 1), "loc": "upper left", "frameon": False},
+            [f"{s} {unit_bus}" for s in legend_bus_sizes],
+            legend_kw={
+                "bbox_to_anchor": (0, 0.95),
+                "loc": "upper left",
+                "frameon": True,
+            },
         )
     legend_branch_sizes = specs["branch_sizes"]
     if legend_branch_sizes is not None:
         add_legend_lines(
             ax,
             [s * branch_scale for s in legend_branch_sizes],
-            [f"{s} {unit}" for s in specs["branch_sizes"]],
+            [f"{s} {unit_branch}" for s in specs["branch_sizes"]],
             legend_kw={
-                "bbox_to_anchor": (0, 0.8),
+                "bbox_to_anchor": (0, 0.82),
                 "loc": "upper left",
-                "frameon": False,
+                "frameon": True,
             },
         )
 
@@ -163,8 +176,8 @@ add_legend_patches(
         "bbox_to_anchor": (0.4, 0),
         "ncol": 4,
         "loc": "upper center",
-        "frameon": False,
-        "title": "Production",
+        "frameon": True,
+        "title": "Production, Storage & Conversion",
     },
 )
 
@@ -179,7 +192,7 @@ add_legend_patches(
         "bbox_to_anchor": (0.85, 0),
         "ncol": 1,
         "loc": "upper center",
-        "frameon": False,
+        "frameon": True,
         "title": "Transmission",
     },
 )

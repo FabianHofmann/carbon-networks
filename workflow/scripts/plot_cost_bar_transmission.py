@@ -3,10 +3,11 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 from common import (
+    get_ordered_handles_labels,
     get_transmission_links,
     import_network,
     mock_snakemake,
-    sort_rows_by_diff,
+    sort_rows_by_relative_diff,
 )
 
 alpha = 1
@@ -16,7 +17,7 @@ rename = {"DC": "DC Line", "AC": "AC Line", "Gas Pipeline New": "Gas Pipeline"}
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
-        "plot_transmission_bar",
+        "plot_cost_bar_transmission",
         ext="png",
         clusters=90,
         comparison="emission-reduction-full",
@@ -62,7 +63,7 @@ colors = colors.rename(lambda x: x + "s", axis=0)
 
 
 norm = 1e9
-data = sort_rows_by_diff(data).div(norm)
+data = sort_rows_by_relative_diff(data).div(norm)
 
 fig, ax = plt.subplots(
     1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"
@@ -72,17 +73,24 @@ fig, ax = plt.subplots(
 defaults = dict(kind="bar", stacked=True, lw=0, rot=0, alpha=0.8)
 
 kwargs = {**defaults, **snakemake.params.settings.get("kwargs", {})}
-data[::-1].T.plot(ax=ax, color=colors.to_dict(), **kwargs)
+data.T.plot(ax=ax, color=colors.to_dict(), **kwargs)
+for container in ax.containers:
+    ax.bar_label(
+        container,
+        label_type="center",
+        fmt=lambda x: int(round(x, 0)),
+        fontsize=7,
+        color="grey",
+    )
 
 ax.axhline(0, color="k", lw=1)
 ax.set_ylabel("Transmission Cost [bn€/a]")
 ax.set_xlabel(data.columns.name)
-ax.grid(axis="y", alpha=0.5)
-handles, labels = ax.get_legend_handles_labels()
-ax.legend().remove()
+
+handles, labels = get_ordered_handles_labels(ax, data, wrap=22)
 ax.legend(
-    handles[::-1],
-    labels[::-1],
+    handles,
+    labels,
     loc="center left",
     bbox_to_anchor=(1, 0.5),
     frameon=False,

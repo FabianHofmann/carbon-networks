@@ -12,11 +12,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 from pypsa.plot import add_legend_circles, add_legend_patches
+from pypsa.statistics import get_transmission_carriers
 from common import (
     import_network,
     mock_snakemake,
-    get_transmission_links,
-    get_carrier_transport,
 )
 import geopandas as gpd
 
@@ -25,9 +24,9 @@ warnings.filterwarnings("ignore", category=UserWarning)
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
-        "plot_operation_map_single",
+        "plot_balance_map_single",
         run="co2-only",
-        clusters=90,
+        clusters=40,
         ext="png",
     )
 
@@ -42,20 +41,12 @@ config = snakemake.config
 alpha = 1
 region_alpha = 0.6
 
-is_transport = get_transmission_links(n)
-transport_carriers = [
-    *n.links.carrier[is_transport].unique(),
-    *n.lines.carrier.unique(),
-]
-transport_carriers = n.carriers.nice_name[transport_carriers]
-
 s = n.statistics
+colors = n.carriers.set_index("nice_name").color
 
 run = snakemake.wildcards.run
 
 for kind, output in snakemake.output.items():
-    # if kind != "hydrogen":
-    # continue
 
     figsize = snakemake.params.settings["figsize"]["single"]
     fig, ax = plt.subplots(
@@ -68,12 +59,19 @@ for kind, output in snakemake.output.items():
 
     grouper = s.groupers.get_bus_and_carrier
     df = s.dispatch(bus_carrier=carriers, groupby=grouper)
-    df = df.drop(transport_carriers, level=2, errors="ignore")
+    _ = get_transmission_carriers(n, bus_carrier=carriers)
+    transmission_carriers = _.set_levels(
+        n.carriers.nice_name[_.get_level_values(1)], level=1
+    )
+    sub = df.loc[["Link"]].drop(
+        transmission_carriers.unique(1), level=2, errors="ignore"
+    )
+    df = pd.concat([df.drop("Link"), sub])
     df = df.rename(lambda x: x.replace(" CC", ""), level=2)
     df = df.groupby(level=[1, 2]).sum().rename(n.buses.location, level=0)
     df = df[df.abs() > 1]
 
-    specs = config["plotting"]["operation_map"][kind]
+    specs = config["plotting"]["balance_map"][kind]
     bus_scale = float(specs["bus_scale"])
     branch_scale = float(specs["branch_scale"])
     flow_scale = float(specs["flow_scale"])
@@ -81,30 +79,31 @@ for kind, output in snakemake.output.items():
     unit = specs["unit"]
 
     bus_sizes = df.sort_index()
-    branch_widths = get_carrier_transport(n, kind, config, which)
-    flow = pd.concat(branch_widths)
-    branch_carriers = get_carrier_transport(n, kind, config, "carrier")
-    branch_colors = {
-        c: (n.carriers.color.get(vals[0], "lightgrey") if len(vals) else "lightgrey")
-        for c, vals in branch_carriers.items()
-    }
+    flow = s.transmission(groupby=False, bus_carrier=carriers)
+    branch_colors = {c: colors[carrier] for c, carrier in transmission_carriers}
+    fallback = pd.Series()
 
     n.plot(
         bus_sizes=bus_sizes * bus_scale,
-        bus_colors=n.carriers.set_index("nice_name").color,
+        bus_colors=colors,
         bus_alpha=alpha,
         bus_split_circles=True,
-        line_widths=branch_widths["Line"].abs().reindex(n.lines.index, fill_value=0)
+        line_widths=flow.get("Line", fallback)
+        .abs()
+        .reindex(n.lines.index, fill_value=0)
         * branch_scale,
-        link_widths=branch_widths["Link"].abs().reindex(n.links.index, fill_value=0)
+        link_widths=flow.get("Link", fallback)
+        .abs()
+        .reindex(n.links.index, fill_value=0)
         * branch_scale,
-        line_colors=branch_colors["Line"],
-        link_colors=branch_colors["Link"],
+        line_colors=branch_colors.get("Line", "lightgrey"),
+        link_colors=branch_colors.get("Link", "lightgrey"),
         flow=flow * flow_scale,
         ax=ax,
         margin=0.2,
         color_geomap={"border": "darkgrey", "coastline": "darkgrey"},
         geomap="10m",
+        boundaries=snakemake.config["plotting"]["extent"],
     )
 
     buses = n.buses.query("carrier in @carriers").index
@@ -122,14 +121,7 @@ for kind, output in snakemake.output.items():
     region_unit = specs["region_unit"]
     cmap = specs["region_cmap"]
 
-    if "vmin" in specs:
-        vmin = float(specs["vmin"])
-    else:
-        vmin = regions.price.min()
-    if "vmax" in specs:
-        vmax = float(specs["vmax"])
-    else:
-        vmax = regions.price.max()
+    vmin, vmax = regions.price.min(), regions.price.max()
 
     regions.plot(
         ax=ax,

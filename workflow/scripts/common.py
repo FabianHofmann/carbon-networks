@@ -64,14 +64,17 @@ def import_network(path, revert_dac=False):
     n.carriers = n.carriers.sort_values(["color"])
 
     if revert_dac:
-        dac = n.links.index[n.links.carrier == "DAC"]
-        n.links.loc[dac, ["bus0", "bus2"]] = n.links.loc[dac, ["bus2", "bus0"]].values
-        n.links.loc[dac, ["", "bus2"]] = n.links.loc[dac, ["bus2", "bus0"]].values
-        n.links_t.p0[dac], n.links_t.p2[dac] = (
-            n.links_t.p2[dac],
-            n.links_t.p0[dac].values,
-        )
+        revert_dac_ports(n)
     return n
+
+
+def revert_dac_ports(n):
+    dac = n.links.index[n.links.carrier == "DAC"]
+    n.links.loc[dac, ["bus0", "bus2"]] = n.links.loc[dac, ["bus2", "bus0"]].values
+    n.links_t.p0[dac], n.links_t.p2[dac] = (
+        n.links_t.p2[dac],
+        n.links_t.p0[dac].values,
+    )
 
 
 def group_small_contributions(df, threshold=0.01):
@@ -117,13 +120,26 @@ def sort_rows_by_diff(df: pd.DataFrame):
     return pd.concat([df_neg, df_pos])
 
 
-def sort_rows_by_relative_diff(df: pd.DataFrame, consider_sign=False):
-    col = (df.max(axis=1) - df.min(axis=1)) / df.mean(axis=1)
-    if consider_sign:
-        col = col * np.sign(df.mean(axis=1))
-    return (
-        df.assign(diff=col).sort_values(by="diff", ascending=False).drop("diff", axis=1)
+def sort_rows_by_relative_diff(df: pd.DataFrame):
+    means = df.mean(axis=1)
+    df_pos = df[means > 0]
+    df_neg = df[means <= 0]
+
+    col_pos = (df_pos.max(axis=1) - df_pos.min(axis=1)) / df_pos.mean(axis=1)
+    col_neg = (df_neg.max(axis=1) - df_neg.min(axis=1)) / df_neg.mean(axis=1).abs()
+
+    df_pos = (
+        df_pos.assign(diff=col_pos)
+        .sort_values(by="diff", ascending=True)
+        .drop("diff", axis=1)
     )
+    df_neg = (
+        df_neg.assign(diff=col_neg)
+        .sort_values(by="diff", ascending=True)
+        .drop("diff", axis=1)
+    )
+
+    return pd.concat([df_neg, df_pos])
 
 
 def groupby_carrier_across_cc(n, c, nice_names) -> pd.Series:

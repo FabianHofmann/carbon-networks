@@ -4,6 +4,8 @@ import pathlib
 configfile: "workflow/subworkflows/pypsa-eur/config/config.default.yaml"
 configfile: "config/config.pypsa-eur.yaml"
 configfile: "config/config.yaml"
+configfile: "config/config.plotting.yaml"
+configfile: "config/config.constants.yaml"
 
 
 if config["configs"]["test"]:
@@ -384,7 +386,7 @@ rule plot_balance_bar:
     resources:
         mem_mb=20000,
     script:
-        "scripts/plot_energy_balance_bar.py"
+        "scripts/plot_balance_bar.py"
 
 
 rule plot_captureshare_line:

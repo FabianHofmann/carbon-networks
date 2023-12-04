@@ -13,12 +13,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 from pypsa.plot import add_legend_circles, add_legend_patches
+from pypsa.statistics import get_transmission_carriers
 from matplotlib.gridspec import GridSpec
 from common import (
     import_network,
     mock_snakemake,
-    get_transmission_links,
-    get_carrier_transport,
 )
 import geopandas as gpd
 
@@ -28,7 +27,7 @@ wrapper = textwrap.TextWrapper(width=18)
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
-        "plot_operation_map_dedicated",
+        "plot_balance_map_dedicated",
         clusters=90,
         ext="png",
     )
@@ -44,36 +43,36 @@ alpha = 1
 region_alpha = 0.6
 which = "operation"
 
-# %%
 fig, axes = plt.subplots(
     2,
     2,
-    figsize=(7, 9),
+    figsize=(8, 10),
     subplot_kw={"projection": ccrs.EqualEarth()},
     layout="constrained",
 )
 
 for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
-    is_transport = get_transmission_links(n)
-    transport_carriers = [
-        *n.links.carrier[is_transport].unique(),
-        *n.lines.carrier.unique(),
-    ]
-    transport_carriers = n.carriers.nice_name[transport_carriers]
-
     s = n.statistics
+    colors = n.carriers.set_index("nice_name").color
 
     for kind, ax in zip(["carbon", "hydrogen"], axs):
         carriers = config["constants"]["carrier_to_buses"].get(kind, [kind])
 
         grouper = s.groupers.get_bus_and_carrier
         df = s.dispatch(bus_carrier=carriers, groupby=grouper)
-        df = df.drop(transport_carriers, level=2, errors="ignore")
+        _ = get_transmission_carriers(n, bus_carrier=carriers)
+        transmission_carriers = _.set_levels(
+            n.carriers.nice_name[_.get_level_values(1)], level=1
+        )
+        sub = df.loc[["Link"]].drop(
+            transmission_carriers.unique(1), level=2, errors="ignore"
+        )
+        df = pd.concat([df.drop("Link"), sub])
         df = df.rename(lambda x: x.replace(" CC", ""), level=2)
         df = df.groupby(level=[1, 2]).sum().rename(n.buses.location, level=0)
         df = df[df.abs() > 1]
 
-        specs = config["plotting"]["operation_map"][kind]
+        specs = config["plotting"]["balance_map"][kind]
         bus_scale = float(specs["bus_scale"])
         branch_scale = float(specs["branch_scale"])
         flow_scale = float(specs["flow_scale"])
@@ -81,27 +80,25 @@ for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
         unit = specs["unit"]
 
         bus_sizes = df.sort_index()
-        branch_widths = get_carrier_transport(n, kind, config, which)
-        flow = pd.concat(branch_widths)
-        branch_carriers = get_carrier_transport(n, kind, config, "carrier")
-        branch_colors = {
-            c: (
-                n.carriers.color.get(vals[0], "lightgrey") if len(vals) else "lightgrey"
-            )
-            for c, vals in branch_carriers.items()
-        }
+        flow = s.transmission(groupby=False, bus_carrier=carriers)
+        branch_colors = {c: colors[carrier] for c, carrier in transmission_carriers}
+        fallback = pd.Series()
 
         n.plot(
             bus_sizes=bus_sizes * bus_scale,
-            bus_colors=n.carriers.set_index("nice_name").color,
+            bus_colors=colors,
             bus_alpha=alpha,
             bus_split_circles=True,
-            line_widths=branch_widths["Line"].abs().reindex(n.lines.index, fill_value=0)
+            line_widths=flow.get("Line", fallback)
+            .abs()
+            .reindex(n.lines.index, fill_value=0)
             * branch_scale,
-            link_widths=branch_widths["Link"].abs().reindex(n.links.index, fill_value=0)
+            link_widths=flow.get("Link", fallback)
+            .abs()
+            .reindex(n.links.index, fill_value=0)
             * branch_scale,
-            line_colors=branch_colors["Line"],
-            link_colors=branch_colors["Link"],
+            line_colors=branch_colors.get("Line", "lightgrey"),
+            link_colors=branch_colors.get("Link", "lightgrey"),
             flow=flow * flow_scale,
             ax=ax,
             margin=0.2,
@@ -149,7 +146,7 @@ for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
                 ax=axes[0] if kind == "carbon" else axes[1],
                 label=f"Average Price of {title} [{region_unit}]",
                 shrink=0.8,
-                pad=0.03,
+                pad=0.05,
                 aspect=50,
                 alpha=region_alpha,
                 orientation="horizontal",
@@ -157,7 +154,6 @@ for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
             cbr.outline.set_edgecolor("None")
 
             pad = 0.18
-            carriers = n.carriers.set_index("nice_name")
             prod_carriers = (
                 bus_sizes[bus_sizes > 0].index.unique("carrier").sort_values()
             )
@@ -170,7 +166,7 @@ for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
 
             add_legend_patches(
                 ax,
-                carriers.color[prod_carriers],
+                colors[prod_carriers],
                 prod_carriers.map(wrapper.fill),
                 patch_kw={"alpha": alpha},
                 legend_kw={
@@ -183,7 +179,7 @@ for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
 
             add_legend_patches(
                 ax,
-                carriers.color[cons_carriers],
+                colors[cons_carriers],
                 cons_carriers.map(wrapper.fill),
                 patch_kw={"alpha": alpha},
                 legend_kw={

@@ -8,7 +8,6 @@ import seaborn as sns
 from common import (
     import_network,
     mock_snakemake,
-    sort_rows_by_diff,
 )
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
@@ -39,7 +38,7 @@ index = [l if len(l) == 2 else ["net-neutral"] + l for l in df.index.str.split("
 df.index = pd.MultiIndex.from_tuples(index)
 df = df.unstack()
 
-df = df.loc[["net-neutral", "net-negative-0.05", "net-negative-0.1"]][
+df = df.loc[["net-neutral", "net-negative-0.1"]][
     ["baseline", "co2-only", "h2-only", "full"]
 ]
 df = df.div(1e9).round(0).astype(int)  # bn €

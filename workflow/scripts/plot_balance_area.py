@@ -35,7 +35,7 @@ kind_to_carrier = {"hydrogen": "H2", "carbon": "co2 stored", "electricity": "AC"
 
 n = import_network(snakemake.input.network)
 key = snakemake.params.label
-balance = n.statistics.balance(aggregate_time=False)
+balance = n.statistics.energy_balance(aggregate_time=False)
 
 
 for kind, output in snakemake.output.items():

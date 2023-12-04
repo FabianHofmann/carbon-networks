@@ -1,12 +1,12 @@
 import os
-import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 from common import (
+    get_ordered_handles_labels,
     import_network,
     mock_snakemake,
-    sort_rows_by_diff,
+    sort_rows_by_relative_diff,
 )
 
 alpha = 1
@@ -20,7 +20,6 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
 sns.set_theme(**snakemake.params["theme"])
 
 df = {}
-objectives = {}
 for path in snakemake.input.networks:
     n = import_network(path)
     capex = n.statistics.capex()
@@ -33,7 +32,6 @@ for path in snakemake.input.networks:
     key = snakemake.params.labels[n.meta["wildcards"]["run"]]
 
     df[key] = costs
-    objectives[key] = n.objective
 
 df = pd.concat(df, axis=1)
 
@@ -47,23 +45,17 @@ colors = snakemake.config["plotting"]["technology_group_colors"]
 
 norm = 1e9
 unit = "bn€/a"
-sort_by_color = (
-    lambda df: df.assign(color=colors).sort_values(by="color").drop("color", axis=1)
-)
-grouped = sort_rows_by_diff(grouped).div(norm)
+grouped = sort_rows_by_relative_diff(grouped).div(norm)
 rename = {"Carbon Capt. at Point Sources": "Carbon Capture\nat Point Sources"}
 grouped = grouped.rename(rename, axis=0)
 colors = {rename.get(k, k): v for k, v in colors.items()}
 
-# %%
 fig, ax = plt.subplots(
     1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"
 )
 
 defaults = dict(kind="bar", stacked=True, rot=90, lw=0.2, alpha=0.8)
-
 kwargs = {**defaults, **snakemake.params.settings.get("kwargs", {})}
-
 grouped.T.plot(ax=ax, color=colors, **kwargs)
 for container in ax.containers:
     if container.datavalues.sum() > grouped.sum().sum() / 20:
@@ -95,16 +87,12 @@ if snakemake.wildcards.comparison == "default":
 
 ax.axhline(0, color="k", lw=1)
 ax.set_ylabel(f"System cost [{unit}]")
-
-# ax.grid(axis="y", alpha=0.5)
-
 plt.xticks(rotation=90)
 
-handles, labels = ax.get_legend_handles_labels()
-ax.legend().remove()
+handles, labels = get_ordered_handles_labels(ax, grouped, wrap=22)
 ax.legend(
-    handles[::-1],
-    labels[::-1],
+    handles,
+    labels,
     loc="center left",
     bbox_to_anchor=(1, 0.45),
     frameon=False,
