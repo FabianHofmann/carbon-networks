@@ -185,38 +185,12 @@ System cost differences between the models are driven by renewable energy resour
 As we show in the following, these are due to essential though fundamentally different flexibility gains and a shift in carbon utilization and carbon sequestration strategies through the \hydrogen{} and \carbon{} networks.
 
 \subsection*{Transport Systems Unlock Point\=/Source Carbon Capture}
-
-% This is a bit low-level on regional scale, start with the big picture and dynamics, then zoom in on the regional scale in 3.2 (next section) together with end-use of hydrogen and carbon
-% alternative outline:
-% 1. baseline model is sub-optimal -> un-used landlocked carbon capture potentials; scarcity in hydrogen and power in Central Europe due to industrial clusters and high population density; costly DAC + additional renewables at sequestration sites
-% 2. introduce carbon balance figure -> transport systems unlock point-source CC potentials, in particular biomass and gas for industry, less methanation, less DAC and therefore less DAC specific renewables
-% 3. introduce capture share figure -> correlation between average cf and cc share, since gas CHPs and PPs are peak load techs, no cc infrastructure;
-% 4. carbon-grid has higher absolute CC and CC shares than hydrogen-grid and less DAC however hydrogen-grid is more cost-effective
-
 % 1. baseline model is sub-optimal -> un-used landlocked carbon capture potentials; scarcity in hydrogen and power in Central Europe due to industrial clusters and high population density; costly DAC + additional renewables at sequestration sites
 We can now closer examine the carbon capture activity when shifting from the \modBase{} to the other three network models. In comparison, the \modBase{} reveals significant inefficiencies: On the one hand, regions with no access to sequestration sites (i.e., ``landlocked'' regions) underutilize CC potentials from process emissions, fossil gas and biomass. On the other hand, sequestration sites rely on costly DAC to capture the carbon for CS from the air. Furthermore, hydrogen and power prices show high regional differences, indicating system inefficiencies due to transport constraints caused by non-existent (in case of hydrogen) or insufficient (in case of power) network connections. Prices are significantly higher in Central Europe, a region with high population density and high concentration of energy-intensive industries.
 
 % 2. introduce carbon balance figure -> transport systems unlock point-source CC potentials, in particular biomass and gas for industry, less methanation, less DAC and therefore less DAC specific renewables
 Transport systems emerge as a crucial component in optimizing CC. By enabling the efficient transportation of carbon, hydrogen, or both, these models reduce the reliance on high-cost DAC, and source more carbon from low-cost point-source CC on biomass and gas in industrial applications (see Fig.~\ref{fig:balance_captured_carbon}). The \modH{} only captures \label{}200 Mt of \carbon{} from DAC compared to \label{}400 Mt in the \modBase{}. Instead, the \modH{} captures more carbon from process emissions as well as gas and biomass for industry. The \modCO{} uses only \label{}150 Mt from DAC, and instead also captures more carbon than the \modH{} from gas for industry and biomass CHPs. And finally, the \modHybrid{} captures only \label{}100 Mt from DAC, but slightly more carbon from all other CC technologies.
 Also, the networks reduce the reliance on methanation in the model, reducing the overall demand for CC volumes. Another knock-on effect of the reduced reliance on DAC is reduced endogenous demand for renewables to power DAC facilities.
-
-% 3. introduce capture share figure -> correlation between average cf and cc share, since gas CHPs and PPs are peak load techs, no cc infrastructure;
-The increase in captured carbon from point sources in the network models is mostly due to CC infrastructure being deployed on industrial or power plant facilities that are present in all models (as opposed to the deployment of additional electricity generating capacity for the purpose of carbon capture). This is evident when analyzing the capture share of the different CC technologies (see Fig.~\ref{fig:captureshare_line}).
-
-In the \modBase{}, the capture share is highest for biogas-to-gas facilities, followed by process emissions, biomass for industry, biomass CHPs, gas for industry, SMR and gas CHPs. For the network models, we can observe a correlation between CC share and capacity factors of the underlying technologies: Process emissions as well as gas and biomass for industry have high capacity factors (above 80\%), and CC shares close to 100\% (the only exception being gas for industry in the \modH{}). Biomass CHPs have a capacity factor of around 40\%, and CC shares of 50\% in the \modH{} and 95\% in the \modCO{}. SMR and gas CHPs have capacity factors below 20\%, and CC shares around 50\% and 0\%, respectively, across all network models. Gas CHPs serve as peak load electricity production technology, and with very few operating hours, the high investment costs into CC applications are not efficient.\footnote[1]{Similarly, SMR serves as ``peak-load'' hydrogen production technology in regions with poor renewable resources for electrolysis.}
-
-
-% 4. carbon-grid has higher absolute CC and CC shares than hydrogen-grid and less DAC however hydrogen-grid is more cost-effective
-
-
-[old text]
-We can now closer examine the carbon capture activity when shifting from the \modBase{} to the other three network models.
-CU is preferably deployed in the regions where carbon, hydrogen as well as the inputs and by-product outputs (e.g., waste heat) of the synthesis processes have the lowest cost (or highest value). In the \modBase{}, this means combining the lowest-cost CC source (process emissions) with electrolysis in all regions, even if the renewable resources are poor and electrolysis costs are thus relatively high (e.g., non-coastal regions in Germany). In regions with medium-quality renewables (e.g., France and Scandinavia), CC biomass is also deployed -- and combined with medium-price electrolytic hydrogen -- to run additional CU. But the largest volumes of CU are deployed in the regions with the best renewables and lowest-cost electrolysis (e.g., Iberian Peninsula and British Isles), where all point-source CC potentials are exhausted and additionally necessary carbon is sourced from high-cost DAC.
-
-In the \modH{}, the hydrogen network enables the system to transport low-cost hydrogen to make use of low-cost biomass CC potentials that were unused in the \modBase{}. Thus, less additional DAC is needed to run CU processes, contributing to the reduction of DAC to \label{}200 Mt (see Fig.~\ref{fig:balance_captured_carbon}).
-CC technology on process emissions increases from \label{}90\% to \label{}100\%, on biomass in industry from \label{}65\% to \label{}100\%, and on facilities using gas in industry from \label{}40\% to \label{}75\%. CC on biomass CHPs increases slightly from \label{}45\% to \label{}50\% (see Fig.~\ref{fig:captureshare_line}).
-
-In the \modCO{}, a similar effect is achieved by transporting the carbon from unused low-cost biomass CC potentials to the sites where the lowest-cost hydrogen is produced.
 
 
 \begin{figure}[ht!]
@@ -227,6 +201,7 @@ In the \modCO{}, a similar effect is achieved by transporting the carbon from un
     \label{fig:balance_captured_carbon}
 \end{figure}
 
+
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=\linewidth]{comparison/default/figures/90_nodes/balance_bar_hydrogen.png}
@@ -234,6 +209,10 @@ In the \modCO{}, a similar effect is achieved by transporting the carbon from un
     % A CO2 network unlock BECSS potentials, most biomass emissions are captured at point sources and transported to sequestration sites. cite~\cite{rosaAssessmentCarbonDioxide2021}
     \label{fig:balance_hydrogen}
 \end{figure}
+
+
+% 3. introduce capture share figure -> correlation between average cf and cc share, since gas CHPs and PPs are peak load techs, no cc infrastructure;
+The increase in captured carbon from point sources in the network models is mostly due to CC infrastructure being deployed on industrial or power plant facilities that are present in all models (as opposed to the deployment of additional electricity generating capacity for the purpose of carbon capture). This is evident when analyzing the capture share of the different CC technologies (see Fig.~\ref{fig:captureshare_line}).
 
 
 \begin{figure}[h]
@@ -244,15 +223,23 @@ In the \modCO{}, a similar effect is achieved by transporting the carbon from un
     \label{fig:captureshare_line}
 \end{figure}%
 
-Now we turn to how carbon for CS is sourced by the different models. In the \modBase{}, because of the absence of a carbon network, all carbon that is sequestered (200 Mt, the same in each model) needs to be captured in the regions with access to an offshore CS site. The \modBase{} deploys all available low-cost point-source CC in these regions, and adds DAC in the sequestration locations with the lowest-cost electricity. In other words, the \modBase{} uses the atmosphere as a substitute carbon transport pathway, allowing \CO{} from inland point sources to escape into the atmosphere, and extracting it again from the atmosphere with DAC at the offshore locations.
 
-In the \modCO{}, the carbon network enables the system to capture carbon from low-cost point sources and transport it to the sequestration sites, trading off CC costs with transport costs. Together with the reduction of DAC for CU explained above, this contributes to the reduction of DAC from almost \label{}400 Mt in the Baseline model to \label{}150 Mt in the \modCO{} (see Fig.~\ref{fig:balance_captured_carbon}). The CC share on process emissions, gas and biomass use in industry, as well as biomass CHPs increase to 100\% (see Fig.~\ref{fig:captureshare_line}). The increased CC from point sources compared to the \modH{} thus derives from more CC on gas for industry and biomass CHPs.
+In the \modBase{}, the capture share is highest for biogas-to-gas facilities, followed by process emissions, biomass for industry, biomass CHPs, gas for industry, SMR and gas CHPs. For the network models, we can observe a correlation between CC share and capacity factors of the underlying technologies: Process emissions as well as gas and biomass for industry have high capacity factors (above 80\%), and CC shares close to 100\% (the only exception being gas for industry in the \modH{}). Biomass CHPs have a capacity factor of around 40\%, and CC shares of 50\% in the \modH{} and 95\% in the \modCO{}. SMR and gas CHPs have capacity factors below 20\%, and CC shares around 50\% and 0\%, respectively, across all network models. Gas CHPs serve as peak load electricity production technology, and with very few operating hours, the high investment costs into CC applications are not efficient.\footnote[1]{Similarly, SMR serves as ``peak-load'' hydrogen production technology in regions with poor renewable resources for electrolysis.}
 
-In the \modHybrid{}, both networks contribute together to an even larger reduction of DAC to only \label{}100 Mt, with a larger deployment of biomass CHPs than in the \modCO{}, and of which also 100\% are equipped with CC installations.
 
-In summary, the \carbon{} network enables the transport of carbon from the lowest-cost CC sources to CU and CS carbon sinks, reducing the need for high-cost DAC.
-The creation of a \hydrogen{} network enables the cost-effective delivery of hydrogen from regions with a surplus of low-cost renewable energy to high-demand industrial centers with exogenous hydrogen demand and a surplus of low-cost CC potentials.
-This highlights how both the implementation of a \carbon{} or a \hydrogen{} network unlocks low-cost carbon capture potentials at geographically fixed point sources across the continent.
+% 4. carbon-grid has higher absolute CC and CC shares than hydrogen-grid and less DAC however hydrogen-grid is more cost-effective
+In summary, the implementation of \carbon{} and \hydrogen{} networks is instrumental in unlocking low-cost CC potentials at geographically fixed point sources across the continent. While the \carbon{} network facilitates the movement of carbon from low-cost sources to CU and CS sinks, reducing the reliance on high-cost DAC, the \hydrogen{} network enables the cost-effective delivery of hydrogen from regions rich in renewable energy to regions with low-cost CC potentials to produce CU. However, despite the \carbongrid{} model demonstrating higher absolute amounts of CC from point sources and higher CC shares across all point-source CC technologies, the \hydrogengrid{} model achieves lower total system costs (see Fig.~\ref{fig:cost_bar}). In the following section, we will explore the reasons for this.
+
+% [potentially relevant text blobs from old 3.1]
+% CU is preferably deployed in the regions where carbon, hydrogen as well as the inputs and by-product outputs (e.g., waste heat) of the synthesis processes have the lowest cost (or highest value).
+
+% Now we turn to how carbon for CS is sourced by the different models. In the \modBase{}, because of the absence of a carbon network, all carbon that is sequestered (200 Mt, the same in each model) needs to be captured in the regions with access to an offshore CS site. The \modBase{} deploys all available low-cost point-source CC in these regions, and adds DAC in the sequestration locations with the lowest-cost electricity. In other words, the \modBase{} uses the atmosphere as a substitute carbon transport pathway, allowing \CO{} from inland point sources to escape into the atmosphere, and extracting it again from the atmosphere with DAC at the offshore locations.
+
+% In the \modCO{}, the carbon network enables the system to capture carbon from low-cost point sources and transport it to the sequestration sites, trading off CC costs with transport costs.
+
+% In summary, the \carbon{} network enables the transport of carbon from the lowest-cost CC sources to CU and CS carbon sinks, reducing the need for high-cost DAC.
+% The creation of a \hydrogen{} network enables the cost-effective delivery of hydrogen from regions with a surplus of low-cost renewable energy to high-demand industrial centers with exogenous hydrogen demand and a surplus of low-cost CC potentials, reducing the need for DAC and for high-cost electrolysis at the industrial centers.
+% This highlights how both the implementation of a \carbon{} or a \hydrogen{} network unlocks low-cost carbon capture potentials at geographically fixed point sources across the continent.
 
 
 \subsection*{\hydrogen{}--Network enables decentral carbon utilization}
