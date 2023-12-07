@@ -108,12 +108,13 @@ The model optimizes the design and operation of the European energy system, enco
 
 \begin{figure}
     \includegraphics[width=\linewidth]{baseline/figures/90_nodes/total-demand-bar.png}
-    \caption{Exogenous demand assumptions. The figure shows the total annual energy demands for each energy carrier which drive all model activities. Endogenous processes may lead to higher total production volumes of some carriers, e.g., demand in methanol requires more hydrogen and carbon as secondary (energy) inputs, which in turn need additional electricity to run electrolysis and carbon capture processes.}
+    \caption{Assumptions on exogenous demand, derived from~\cite{piamanzGeoreferencedIndustrialSites2018,muehlenpfordtTimeSeries2019,mantzosJRCIDEES20152018,NationalEmissionsReported2023,EurostatCompleteEnergyBalance,uwekrienDemandlib2023}. The figure shows the total annual energy demand for each energy source which determine the model's endogenous investments and operation. Endogenous processes can lead to higher total production volumes of some energy carriers, e.g., the demand for methanol requires more hydrogen and carbon as secondary (energy) inputs, which are not considered here. The model are defined per region and time stamp.}
     % TODO: adjust labels to show that these are exogenous assumptions
     \label{fig:total-demand-bar}
 \end{figure}
 %
-In our configuration, the model's time horizon spans one year with a temporal resolution of 3 hours and a spatial resolution of 90 regions. Each of the regions consists of a complex subsystem with technologies for supplying, converting, storing and transporting energy. Exogenous assumptions on energy demand and non-abatable emissions are taken from various sources~\cite{piamanzGeoreferencedIndustrialSites2018,muehlenpfordtTimeSeries2019,mantzosJRCIDEES20152018,NationalEmissionsReported2023,EurostatCompleteEnergyBalance,uwekrienDemandlib2023}. The energy demand for electricity, transport, biomass, heat and gas are defined per region and time-step. Land transport demand is exogenously divided between electric vehicles (85\%) and fuel cell vehicles (15\%), the latter representing demand for heavy duty land transport. Demands for kerosene for aviation, methanol for shipping, and naphtha for industry are aggregated in the system scope and kept constant throughout all time-steps. Heat demand is regionally subdivided into shares of urban, rural and industrial sites. We show the sum of all energy demands in Fig.~\ref{fig:total-demand-bar}. The system emits 633~Mt \carbon{} per year from industry, aviation, shipping and agriculture, 153~Mt of which are fossil-based process emissions. Industrial energy demand and excess heat potentials are calculated per node on the basis of~\cite{hotmaps_industrial_db}.
+In our configuration, the model's time horizon spans one year with a temporal resolution of 3 hours and a spatial resolution of 90 regions. Each of the regions consists of a complex subsystem with technologies for supplying, converting, storing and transporting energy. Exogenous assumptions on energy demand and non-abatable emissions are taken from various sources~\cite{piamanzGeoreferencedIndustrialSites2018,muehlenpfordtTimeSeries2019,mantzosJRCIDEES20152018,NationalEmissionsReported2023,EurostatCompleteEnergyBalance,uwekrienDemandlib2023}. The energy demand for electricity, transport, biomass, heat and gas are defined per region and time-step.
+Land transport demand is exogenously divided between electric vehicles (85\%) and fuel cell vehicles (15\%), the latter representing demand for heavy duty land transport. Demands for kerosene for aviation, methanol for shipping, and naphtha for industry are aggregated in the system scope and kept constant throughout all time-steps. Heat demand is regionally subdivided into shares of urban, rural and industrial sites. We show the sum of all energy demands in Fig.~\ref{fig:total-demand-bar}. The system emits 633~Mt \carbon{} per year from industry, aviation, shipping and agriculture, 153~Mt of which are fossil-based process emissions. Industrial energy demand and excess heat potentials are calculated per node on the basis of~\cite{hotmaps_industrial_db}.
 % use https://pypsa-eur.readthedocs.io/en/latest/licenses.html
 
 
@@ -161,7 +162,7 @@ Focusing first on the Net-Zero scenario, we can highlight notable characteristic
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=\linewidth]{comparison/default/figures/90_nodes/cost_bar.png}
-    \caption[short]{Total annual system cost for the European energy system for the different models subdivided into groups of technologies. While the Baseline model has neither a \carbon{} nor a \hydrogen{} network, the Hybrid model is allowed to expand both. ``Gas Infrastructure'' combines gas facilities for power and heat production, ``\carbon{} Infrastrucure'' combines transport, storage and sequestration, and ``H$_2$ Infrastructure'' combines transport and storage. ``Carbon Capture at Point Sources'' combines all technologies with integrated carbon capture, including the cost of the main facility (e.g., CHP unit) and the carbon capture application.}
+    \caption[short]{Total annual system cost subdivided into groups of technologies for the different models of the European energy system with a net-zero emission target. While the Baseline model has neither a \carbon{} nor a \hydrogen{} network, the Hybrid model is allowed to expand both. ``Gas Infrastructure'' combines gas facilities for power and heat production, ``\carbon{} Infrastrucure'' combines transport, storage and sequestration, and ``H$_2$ Infrastructure'' combines transport and storage. ``Carbon Capture at Point Sources'' combines all technologies with integrated carbon capture, including the cost of the main facility (e.g., CHP unit) and the carbon capture application.}
     \label{fig:cost_bar}
 \end{figure}
 
@@ -170,17 +171,12 @@ Total annual system costs in the \modBase{} are highest, totalling \label{}803 b
 In all models, almost half of the system costs are spent on primary electricity production from wind and solar power (\label{}45\% or \label{}360 of \label{}799 billion euros total costs in the Baseline model), with another \label{}12\% (\label{}100 billion euros) spent on hydro, nuclear and biomass. Costs for energy transport networks for electricity, gas, hydrogen and carbon are below \label{}12\% (\label{}100 billion euros), with the electricity grid making up more of the system costs than the other three networks combined. This is the case for all four models. Capital expenditures on carbonaceous fuel production are around \label{}3\% (\label{}25 billion euros) in each model, while electrolysis makes up around \label{}5\% (\label{}40 billion euros). Heat pump installations account for around \label{}8\% (60 billion euros) of total system costs.
 
 System cost differences between the models are driven by renewable energy resources (solar, wind, and bioenergy), the \carbon{} and \hydrogen{} networks, as well as carbon capture technologies (DAC and CC at point sources).
-% In the Baseline model, the absence of dedicated carbon and hydrogen transport networks means that the system cannot use all the CC potentials of geographically fixed point sources, but instead needs to deploy more DAC in the locations where carbon is needed for CS and CU.
-% Naturally, costs for the \carbon{} and \hydrogen{} networks differ between models as they are being deployed.
-% Finally, we see that the Baseline model deploys more wind and solar than the network models. This is driven by two aspects of the electrolytic hydrogen production: First, the Baseline model deploys more methanation, leading to a larger endogenous hydrogen demand and thus more electricity production. And second, in the network models, the electrolysis is deployed at sites with better renewable resources, thus decreasing the total investments in solar and wind power necessary to run the electrolysis.
 As we show below, these are due to substantial, albeit fundamentally different, gains in flexibility and a shift in carbon utilization and storage strategies by the \hydrogen{} and \carbon{} networks.
 
 \subsection*{Transport Systems Unlock Point\=/Source Carbon Capture}
 
-% 1. baseline model is sub-optimal -> un-used landlocked carbon capture potentials; scarcity in hydrogen and power in Central Europe due to industrial clusters and high population density; costly DAC + additional renewables at sequestration sites
 In comparison to the other three models, the \modBase{} reveals significant inefficiencies: On the one hand, regions with no access to sequestration sites (i.e., ``landlocked'' regions) underutilize CC potentials from process emissions, fossil gas and biomass. On the other hand, sequestration sites rely on costly DAC to capture the carbon for CS from the air. Furthermore, hydrogen and power prices show high regional differences, indicating system inefficiencies due to transport constraints caused by non-existent hydrogen or insufficient power transmission. Prices are significantly higher in Central Europe, a region with high population density and high concentration of energy-intensive industries.
 
-% 2. introduce carbon balance figure -> transport systems unlock point-source CC potentials, in particular biomass and gas for industry, less methanation, less DAC and therefore less DAC specific renewables
 By enabling the efficient transportation of carbon, hydrogen, or both, these models reduce the reliance on high-cost DAC, and source more carbon from low-cost point-source CC on biomass and gas in industrial applications (see Fig.~\ref{fig:balance_captured_carbon}). The \modH{} only captures \label{}200~Mt of \carbon{} from DAC compared to \label{}400~Mt in the \modBase{}. Instead, the \modH{} captures more carbon from process emissions as well as gas and biomass for industry. The \modCO{} uses only \label{}150~Mt from DAC, and instead also captures more carbon than the \modH{} from gas for industry and biomass CHPs. And finally, the \modHybrid{} captures only \label{}100~Mt from DAC, but slightly more carbon from all other CC technologies.
 Also, the networks reduce the reliance on methanation in the model, reducing the overall demand for CC volumes. Another knock-on effect of the reduced reliance on DAC is reduced endogenous demand for renewables to power DAC facilities.
 
@@ -188,38 +184,26 @@ Also, the networks reduce the reliance on methanation in the model, reducing the
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=\linewidth]{comparison/default/figures/90_nodes/balance_bar_carbon.png}
-    \caption{Balance of captured carbon across all system setups. Positive values indicate carbon capture, negative values indicate carbon consumption.}
-    % A CO2 network unlock BECSS potentials, most biomass emissions are captured at point sources and transported to sequestration sites. cite~\cite{rosaAssessmentCarbonDioxide2021}
+    \caption{Balance of captured carbon for all models in the Net-Zero scenario. Positive values indicate carbon capture, negative values indicate carbon consumption. By integrating \hydrogen{} and \carbon{} networks, the predominant method for carbon removal shifts from Direct Air Capture (DAC) to a bioenergetic process that incorporates carbon capture. At the same time the reliance on methanation decreases.}
     \label{fig:balance_captured_carbon}
 \end{figure}
 
 
-% \begin{figure}[ht!]
-%     \centering
-%     \includegraphics[width=\linewidth]{comparison/default/figures/90_nodes/balance_bar_hydrogen.png}
-%     \caption{Balance of captured hydrogen across all system setups. Positive values indicate carbon capture, negative values indicate carbon consumption.}
-%     % A CO2 network unlock BECSS potentials, most biomass emissions are captured at point sources and transported to sequestration sites. cite~\cite{rosaAssessmentCarbonDioxide2021}
-%     \label{fig:balance_hydrogen}
-% \end{figure}
 
-
-% 3. introduce capture share figure -> correlation between average cf and cc share, since gas CHPs and PPs are peak load techs, no cc infrastructure;
 The increase in captured carbon from point sources in the network models is mostly due to CC infrastructure being deployed on industrial or power plant facilities that are present in all models (as opposed to the deployment of additional electricity generating capacity for the purpose of carbon capture). This is evident when analyzing the capture share of the different CC technologies (see Fig.~\ref{fig:captureshare_line}).
 
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{comparison/default/figures/90_nodes/captureshare_line.png}
-    \caption{Share of facilities with integrated carbon capture for different system setups for the Net-Zero scenario.}
+    \caption{Share of facilities with integrated carbon capture for all models .}
     % A CO2 network unlock BECSS potentials, most biomass emissions are captured at point sources and transported to sequestration sites. cite~\cite{rosaAssessmentCarbonDioxide2021}
     \label{fig:captureshare_line}
 \end{figure}%
 
-
 In the \modBase{}, the capture share is highest for biogas-to-gas facilities, followed by process emissions, biomass for industry, biomass CHPs, gas for industry, SMR and gas CHPs. For the network models, we can observe a correlation between CC share and capacity factors of the underlying technologies: Process emissions as well as gas and biomass for industry have high capacity factors (above 80\%), and CC shares close to 100\% (the only exception being gas for industry in the \modH{}). Biomass CHPs have a capacity factor of around 40\%, and CC shares of 50\% in the \modH{} and 95\% in the \modCO{}. SMR and gas CHPs have capacity factors below 20\%, and CC shares around 50\% and 0\%, respectively, across all network models. Gas CHPs serve as peak load electricity production technology, and with very few operating hours, the high investment costs into CC applications are not efficient.\footnote[1]{Similarly, SMR serves as ``peak-load'' hydrogen production technology in regions with poor renewable resources for electrolysis.}
 
 
-% 4. carbon-grid has higher absolute CC and CC shares than hydrogen-grid and less DAC however hydrogen-grid is more cost-effective
 In summary, the implementation of \carbon{} and \hydrogen{} networks is instrumental in unlocking low-cost CC potentials at geographically fixed point sources across the continent. While the \carbon{} network facilitates the movement of carbon from low-cost sources to CU and CS sinks, reducing the reliance on high-cost DAC, the \hydrogen{} network enables the cost-effective delivery of hydrogen from regions rich in renewable energy to regions with low-cost CC potentials to produce CU. However, despite the \carbongrid{} model demonstrating higher absolute amounts of CC from point sources and higher CC shares across all point-source CC technologies, the \hydrogengrid{} model achieves lower total system costs (see Fig.~\ref{fig:cost_bar}). In the following section, we will explore the reasons for this.
 
 % [potentially relevant text blobs from old 3.1]
@@ -227,32 +211,9 @@ In summary, the implementation of \carbon{} and \hydrogen{} networks is instrume
 
 % Now we turn to how carbon for CS is sourced by the different models. In the \modBase{}, because of the absence of a carbon network, all carbon that is sequestered (200 Mt, the same in each model) needs to be captured in the regions with access to an offshore CS site. The \modBase{} deploys all available low-cost point-source CC in these regions, and adds DAC in the sequestration locations with the lowest-cost electricity. In other words, the \modBase{} uses the atmosphere as a substitute carbon transport pathway, allowing \CO{} from inland point sources to escape into the atmosphere, and extracting it again from the atmosphere with DAC at the offshore locations.
 
-% In the \modCO{}, the carbon network enables the system to capture carbon from low-cost point sources and transport it to the sequestration sites, trading off CC costs with transport costs.
-
-% In summary, the \carbon{} network enables the transport of carbon from the lowest-cost CC sources to CU and CS carbon sinks, reducing the need for high-cost DAC.
-% The creation of a \hydrogen{} network enables the cost-effective delivery of hydrogen from regions with a surplus of low-cost renewable energy to high-demand industrial centers with exogenous hydrogen demand and a surplus of low-cost CC potentials, reducing the need for DAC and for high-cost electrolysis at the industrial centers.
-% This highlights how both the implementation of a \carbon{} or a \hydrogen{} network unlocks low-cost carbon capture potentials at geographically fixed point sources across the continent.
-
 
 \subsection*{\hydrogen{}--Network enables decentral carbon utilization}
 
-% \begin{figure*}[ht!]
-%     \centering
-%     \begin{subfigure}{0.9\linewidth}
-%         \centering
-%         \includegraphics[width=\linewidth]{co2-only/figures/90_nodes/balance_map_carbon.png}
-%         \caption{\carbon{} Sector.}
-%         \label{fig:balance_map_carbon}
-%     \end{subfigure}
-%     \begin{subfigure}{0.9\linewidth}
-%         \centering
-%         \includegraphics[width=\linewidth]{h2-only/figures/90_nodes/balance_map_hydrogen.png}
-%         \caption{\hydrogen{} Sector.}
-%         \label{fig:balance_map_hydrogen}
-%     \end{subfigure}
-%     \caption{Optimal operation per sector for a net-zero energy system in Europe with average production on the left and average consumption on the right for both, (a) the \carbon{} sector in the \carbon{}-Grid model and (b) the \hydrogen{} sector in the \hydrogen-Grid model.}
-%     \label{fig:balance_map}
-% \end{figure*}
 
 \begin{figure*}[ht!]
     \centering
@@ -272,25 +233,8 @@ The \carbongrid{} model captures large amounts of low-cost carbon from bioenergy
 The \hydrogengrid{} on the other hand, transports low-cost hydrogen from regions with abundant renewable resources to regions with high energy demand and abundant emissions (lower right). The main transportation routes go from Spain and the United Kingdom to Central Europe. In these regions, industries use the hydrogen for demand in industry and fuel cell land transport, and to produce synfuels with locally captured carbon from point sources, leading to a decentralized CU system across the continent. DAC and local emissions nearby the coast enable sequestration in the North Sea, Baltic Sea, Mediterranean Sea and, in particular, in Portugal (upper right).
 % Furthermore, the introduction of a hydrogen network enables to reduce both DAC production and FT fuels on the British Isles and Iberian Peninsula. In Great Britain an Ireland, the remaining local carbon is then sequestered, and all the hydrogen that previously went into FT fuel production is exported to Central Europe (see above). In Spain and Portugal, some DAC remains and the carbon sourced from DAC is used, along with locally captured carbon from point sources, to produce FT fuels (but less than without a hydrogen network). Surplus hydrogen from lower FT fuel production is exported to Central Europe.
 
-The results illustrate the fundamentally different approaches of the grids: a \carbon{} grid prefers a decentralized CC system and a co-location of electrolysis and CU centrally in regions with abundant renewable resources; a \hydrogen{} grid prefers a centralized electrolysis system and a decentralized CC and CU system distributed jointly across the continent. A \hydrogen{} network not only unlocks the potential of carbon capture from point sources, but also reduces the energy shortages in energy-intensive areas.
+The results illustrate the fundamentally different approaches of the grids: a \carbon{} grid prefers a decentralized CC system and a co-location of electrolysis and CU centrally in regions with abundant renewable resources; a \hydrogen{} grid prefers a centralized electrolysis system and a co-location of decentralized CC and CU systems across the continent. A \hydrogen{} network not only unlocks the potential of carbon capture from point sources, but also reduces the energy shortages in energy-intensive areas.
 
-
-% There are four notable dynamics or differences between the two grid strategies:
-% First, the production of FT fuels always moves to where low-cost carbon and low-cost hydrogen can be brought together. In the \carbongrid{} model, carbon is moved from Western Europe to the Iberian Peninsula, the British Isles and to Denmark to produce FT fuels centrally in few regions. In the \hydrogengrid{} model, hydrogen is transported in the opposite direction to produce FT fuels decentrally across all regions in Central Europe with locally captured \carbon{} from point sources.
-% Second, the \carbongrid{} model captures more low-cost carbon from biomass, especially in Central and Eastern Europe, and less high-cost carbon from DAC in Greece and Southern Italy. Instead, the carbon grid transports carbon from Central and Eastern Europe to Greece and Italy, where it is sequestered, or feeds into CU together with locally produced, low-cost electrolytic hydrogen. The \hydrogengrid{} model directly operates electrolyzers and DAC in Greece and Southern Italy, with electricity from low-cost renewables, and thus avoids significant network buildouts in this region.
-% Third, sequestration in the \hydrogengrid{} model occurs more decentralized, spread out across several regions with access to offshore sequestration sites, making use of point-source CC potentials in each of these regions. In the \carbongrid{} model, sequestration is clustered at fewer sequestration sinks, each collecting low-cost \carbon{} from neighboring regions. However, there is no centralization at only one or two sites, since all the sequestration sites offer the same costs and the system minimizes system-wide carbon transport distances to about eight to ten sequestration sites.
-% And fourth, how the three types of CU are spread across the continent is driven by the costs of carbon and hydrogen (the latter mostly driven by the costs of renewable electricity) as well as by renewables capacity factors: Clearly, all carbonaceous fuel production requires sites where both carbon and hydrogen are available, and they moreover prefer sites with low carbon and hydrogen prices. Based on our model assumptions, FT fuel synthesis has very limited flexibility and needs to be run alost at baseload (ramp-down only possible to 90\% of maximum load). Thus, for FT fuel synthesis sites in Northern Europe with more electricity from wind power are preferred to sites in Southern Europe, powered mostly by solar. Methanathion and Methanolisation both have higher flexibility, being able to ramp down to 50\% load during the night, for example. Thus, these fuel production sites prefer the best renewable resource sites in Southern Europe. And finally, as methanation produces synthetic methane that needs to be fed into the gas grid, methanation prefers those sites with good interconnection to the existing gas network. Since Italy possesses a large gas network with easy interconnection to Central Europe, methanation prefers sites in Southern Italy (and Greece, which would be connected to Southern Italy) over the Iberian Peninsula, where Methanolisation is more prevalent.
-
-% In summary, the implementation of a \carbon{} network allows for connecting regions with abundant, low-price carbon (from point sources) to regions that can sequester the carbon or that can produce low-cost hydrogen to make CU products (FT fuel, methanol, synthetic methane). DAC and electrolysis are deployed in the regions with the best renewable resources to meet carbonaceous fuel demands.
-% In the absence of a \carbon{} network and with a \hydrogengrid{} on the other hand, regions with access to offshore sequestration sites capture all carbon from low-cost point sources and then sequester it. The system deploys additional DAC facilities at the locations with sequestration access and low-cost renewables to capture the remaining necessary carbon for sequestration. Carbonaceous fuel demand is met at the locations which offer the best mix of low-cost carbon from point sources and low-cost hydrogen from renewables, with some additional electrolysis and DAC required to fully meet the demand.
-% Sequestered carbon is nearly always transported before
-
-% Therefore, one can conclude that a \carbon{} network favors a decentralized CC and a CU centralized at regions with abundant renewable resources. A \hydrogen{} network favors a centralized electrolysis system at regions with abundant renewable resources and a decentralized CU system.
-
-% Together with understanding the dynamics described above, we can highlight three cost advantages of the \hydrogen{} network in contrast to the \carbon{} network: Capturing carbon at the lowest-cost regions reduces 4 billion euros in spending on DAC. However, the \hydrogengrid{} model produces electrolytic hydrogen in the lowest-cost regions and in total spends 7 billion euros less on renewable energy (14 billion euros less on solar, and 7 billion euros more on wind) as well as 1 billion euros less on SMR. Furthermore, without a \hydrogen{} network, additional \hydrogen{} storage is needed in Spain at a cost of 5 billion euros to store hydrogen produced during the summer for utilization in FT fuel production during the winter.
-% And finally, the \carbongrid{} model spends 7 billion euros more on gas boilers, gas plants, gas infrastructure, and methanation.
-% TODO: why??
-% The costs of the respective networks, on the other hand, are almost equal: the \carbongrid{} model spends 8 billion euros on the \carbon{} network, while the \hydrogengrid{} model even spends 10 billion euros on the \hydrogen{} network. These factors add up to account for 14 billion euros of the difference of 20 billion euros in system costs between the two scenarios (785 billion euros for the \carbongrid{} and 765 billion euros for the \hydrogengrid{} model, see Fig.~\ref{fig:objective_heatmap}).
 
 
 \subsection*{Hybrid configuration provides further flexibilities}
@@ -389,12 +333,12 @@ The study conclusively demonstrates the pivotal role of strategically integrated
 %     \label{fig:sankey_diagramm}
 % \end{figure*}
 
-\begin{figure*}
-    \centering
-    \includegraphics[width=\linewidth]{net-negative-0.1/full/figures/90_nodes/sankey_diagramm.png}
-    \caption{Sankey diagram of the optimal operation for a net-negative 10\% scenario.}
-    \label{fig:sankey_diagramm}
-\end{figure*}
+% \begin{figure*}
+%     \centering
+%     \includegraphics[width=\linewidth]{net-negative-0.1/full/figures/90_nodes/sankey_diagramm.png}
+%     \caption{Sankey diagram of the optimal operation for a net-negative 10\% scenario.}
+%     \label{fig:sankey_diagramm}
+% \end{figure*}
 
 \begin{figure}
     \centering
