@@ -43,7 +43,7 @@ rule main:
         ),
         expand(
             "results/{run}/figures/{clusters}_nodes/{figure}_{kind}.png",
-            figure=["balance_map", "balance_map_single"],
+            figure=["balance_map"],
             run=config["run"]["name"],
             clusters=config["scenario"]["clusters"],
             kind=config["constants"]["kinds"]
@@ -243,27 +243,6 @@ rule plot_balance_map:
         },
     script:
         "scripts/plot_balance_map.py"
-
-
-rule plot_balance_map_single:
-    params:
-        settings=config["plotting"]["balance_map"],
-        theme=config["plotting"]["theme"],
-    input:
-        network="results/{run}/networks/{clusters}_nodes.nc",
-        onshore_regions="resources/regions_onshore_elec_s{simpl}_{{clusters}}.geojson".format(
-            **config["scenario"]
-        ),
-    resources:
-        mem_mb=20000,
-    output:
-        **{
-            kind: f"results/{{run}}/figures/{{clusters}}_nodes/balance_map_single_{kind}.{{ext}}"
-            for kind in config["constants"]["kinds"]
-            + config["constants"]["additional_kinds"]
-        },
-    script:
-        "scripts/plot_balance_map_single.py"
 
 
 rule plot_balance_area:
