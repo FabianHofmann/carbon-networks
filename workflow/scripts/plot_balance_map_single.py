@@ -11,7 +11,7 @@ import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-from pypsa.plot import add_legend_circles, add_legend_patches
+from pypsa.plot import add_legend_circles, add_legend_patches, add_legend_lines
 from pypsa.statistics import get_transmission_carriers
 from common import (
     import_network,
@@ -25,8 +25,8 @@ warnings.filterwarnings("ignore", category=UserWarning)
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_balance_map_single",
-        run="co2-only",
-        clusters=40,
+        run="full",
+        clusters=90,
         ext="png",
     )
 
@@ -35,17 +35,17 @@ plt.rc("patch", linewidth=0.1)
 
 n = import_network(snakemake.input.network, revert_dac=True)
 regions = gpd.read_file(snakemake.input.onshore_regions).set_index("name")
-which = "operation"
 config = snakemake.config
+labels = config["labels"]
 
-alpha = 1
-region_alpha = 0.6
+alpha = config["plotting"]["balance_map"]["alpha"]
+region_alpha = config["plotting"]["balance_map"]["region_alpha"]
 
 s = n.statistics
 colors = n.carriers.set_index("nice_name").color
 
 run = snakemake.wildcards.run
-
+# %%
 for kind, output in snakemake.output.items():
 
     figsize = snakemake.params.settings["figsize"]["single"]
@@ -75,7 +75,12 @@ for kind, output in snakemake.output.items():
     bus_scale = float(specs["bus_scale"])
     branch_scale = float(specs["branch_scale"])
     flow_scale = float(specs["flow_scale"])
-    legend_kwargs = {"loc": "upper left", "frameon": False}
+    legend_kwargs = {
+        "loc": "upper left",
+        "frameon": True,
+        "framealpha": 1,
+        "edgecolor": "None",
+    }
     unit = specs["unit"]
 
     bus_sizes = df.sort_index()
@@ -121,7 +126,10 @@ for kind, output in snakemake.output.items():
     region_unit = specs["region_unit"]
     cmap = specs["region_cmap"]
 
-    vmin, vmax = regions.price.min(), regions.price.max()
+    if set(["vmin", "vmax"]).issubset(specs):
+        vmin, vmax = specs["vmin"], specs["vmax"]
+    else:
+        vmin, vmax = regions.price.min(), regions.price.max()
 
     regions.plot(
         ax=ax,
@@ -141,7 +149,7 @@ for kind, output in snakemake.output.items():
     cbr = fig.colorbar(
         sm,
         ax=ax,
-        label=f"Average Price of {title} [{region_unit}]",
+        label=f"Average Marginal Price of {title} [{region_unit}]",
         shrink=1,
         pad=0.03,
         aspect=50,
@@ -188,7 +196,9 @@ for kind, output in snakemake.output.items():
 
     ax.set_extent(snakemake.config["plotting"]["extent"])
     if snakemake.params.settings.get("title", True):
-        ax.set_title(config["labels"].get(kind, kind.title()) + " Operation")
+        carrier_label = labels.get(kind, kind.title())
+        title = f"{carrier_label} Balance ({labels[run]} Model)"
+        ax.set_title(title)
 
     legend_bus_sizes = specs["bus_sizes"]
     if legend_bus_sizes is not None:
@@ -198,8 +208,17 @@ for kind, output in snakemake.output.items():
             [f"{s} {unit}" for s in legend_bus_sizes],
             legend_kw={"bbox_to_anchor": (0, 1), **legend_kwargs},
         )
+    legend_branch_sizes = specs["branch_sizes"]
+    if legend_branch_sizes is not None:
+        add_legend_lines(
+            ax,
+            [s * branch_scale * 1e6 for s in legend_branch_sizes],
+            [f"{s} {unit}" for s in legend_branch_sizes],
+            legend_kw={"bbox_to_anchor": (0, 0.85), **legend_kwargs},
+        )
 
     fig.savefig(
         output,
         dpi=300,
     )
+    break

@@ -57,7 +57,7 @@ cf = pd.concat(cf, axis=1, names="Model")
 data = pd.concat(
     [df.mul(100).stack() for df in [cf, share]],
     axis=1,
-    keys=["Capacity Factor", "CC Share [%]"],
+    keys=["Capacity Factor", "Carbon Capture Share [%]"],
 ).reset_index()
 
 fig, ax = plt.subplots(
@@ -69,11 +69,17 @@ nice_name = n.carriers.nice_name
 colors = n.carriers.color.dropna().rename(nice_name)
 
 
+model_to_number = {k: i for i, k in enumerate(data.Model.unique())}
+data["model_jittered"] = (
+    data["Model"].replace(model_to_number) + (np.random.rand(len(data)) - 0.5) * 0.3
+)
+
+
 plot = sns.scatterplot(
     ax=ax,
     data=data,
-    x="Model",
-    y="CC Share [%]",
+    x="model_jittered",
+    y="Carbon Capture Share [%]",
     size="Capacity Factor",
     hue="Carrier",
     # style="Carrier",
@@ -81,9 +87,11 @@ plot = sns.scatterplot(
     legend="auto",
     alpha=0.8,
     marker="o",
-    sizes=(10, 100),
-    linewidth=0.3,
+    sizes=(20, 100),
+    linewidth=0.5,
 )
+
+
 handles, labels = ax.get_legend_handles_labels()
 labels = [l + " %" if re.match(r"^\d+$", l) else l for l in labels]
 
@@ -103,7 +111,11 @@ ax.legend(
 ax.grid(axis="y", alpha=0.5)
 ax.set_xlabel("")
 
-plt.xticks(rotation=90)
+plt.xticks(
+    ticks=list(model_to_number.values()),
+    labels=list(model_to_number.keys()),
+    rotation=90,
+)
 
 sns.despine()
 

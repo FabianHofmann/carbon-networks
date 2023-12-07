@@ -11,7 +11,7 @@ import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-from pypsa.plot import add_legend_circles, add_legend_patches
+from pypsa.plot import add_legend_circles, add_legend_patches, add_legend_lines
 from matplotlib.gridspec import GridSpec
 from common import (
     import_network,
@@ -26,8 +26,8 @@ warnings.filterwarnings("ignore", category=UserWarning)
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_balance_map",
-        run="co2-only",
-        clusters=40,
+        run="full",
+        clusters=90,
         ext="png",
     )
 
@@ -38,16 +38,16 @@ n = import_network(snakemake.input.network, revert_dac=True)
 regions = gpd.read_file(snakemake.input.onshore_regions).set_index("name")
 which = "operation"
 config = snakemake.config
+run = snakemake.wildcards.run
+labels = config["labels"]
 
 alpha = 1
 region_alpha = 0.6
-
 
 s = n.statistics
 colors = n.carriers.set_index("nice_name").color
 
 for kind, output in snakemake.output.items():
-
     # Create a GridSpec object
     gs = GridSpec(1, 2, width_ratios=[20, 20])
 
@@ -80,7 +80,12 @@ for kind, output in snakemake.output.items():
         bus_scale = float(specs["bus_scale"])
         branch_scale = float(specs["branch_scale"])
         flow_scale = float(specs["flow_scale"])
-        legend_kwargs = {"loc": "upper left", "frameon": False}
+        legend_kwargs = {
+            "loc": "upper left",
+            "frameon": True,
+            "framealpha": 1,
+            "edgecolor": "None",
+        }
         unit = specs["unit"]
 
         if tag == "production":
@@ -158,7 +163,9 @@ for kind, output in snakemake.output.items():
 
         ax.set_extent(snakemake.config["plotting"]["extent"])
         if snakemake.params.settings.get("title", True):
-            ax.set_title(config["labels"].get(kind, kind.title()) + " " + tag.title())
+            carrier_label = labels.get(kind, kind.title())
+            title = f"{carrier_label} {tag.title()} ({labels[run]} Model)"
+            ax.set_title(title)
 
         legend_bus_sizes = specs["bus_sizes"]
         if legend_bus_sizes is not None:
@@ -169,13 +176,26 @@ for kind, output in snakemake.output.items():
                 legend_kw={"bbox_to_anchor": (0, 1), **legend_kwargs},
             )
 
+        legend_branch_sizes = specs["branch_sizes"]
+        if legend_branch_sizes is not None:
+            add_legend_lines(
+                ax,
+                [s * branch_scale * 1e6 for s in legend_branch_sizes],
+                [f"{s} {unit}" for s in legend_branch_sizes],
+                legend_kw={
+                    "bbox_to_anchor": (0, 0.85),
+                    "framealpha": 0.7,
+                    **legend_kwargs,
+                },
+            )
+
     fig.tight_layout()
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(vmin=vmin, vmax=vmax))
     title = kind.title() if kind != "carbon" else f"Capturing {kind.title()}"
     cbr = fig.colorbar(
         sm,
         ax=axes,
-        label=f"Average Price of {title} [{region_unit}]",
+        label=f"Average Marginal Price of {title} [{region_unit}]",
         shrink=0.6,
         pad=0.03,
         aspect=30,
