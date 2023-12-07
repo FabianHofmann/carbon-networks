@@ -54,5 +54,6 @@ sector:
       2050: 0.8
 
 solving:
-  walltime: 2-02:00:00
+  walltime: 3-00:00:00
   mem: 150000
+  partition: big

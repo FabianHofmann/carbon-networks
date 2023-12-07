@@ -19,22 +19,10 @@ run:
     - full
     - net-negative-0.1/baseline
     - net-negative-0.1/co2-only
-    - net-negative-0.1/h2-only
-    - net-negative-0.1/full
-    - half-price/co2-only
-    - half-price/full
-
-    # old setup
-    # - w-fc/baseline
-    # - w-fc/co2-only
-    # - w-fc/h2-only
-    # - w-fc/full
-    # - w-fc/net-negative-0.1/baseline
-    # - w-fc/net-negative-0.1/co2-only
-    # - w-fc/net-negative-0.1/h2-only
-    # - w-fc/net-negative-0.1/full
-    # - w-fc/half-price/co2-only
-    # - w-fc/half-price/full
+    - net-negative-0.1/h2-only # sub-optimal (6.12.2023)
+    - net-negative-0.1/full # numerical problems (6.12.2023)
+    - half-price/co2-only # time-limit (6.12.2023)
+    - half-price/full # sub-optimal (6.12.2023)
 
   scenarios:
     enable: true
