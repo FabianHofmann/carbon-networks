@@ -73,7 +73,17 @@ if snakemake.wildcards.comparison == "default":
     baseline = total["Baseline"]
     decrease = 1 - total / baseline
     for i, (val, y) in enumerate(zip(decrease, total)):
-        if val > 0:
+        if val == 0:
+            ax.text(
+                i,
+                y + pad,
+                f"{baseline:.0f}",
+                ha="center",
+                va="bottom",
+                fontsize=7,
+                color="gray",
+            )
+        else:
             ax.text(
                 i,
                 y + pad,

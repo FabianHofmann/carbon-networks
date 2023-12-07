@@ -16,6 +16,7 @@ from common import (
     sort_rows_by_relative_diff,
     import_network,
     mock_snakemake,
+    get_ordered_handles_labels,
 )
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
@@ -23,7 +24,7 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
         "plot_balance_area",
         ext="pdf",
         clusters=90,
-        run="co2-only",
+        run="full",
     )
 
 sns.set_theme(**snakemake.params["theme"])
@@ -59,7 +60,7 @@ for kind, output in snakemake.output.items():
     pos = ds[ds.gt(0).any(axis=1)]
     neg = ds[ds.le(0).any(axis=1)]
 
-    pos[::-1].where(lambda ds: ds > 0).T.plot.area(
+    pos.where(lambda ds: ds > 0).T.plot.area(
         color=colors, ax=ax, stacked=True, alpha=0.8, lw=0, rot=0, ylim=(-ylim, ylim)
     )
     neg.where(lambda ds: ds <= 0).T.plot.area(
@@ -78,12 +79,10 @@ for kind, output in snakemake.output.items():
     ax.xaxis.set_major_formatter(formatter)
     fig.autofmt_xdate(ha="left", rotation=0)
 
-    h, l = ax.get_legend_handles_labels()
-    order = pd.Index([*pos.index, *neg.index]).drop_duplicates(keep="first")
-    legend = pd.Series(h, index=l)[lambda ds: ~ds.index.duplicated()][order]
+    handles, labels = get_ordered_handles_labels(ax, ds)
     ax.legend(
-        legend.values,
-        legend.index,
+        handles,
+        labels,
         loc="center left",
         bbox_to_anchor=(1, 0.5),
         frameon=False,

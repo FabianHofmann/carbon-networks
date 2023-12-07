@@ -524,9 +524,7 @@ def modify_carrier_names(n):
 
 
 def update_colors(n):
-    config = yaml.load(
-        open(root / "config" / "config.pypsa-eur.yaml"), yaml.CFullLoader
-    )
+    config = yaml.load(open(root / "config" / "config.plotting.yaml"), yaml.CFullLoader)
     colors = pd.Series(config["plotting"]["tech_colors"])
     n.carriers.color.update(colors)
 

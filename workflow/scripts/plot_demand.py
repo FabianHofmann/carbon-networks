@@ -18,7 +18,6 @@ n = import_network(
 )
 s = n.statistics
 
-# %%
 demand = s.withdrawal(groupby=s.groupers.get_carrier_and_bus_carrier).Load
 
 

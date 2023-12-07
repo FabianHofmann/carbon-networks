@@ -41,7 +41,7 @@ df = df.unstack()
 df = df.loc[["net-neutral", "net-negative-0.1"]][
     ["baseline", "co2-only", "h2-only", "full"]
 ]
-df = df.div(1e9).round(0).astype(int)  # bn €
+df = df.div(1e9).round(0).fillna(0).astype(int)  # bn €
 
 data = df.rename(config["labels"], axis=1).rename(config["labels"], axis=0).T
 
