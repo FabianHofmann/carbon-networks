@@ -174,7 +174,7 @@ plotting:
     title: True
     alpha: 1
     region_alpha: 0.6
-    figsize: [5, 6]
+    figsize: [5, 6.5]
     electricity:
       unit: GW
       region_cmap: Greens
@@ -288,6 +288,7 @@ plotting:
         - 100 # TWh
         - 50 # TWh
       branch_sizes: null
+
 
   tech_colors:
       biogas: '#0e803d'

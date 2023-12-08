@@ -107,7 +107,7 @@ The study is conducted on the basis of the open-source, capacity-expansion model
 The model optimizes the design and operation of the European energy system, encompassing the power, heat, industry, waste, agriculture, and transport sectors, including international aviation and shipping.
 
 \begin{figure}
-    \includegraphics[width=\linewidth]{baseline/figures/90_nodes/total-demand-bar.png}
+    \includegraphics[width=\linewidth]{baseline/figures/90_nodes/demand_bar.png}
     \caption{Assumptions on exogenous demand, derived from~\cite{piamanzGeoreferencedIndustrialSites2018,muehlenpfordtTimeSeries2019,mantzosJRCIDEES20152018,NationalEmissionsReported2023,EurostatCompleteEnergyBalance,uwekrienDemandlib2023}. The figure shows the total annual energy demand for each energy source which determine the model's endogenous investments and operation. Endogenous processes can lead to higher total production volumes of some energy carriers, e.g., the demand for methanol requires more hydrogen and carbon as secondary (energy) inputs, which are not considered here. The model are defined per region and time stamp.}
     % TODO: adjust labels to show that these are exogenous assumptions
     \label{fig:total-demand-bar}
@@ -243,17 +243,14 @@ The results illustrate the fundamentally different approaches of the grids: a \c
     \centering
     \begin{subfigure}{.49\textwidth}
         \centering
-        \includegraphics[width=\linewidth]{full/figures/90_nodes/balance_map_hydrogen.png}
-        \caption{\hydrogen{} Sector.}
-        \label{fig:capacity_map_hydrogen_co2}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{.49\textwidth}
-        \centering
         \includegraphics[width=\linewidth]{full/figures/90_nodes/balance_map_carbon.png}
-        \caption{\carbon{} Sector.}
         \label{fig:capacity_map_carbon_co2}
     \end{subfigure}%
+    \begin{subfigure}{.49\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{full/figures/90_nodes/balance_map_hydrogen.png}
+        \label{fig:capacity_map_hydrogen_co2}
+    \end{subfigure}
     \caption{Optimal production and transport capacities of the carbon and hydrogen sector in a net-zero energy system in Europe with both \carbon{} and \hydrogen{} network expansion (Hybrid).
     % Carbon network looks the same as in~\cite{morbeeOptimisedDeploymentEuropean2012}: two backbones, one in the nothern Europe other in south east.
     }

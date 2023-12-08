@@ -3,7 +3,7 @@ configs:
   presentation: 0
 
 report:
-  path: "report/submissions/ecemp/presentation/presentation"
+  path: "report/submissions/journal/paper/paper.tex"
 
 remote:
   # ssh: zecm
@@ -89,14 +89,24 @@ difference:
   baseline-full:
     - full
     - baseline
+  subsidy-co2-only:
+    - co2-only
+    - half-price/co2-only
+  subsidy-full:
+    - full
+    - half-price/full
 difference-comparison:
   emission-reduction-0.1:
+    - emission-reduction-0.1-co2-only
     - emission-reduction-0.1-h2-only
     - emission-reduction-0.1-full
   baseline:
     - baseline-co2-only
     - baseline-h2-only
     - baseline-full
+  subsidy:
+    - subsidy-co2-only
+    - subsidy-full
 
 labels:
   baseline: "Baseline"
@@ -104,8 +114,8 @@ labels:
   h2-only: "H$_2$-Grid"
   full: "Hybrid"
 
-  half-price/co2-only: "Cheap CO$_2$ Grid"
-  half-price/full: "H$_2$ & Cheap CO$_2$ Grid"
+  half-price/co2-only: "CO$_2$-Grid\n(Subs.)"
+  half-price/full: "Hybrid\n(Subs.)"
 
   net-neutral: "NZ"
   net-negative-0.1: "NN"
@@ -114,19 +124,6 @@ labels:
   net-negative-0.1/co2-only: "CO$_2$-Grid (NN)"
   net-negative-0.1/h2-only: "H$_2$-Grid (NN)"
   net-negative-0.1/full: "Hybrid (NN)"
-
-  w-fc/baseline: "Baseline"
-  w-fc/co2-only: "CO$_2$-Grid"
-  w-fc/h2-only: "H$_2$-Grid"
-  w-fc/full: "Hybrid"
-  w-fc/half-price/co2-only: "Cheap CO$_2$ Grid"
-  w-fc/half-price/full: "H$_2$ & Cheap CO$_2$ Grid"
-  w-fc/net-neutral: "NZ"
-  w-fc/net-negative-0.1: "NN"
-  w-fc/net-negative-0.1/baseline: "Baseline (NN)"
-  w-fc/net-negative-0.1/co2-only: "CO$_2$-Grid (NN)"
-  w-fc/net-negative-0.1/h2-only: "H$_2$-Grid (NN)"
-  w-fc/net-negative-0.1/full: "Hybrid (NN)"
 
   carbon: "Captured Carbon"
   hydrogen: "Hydrogen"

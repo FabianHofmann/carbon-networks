@@ -53,7 +53,7 @@ fig, axes = plt.subplots(
 for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
     s = n.statistics
     colors = n.carriers.set_index("nice_name").color
-    run = snakemake.wildcards.run
+    run = n.meta["wildcards"]["run"]
 
     for kind, ax in zip(["carbon", "hydrogen"], axs):
         carriers = config["constants"]["carrier_to_buses"].get(kind, [kind])
@@ -169,6 +169,11 @@ for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
                 .sort_values()
             )
 
+            # fix bug related to falsely clipped normalization
+            if kind == "hydrogen" and "H$_2$ For Industry" in prod_carriers:
+                prod_carriers = prod_carriers.difference(["H$_2$ For Industry"])
+                cons_carriers = cons_carriers.union(["H$_2$ For Industry"])
+
             add_legend_patches(
                 ax,
                 colors[prod_carriers],
@@ -188,7 +193,7 @@ for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
                 cons_carriers.map(wrapper.fill),
                 patch_kw={"alpha": alpha},
                 legend_kw={
-                    "bbox_to_anchor": (1, 0.4),
+                    "bbox_to_anchor": (1, 0.5),
                     "ncol": 1,
                     "title": "Consumption",
                     **legend_kwargs,
@@ -200,7 +205,10 @@ for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
             ax,
             [s * bus_scale * 1e6 for s in legend_bus_sizes],
             [f"{s} {unit}" for s in legend_bus_sizes],
-            **legend_kwargs,
+            legend_kw={
+                "bbox_to_anchor": (0, 1),
+                **legend_kwargs,
+            },
         )
         legend_branch_sizes = specs["branch_sizes"]
         if legend_branch_sizes is not None:

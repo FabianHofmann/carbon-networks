@@ -20,7 +20,7 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
         "plot_cost_bar_transmission",
         ext="png",
         clusters=90,
-        comparison="emission-reduction-full",
+        comparison="subsidy",
     )
 
 sns.set_theme(**snakemake.params["theme"])
@@ -70,7 +70,7 @@ fig, ax = plt.subplots(
 )
 
 
-defaults = dict(kind="bar", stacked=True, lw=0, rot=0, alpha=0.8)
+defaults = dict(kind="bar", stacked=True, lw=0, rot=90, alpha=0.8)
 
 kwargs = {**defaults, **snakemake.params.settings.get("kwargs", {})}
 data.T.plot(ax=ax, color=colors.to_dict(), **kwargs)
@@ -78,7 +78,7 @@ for container in ax.containers:
     ax.bar_label(
         container,
         label_type="center",
-        fmt=lambda x: int(round(x, 0)),
+        fmt=lambda x: int(round(x, 0)) if x > 0 else "",
         fontsize=7,
         color="grey",
     )

@@ -11,11 +11,9 @@ import seaborn as sns
 from common import import_network
 import matplotlib.pyplot as plt
 
-sns.set_theme(style="white", context="paper")
+sns.set_theme(**snakemake.params["theme"])
 
-n = import_network(
-    "/home/fabian/papers/co2-network/results/baseline/networks/90_nodes.nc"
-)
+n = import_network(snakemake.input.network)
 s = n.statistics
 
 demand = s.withdrawal(groupby=s.groupers.get_carrier_and_bus_carrier).Load
@@ -61,6 +59,6 @@ ax.legend(title="", frameon=False, bbox_to_anchor=(0, 1.2), loc="upper left")
 sns.despine()
 
 fig.savefig(
-    "/home/fabian/papers/co2-network/results/baseline/figures/90_nodes/total-demand-bar.png",
+    snakemake.output.figure,
     bbox_inches="tight",
 )

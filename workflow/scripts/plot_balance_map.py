@@ -159,6 +159,7 @@ for kind, output in snakemake.output.items():
 
     pad = 0.18
     carriers = n.carriers.set_index("nice_name")
+    carriers.loc["", "color"] = "None"
     prod_carriers = bus_sizes[bus_sizes > 0].index.unique("carrier").sort_values()
     cons_carriers = (
         bus_sizes[bus_sizes < 0]
@@ -166,6 +167,14 @@ for kind, output in snakemake.output.items():
         .difference(prod_carriers)
         .sort_values()
     )
+
+    if kind == "hydrogen":
+        # fix bug related to falsely clipped normalization
+        if kind == "hydrogen" and "H$_2$ For Industry" in prod_carriers:
+            prod_carriers = prod_carriers.difference(["H$_2$ For Industry"])
+            cons_carriers = cons_carriers.union(["H$_2$ For Industry"])
+        # cheat and add a dummy carrier to align legend with carbon balance
+        cons_carriers = list(cons_carriers) + ["", ""]
 
     add_legend_patches(
         ax,

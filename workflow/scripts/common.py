@@ -561,6 +561,7 @@ def add_carrier_nice_names(n):
         "Agriculture Machinery Oil Emissions": "Agriculture Emissions",
         "Oil Emissions": "Aviation and Petrochemical\nEmissions",
         "Allam": "Allam Cycle",
+        "Sequestered": "Sequestration",
     }
     nice_names = n.carriers.nice_name.str.title()
     n.carriers.nice_name = nice_names.replace(replace, regex=True)

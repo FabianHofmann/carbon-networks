@@ -1,4 +1,5 @@
 import pathlib
+import re
 
 
 configfile: "workflow/subworkflows/pypsa-eur/config/config.default.yaml"
@@ -31,6 +32,25 @@ module pypsaeur:
         "subworkflows/pypsa-eur/Snakefile"
     config:
         config
+
+
+def get_graphics(tex_file):
+    with open(tex_file, "r") as file:
+        contents = file.read()
+    graphs = re.findall(r"\\includegraphics\[.*\]\{(.+?)\}", contents)
+    prefix = "results/"
+    return [prefix + graph for graph in graphs]
+
+
+rule graphics:
+    input:
+        get_graphics(config["report"]["path"]),
+    output:
+        "results/.graphics",
+    shell:
+        """
+        touch {output}
+        """
 
 
 rule main:
@@ -103,10 +123,11 @@ rule main:
         expand(
             "results/comparison/emission-reduction/figures/{clusters}_nodes/objective_heatmap.{ext}",
             clusters=config["scenario"]["clusters"],
-            ext=["png", "pdf"],
+            ext=["png"],
         ),
         # dedicated plots
         "results/comparison/single-technologies/figures/90_nodes/balance_map_dedicated.png",
+        "results/baseline/figures/90_nodes/demand_bar.png",
     output:
         "results/figures.zip",
         # "results/.main",
@@ -119,11 +140,11 @@ rule main:
 
 rule report:
     input:
-        tex=config["report"]["path"] + ".tex",
+        tex=config["report"]["path"],
         bib="report/references.bib",
         figures="results/.main",
     output:
-        pdf=config["report"]["path"] + ".pdf",
+        pdf=config["report"]["path"].replace(".tex", ".pdf"),
     shell:
         """
         pdflatex {input.tex} && bibtex {input.bib} && pdflatex {input.tex} && pdflatex {input.tex}
@@ -170,6 +191,19 @@ rule get_all_solved_networks:
             run=config["run"]["name"],
             **config["scenario"]
         ),
+
+
+rule plot_demand_bar:
+    params:
+        theme=config["plotting"]["theme"],
+    input:
+        network="results/{run}/networks/{clusters}_nodes.nc",
+    output:
+        figure="results/{run}/figures/{clusters}_nodes/demand_bar.{ext}",
+    resources:
+        mem_mb=20000,
+    script:
+        "scripts/plot_demand_bar.py"
 
 
 rule plot_capacity_map:
@@ -279,8 +313,6 @@ rule plot_sankey_diagramm:
 
 
 # COMPARISON
-
-
 def get_comparison_networks(w):
     return expand(
         "results/{run}/networks/{clusters}_nodes.nc",
