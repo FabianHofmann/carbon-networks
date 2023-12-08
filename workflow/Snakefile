@@ -45,12 +45,6 @@ def get_graphics(tex_file):
 rule graphics:
     input:
         get_graphics(config["report"]["path"]),
-    output:
-        "results/.graphics",
-    shell:
-        """
-        touch {output}
-        """
 
 
 rule main:
