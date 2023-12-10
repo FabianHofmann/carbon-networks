@@ -22,8 +22,6 @@ logger = logging.getLogger(__name__)
 
 root = Path(__file__).parent.parent.parent.resolve()
 pypsa_eur = root / "workflow/subworkflows/pypsa-eur"
-pypsa_eur_sec = root / "workflow/subworkflows/pypsa-eur-sec"
-override_dir = pypsa_eur_sec / "data/override_component_attrs"
 
 
 SITES = [
@@ -50,21 +48,22 @@ def set_scenario_config(snakemake):
         update_config(snakemake.config, scenario_config[snakemake.wildcards.run])
 
 
-def import_network(path, revert_dac=False):
-    overrides = override_component_attrs(override_dir)
-    n = pypsa.Network(path, override_component_attrs=overrides)
+def import_network(
+    path, revert_dac=False, offshore_sequestration=False, offshore_regions=None
+):
+    n = pypsa.Network(path)
+    if offshore_sequestration:
+        move_sequestration_offshore(n, offshore_regions)
+    if revert_dac:
+        revert_dac_ports(n)
     sanitize_locations(n)
-    update_colors(n)
     fill_missing_carriers(n)
     modify_carrier_names(n)
     add_carrier_nice_names(n)
-    # add_colors(n)
+    update_colors(n)
     if n.carriers.notnull().all().all() and (n.carriers != "").all().all():
         warnings.warn("Some carriers have no color or nice_name")
     n.carriers = n.carriers.sort_values(["color"])
-
-    if revert_dac:
-        revert_dac_ports(n)
     return n
 
 
@@ -74,6 +73,57 @@ def revert_dac_ports(n):
     n.links_t.p0[dac], n.links_t.p2[dac] = (
         n.links_t.p2[dac],
         n.links_t.p0[dac].values,
+    )
+
+
+def move_sequestration_offshore(n, offshore_regions):
+    if offshore_regions is None:
+        raise ValueError(
+            "offshore regions must be given for reallocating sequestration"
+        )
+
+    offcoords = pd.concat(
+        [offshore_regions.centroid.x, offshore_regions.centroid.y],
+        axis=1,
+        keys=["x", "y"],
+    )
+
+    hubs = offcoords.index
+    hubs_co2 = hubs + " co2 stored"
+
+    offbuses = n.madd(
+        "Bus",
+        offcoords.index,
+        suffix=" offshore",
+        location=offcoords.index + " offshore",
+        carrier="AC",
+        **offcoords,
+    )
+    offbuses_co2 = n.madd(
+        "Bus",
+        offcoords.index,
+        suffix=" co2 stored offshore",
+        carrier="co2 stored",
+        location=offcoords.index + " co2 stored offshore",
+        **offcoords,
+    )
+
+    sequestration_buses = n.buses.query("carrier == 'co2 sequestered'").index
+    n.buses.loc[sequestration_buses, "location"] += " offshore"
+    sequestration_links = n.links.query("carrier == 'co2 sequestered'").index
+    n.links.loc[sequestration_links, "bus0"] += " offshore"
+
+    rename = lambda col: col.replace(" co2 sequestered", "")
+    p = n.links_t.p0[sequestration_links].rename(columns=rename)[hubs].values
+    names = "CO2 pipeline " + hubs + " -> " + offbuses
+    n.madd(
+        "Link",
+        names,
+        bus0=hubs_co2,
+        bus1=offbuses_co2,
+        carrier="CO2 pipeline",
+        p0=p,
+        p1=-p,
     )
 
 
@@ -456,41 +506,11 @@ def get_generation_carriers(n):
     return list(set.union(*carriers))
 
 
-def assign_location(n):
-    for c in n.one_port_components | n.branch_components:
-        df = n.df(c)
-
-        if "location" not in df:
-            df["location"] = np.nan
-
-        bus_col = df.columns[df.columns.str.startswith("bus")][0]
-        df["location"] = df[bus_col].map(n.buses.location)
-
-
-def assign_interconnection(n):
-    for c in n.branch_components:
-        df = n.df(c)
-        if df.empty:
-            continue
-
-        location0 = df.bus0.map(n.buses.location)
-        location1 = df.bus1.map(n.buses.location)
-        locations = pd.concat([location0, location1], axis=1)
-        df["location0"] = location0
-        df["location1"] = location1
-
-        connections = locations.apply(lambda ds: " - ".join(sorted(ds)), axis=1)
-        connections = connections.where(location0 != location1)
-        df["interconnection"] = connections
-
-
 def sanitize_locations(n):
     if "EU" not in n.buses.index:
         n.add("Bus", "EU", x=-5.5, y=46)
         n.buses.loc["EU", "location"] = "EU"
         n.buses.loc["co2 atmosphere", "location"] = "EU"
-    assign_location(n)
-    assign_interconnection(n)
     n.buses["x"] = n.buses.location.map(n.buses.x)
     n.buses["y"] = n.buses.location.map(n.buses.y)
 
@@ -499,7 +519,7 @@ def fill_missing_carriers(n):
     for c in n.iterate_components(n.one_port_components | n.branch_components):
         new_carriers = set(c.df.carrier.unique()) - set(n.carriers.index)
         if new_carriers:
-            n.madd("Carrier", list(new_carriers))
+            n.madd("Carrier", list(new_carriers), nice_name=list(new_carriers))
 
 
 def modify_carrier_names(n):
@@ -545,6 +565,10 @@ def get_carrier_mapper(n):
 
 def add_carrier_nice_names(n):
     # replace abbreviations with capital letters
+    config = yaml.load(open(root / "config" / "config.plotting.yaml"), yaml.CFullLoader)
+    nice_names = pd.Series(config["plotting"]["nice_names"])
+    n.carriers.nice_name.update(nice_names)
+
     replace = {
         "H2": "H$_2$",
         "Hydrogen": "H$_2$",
@@ -565,17 +589,6 @@ def add_carrier_nice_names(n):
     }
     nice_names = n.carriers.nice_name.str.title()
     n.carriers.nice_name = nice_names.replace(replace, regex=True)
-
-
-def add_colors(n):
-    config = yaml.load(
-        open(root / "config" / "config.pypsa-eur-sec.yaml"), yaml.CFullLoader
-    )
-    colors = config["plotting"]["tech_colors"]
-    n.carriers.color = n.carriers.color.where(n.carriers.color != "")
-    n.carriers.color.update(colors)
-    mapper = get_carrier_mapper(n)
-    n.carriers.color = n.carriers.color.fillna(mapper.map(colors))
 
 
 def override_component_attrs(directory):

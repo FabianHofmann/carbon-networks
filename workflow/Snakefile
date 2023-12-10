@@ -261,6 +261,9 @@ rule plot_balance_map:
         onshore_regions="resources/regions_onshore_elec_s{simpl}_{{clusters}}.geojson".format(
             **config["scenario"]
         ),
+        offshore_regions="resources/regions_offshore_elec_s{simpl}_{{clusters}}.geojson".format(
+            **config["scenario"]
+        ),
     resources:
         mem_mb=20000,
     output:
@@ -502,6 +505,9 @@ rule plot_balance_map_dedicated:
             for run in ["co2-only", "h2-only"]
         ],
         onshore_regions="resources/regions_onshore_elec_s{simpl}_{{clusters}}.geojson".format(
+            **config["scenario"]
+        ),
+        offshore_regions="resources/regions_offshore_elec_s{simpl}_{{clusters}}.geojson".format(
             **config["scenario"]
         ),
     resources:

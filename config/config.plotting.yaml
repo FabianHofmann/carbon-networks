@@ -179,7 +179,7 @@ plotting:
       unit: GW
       region_cmap: Greens
       region_unit: €/MWh
-      bus_scale: 4e-9
+      bus_scale: 2e-9
       branch_scale: 2e-8
       flow_scale: 1e-5
       bus_sizes:
@@ -192,7 +192,7 @@ plotting:
       unit: GW
       region_cmap: Purples
       region_unit: €/MWh
-      bus_scale: 1e-8
+      bus_scale: 5e-9
       branch_scale: 5e-9
       flow_scale: 6e-6
       bus_sizes:
@@ -207,22 +207,22 @@ plotting:
       unit: GW
       region_cmap: Blues
       region_unit: €/MWh
-      bus_scale: 5e-9
+      bus_scale: 2.5e-9
       branch_scale: 6e-9
       flow_scale: 8e-6
       bus_sizes:
+        - 200 # TWh
         - 100 # TWh
-        - 50 # TWh
       branch_sizes:
+        - 200 # TWh
         - 100 # TWh
-        - 50 # TWh
     carbon:
       vmin: 100
       vmax: 160
       unit: Mt/h
       region_cmap: Purples
       region_unit: €/t
-      bus_scale: 2e-8
+      bus_scale: 1e-8
       branch_scale: 5e-8
       flow_scale: 7e-5
       bus_sizes:
@@ -235,7 +235,7 @@ plotting:
       unit: Mt/h
       region_cmap: Purples
       region_unit: €/t
-      bus_scale: 8e-8
+      bus_scale: 4e-8
       branch_scale: 5e-7
       flow_scale: 2e-3
       bus_sizes:
@@ -248,7 +248,7 @@ plotting:
       unit: GW
       region_cmap: Oranges
       region_unit: €/MWh
-      bus_scale: 1e-8
+      bus_scale: 5e-9
       branch_scale: 1e-8
       flow_scale: 1e-5
       bus_sizes:
@@ -259,7 +259,7 @@ plotting:
       unit: GW
       region_cmap: Greens
       region_unit: €/MWh
-      bus_scale: 1e-8
+      bus_scale: 5e-9
       branch_scale: 1e-8
       flow_scale: 1e-5
       bus_sizes:
@@ -290,6 +290,7 @@ plotting:
       branch_sizes: null
 
 
+  nice_names: {}
   tech_colors:
       biogas: '#0e803d'
       biomass: '#008020'
@@ -310,6 +311,7 @@ plotting:
       SMR: '#870c71'
       SMR CC: '#4f1745'
       AC: rosybrown
+      CO2 pipeline: '#f5627f' # needed as inserted flexibly post-optimization
   technology_groups:
     AC: Electricity Grid
     BEV charger: Battery Infrastructure

@@ -33,8 +33,15 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
 sns.set_theme(**snakemake.params["theme"])
 plt.rc("patch", linewidth=0.1)
 
-n = import_network(snakemake.input.network, revert_dac=True)
-regions = gpd.read_file(snakemake.input.onshore_regions).set_index("name")
+onregions = gpd.read_file(snakemake.input.onshore_regions).set_index("name")
+offregions = gpd.read_file(snakemake.input.offshore_regions).set_index("name")
+n = import_network(
+    snakemake.input.network,
+    revert_dac=True,
+    offshore_sequestration=True,
+    offshore_regions=offregions,
+)
+
 config = snakemake.config
 labels = config["labels"]
 
@@ -87,6 +94,35 @@ for kind, output in snakemake.output.items():
     branch_colors = {c: colors[carrier] for c, carrier in transmission_carriers}
     fallback = pd.Series()
 
+    # plot sequestration sinks as full circles, watch out in current pypsa verion
+    # the bus sizes are reduced by factor 2 if split circles is activated!
+    # https://github.com/PyPSA/PyPSA/issues/799
+    bus_sizes = bus_sizes * 2
+
+    if kind == "carbon":
+        sequestration_sizes = -bus_sizes.loc[:, ["CO$_2$ Sequestration"]] / 2
+        bus_sizes = bus_sizes.drop("CO$_2$ Sequestration", level=1)
+        n.plot(
+            bus_sizes=sequestration_sizes * bus_scale,
+            bus_colors=colors,
+            bus_alpha=alpha,
+            line_widths=0,
+            link_widths=0,
+            ax=ax,
+            color_geomap=False,
+            geomap=True,
+            boundaries=snakemake.config["plotting"]["extent"],
+        )
+        offregions.plot(
+            ax=ax,
+            facecolor="None",
+            edgecolor="darkgrey",
+            linewidth=0.1,
+            alpha=region_alpha,
+            transform=ccrs.PlateCarree(),
+            aspect="equal",
+        )
+
     n.plot(
         bus_sizes=bus_sizes * bus_scale,
         bus_colors=colors,
@@ -121,16 +157,16 @@ for kind, output in snakemake.output.items():
     if kind == "carbon":
         price = price - n.global_constraints.mu["CO2Limit"]
 
-    regions["price"] = price.reindex(regions.index).fillna(0)
+    onregions["price"] = price.reindex(onregions.index).fillna(0)
     region_unit = specs["region_unit"]
     cmap = specs["region_cmap"]
 
     if set(["vmin", "vmax"]).issubset(specs):
         vmin, vmax = specs["vmin"], specs["vmax"]
     else:
-        vmin, vmax = regions.price.min(), regions.price.max()
+        vmin, vmax = onregions.price.min(), onregions.price.max()
 
-    regions.plot(
+    onregions.plot(
         ax=ax,
         column="price",
         cmap=cmap,
