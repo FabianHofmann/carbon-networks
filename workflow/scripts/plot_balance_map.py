@@ -94,8 +94,8 @@ for kind, output in snakemake.output.items():
     branch_colors = {c: colors[carrier] for c, carrier in transmission_carriers}
     fallback = pd.Series()
 
-    # plot sequestration sinks as full circles, watch out in current pypsa verion
-    # the bus sizes are reduced by factor 2 if split circles is activated!
+    # plot sequestration sinks as full circles, watch out in current pypsa version
+    # the bus area is reduced by factor 2 if split circles is activated!
     # https://github.com/PyPSA/PyPSA/issues/799
     bus_sizes = bus_sizes * 2
 
@@ -265,3 +265,6 @@ for kind, output in snakemake.output.items():
         output,
         dpi=300,
     )
+
+    if kind == "carbon":
+        break
