@@ -292,26 +292,26 @@ plotting:
 
   nice_names: {}
   tech_colors:
-      biogas: '#0e803d'
-      biomass: '#008020'
-      biogas to gas: '#805500'
-      solid biomass: '#008020'
-      solid biomass transport: '#008020'
-      solid biomass for industry: '#008010'
-      solid biomass for industry CC: '#00600c'
-      solid biomass for industry co2 from atmosphere: '#008008'
-      solid biomass for industry co2 to stored: '#00600c'
-      urban central solid biomass CHP: '#007008'
-      urban central solid biomass CHP CC: '#004008'
-      biomass boiler: '#006030'
-      residential rural biomass boiler: '#006030'
-      residential urban decentral biomass boiler: '#006020'
-      services rural biomass boiler: '#006030'
-      services urban decentral biomass boiler: '#004020'
-      SMR: '#870c71'
-      SMR CC: '#4f1745'
-      AC: rosybrown
-      CO2 pipeline: '#f5627f' # needed as inserted flexibly post-optimization
+    biogas: '#0e803d'
+    biomass: '#008020'
+    biogas to gas: '#805500'
+    solid biomass: '#008020'
+    solid biomass transport: '#008020'
+    solid biomass for industry: '#008010'
+    solid biomass for industry CC: '#00600c'
+    solid biomass for industry co2 from atmosphere: '#008008'
+    solid biomass for industry co2 to stored: '#00600c'
+    urban central solid biomass CHP: '#007008'
+    urban central solid biomass CHP CC: '#004008'
+    biomass boiler: '#006030'
+    residential rural biomass boiler: '#006030'
+    residential urban decentral biomass boiler: '#006020'
+    services rural biomass boiler: '#006030'
+    services urban decentral biomass boiler: '#004020'
+    SMR: '#870c71'
+    SMR CC: '#4f1745'
+    AC: rosybrown
+    CO2 pipeline: '#f5627f' # needed as inserted flexibly post-optimization
   technology_groups:
     AC: Electricity Grid
     BEV charger: Battery Infrastructure
@@ -405,6 +405,7 @@ plotting:
     Resistive Heater: "#d8f9b8"
     Methanolisation: "#57aac1"
     Methanation: "#c44ce6"
+    Methanol: "#57aac1"
     Electricity Grid: "#97ad8c"
     Electrolysis: "#b3e6ff"
     CO$_2$ Infrastructure: "#cc99ff"

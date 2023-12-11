@@ -66,12 +66,17 @@ def import_network(
     fill_missing_carriers(n)
     modify_carrier_names(n)
     add_carrier_nice_names(n)
+    add_carrier_groups(n)
     update_colors(n)
     n.carriers.drop("", inplace=True)
     if (no_names := n.carriers.query("nice_name == ''").index).any():
-        warnings.warn(f"Carriers {no_names.index} have no nice_name")
+        warnings.warn(f"Carriers {no_names} have no nice_name")
     if (no_colors := n.carriers.query("color == ''").index).any():
-        warnings.warn(f"Carriers {no_colors.index} have no color")
+        warnings.warn(f"Carriers {no_colors} have no color")
+    if (no_groups := n.carriers.query("group == ''").index).any():
+        warnings.warn(f"Carriers {no_groups} have no technology group")
+    if (no_group_colors := n.carriers.query("group_color == ''").index).any():
+        warnings.warn(f"Carriers {no_group_colors} have no technology group color")
     n.carriers = n.carriers.sort_values(["color"])
     return n
 
@@ -598,13 +603,25 @@ def add_carrier_nice_names(n):
         "Dc": "DC",
         "Sabatier": "Methanation",
         "Land Transport Ev": "Electric Vehicles",
-        "Agriculture Machinery Oil Emissions": "Agriculture Emissions",
-        "Oil Emissions": "Aviation and Petrochemical\nEmissions",
+        "Agriculture Machinery Oil Emissions": "Agriculture Emission",
+        "Oil Emissions": "Aviation and Petrochemical\nEmission",
+        "Shipping Methanol Emissions": "Shipping Methanol Emission",
+        "Process Emissions": "Process Emission",
         "Allam": "Allam Cycle",
         "Sequestered": "Sequestration",
+        "Gas For Industry": "Gas-based Industry Process",
+        "Biomass For Industry": "Biomass-based Industry Process",
     }
     nice_names = n.carriers.nice_name.str.title()
     n.carriers.nice_name = nice_names.replace(replace, regex=True)
+
+
+def add_carrier_groups(n):
+    config = yaml.load(open(root / "config" / "config.plotting.yaml"), yaml.CFullLoader)
+    groups = pd.Series(config["plotting"]["technology_groups"])
+    colors = pd.Series(config["plotting"]["technology_group_colors"])
+    n.carriers["group"] = groups.reindex(n.carriers.index, fill_value="")
+    n.carriers["group_color"] = n.carriers.group.map(colors).fillna("")
 
 
 def override_component_attrs(directory):
