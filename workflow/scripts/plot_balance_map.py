@@ -265,6 +265,3 @@ for kind, output in snakemake.output.items():
         output,
         dpi=300,
     )
-
-    if kind == "carbon":
-        break

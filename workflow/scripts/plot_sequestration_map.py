@@ -28,7 +28,7 @@ offshore_regions = gpd.read_file(
 ).set_index("name")
 offshore_regions = offshore_regions.to_crs(crs.proj4_init)
 offshore_regions["potential"] = (
-    n.stores.set_index("location")
+    n.stores.set_index(n.stores.bus.map(n.buses.location))
     .query("carrier == 'co2 sequestered'")
     .e_nom_max.div(1e6)
 )  # Mt/a

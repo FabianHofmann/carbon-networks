@@ -27,7 +27,7 @@ subtract = False
 df = {}
 carriers = []
 for path in snakemake.input.networks:
-    n = import_network(path)
+    n = import_network(path, remove_gas_store_capital_cost=True)
     capex = n.statistics.capex()
     opex = n.statistics.opex(aggregate_time="sum")
 
@@ -52,7 +52,7 @@ norm = 1e9
 unit = "bn€/a"
 
 groups = snakemake.config["plotting"]["technology_groups"]
-groups = {v: groups[k] for k, v in n.carriers.nice_name.drop("").items()}
+groups = {v: groups[k] for k, v in n.carriers.nice_name.items()}
 grouped = diff.mul(-1).groupby(groups).sum().div(norm)
 # grouped = grouped[grouped.max(axis=1) > 5e4]
 colors = snakemake.config["plotting"]["technology_group_colors"]
@@ -60,7 +60,6 @@ grouped = sort_rows_by_relative_diff(grouped)
 rename = {"Carbon Capt. at Point Sources": "Carbon Capture\nat Point Sources"}
 grouped = grouped.rename(rename, axis=0)
 colors = {rename.get(k, k): v for k, v in colors.items()}
-# %%
 
 fig, ax = plt.subplots(
     1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"

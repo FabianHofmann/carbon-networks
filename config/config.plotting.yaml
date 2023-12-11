@@ -35,7 +35,7 @@ plotting:
     figsize: [4, 4]
 
   cost_bar_wide:
-    figsize: [8, 3]
+    figsize: [9, 4]
 
   cost_bar_transmission:
     figsize: [4, 2.5]
@@ -294,7 +294,7 @@ plotting:
   tech_colors:
       biogas: '#0e803d'
       biomass: '#008020'
-      biogas to gas: #805500
+      biogas to gas: '#805500'
       solid biomass: '#008020'
       solid biomass transport: '#008020'
       solid biomass for industry: '#008010'

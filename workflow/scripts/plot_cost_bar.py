@@ -14,14 +14,15 @@ region_alpha = 0.8
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
-        "plot_cost_bar", ext="png", clusters=90, comparison="default"
+        "plot_cost_bar", ext="png", clusters=90, comparison="emission-reduction"
     )
 
 sns.set_theme(**snakemake.params["theme"])
 
 df = {}
+objective = {}
 for path in snakemake.input.networks:
-    n = import_network(path)
+    n = import_network(path, remove_gas_store_capital_cost=True)
     capex = n.statistics.capex()
     opex = n.statistics.opex(aggregate_time="sum")
 
@@ -32,11 +33,13 @@ for path in snakemake.input.networks:
     key = snakemake.params.labels[n.meta["wildcards"]["run"]]
 
     df[key] = costs
+    objective[key] = n.objective
 
 df = pd.concat(df, axis=1)
+objective = pd.Series(objective)
 
 groups = snakemake.config["plotting"]["technology_groups"]
-groups = {v: groups[k] for k, v in n.carriers.nice_name.drop("").items()}
+groups = {v: groups[k] for k, v in n.carriers.nice_name.items()}
 
 grouped = df.groupby(groups).sum()
 grouped = grouped[grouped.max(axis=1) > 5e4]

@@ -18,7 +18,7 @@ pio.renderers.default = "svg"
 
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
-        "plot_sankey_diagramm", ext="png", clusters=90, run="h2-only"
+        "plot_sankey_diagramm", ext="png", clusters=90, run="net-negative-0.1/full"
     )
 
 

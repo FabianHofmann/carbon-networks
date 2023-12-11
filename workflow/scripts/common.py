@@ -49,20 +49,29 @@ def set_scenario_config(snakemake):
 
 
 def import_network(
-    path, revert_dac=False, offshore_sequestration=False, offshore_regions=None
+    path,
+    revert_dac=False,
+    offshore_sequestration=False,
+    offshore_regions=None,
+    remove_gas_store_capital_cost=False,
 ):
     n = pypsa.Network(path)
     if offshore_sequestration:
         move_sequestration_offshore(n, offshore_regions)
     if revert_dac:
         revert_dac_ports(n)
+    if remove_gas_store_capital_cost:
+        remove_gas_store_capex(n)
     sanitize_locations(n)
     fill_missing_carriers(n)
     modify_carrier_names(n)
     add_carrier_nice_names(n)
     update_colors(n)
-    if n.carriers.notnull().all().all() and (n.carriers != "").all().all():
-        warnings.warn("Some carriers have no color or nice_name")
+    n.carriers.drop("", inplace=True)
+    if (no_names := n.carriers.query("nice_name == ''").index).any():
+        warnings.warn(f"Carriers {no_names.index} have no nice_name")
+    if (no_colors := n.carriers.query("color == ''").index).any():
+        warnings.warn(f"Carriers {no_colors.index} have no color")
     n.carriers = n.carriers.sort_values(["color"])
     return n
 
@@ -125,6 +134,12 @@ def move_sequestration_offshore(n, offshore_regions):
         p0=p,
         p1=-p,
     )
+
+
+def remove_gas_store_capex(n):
+    """Remove capex contributions from gas storages"""
+    gas_stores = n.stores.filter(like="gas Store", axis=0).index
+    n.stores.loc[gas_stores, "capital_cost"] = 0
 
 
 def group_small_contributions(df, threshold=0.01):
@@ -272,7 +287,7 @@ def get_carrier_production(n, kind, config, which="capacity"):
     carriers = specs.get("Generator", [])
     assert_carriers_existent(n, carriers, "Generator")
     gens = n.generators.query("carrier in @carriers")
-    groups = [gens.location, gens.carrier]
+    groups = [gens.bus.map(n.buses.location), gens.carrier]
     if which == "capacity":
         df = gens.groupby(groups).p_nom_opt.sum()
     elif which == "operation":
@@ -300,7 +315,7 @@ def get_carrier_production(n, kind, config, which="capacity"):
     carriers = specs.get("StorageUnit", [])
     assert_carriers_existent(n, carriers, "StorageUnit")
     stos = n.storage_units.query("carrier in @carriers")
-    groups = [stos.location, stos.carrier]
+    groups = [stos.bus.map(n.buses.location), stos.carrier]
     if which == "capacity":
         df = stos.groupby(groups).p_nom_opt.sum()
     elif which == "operation":
@@ -314,7 +329,7 @@ def get_carrier_production(n, kind, config, which="capacity"):
     carriers = specs.get("Store", [])
     assert_carriers_existent(n, carriers, "Store")
     sus = n.stores.query("carrier in @carriers")
-    groups = [sus.location, sus.carrier]
+    groups = [sus.bus.map(location), sus.carrier]
     if which == "operation":
         df = (weights @ n.stores_t.p[sus.index].clip(lower=0)).groupby(groups).sum()
         res.append(df)
@@ -322,7 +337,7 @@ def get_carrier_production(n, kind, config, which="capacity"):
     carriers = specs.get("Load", [])
     assert_carriers_existent(n, carriers, "Load")
     loads = n.loads.query("carrier in @carriers")
-    groups = [loads.location, loads.carrier]
+    groups = [loads.bus.map(n.buses.location), loads.carrier]
     if which == "operation":
         p_set = n.get_switchable_as_dense("Load", "p_set")
         df = -(weights @ p_set[loads.index].clip(upper=0)).groupby(groups).sum()
@@ -354,7 +369,7 @@ def get_carrier_consumption(n, kind, config, which="capacity"):
     carriers = specs.get("Load", [])
     assert_carriers_existent(n, carriers, "Load")
     loads = n.loads.query("carrier in @carriers")
-    groups = [loads.location, loads.carrier]
+    groups = [loads.bus.map(location), loads.carrier]
     if which == "operation":
         p_set = n.get_switchable_as_dense("Load", "p_set")
         df = (weights @ p_set[loads.index].clip(lower=0)).groupby(groups).sum()
@@ -380,7 +395,7 @@ def get_carrier_consumption(n, kind, config, which="capacity"):
     carriers = specs.get("StorageUnit", [])
     assert_carriers_existent(n, carriers, "StorageUnit")
     stos = n.storage_units.query("carrier in @carriers")
-    groups = [stos.location, stos.carrier]
+    groups = [stos.bus.map(location), stos.carrier]
     if which == "capacity":
         df = stos.groupby(groups).p_nom_opt.sum()
     elif which == "operation":
@@ -394,7 +409,7 @@ def get_carrier_consumption(n, kind, config, which="capacity"):
     carriers = specs.get("Store", [])
     assert_carriers_existent(n, carriers, "Store")
     sus = n.stores.query("carrier in @carriers")
-    groups = [sus.location, sus.carrier]
+    groups = [sus.bus.map(location), sus.carrier]
     if which == "capacity":
         df = sus.groupby(groups).e_nom_opt.sum()
     elif which == "operation":
@@ -423,10 +438,11 @@ def get_carrier_storage(n, kind, config, which="capacity"):
     specs = config["constants"]["kind_to_carrier"][kind].get("storage", {})
     res = []
 
+    location = n.buses.location
     carriers = specs.get("StorageUnit", [])
     assert_carriers_existent(n, carriers, "StorageUnit")
     stos = n.storage_units.query("carrier in @carriers")
-    groups = [stos.location, stos.carrier]
+    groups = [stos.bus.map(location), stos.carrier]
     if which == "capacity":
         df = stos.eval("p_nom_opt * max_hours").groupby(groups).sum()
     elif which == "operation":
@@ -440,7 +456,7 @@ def get_carrier_storage(n, kind, config, which="capacity"):
     carriers = specs.get("Store", [])
     assert_carriers_existent(n, carriers, "Store")
     sus = n.stores.query("carrier in @carriers")
-    groups = [sus.location, sus.carrier]
+    groups = [sus.bus.map(location), sus.carrier]
     if which == "capacity":
         df = sus.groupby(groups).e_nom_opt.sum()
     elif which == "operation":
