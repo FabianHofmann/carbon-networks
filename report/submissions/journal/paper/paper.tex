@@ -98,56 +98,6 @@ Another comprehensive example is found in~\cite{becattiniCarbonDioxideCapture202
 To our knowledge, no study has yet considered the co-optimization and comprehensive assessment of both \COtwo{} and \Htwo{} networks in a fully sector-coupled energy system. However, we argue that such an assessment is strongly needed to avoid suboptimal investments and to identify synergies between hydrogen and carbon management technologies. In this paper, we present a detailed study of the European energy system for 2050, which includes high geographical resolution and a comprehensive representation of carbon management technologies. The study is conducted using the PyPSA-Eur energy system model and encompasses all relevant energy sectors. We explore competition between \COtwo{} and \Htwo{} networks by adding them separately. Our evaluation focuses on the transport of \COtwo{} and \Htwo{} through their respective networks on the European continent. We also analyze how an energy system with limited annual sequestration potential prioritizes decarbonization and fuel switching in various sectors, and how the construction of carbon networks varies based on different levels of available sequestration potential.
 
 
-\section{Methodology}
-\label{sec:methodology}
-
-The study is conducted on the basis of the open-source, capacity-expansion model PyPSA-Eur~\cite{horschPyPSAEurOpenOptimisation2018,brownSynergiesSectorCoupling2018,PyPSAEurSecSectorCoupledOpen2023}.
-The model optimizes the design and operation of the European energy system, encompassing the power, heat, industry, waste, agriculture, and transport sectors, including international aviation and shipping.
-
-\begin{figure}
-    \includegraphics[width=\linewidth]{baseline/figures/90_nodes/demand_bar.png}
-    \caption{Assumptions on exogenous demand, derived from~\cite{piamanzGeoreferencedIndustrialSites2018,muehlenpfordtTimeSeries2019,mantzosJRCIDEES20152018,NationalEmissionsReported2023,EurostatCompleteEnergyBalance,uwekrienDemandlib2023}. The figure shows the total annual energy demand for each energy source which determine the model's endogenous investments and operation. Endogenous processes can lead to higher total production volumes of some energy carriers, e.g., the demand for methanol requires more hydrogen and carbon as secondary (energy) inputs, which are not considered here. The model are defined per region and time stamp.}
-    % TODO: adjust labels to show that these are exogenous assumptions
-    \label{fig:total-demand-bar}
-\end{figure}
-%
-In our configuration, the model's time horizon spans one year with a temporal resolution of 3 hours and a spatial resolution of 90 regions. Each of the regions consists of a complex subsystem with technologies for supplying, converting, storing and transporting energy. Exogenous assumptions on energy demand and non-abatable emissions are taken from various sources~\cite{piamanzGeoreferencedIndustrialSites2018,muehlenpfordtTimeSeries2019,mantzosJRCIDEES20152018,NationalEmissionsReported2023,EurostatCompleteEnergyBalance,uwekrienDemandlib2023}. The energy demand for electricity, transport, biomass, heat and gas are defined per region and time-step.
-Land transport demand is exogenously divided between electric vehicles (85\%) and fuel cell vehicles (15\%), the latter representing demand for heavy duty land transport. Demands for kerosene for aviation, methanol for shipping, and naphtha for industry are aggregated in the system scope and kept constant throughout all time-steps. Heat demand is regionally subdivided into shares of urban, rural and industrial sites. We show the sum of all energy demands in Fig.~\ref{fig:total-demand-bar}. The system emits 633~Mt \COtwo{} per year from industry, aviation, shipping and agriculture, 153~Mt of which are fossil-based process emissions. Industrial energy demand and excess heat potentials are calculated per node on the basis of~\cite{hotmaps_industrial_db}.
-% use https://pypsa-eur.readthedocs.io/en/latest/licenses.html
-
-
-Endogenous model results include the expansion of renewable energy sources, storage technologies, and transmission capacities.
-The model considers various energy carriers like electricity, hydrogen, methan, methanol, liquid hydrocarbons and biomass, together with conversions technologies.
-Carbon-neutral electricity is provided by wind, solar, biomass, hydro and nuclear power plants. Hydro and nuclear plant capacities cannot be extended. Weather-dependent power potentials for solar, wind and hydro are calculated from reanalysis and satellite data sets~\cite{hersbachERA5GlobalReanalysis2020,pfeifrothSurfaceRadiationData2017}  per region and time-stamp, using the open-source tool Atlite~\cite{hofmannAtliteLightweightPython2021}.
-Solar and wind power can be expanded in alignment with eligible land-use restrictions calculated on the basis of~\cite{eeaCorineLandCover2012,eeaNatura2000Data2016}. We restrict the electric transmission system's expansion to 20\% of its current capacity, acknowledging the challenges in inaugurating new transmission projects.
-For the use of biomass we consider only residual biomass products and no energy crops. We limit regional biomass use to the medium-level potentials from the ENPRESO database~\cite{enspreso_database,instituteforenergyandtransportjointresearchcentreJRCEUTIMESModelBioenergy2015}. Inter-regional biomass transport is permitted with transport costs considered.
-
-In our model, hydrogen can be produced from electrolysis and steam methane reforming (SMR). Geological distribution and potentials for \Htwo{} storage in salt caverns are derived from~\cite{caglayanTechnicalPotentialSalt2020}. Re-electrification of hydrogen is possible via fuel cells. If enabled, hydrogen can be transported via pipelines between regions which can be expanded without limit, considering costs for pipeline segments and compressors. Pipeline flows are modelled using net transfer capacities and without flow dynamics, pressure valves, or energy demand for compression.
-% No retrofitting of gas pipelines is considered, potentially overestimating hydrogen network cost.
-
-The topology of the \COtwo{}, \Htwo{} and gas network is identical to the topology of the electricity network, connecting all neighboring regions. Transport of liquid fuels like oil, methanol and Fischer-Tropsch (FT) fuels is ``copper-plated'', since transport costs per unit of energy are negligible due to their high energy density. Throughout this study, we focus on \COtwo{} and \Htwo{} networks because of their high relevance for infrastructure investments and thus public policy decisions. The electricity network and gas network are both included in the model with full geographical detail, but not further analyzed. Electricity networks are already in place, and we restrict further extension due to concerns of public acceptance. Gas networks also already exist, and will most likely experience decreased use in the future, removing any bottlenecks or constraints on the optimal system buildout or operation.
-
-Our model features three drop-in fuel production technologies for CU: methanation, methanolization, and Fischer-Tropsch synthesis. The processed fuels are not limited in their total quantity of use or production. Methane is transported through the gas network, while methanol and FT fuel can be transferred inter-regionally without additional costs, since dense fuels have negligible transport costs per unit of energy. Synthetic methane substitutes natural gas or biogas, serving combined heat and power plants, residential heating gas boilers, or industrial process heat. Synthetic methanol decarbonizes marine industry fuel demands, and FT fuels replace fossil oil for naphtha production, aviation kerosene, or agricultural machinery oil.
-
-To supply carbon needed for CS and CU, the system can choose to deploy carbon capture technology at various point sources (see below), or through DAC facilities. The concept of a merit order for captured carbon plays a pivotal role in optimizing and prioritizing the deployment of carbon capture technologies based on their economic feasibility. This merit order ranks all CC technologies according to their relative costs to capture a ton of carbon (see Fig.~X). At the lower end of the cost spectrum, CC technologies applied to process emissions, such as those from cement, offer a cost-effective starting point. Following this, biomass combined heat and power (CHP) systems provide a dual benefit of energy production and carbon capture. Moving up the scale, gas used in industrial applications and biomass employed for industrial processes represent more costly yet viable options to capture carbon. DAC, an emerging technology capable of extracting \COtwo{} directly from the atmosphere, stands at a higher cost level due to its current high capital costs and energy demand. Finally, based on our model results, biogas-to-gas upgrading, a process that refines biogas to natural gas quality, incurs the highest costs in the merit order per marginal ton of captured \COtwo{}. Biogas input is a high-cost fuel which based on the endogenous modeling decisions is not used in large quantities. To the extent that biogas-to-gas facilities are used by the model to supply additional (carbon-neutral) gas as fuel, adding CC infrastructure incurs low costs (and thus ranges on the left-hand side of the merit order curve). However, the price of capturing additional \COtwo{} from biogas-to-gas upgrading is high because a substantial amount of the biogas fuel costs factors into the marginal cost of captured \COtwo{}. This merit order framework is crucial for strategically deploying necessary carbon capture solutions while balancing economic considerations. If we consider the spatial aspect of distributed carbon capture potentials, the \COtwo{} network can exploit comparative cost advantages between CO2 bidding zones to utilize the lowest-cost CC facilities across the continent. We assume a capture rate of 90\% for CC on process emissions, SMR, biogas-to-gas, as well as gas and biomass used in industry, and 95\% for CC on biomass and gas CHPs.
-
-To store carbon, we differentiate between short-term storage in steel tanks and long-term, irreversible sequestration in underground sequestration sites such as porous rock formations or depleted gas reservoirs. Costs for both options are included in the model. For carbon sequestration, we only consider offshore sites as potential sinks. We make this choice because offshore sequestration sites typically have larger capacity compared to onshore sequestration sites in saline aquifers and due to concerns over public safety for infrastructure near populated areas. Our estimates for carbon sequestration potentials are conservative, limiting total sequestration to 25~Mt per site and calculating annual storage availability over 25 years. Furthermore, we decide to cap the total sequestered \COtwo{} to 200~Mt per year for our Net-Zero scenario. This is enough to offset the hardest-to-abate fossil process emissions and some limited slack of fossil fuels to be used where they can be most valuable. This is in order to avoid offsetting fossil emissions with carbon removal if they can technologically be avoided in the first place. All technology cost assumptions are taken for the year 2040 and sourced from an open-source database~\cite{lisazeyenPyPSATechnologydataTechnology2023}.
-
-
-Addressing climate targets, we define two \COtwo{} target scenarios:
-\begin{itemize}
-    \item[] \textit{Net\=/Zero}: aligning with the EU's 2050 emission targets. Also denoted as NZ.
-    \item[] \textit{Net\=/Negative}: 10\% net-negative emissions relative to 1990 levels, equaling 460~Mt \COtwo{} annually. Also denoted as NN.
-\end{itemize}
-Unless otherwise mentioned, our reference is the Net-Zero scenario. For the Net-Negative scenario, the cap of total carbon sequestration is adjusted from 200~Mt to 660~Mt per year accordingly.
-
-Beyond \COtwo{} targets, we consider four expansion scenarios, referred to as models:
-\begin{itemize}
-    \item[] \textit{Baseline:} Neither \COtwo{} nor \Htwo{} networks are constructed.
-    \item[] \textit{\COgrid{}:} Only the \COtwo{} network is developed.
-    \item[] \textit{\Hgrid{}:} Only the \Htwo{} network is developed.
-    \item[] \textit{Hybrid:} Both \COtwo{} and \Htwo{} networks are developed.
-\end{itemize}
 
 
 
@@ -320,6 +270,57 @@ Under net-negative emission scenarios, the importance of DAC and bioenergy with 
 The study conclusively demonstrates the pivotal role of strategically integrated hydrogen and carbon networks in steering Europe towards a sustainable and climate-neutral energy future. It emphasizes the necessity of comprehensive infrastructure planning, integrating diverse energy carriers and technologies to achieve these objectives effectively.
 
 
+\section{Methodology}
+\label{sec:methodology}
+
+The study is conducted on the basis of the open-source, capacity-expansion model PyPSA-Eur~\cite{horschPyPSAEurOpenOptimisation2018,brownSynergiesSectorCoupling2018,PyPSAEurSecSectorCoupledOpen2023}.
+The model optimizes the design and operation of the European energy system, encompassing the power, heat, industry, waste, agriculture, and transport sectors, including international aviation and shipping.
+
+\begin{figure}
+    \includegraphics[width=\linewidth]{baseline/figures/90_nodes/demand_bar.png}
+    \caption{Assumptions on exogenous demand, derived from~\cite{piamanzGeoreferencedIndustrialSites2018,muehlenpfordtTimeSeries2019,mantzosJRCIDEES20152018,NationalEmissionsReported2023,EurostatCompleteEnergyBalance,uwekrienDemandlib2023}. The figure shows the total annual energy demand for each energy source which determine the model's endogenous investments and operation. Endogenous processes can lead to higher total production volumes of some energy carriers, e.g., the demand for methanol requires more hydrogen and carbon as secondary (energy) inputs, which are not considered here. The model are defined per region and time stamp.}
+    % TODO: adjust labels to show that these are exogenous assumptions
+    \label{fig:total-demand-bar}
+\end{figure}
+%
+In our configuration, the model's time horizon spans one year with a temporal resolution of 3 hours and a spatial resolution of 90 regions. Each of the regions consists of a complex subsystem with technologies for supplying, converting, storing and transporting energy. Exogenous assumptions on energy demand and non-abatable emissions are taken from various sources~\cite{piamanzGeoreferencedIndustrialSites2018,muehlenpfordtTimeSeries2019,mantzosJRCIDEES20152018,NationalEmissionsReported2023,EurostatCompleteEnergyBalance,uwekrienDemandlib2023}. The energy demand for electricity, transport, biomass, heat and gas are defined per region and time-step.
+Land transport demand is exogenously divided between electric vehicles (85\%) and fuel cell vehicles (15\%), the latter representing demand for heavy duty land transport. Demands for kerosene for aviation, methanol for shipping, and naphtha for industry are aggregated in the system scope and kept constant throughout all time-steps. Heat demand is regionally subdivided into shares of urban, rural and industrial sites. We show the sum of all energy demands in Fig.~\ref{fig:total-demand-bar}. The system emits 633~Mt \COtwo{} per year from industry, aviation, shipping and agriculture, 153~Mt of which are fossil-based process emissions. Industrial energy demand and excess heat potentials are calculated per node on the basis of~\cite{hotmaps_industrial_db}.
+% use https://pypsa-eur.readthedocs.io/en/latest/licenses.html
+
+
+Endogenous model results include the expansion of renewable energy sources, storage technologies, and transmission capacities.
+The model considers various energy carriers like electricity, hydrogen, methan, methanol, liquid hydrocarbons and biomass, together with conversions technologies.
+Carbon-neutral electricity is provided by wind, solar, biomass, hydro and nuclear power plants. Hydro and nuclear plant capacities cannot be extended. Weather-dependent power potentials for solar, wind and hydro are calculated from reanalysis and satellite data sets~\cite{hersbachERA5GlobalReanalysis2020,pfeifrothSurfaceRadiationData2017}  per region and time-stamp, using the open-source tool Atlite~\cite{hofmannAtliteLightweightPython2021}.
+Solar and wind power can be expanded in alignment with eligible land-use restrictions calculated on the basis of~\cite{eeaCorineLandCover2012,eeaNatura2000Data2016}. We restrict the electric transmission system's expansion to 20\% of its current capacity, acknowledging the challenges in inaugurating new transmission projects.
+For the use of biomass we consider only residual biomass products and no energy crops. We limit regional biomass use to the medium-level potentials from the ENPRESO database~\cite{enspreso_database,instituteforenergyandtransportjointresearchcentreJRCEUTIMESModelBioenergy2015}. Inter-regional biomass transport is permitted with transport costs considered.
+
+In our model, hydrogen can be produced from electrolysis and steam methane reforming (SMR). Geological distribution and potentials for \Htwo{} storage in salt caverns are derived from~\cite{caglayanTechnicalPotentialSalt2020}. Re-electrification of hydrogen is possible via fuel cells. If enabled, hydrogen can be transported via pipelines between regions which can be expanded without limit, considering costs for pipeline segments and compressors. Pipeline flows are modelled using net transfer capacities and without flow dynamics, pressure valves, or energy demand for compression.
+% No retrofitting of gas pipelines is considered, potentially overestimating hydrogen network cost.
+
+The topology of the \COtwo{}, \Htwo{} and gas network is identical to the topology of the electricity network, connecting all neighboring regions. Transport of liquid fuels like oil, methanol and Fischer-Tropsch (FT) fuels is ``copper-plated'', since transport costs per unit of energy are negligible due to their high energy density. Throughout this study, we focus on \COtwo{} and \Htwo{} networks because of their high relevance for infrastructure investments and thus public policy decisions. The electricity network and gas network are both included in the model with full geographical detail, but not further analyzed. Electricity networks are already in place, and we restrict further extension due to concerns of public acceptance. Gas networks also already exist, and will most likely experience decreased use in the future, removing any bottlenecks or constraints on the optimal system buildout or operation.
+
+Our model features three drop-in fuel production technologies for CU: methanation, methanolization, and Fischer-Tropsch synthesis. The processed fuels are not limited in their total quantity of use or production. Methane is transported through the gas network, while methanol and FT fuel can be transferred inter-regionally without additional costs, since dense fuels have negligible transport costs per unit of energy. Synthetic methane substitutes natural gas or biogas, serving combined heat and power plants, residential heating gas boilers, or industrial process heat. Synthetic methanol decarbonizes marine industry fuel demands, and FT fuels replace fossil oil for naphtha production, aviation kerosene, or agricultural machinery oil.
+
+To supply carbon needed for CS and CU, the system can choose to deploy carbon capture technology at various point sources (see below), or through DAC facilities. The concept of a merit order for captured carbon plays a pivotal role in optimizing and prioritizing the deployment of carbon capture technologies based on their economic feasibility. This merit order ranks all CC technologies according to their relative costs to capture a ton of carbon (see Fig.~X). At the lower end of the cost spectrum, CC technologies applied to process emissions, such as those from cement, offer a cost-effective starting point. Following this, biomass combined heat and power (CHP) systems provide a dual benefit of energy production and carbon capture. Moving up the scale, gas used in industrial applications and biomass employed for industrial processes represent more costly yet viable options to capture carbon. DAC, an emerging technology capable of extracting \COtwo{} directly from the atmosphere, stands at a higher cost level due to its current high capital costs and energy demand. Finally, based on our model results, biogas-to-gas upgrading, a process that refines biogas to natural gas quality, incurs the highest costs in the merit order per marginal ton of captured \COtwo{}. Biogas input is a high-cost fuel which based on the endogenous modeling decisions is not used in large quantities. To the extent that biogas-to-gas facilities are used by the model to supply additional (carbon-neutral) gas as fuel, adding CC infrastructure incurs low costs (and thus ranges on the left-hand side of the merit order curve). However, the price of capturing additional \COtwo{} from biogas-to-gas upgrading is high because a substantial amount of the biogas fuel costs factors into the marginal cost of captured \COtwo{}. This merit order framework is crucial for strategically deploying necessary carbon capture solutions while balancing economic considerations. If we consider the spatial aspect of distributed carbon capture potentials, the \COtwo{} network can exploit comparative cost advantages between CO2 bidding zones to utilize the lowest-cost CC facilities across the continent. We assume a capture rate of 90\% for CC on process emissions, SMR, biogas-to-gas, as well as gas and biomass used in industry, and 95\% for CC on biomass and gas CHPs.
+
+To store carbon, we differentiate between short-term storage in steel tanks and long-term, irreversible sequestration in underground sequestration sites such as porous rock formations or depleted gas reservoirs. Costs for both options are included in the model. For carbon sequestration, we only consider offshore sites as potential sinks. We make this choice because offshore sequestration sites typically have larger capacity compared to onshore sequestration sites in saline aquifers and due to concerns over public safety for infrastructure near populated areas. Our estimates for carbon sequestration potentials are conservative, limiting total sequestration to 25~Mt per site and calculating annual storage availability over 25 years. Furthermore, we decide to cap the total sequestered \COtwo{} to 200~Mt per year for our Net-Zero scenario. This is enough to offset the hardest-to-abate fossil process emissions and some limited slack of fossil fuels to be used where they can be most valuable. This is in order to avoid offsetting fossil emissions with carbon removal if they can technologically be avoided in the first place. All technology cost assumptions are taken for the year 2040 and sourced from an open-source database~\cite{lisazeyenPyPSATechnologydataTechnology2023}.
+
+
+Addressing climate targets, we define two \COtwo{} target scenarios:
+\begin{itemize}
+    \item[] \textit{Net\=/Zero}: aligning with the EU's 2050 emission targets. Also denoted as NZ.
+    \item[] \textit{Net\=/Negative}: 10\% net-negative emissions relative to 1990 levels, equaling 460~Mt \COtwo{} annually. Also denoted as NN.
+\end{itemize}
+Unless otherwise mentioned, our reference is the Net-Zero scenario. For the Net-Negative scenario, the cap of total carbon sequestration is adjusted from 200~Mt to 660~Mt per year accordingly.
+
+Beyond \COtwo{} targets, we consider four expansion scenarios, referred to as models:
+\begin{itemize}
+    \item[] \textit{Baseline:} Neither \COtwo{} nor \Htwo{} networks are constructed.
+    \item[] \textit{\COgrid{}:} Only the \COtwo{} network is developed.
+    \item[] \textit{\Hgrid{}:} Only the \Htwo{} network is developed.
+    \item[] \textit{Hybrid:} Both \COtwo{} and \Htwo{} networks are developed.
+\end{itemize}
+
 \printbibliography
 
 \appendix
@@ -365,7 +366,7 @@ The study conclusively demonstrates the pivotal role of strategically integrated
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=0.9\linewidth]{difference/comparison/subsidy/figures/90_nodes/cost_bar.png}
-    \caption[short]{Net change in system cost when reducing assumed costs for \carbon{} pipelines by 50\%.}
+    \caption[short]{Net change in system cost when reducing assumed costs for \COtwo{} pipelines by 50\%.}
     \label{fig:net-negative_cost_bar}
 \end{figure}
 
