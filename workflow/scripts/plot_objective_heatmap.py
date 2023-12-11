@@ -2,7 +2,6 @@
 
 import os
 import pandas as pd
-import pypsa
 import matplotlib.pyplot as plt
 import seaborn as sns
 from common import (
@@ -14,7 +13,7 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_objectice_heatmap",
         comparison="emission-reduction",
-        ext="pdf",
+        ext="png",
         clusters=90,
     )
 
@@ -25,7 +24,7 @@ config = snakemake.config
 
 df = {}
 for path in snakemake.input.networks:
-    n = import_network(path)
+    n = import_network(path, remove_gas_store_capital_cost=True)
 
     # key = snakemake.params.labels[n.meta["wildcards"]["run"]]
     key = n.meta["wildcards"]["run"]

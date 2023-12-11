@@ -23,7 +23,7 @@ cutoff = snakemake.config["plotting"]["cost_bar_diff"]["cutoff"]
 df = {}
 carriers = []
 for path in snakemake.input.networks:
-    n = import_network(path)
+    n = import_network(path, remove_gas_store_capital_cost=True)
     capex = n.statistics.capex()
     opex = n.statistics.opex(aggregate_time="sum")
 

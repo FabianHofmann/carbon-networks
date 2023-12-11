@@ -32,7 +32,10 @@ specs = config["plotting"]["cost_map_diff"]
 cutoff_bus = specs["cutoff_bus"]
 cutoff_branch = specs["cutoff_branch"]
 
-networks = [import_network(path) for path in snakemake.input.networks]
+networks = [
+    import_network(path, remove_gas_store_capital_cost=True)
+    for path in snakemake.input.networks
+]
 regions = gpd.read_file(snakemake.input.regions).set_index("name")
 df_bus = {}
 df_branch = {}

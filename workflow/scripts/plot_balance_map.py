@@ -185,7 +185,7 @@ for kind, output in snakemake.output.items():
         sm,
         ax=ax,
         label=f"Average Marginal Price of {title} [{region_unit}]",
-        shrink=1,
+        shrink=0.95,
         pad=0.03,
         aspect=50,
         alpha=region_alpha,
@@ -211,6 +211,8 @@ for kind, output in snakemake.output.items():
             cons_carriers = cons_carriers.union(["H$_2$ For Industry"])
         # cheat and add a dummy carrier to align legend with carbon balance
         cons_carriers = list(cons_carriers) + ["", ""]
+    if kind == "carbon":
+        cons_carriers = cons_carriers.union(["CO$_2$ Sequestration"])
 
     add_legend_patches(
         ax,
@@ -264,4 +266,5 @@ for kind, output in snakemake.output.items():
     fig.savefig(
         output,
         dpi=300,
+        bbox_inches="tight",
     )
