@@ -185,7 +185,7 @@ for kind, output in snakemake.output.items():
         sm,
         ax=ax,
         label=f"Average Marginal Price of {title} [{region_unit}]",
-        shrink=1,
+        shrink=0.95,
         pad=0.03,
         aspect=50,
         alpha=region_alpha,
@@ -264,4 +264,5 @@ for kind, output in snakemake.output.items():
     fig.savefig(
         output,
         dpi=300,
+        bbox_inches="tight",
     )

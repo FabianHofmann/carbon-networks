@@ -46,6 +46,17 @@ natbib=true % natbib compatibility mode (\citep and~\citet still work)
 \newcommand{\modH}{H$_2$\=/Grid model}
 \newcommand{\modHybrid}{Hybrid model}
 
+% alternative
+\newcommand{\carbon}{CO$_2$}
+\newcommand{\hydrogen}{H$_2$}
+\newcommand{\carbongrid}{CO$_2$\=/Grid}
+\newcommand{\hydrogengrid}{H$_2$\=/Grid}
+\newcommand{\baelinemodel}{Baseline model}
+\newcommand{\carbonmodel}{CO$_2$\=/Grid model}
+\newcommand{\hydrogenmodel}{H$_2$\=/Grid model}
+\newcommand{\hybridmodel}{Hybrid model}
+
+
 \graphicspath{
     % {paper-figures}
     {figures}
@@ -141,7 +152,7 @@ The increase in captured carbon from point sources in the network models is most
 \begin{figure}[h]
     \centering
     \includegraphics[width=\linewidth]{comparison/default/figures/90_nodes/captureshare_line.png}
-    \caption{Share of facilities with integrated carbon capture for all models .}
+    \caption{Proportion of plants with integrated carbon capture for all models in the net zero scenario. The size of the dots corresponds to the average capacity factor of the respective technology. While peak load technologies such as gas-fired combined heat and power (CHP) plants, which are only in operation on a few days a year, are not expanded for carbon capture, baseload point sources such as biomass CHP and process emissions from industry are fully (partially) developed as soon as the transport of \COtwo{} (\Htwo{}) is permitted.}
     % A CO2 network unlock BECSS potentials, most biomass emissions are captured at point sources and transported to sequestration sites. cite~\cite{rosaAssessmentCarbonDioxide2021}
     \label{fig:captureshare_line}
 \end{figure}%
@@ -168,7 +179,8 @@ In summary, the implementation of \COtwo{} and \Htwo{} networks is instrumental 
 \begin{figure*}[ht!]
     \centering
     \includegraphics[width=\linewidth]{comparison/single-technologies/figures/90_nodes/balance_map_dedicated.png}
-    \caption{Optimal operation per sector for a net-zero energy system in Europe with average production on the left and average consumption on the right for both, (a) the \COtwo{} sector in the \modCO{} and (b) the \Htwo{} sector in the \modH{}.}
+    \caption{Optimal operation, flows and prices of the carbon (top line) and hydrogen (bottom line) sectors for the \carbonmodel{} (left) and the \hydrogenmodel{} (right) in the net zero scenario. For each region, upper semicircles show the average production per technology, lower semicircles the consumption, and colors the average marginal prices. Lines and arrows show the interregional transportation. Both models transport \carbon{} and \hydrogen{} respectively from areas with low prices to areas with high prices to supply CU and, in the case of \carbonmodel{}, CS.
+    }
     \label{fig:balance_map}
 \end{figure*}
 
@@ -189,17 +201,17 @@ In summary, both network models prefer distributed CC at point sources and elect
 
 \begin{figure*}[ht!]
     \centering
-    \begin{subfigure}{.51\textwidth}
+    \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=\linewidth]{full/figures/90_nodes/balance_map_carbon.png}
         \label{fig:capacity_map_carbon_co2}
     \end{subfigure}%
-    \begin{subfigure}{.49\textwidth}
+    \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=\linewidth]{full/figures/90_nodes/balance_map_hydrogen.png}
         \label{fig:capacity_map_hydrogen_co2}
     \end{subfigure}
-    \caption{Optimal production and transport capacities of the carbon and hydrogen sector in a net-zero energy system in Europe with both \COtwo{} and \Htwo{} network expansion (Hybrid).
+    \caption{Optimal operation, flows and prices of the carbon (left) and hydrogen (right) sectors for the \hybridmodel{} in the net zero scenario. For each region, upper semicircles show the average production per technology, lower semicircles the consumption, and colors the average marginal prices. Lines and arrows show the interregional transportation. \carbon{} from point-source in the inland either supplies local CU with imported \hydrogen{} or facilitates sequestration in nearby offshore regions.
     % Carbon network looks the same as in~\cite{morbeeOptimisedDeploymentEuropean2012}: two backbones, one in the nothern Europe other in south east.
     }
     \label{fig:capacity_maps}
@@ -210,7 +222,7 @@ The \modHybrid{} combines the advantages of hydrogen and carbon networks. While 
 
 Similar to the \modH{}, the \modHybrid{} takes advantage of a large hydrogen network that enables hydrogen to be transported from centralized production sites in western regions such as Spain to decentralized FT production sites across the continent. However, in the \modHybrid{} hydrogen in the UK is used locally to produce synfuels, and less hydrogen is transported to Central Europe.
 The carbon network supplements this with smaller clusters of networks. In addition to a larger \COtwo{} network cluster in Central Europe, which transports carbon to the North Sea, the system is building three large linear carbon routes. These transport carbon from Romania and Bulgaria to Greece, from northern Italy to central Italy and from Hungary, the Czech Republic and Poland to the Baltic Sea. These enable the system to transport carbon available at low cost from inland biomass sources and sequester it (see Fig.~\ref{fig:captureshare_line}). This reduces the need for DAC in the system and the sequestration sites are shifted to the end points of the carbon networks. Second-order effects can be seen in the shift in FT production compared to the \modH{}. Regions that have both good renewable resources and sequestration potential could now forego sequestration and use local process emissions for FT production, as can be observed in Ireland. A notable aspect of the hybrid model is the lack of overlap in the hydrogen and carbon network topologies. This finding is tightly linked to the fact of competing functionalities to offtake carbon emissions.
-A more detailed of differences between the \modH{} and the \modHybrid{} can be found in Fig.~.
+A more detailed of differences between the \modH{} and the \modHybrid{} can be found in Fig.~\ref{fig:cost_map_difference}.
 
 
 Despite only a further reduction of \label{}0.4 percentage points (\label{}3 billion euros) in total system costs compared to the \modH{}, the \modHybrid{} brings several advantages. These include a broader range of technologies contributing to its robustness, reduced reliance on DAC, which may be costlier than anticipated in the cost projections, and less land use for wind and solar due to the decreased necessity for DAC. The increase used of biomass with carbon capture, transport and sequestration leads to slight cost advantages in comparison to the \modH{}.
@@ -222,7 +234,7 @@ Despite only a further reduction of \label{}0.4 percentage points (\label{}3 bil
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=0.9\linewidth]{difference/comparison/emission-reduction-0.1/figures/90_nodes/cost_bar.png}
-    \caption[short]{Net change in investments when tightening the \COtwo{} emission target from net-zero to net-negative 10\% of 1990s emissions.}
+    \caption[short]{Net change in investments when tightening the \COtwo{} emission target from net-zero to net-negative 10\% of 1990s emissions. For all models, Direct Air Capture (DAC) contributes most to the additional \carbon{} removal, requiring further solar, wind and heat pump capacities for electricity and heat input.}
     \label{fig:net-negative_cost_bar}
 \end{figure}
 
@@ -356,7 +368,7 @@ Beyond \COtwo{} targets, we consider four expansion scenarios, referred to as mo
 \begin{figure*}[ht]
     \centering
     \includegraphics[width=\linewidth]{difference/h2-only-full/figures/90_nodes/cost_map.png}
-    \caption{Difference in cost investments between the \Hgrid{} and \modHybrid{}s. The left subfigure shows higher spendings per technology and region and transport system for the \modH{}, the right shows higher spendings in the \modHybrid{}.}
+    \caption{Difference in regional costs between the \Hgrid{} and \modHybrid{}s. The left subfigure shows higher spendings per technology and region and transport system for the \modH{}, the right shows higher spendings in the \modHybrid{}.}
     \label{fig:cost_map_difference}
 \end{figure*}
 
