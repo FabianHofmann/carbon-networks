@@ -211,6 +211,8 @@ for kind, output in snakemake.output.items():
             cons_carriers = cons_carriers.union(["H$_2$ For Industry"])
         # cheat and add a dummy carrier to align legend with carbon balance
         cons_carriers = list(cons_carriers) + ["", ""]
+    if kind == "carbon":
+        cons_carriers = cons_carriers.union(["CO$_2$ Sequestration"])
 
     add_legend_patches(
         ax,

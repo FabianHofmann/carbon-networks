@@ -210,6 +210,8 @@ for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
             if kind == "hydrogen" and "H$_2$ For Industry" in prod_carriers:
                 prod_carriers = prod_carriers.difference(["H$_2$ For Industry"])
                 cons_carriers = cons_carriers.union(["H$_2$ For Industry"])
+            elif kind == "carbon" and "CO$_2$ Sequestration" not in cons_carriers:
+                cons_carriers = cons_carriers.union(["CO$_2$ Sequestration"])
 
             add_legend_patches(
                 ax,
