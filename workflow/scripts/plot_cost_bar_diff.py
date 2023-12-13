@@ -69,4 +69,5 @@ ax.grid(axis="both", alpha=0.5)
 ax.set_title(f"Cost difference ({df.columns[0]} - {df.columns[1]})")
 
 sns.despine(left=True)
-fig.savefig(snakemake.output[0], dpi=300)
+fig.savefig(snakemake.output.figure, dpi=300)
+diff.round(3).to_csv(snakemake.output.table)

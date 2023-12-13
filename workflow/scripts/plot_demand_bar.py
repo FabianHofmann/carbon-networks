@@ -6,10 +6,17 @@ Created on Mon Oct 16 09:32:38 2023
 @author: fabian
 """
 
+import os
 import pypsa
 import seaborn as sns
-from common import import_network
+from common import import_network, mock_snakemake
 import matplotlib.pyplot as plt
+
+if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
+    snakemake = mock_snakemake(
+        "plot_demand_bar", ext="png", clusters=90, run="baseline"
+    )
+
 
 sns.set_theme(**snakemake.params["theme"])
 
@@ -62,3 +69,4 @@ fig.savefig(
     snakemake.output.figure,
     bbox_inches="tight",
 )
+df.fillna(0).round(3).to_csv(snakemake.output.table)

@@ -98,4 +98,5 @@ ax.legend(
 )
 
 sns.despine()
-fig.savefig(snakemake.output[0], dpi=300)
+fig.savefig(snakemake.output.figure, dpi=300)
+data.round(3).to_csv(snakemake.output.table)

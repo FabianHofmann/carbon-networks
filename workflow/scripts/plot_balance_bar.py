@@ -42,6 +42,8 @@ df = pd.concat(df, axis=1).fillna(0)
 df = df.rename(lambda k: k.replace(" CC", ""), level=1).groupby(level=[0, 1, 2]).sum()
 
 for kind, output in snakemake.output.items():
+    if kind.startswith("table"):
+        continue
     kind_to_carrier = {"hydrogen": "H2", "carbon": "co2 stored", "electricity": "AC"}
     carrier = kind_to_carrier.get(kind, kind)
     label = config["labels"].get(kind, kind.title())
@@ -107,3 +109,4 @@ for kind, output in snakemake.output.items():
 
     sns.despine()
     fig.savefig(output, dpi=300)
+    ds.round(3).to_csv(snakemake.output[f"table-{kind}"])

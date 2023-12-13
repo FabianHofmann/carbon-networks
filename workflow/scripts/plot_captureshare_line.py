@@ -120,7 +120,8 @@ plt.xticks(
 
 sns.despine()
 
-fig.savefig(snakemake.output[0], dpi=300)
+fig.savefig(snakemake.output.figure, dpi=300)
+data.to_csv(snakemake.output.table)
 
 # ALTERATIVE PLOT
 # fig, ax = plt.subplots(

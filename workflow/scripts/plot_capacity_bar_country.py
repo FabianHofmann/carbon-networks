@@ -48,8 +48,6 @@ p_nom_opt = p_nom_opt.rename(columns=n.carriers.nice_name)
 p_nom_max = p_nom_max.rename(columns=n.carriers.nice_name)
 
 
-# %%
-
 fig, axes = plt.subplots(len(p_nom_opt.columns), 1, figsize=(6, 10), sharex=False)
 
 colors = sns.color_palette("bright", len(p_nom_opt.index))
@@ -71,6 +69,8 @@ for ax, col in zip(axes, p_nom_opt.columns):
 plt.tight_layout()
 sns.despine()
 
-fig.savefig(snakemake.output[0], bbox_inches="tight")
-
-# %%
+fig.savefig(snakemake.output.figure, bbox_inches="tight")
+table = pd.concat([p_nom_opt, p_nom_max], axis=1, keys=["Capacity", "Potential"]).round(
+    4
+)
+table.to_csv(snakemake.output.table)
