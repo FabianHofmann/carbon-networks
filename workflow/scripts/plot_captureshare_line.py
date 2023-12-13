@@ -1,5 +1,6 @@
 import os
 import re
+import textwrap
 import numpy as np
 from pathlib import Path
 from common import (
@@ -97,15 +98,21 @@ handles, labels = ax.get_legend_handles_labels()
 labels = [l + " %" if re.match(r"^\d+$", l) else l for l in labels]
 
 pos = labels.index("Capacity Factor")
-handles.insert(pos, Patch(facecolor="none", edgecolor="none", alpha=0))
-labels.insert(pos, "")
+# add gap between legend parts
+# handles.insert(pos, Patch(facecolor="none", edgecolor="none", alpha=0))
+# labels.insert(pos, "")
+
+# remove 40 and 60 from legend
+for label in ["60 %", "40 %"]:
+    handles.pop(labels.index(label))
+    labels.remove(label)
 
 # Add the invisible handles and labels to the legend
 ax.legend(
     handles,
-    labels,
-    loc="center left",
-    bbox_to_anchor=(1.0, 0.5),
+    [textwrap.fill(label, 22) for label in labels],
+    loc="upper left",
+    bbox_to_anchor=(1, 1),
     frameon=False,
     ncol=1,
 )
@@ -121,7 +128,7 @@ plt.xticks(
 sns.despine()
 
 fig.savefig(snakemake.output.figure, dpi=300)
-data.to_csv(snakemake.output.table)
+data.round(3).to_csv(snakemake.output.table)
 
 # ALTERATIVE PLOT
 # fig, ax = plt.subplots(
