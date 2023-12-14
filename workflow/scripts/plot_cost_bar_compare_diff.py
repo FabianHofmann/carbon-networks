@@ -53,6 +53,8 @@ unit = "bn€/a"
 
 groups = snakemake.config["plotting"]["technology_groups"]
 groups = {v: groups[k] for k, v in n.carriers.nice_name.items()}
+# keep sequestration separate
+groups["CO$_2$ Sequestration"] = "CO$_2$ Sequestration"
 grouped = diff.mul(-1).groupby(groups).sum().div(norm)
 # grouped = grouped[grouped.max(axis=1) > 5e4]
 colors = snakemake.config["plotting"]["technology_group_colors"]

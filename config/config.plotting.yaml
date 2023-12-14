@@ -347,7 +347,7 @@ plotting:
     biomass boiler: Bioenergy
     co2: CO$_2$ Infrastructure
     CO2 pipeline: CO$_2$ Infrastructure
-    co2 sequestered: CO$_2$ Infrastructure
+    co2 sequestered: Other
     co2 stored: CO$_2$ Infrastructure
     electricity: Electricity Grid
     electricity distribution grid: Electricity Grid
@@ -409,6 +409,7 @@ plotting:
     Electricity Grid: "#97ad8c"
     Electrolysis: "#b3e6ff"
     CO$_2$ Infrastructure: "#cc99ff"
+    CO$_2$ Sequestration: "#f29dae"
     Carbon Capt. at Point Sources: "#f29dae"
     Heat Pump: "#2fb537"
     Fischer-Tropsch: "#25c49a"

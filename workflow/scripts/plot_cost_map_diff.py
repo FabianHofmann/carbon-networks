@@ -20,7 +20,7 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
         "plot_cost_map_diff",
         ext="png",
         clusters=90,
-        difference="emission-reduction-0.1-full",
+        difference="emission-reduction-0.1-co2-only",
     )
 
 sns.set_theme(**snakemake.params["theme"])
