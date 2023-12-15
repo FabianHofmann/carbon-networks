@@ -53,12 +53,15 @@ region_alpha = config["plotting"]["balance_map"]["region_alpha"]
 fig, axes = plt.subplots(
     2,
     2,
-    figsize=(8, 10),
+    figsize=(8, 8),
     subplot_kw={"projection": ccrs.EqualEarth()},
     layout="constrained",
 )
 
-for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
+bounds = snakemake.config["plotting"]["extent"]
+bounds = [-10, 28, 36, 70]  # adjust for better alignment with latex document
+
+for n, axs, right_subplot in zip(networks, axes.T, [False, True]):
     s = n.statistics
     colors = n.carriers.set_index("nice_name").color
     run = n.meta["wildcards"]["run"]
@@ -85,8 +88,7 @@ for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
         branch_scale = float(specs["branch_scale"])
         flow_scale = float(specs["flow_scale"])
         legend_kwargs = {
-            "loc": "upper left",
-            "frameon": True,
+            "frameon": False,
             "framealpha": 1,
             "edgecolor": "None",
         }
@@ -114,7 +116,7 @@ for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
                 ax=ax,
                 color_geomap=False,
                 geomap=True,
-                boundaries=snakemake.config["plotting"]["extent"],
+                boundaries=bounds,
             )
             offregions.plot(
                 ax=ax,
@@ -146,7 +148,7 @@ for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
             margin=0.2,
             color_geomap={"border": "darkgrey", "coastline": "darkgrey"},
             geomap="10m",
-            boundaries=snakemake.config["plotting"]["extent"],
+            boundaries=bounds,
         )
 
         buses = n.buses.query("carrier in @carriers").index
@@ -178,7 +180,7 @@ for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
             aspect="equal",
         )
 
-        if draw_legend:
+        if right_subplot:
             sm = plt.cm.ScalarMappable(
                 cmap=cmap, norm=plt.Normalize(vmin=vmin, vmax=vmax)
             )
@@ -187,7 +189,7 @@ for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
                 sm,
                 ax=axes[0] if kind == "carbon" else axes[1],
                 label=f"Average Marginal Price of {title} [{region_unit}]",
-                shrink=0.8,
+                shrink=0.6,
                 pad=0.05,
                 aspect=50,
                 alpha=region_alpha,
@@ -219,8 +221,8 @@ for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
                 prod_carriers.map(wrapper.fill),
                 patch_kw={"alpha": alpha},
                 legend_kw={
-                    "bbox_to_anchor": (1, 1),
-                    "ncol": 1,
+                    "loc": "upper left",
+                    "bbox_to_anchor": (1, 1.1),
                     "title": "Production",
                     **legend_kwargs,
                 },
@@ -232,36 +234,40 @@ for n, axs, draw_legend in zip(networks, axes.T, [False, True]):
                 cons_carriers.map(wrapper.fill),
                 patch_kw={"alpha": alpha},
                 legend_kw={
-                    "bbox_to_anchor": (1, 0.5),
-                    "ncol": 1,
+                    "loc": "upper left",
+                    "bbox_to_anchor": (1, 0.56),
                     "title": "Consumption",
                     **legend_kwargs,
                 },
             )
 
-        legend_bus_sizes = specs["bus_sizes"]
-        add_legend_circles(
-            ax,
-            [s * bus_scale * 1e6 for s in legend_bus_sizes],
-            [f"{s} {unit}" for s in legend_bus_sizes],
-            legend_kw={
-                "bbox_to_anchor": (0, 1),
-                **legend_kwargs,
-            },
-        )
-        legend_branch_sizes = specs["branch_sizes"]
-        if legend_branch_sizes is not None:
-            add_legend_lines(
+            # only use one legend for both branches and flows
+            legend_bus_sizes = specs["bus_sizes"][:1]
+            add_legend_circles(
                 ax,
-                [s * branch_scale * 1e6 for s in legend_branch_sizes],
-                [f"{s} {unit}" for s in legend_branch_sizes],
+                [s * bus_scale * 1e6 for s in legend_bus_sizes],
+                [f"{s} {unit}" for s in legend_bus_sizes],
                 legend_kw={
-                    "bbox_to_anchor": (0, 0.85),
+                    "loc": "lower left",
+                    "bbox_to_anchor": (1, 0.07),
                     **legend_kwargs,
                 },
             )
+            # only use one legend for both branches and flows
+            legend_branch_sizes = specs["branch_sizes"][:1]
+            if legend_branch_sizes is not None:
+                add_legend_lines(
+                    ax,
+                    [s * branch_scale * 1e6 for s in legend_branch_sizes],
+                    [f"{s} {unit}" for s in legend_branch_sizes],
+                    legend_kw={
+                        "loc": "lower left",
+                        "bbox_to_anchor": (1, 0),
+                        **legend_kwargs,
+                    },
+                )
 
-        ax.set_extent(snakemake.config["plotting"]["extent"])
+        ax.set_extent(bounds)
         if snakemake.params.settings.get("title", True):
             carrier_label = labels.get(kind, kind.title())
             title = f"{carrier_label} Balance ({labels[run]} Model)"

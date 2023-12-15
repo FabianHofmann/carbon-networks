@@ -7,6 +7,7 @@ plotting:
     rc:
       patch.linewidth: 0.2
       savefig.bbox: "tight"
+      savefig.dpi: 350
       ytick.left: True
       ytick.major.width: 0.4
       ytick.major.size: 2.5

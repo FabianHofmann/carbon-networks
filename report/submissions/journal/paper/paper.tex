@@ -198,7 +198,7 @@ In summary, the implementation of \COtwo{} and \Htwo{} networks is instrumental 
 
 \begin{figure*}[ht!]
     \centering
-    \includegraphics[width=\linewidth]{comparison/single-technologies/figures/90_nodes/balance_map_dedicated.png}
+    \includegraphics[width=0.98\linewidth]{comparison/single-technologies/figures/90_nodes/balance_map_dedicated.png}
     \caption{Optimal operation, flows and prices of the carbon (top line) and hydrogen (bottom line) sectors for the \carbonmodel{} (left) and the \hydrogenmodel{} (right) in the net zero scenario. For each region, upper semicircles show the average production per technology, lower semicircles the consumption, and colors the average marginal prices. Lines and arrows show the interregional transportation. Carbon sequestration offshore are drawn as full circles. \carbon{} and \hydrogen{} transport goes from low price to high price areas to supply CU and, in the case of \carbonmodel{}, CS.
     }
     \label{fig:balance_map}
@@ -206,8 +206,6 @@ In summary, the implementation of \COtwo{} and \Htwo{} networks is instrumental 
 
 To find the reason for why the \Htwo{} network achieves lower system costs than the \COtwo{} network, it is crucial to understand the underlying mechanisms and geographical implications of the two transportation systems. Fig.~\ref{fig:balance_map} maps the average production, consumption and flow in the carbon (top row) and hydrogen (bottom row) sectors for the \modCO{} (left) and \modH{} (right). Each map displays circles indicating the production (top half-circle) and consumption (bottom half-circle) for each region, with lines and arrows representing the average import or export volumes and flow directions between regions. The color shading of each region corresponds to the average price of the carrier.
 
-
-% TODO: add numbers: electrolyzers GW (Spain/Iberia, Germany), hydrogen prices (valleys, peaks)
 As we have also discussed above, the \modCO{} captures large amounts of carbon from bioenergy and industrial activities that were untapped in the \modBase{}. In particular, the carbon capture takes place in Central and Eastern Europe at relatively low cost, and almost none of the carbon is used locally (see Fig.~\ref{fig:balance_map}, top left). A large part of the captured carbon is transported from Western Europe to the Iberian Peninsula (70~Mt/h), the British Isles (66~Mt/h) and Denmark (25~Mt/h), where it is used along with low-cost electrolytic hydrogen to produce Fischer-Tropsch fuels and methanol. A second part of the captured carbon is transported to methanation plants in Italy and Greece (25~Mt/h), where the synthetic methane produced is fed into the well-developed gas grid, as Italy serves as a major gas import hub for Europe. Finally, a third part of captured carbon is transported directly to sites in the North Sea, Baltic Sea and Mediterranean Sea where it is sequestered. In absence of an \Htwo{} network, the system places most electrolysis in regions with the best renewable resources to supply local CU ($\sim$1100~GW$_\text{el}$), and smaller amounts of electrolyzers where hydrogen is needed for industrial processes across Central Europe ($\sim$75~GW$_\text{el}$). The model also emphasizes gas imports into Central Europe. Hydrogen prices vary strongly across the continent, with low price ``valleys'' in regions with good renewable resources such as the Iberian Peninsula or Denmark with around 60~€/MWh, and high price ``peaks'' in Central Europe with around 95~€/MWh (see bottom left).
 
 To understand the dynamics of the \modCO{}, we observe that the system locates CU in the regions where it can minimize costs for its material inputs, carbon and hydrogen. As the \COtwo{} network largely smoothes out carbon prices across regions, CU is located in the hydrogen price valleys on the periphery of the continent. Similarly, the model locates CS in regions where it can minimize the costs of the carbon to be sequestered. Thus, CS is located in the carbon price valleys among the subset of regions with access to offshore sequestration sites. Due to the \COtwo{} network these low-price regions are not strongly pronounced, but still prevalent and impact CS locations. DAC is only used for CU and thus co-located in regions with a mix of low electricity costs (for running DAC) and low hydrogen costs.
@@ -413,7 +411,15 @@ This is in order to avoid offsetting fossil emissions with carbon removal if the
 
 \printbibliography
 
+\newpage
 \appendix
+\setcounter{section}{0}
+\renewcommand{\thesection}{\Alph{section}}
+\renewcommand{\thefigure}{\Alph{section}.\arabic{figure}} % Add this line to apply the new counter to figures
+
+\onecolumn % Add this line to adjust the layout to single column
+
+\section*{Appendix}
 
 
 % \begin{figure*}
@@ -430,47 +436,78 @@ This is in order to avoid offsetting fossil emissions with carbon removal if the
 %     \label{fig:sankey_diagramm}
 % \end{figure*}
 
-\begin{figure}
+\subsection{Cost comparison across models}
+
+The following figures show further comparisons of total system costs and cost contributions of single technologies across the models and scenarios.
+
+\begin{figure}[h!]
     \centering
-    \includegraphics*[width=0.8\linewidth]{comparison/emission-reduction/figures/90_nodes/objective_heatmap.png}
+    \includegraphics*[width=0.4\linewidth]{comparison/emission-reduction/figures/90_nodes/objective_heatmap.png}
     \caption{Total annual system cost for the different network models and \COtwo{} targets. While the \modBase{} has neither a \COtwo{} nor an \Htwo{} network, the \modHybrid{} is allowed to expand both.}
     \label{fig:objective_heatmap}
 \end{figure}
 
-
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=\linewidth]{comparison/default/figures/90_nodes/cost_bar_transmission.png}
-    \caption{Annual transmission system cost for the different models in the net-zero emission scenario.}
-    \label{fig:cost_bar_transmission}
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{comparison/default/figures/90_nodes/cost_bar_transmission.png}
+        \caption{}
+        \label{fig:cost_bar_transmission}
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{comparison/net-negative-0.1/figures/90_nodes/cost_bar_transmission.png}
+        \caption{}
+        \label{fig:cost_bar_transmission_nn}
+    \end{subfigure}
+    \caption{Annual transmission system costs for different models and scenarios in the Net-Zero scenario (a) and Net-Negative scenario (b).}
 \end{figure}
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=\linewidth]{comparison/net-negative-0.1/figures/90_nodes/cost_bar_transmission.png}
-    \caption{Annual transmission system cost for the different models in the net-negative emissions scenario.}
-    \label{fig:cost_bar_transmission_nn}
-\end{figure}
 
-
-
-\begin{figure*}[ht]
+\begin{figure}[ht!]
     \centering
     \includegraphics[width=\linewidth]{difference/h2-only-full/figures/90_nodes/cost_map.png}
-    \caption{Difference in regional costs between the \Hgrid{} and \modHybrid{}s. The left subfigure shows higher spendings per technology and region and transport system for the \modH{}, the right shows higher spendings in the \modHybrid{}.}
+    \caption{Difference in regional costs between the \Hgrid{} and \modHybrid{}s in the Net-Zero scenario. The left figure shows higher spendings per technology and region and transport system for the \modH{}, the right shows higher spendings in the \modHybrid{}.}
     \label{fig:cost_map_difference}
-\end{figure*}
-
-\begin{figure}[htb!]
-    \centering
-    \includegraphics[width=0.9\linewidth]{difference/comparison/subsidy/figures/90_nodes/cost_bar.png}
-    \caption[short]{Net change in system cost when reducing assumed costs for \COtwo{} pipelines by 50\%.}
-    \label{fig:half-CO2-price_cost_bar}
 \end{figure}
 
 
+\begin{figure}[ht!]
+    \centering
+    \includegraphics[width=\linewidth]{difference/net-negative-0.1-h2-only-full/figures/90_nodes/cost_map.png}
+    \caption{Difference in regional costs between the \Hgrid{} and \modHybrid{}s in the Net-Negative scenario. The left figure shows higher spendings per technology and region and transport system for the \modH{}, the right shows higher spendings in the \modHybrid{}.}
+    \label{fig:cost_map_difference_nn}
+\end{figure}
 
-\begin{figure*}[ht!]
+
+\clearpage
+\subsection{Subsidizing \carbon{} pipelines}
+
+The effect of a 50\% subsidy on \carbon{} pipelines impacts the optimal technology deployment to small extent. Fig.~\ref{fig:cost_bar_subsidy} shows the corresponding total system cost of all models in the Net-Zero scenario. Fig.~\ref{fig:cost_bar_diff_subsidy} shows the net change in system cost between non-subsidized and subsidized models, showing only the \carbonmodel{} and \hybridmodel{} where changes occur.
+
+\begin{figure}[ht!]
+    \centering
+    \begin{subfigure}{.5\textwidth}
+    \includegraphics[width=\linewidth]{comparison/subsidy/figures/90_nodes/cost_bar.png}
+    \caption{}
+    \label{fig:cost_bar_subsidy}
+\end{subfigure}%
+\begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=\linewidth]{difference/comparison/subsidy/figures/90_nodes/cost_bar.png}
+    \caption{}
+    \label{fig:cost_bar_diff_subsidy}
+\end{subfigure}
+\caption{System costs for the all models in the net-zero emission scenario with 50\% subsidy of \carbon{} pipelines (a) and change in system cost for the \carbonmodel{} and \hybridmodel{} when subsidizing \carbon{} pipelines by 50\% (b).}
+\end{figure}
+
+
+\clearpage
+\subsection{Operation in Net-Negative Scenarios}
+The following figures display the optimal operation of the hydrogen and carbon sector for all models in the Net-Negative scenario.
+
+\begin{figure}[ht!]
     \centering
     \begin{subfigure}{.5\textwidth}
         \centering
@@ -485,9 +522,9 @@ This is in order to avoid offsetting fossil emissions with carbon removal if the
     \caption{Optimal operation, flows and prices of the carbon (left) and hydrogen (right) sectors for the \carbonmodel{} in the net negative scenario. For each region, upper semicircles show the average production per technology, lower semicircles the consumption, and colors the average marginal prices. Carbon Sequestration offshore are drawn as full circles. Lines and arrows show the interregional transportation. The \carbongrid{} reveals a fundamentally different layout than in the Net-Zero scenario.
     }
     \label{fig:capacity_maps_co2_nn}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}[ht!]
+\begin{figure}[ht!]
     \centering
     \begin{subfigure}{.5\textwidth}
         \centering
@@ -502,10 +539,10 @@ This is in order to avoid offsetting fossil emissions with carbon removal if the
     \caption{Optimal operation, flows and prices of the carbon (left) and hydrogen (right) sectors for the \hydrogenmodel{} in the net negative scenario. For each region, upper semicircles show the average production per technology, lower semicircles the consumption, and colors the average marginal prices. Carbon Sequestration offshore are drawn as full circles. Lines and arrows show the interregional transportation. With the tightened emission target, the \hydrogengrid{} expands the \hydrogengrid{} layout of the Net-Zero scenario model results while increasing DAC facilities at the coast.
     }
     \label{fig:capacity_maps_h2_nn}
-\end{figure*}
+\end{figure}
 
 
-\begin{figure*}[ht!]
+\begin{figure}[ht!]
     \centering
     \begin{subfigure}{.5\textwidth}
         \centering
@@ -520,7 +557,8 @@ This is in order to avoid offsetting fossil emissions with carbon removal if the
     \caption{Optimal operation, flows and prices of the carbon (left) and hydrogen (right) sectors for the \hydrogenmodel{} in the net negative scenario. For each region, upper semicircles show the average production per technology, lower semicircles the consumption, and colors the average marginal prices. Carbon Sequestration offshore are drawn as full circles. Lines and arrows show the interregional transportation. With the tightened emission target, the \hybridmodel{} decreases the \hydrogengrid{} layout in comparison to the Net-Zero scenario and increases \carbon{} transport from inland point sources to the sequestration sites.
     }
     \label{fig:capacity_maps_full_nn}
-\end{figure*}
+\end{figure}
+
 
 
 % [Dynamics \modCO{} vs \modH{} (old text blocks)]

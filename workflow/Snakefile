@@ -171,7 +171,7 @@ rule get_solved_network:
             **config["scenario"]
         ),
     output:
-        network="results/{run}/networks/{clusters}_nodes.nc",
+        network=protected("results/{run}/networks/{clusters}_nodes.nc"),
     shell:
         """
         cp {input} {output}
