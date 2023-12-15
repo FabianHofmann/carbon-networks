@@ -222,6 +222,7 @@ Finally, the system cost advantage of the \modH{} stems from being able to suppl
 
 \subsection*{Hybrid configuration provides further flexibilities}\label{subsec:Hybrid}
 
+
 \begin{figure*}[ht!]
     \centering
     \begin{subfigure}{.5\textwidth}
@@ -242,58 +243,37 @@ Finally, the system cost advantage of the \modH{} stems from being able to suppl
 
 % TODO: smoother transition, incl. end of 3.2
 % TODO: add network investment costs plot to Appendix. Mention investment H2 > CO2. (The investment in the hydrogen network is four times the investment in the carbon network.)
-The \modHybrid{} combines the advantages of hydrogen and carbon networks. Fig.~\ref{fig:cost_bar} shows that the \modHybrid{} achieves a cost reduction of \label{}5.2\% (\label{}41 billion euros) compared to the \modBase{}, which is lower than the cost reductions of the \COgrid{} and \modH{}. Fig.~\ref{fig:capacity_maps} shows the average production, consumption and transport of carbon and hydrogen in the \modHybrid{}. While the topology of the \Htwo{} network roughly corresponds to that of the \modH{}, the \COtwo{} network plays more of a complementary role. In this section, we explore the advantages and disadvantages compared to the other models.
+The \modHybrid{} combines the advantages of hydrogen and carbon networks, resulting in a cost reduction of \label{}5.2\% (\label{}41 billion euros) compared to the \modBase{}, which is lower than the cost reductions of the \COgrid{} and \modH{} (see Fig.~\ref{fig:cost_bar}). In particular, production, consumption and transport in the carbon and hydrogen sectors in the \modHybrid{} combine elements of the \carbonmodel{} and \hydrogenmodel{} (see Fig.~\ref{fig:capacity_maps}). While the topology of the \Htwo{} network roughly corresponds to that of the \modH{}, the \COtwo{} network plays more of a complementary role. In this section, we explore the advantages and disadvantages compared to the other models.
 
-Similar to the \modH{}, the \modHybrid{} transports hydrogen from concentrated electrolysis sites in Western regions (Iberian Peninsula and British Isles) to distributed CU production sites across the continent. For the \COtwo{} network, this model employs short and direct pipeline routes, typically spanning one or two segments, to transport carbon from inland CC point sources to perform CS at nearby sequestration sites (e.g., Northern Germany, Italy and Greece). Additionally, the \COtwo{} network utilizes single-segment network sections to equalize local variations in carbon demand and supply to produce CU, thereby also further converging carbon prices.
+Similar to the \modH{}, the \modHybrid{} transports hydrogen from concentrated electrolysis sites in Western regions (Iberian Peninsula and British Isles) to distributed CU production sites across the continent. For the \COtwo{} network, this model employs short and direct pipeline routes, typically spanning one or two segments, to transport carbon from inland CC point sources to perform CS at nearby sequestration sites (e.g., Northern Germany, Italy and Greece). Additionally, the \COtwo{} network utilizes single-segment network sections to equalize local variations in carbon demand and supply to produce CU, thereby also further converging carbon prices. The model locates CU everywhere, except for a few coastal regions that perform CS, or that supply their locally captured carbon to a neigbouring sequestration region. DAC is deployed to supply carbon for the remaining CU needed by the model (mostly in Southern Spain).
 
-To understand the dynamics of the \modHybrid{} model, we observe that the model locates CU everywere, except for a few coastal regions that perform CS, or that supply their locally captured carbon to a neigbouring sequestration region. The model uses the \COtwo{} network to transport carbon over short distances to the CS sites, and the \Htwo{} network to transport hydrogen over longer distances from the lowest-cost hydrogen regions to CU sites across the continent. DAC is deployed to supply carbon for the remaining CU needed by the model (mostly in Southern Spain).
+Despite only a further reduction of \label{}0.4 percentage points (\label{}3~bn€) in total system costs compared to the \modH{}, the \modHybrid{} brings several advantages: (1) The \modHybrid{} relies even less on DAC than the other models, which as a technology may be costlier than anticipated in the cost projections, by making use of carbon point sources; (2) it requires a smaller land use footprint for wind and solar power due to lower DAC deployment. On the other hand, the \modHybrid{} needs slightly more biomass, equipped with carbon capture, to achieve its cost advantage in comparison to the \modH{}; (3) it uses both \COtwo{} and \Htwo{} networks to flatten price distribution across the continent and to build a more robust energy system.
 
-Despite only a further reduction of \label{}0.4 percentage points (\label{}3~bn€) in total system costs compared to the \modH{}, the \modHybrid{} brings several advantages: (1) The \modHybrid{} uses both \COtwo{} and \Htwo{} networks to build a more robust energy system; (2) it relies even less on DAC than the other models, which as a technology may be costlier than anticipated in the cost projections; and (3) it requires a smaller land use footprint for wind and solar power due to lower DAC deployment. On the other hand, the \modHybrid{} needs slightly more biomass, equipped with carbon capture, to achieve its cost advantage in comparison to the \modH{}.
-
-\subsection*{Net-negativity amplifies DAC and Bioenergy with CU and CS}\label{subsec:NN}
+\subsection*{Net-negativity amplifies DAC and \carbon{} transport}\label{subsec:NN}
 
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=0.9\linewidth]{difference/comparison/emission-reduction-0.1/figures/90_nodes/cost_bar.png}
-    \caption[short]{Net change in investments when tightening the \COtwo{} emission target from net-zero to net-negative 10\% of 1990s emissions. For all models, Direct Air Capture (DAC) contributes most to the additional \carbon{} removal, requiring further solar, wind and heat pump capacities for electricity and heat input.}
+    \caption[short]{Net change in system cost when tightening the \COtwo{} emission target from net-zero to net-negative 10\% of 1990s emissions. Each cost bar is split into contribution of the same technology groups, except for \carbon{} sequestration cost which are now diplayed separately. For all models, Direct Air Capture (DAC) contributes most to the additional \carbon{} removal, requiring further solar, wind and heat pump capacities for electricity and heat input.}
     \label{fig:net-negative_cost_bar}
 \end{figure}
 
-% TODO: start with explanation Fig 6: similarities b/w all models: sequestration, more DAC (=+wind, solar, heat pump, battery), point-source CC (+bioenergy); diff: level of DAC vs level of point-source CC, co2 network, h2 network
 
-% carbon:
-% - fundamentally new network layout
-% - CU in spain is now supplied by carbon from DAC
-% - carbon in Central Europe is mainly transported to seq sites
-% - stranded investment in carbon network of 3bn
+In the following, we analyze how investment trends and network strategies alter when transitioning from a net zero to a net emissions reduction target. Therefore, we subject the models to the Net-Negative scenario with a net carbon removal of 460~Mt/a and an increased total sequestration limit of 660~Mt/a. In comparison to the Net-Zero scenario, all models with transport options incur a roughly similar net annual cost increase - 77~bn€ for the \modCO{}, 81~bn€ for the \modH{}, and 78~bn€ for the \modHybrid{} (see Fig.~\ref{fig:net-negative_cost_bar}), resulting in a higher cost-benefit of 6~bn€ for the \hybridmodel{} in comparison to the \hydrogenmodel{}.
 
-% hydrogen:
-% - no significant changes in strategies
-
-% hybrid:
-% - more CU in spain
-% - less cu in central europe
-% - more sequestration in central europe and Portugal
-% - less h2 import from spain to central european
-% - mostly additive investments, except for some CU plants near the coast (of 4.3bn) and h2 network from Spain to Central Europe (2bn)
-
-% TODO: add operation plots into appendix all models (hydrogen and carbon)
-
-In transitioning from a net zero to a net emissions reduction target, a continuation of investment trends are perceived. Fig.~\ref{fig:net-negative_cost_bar} shows the net investment changes per technology group for the \carbonmodel, the \Hgrid{} and \modHybrid{}s. The scenario imposes a net carbon removal of 460 Mt/a, with all models incurring a roughly similar net annual cost increase - 77~bn€ for the \modCO{}, 81~bn€ for the \modH{}, and 78~bn€ for the \modHybrid{}. Both models invest relatively evenly in additional DAC, wind and heat pump systems, with DAC accounting for more than a third of the additional system costs. These remove carbon directly at sequestration sites at the coast, in particular in Portugal and UK, together with heat and power from new heat pumps at site and new solar and wind installation in the vicinity.
+The models equally invest in the expansion of sequestration capacities up to the global limit (5~bn€). The investments in additional DAC (36-41~bn€), wind (6-7~bn€) and heat pumps (6-7~bn€) are relatively evenly for all models, with DAC accounting for roughly half of the additional system costs.
+Fundamental differences in investment strategies occur in the deployment of solar, carbon capture and bio-energy technologies: While the \carbonmodel{} expands CC at point sources the most, the \hydrogenmodel{} and the \hybridmodel{} invest relatively more in new solar plants. The \carbonmodel{} invests three time more in new bio-energy sources (6~bn€) than the other models.
+All models only reveal small net downscaling of technologies. However, as we discuss below, the geographic impact can vary depending on the model, sometimes leading to disruptive changes in optimal network strategies and stranded assets.
 
 
-Fundamental difference in investment strategies occur in the carbon capture sector: In contrast to the \modH{}, the \modHybrid{} continues the strategy of sequestering carbon captured and transported from bio-energetic inputs, expanding the carbon transport routes from Central and Eastern Europe to the near shores. At the same time, carbonaceous fuel production in Central Europe partially moves to Spain, where it uses carbon from new DAC facilities without the installation of a \COtwo{} network. At the same time, less hydrogen imports from the Iberian Peninsula to Central Europe is needed due to less CU.
-The \modH{} on the other hand, expands decentralized CU systems from the Net-Zero scenario, which are now increasingly supplied with carbon from biogas-to-gas facilities, showing up in both ``Bioenergy'' and ``Carbon Capture at Point Sources'' cost-contributions. The centralized DAC facilities at sequestration sites are more expanded than in the \modHybrid{} and are requiring additional heat from biomass CHPs.
+In contrast to its layout in the Net-Zero scenario, the \carbonmodel{} fundamentally reorganizes the carbon transport pathways (see Fig.~\ref{fig:balance_maps_co2_nn}).
+In Spain, carbon utilization (CU) is now predominantly supplied by carbon extracted from DAC. Central Europe sees a major transformation, with carbon mainly being transported to sequestration sites in the north and south-east. This reorganization leads to stranded investment in the carbon network infrastructure, amounting to approximately 3~bn€.
+%
+The \modH{} on the other hand, primarily leaves the network topology unchanged and only expands DAC facilities at regions with access to sequestration sites as well as additional solar, wind and heat pumps in the vicinity to supply power and heat (see Fig.~\ref{fig:balance_maps_h2_nn}).
+%
+Finally, the \modHybrid{} expands the sequestration with carbon captured from bio-energetic inputs and transported from Central and Eastern Europe to the near shores (see Fig.~\ref{fig:balance_maps_full_nn}), leading to an additional investment in the \carbongrid{} (1.2~bn€, see Fig.~\ref{fig:cost_bar_transmission_nn}). At the same time, carbonaceous fuel production in Central Europe partially moves to Spain, where it uses carbon from new DAC facilities without the installation of a \COtwo{} network. As a trade-off, the model transports less hydrogen from the Iberian Peninsula to Central Europe, resulting in a dismantling of 2~bn€ in hydrogen network costs compared to the Net-Zero scenario.
 
-These findings highlight the continuation of trends of the two systemic approaches, which are interchangable at marginal cost-difference: While a stand-alone \Htwo{} network combines well with highly centralized DAC and decentralized CU with bioenergy as primary carbon source, the complementation with a \COtwo{} network promotes combining DAC and CU where good renewable resources are and collecting, transporting and sequestering carbon from decentral bioenergetic processes.
-
-% The difference in absolute investment changes between the two models, regionally displayed in Fig.~\ref{fig:net-negative_cost_map}.
-% \begin{figure*}[htb!]
-%     \centering
-%     \includegraphics[width=\linewidth]{difference/net-negative-0.1-h2-only-full/figures/90_nodes/cost_map.png}
-%     \caption[short]{Net difference in investments between the \modH{} and the \modHybrid{} for the Net-Negative scenario.}
-%     \label{fig:net-negative_cost_map}
-% \end{figure*}
+These findings highlight the continued trends of the two systemic approaches which are combined in the \hybridmodel. With an increased demand for sequestration, the \carbongrid{} relatively gains more importance, leading to higher cost-benefits by enabling to combine increased need DAC with a more dominant collection and transportation scheme of carbon from distributed point sources.
 
 
 % \section{Limitations}
@@ -421,20 +401,16 @@ This is in order to avoid offsetting fossil emissions with carbon removal if the
 
 \section*{Appendix}
 
+\subsection{Model Inputs}
 
-% \begin{figure*}
-%     \centering
-%     \includegraphics[width=\linewidth]{full/figures/90_nodes/sankey_diagramm.png}
-%     \caption{Sankey diagram of the optimal operation for a net-zero scenario.}
-%     \label{fig:sankey_diagramm}
-% \end{figure*}
+The following figures extend on the model assumptions and inputs.
 
-% \begin{figure*}
-%     \centering
-%     \includegraphics[width=\linewidth]{net-negative-0.1/full/figures/90_nodes/sankey_diagramm.png}
-%     \caption{Sankey diagram of the optimal operation for a net-negative 10\% scenario.}
-%     \label{fig:sankey_diagramm}
-% \end{figure*}
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{baseline/figures/90_nodes/sequestration_map.png}
+    \caption{Maximal sequestration potential per offshore region used as input for all models. Note that in most model runs the regional sequestration potentials are not exploited due the the global limit on sequestration.}
+\end{figure}
+
 
 \subsection{Cost comparison across models}
 
@@ -504,6 +480,18 @@ The effect of a 50\% subsidy on \carbon{} pipelines impacts the optimal technolo
 
 
 \clearpage
+\subsection{Operation of the \hybridmodel{} in Net-Zero Scenarios}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{full/figures/90_nodes/sankey_diagramm.png}
+    \caption{Sankey diagram of the carbon flows in the \hybridmodel{} in the Net-Zero scenario.}
+    \label{fig:sankey_diagramm}
+\end{figure}
+
+
+
+\clearpage
 \subsection{Operation in Net-Negative Scenarios}
 The following figures display the optimal operation of the hydrogen and carbon sector for all models in the Net-Negative scenario.
 
@@ -512,16 +500,16 @@ The following figures display the optimal operation of the hydrogen and carbon s
     \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=\linewidth]{net-negative-0.1/co2-only/figures/90_nodes/balance_map_carbon.png}
-        \label{fig:capacity_map_carbon_co2_nn}
+        \label{fig:balance_map_carbon_co2_nn}
     \end{subfigure}%
     \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=\linewidth]{net-negative-0.1/co2-only/figures/90_nodes/balance_map_hydrogen.png}
-        \label{fig:capacity_map_hydrogen_co2_nn}
+        \label{fig:balance_map_hydrogen_co2_nn}
     \end{subfigure}
     \caption{Optimal operation, flows and prices of the carbon (left) and hydrogen (right) sectors for the \carbonmodel{} in the net negative scenario. For each region, upper semicircles show the average production per technology, lower semicircles the consumption, and colors the average marginal prices. Carbon Sequestration offshore are drawn as full circles. Lines and arrows show the interregional transportation. The \carbongrid{} reveals a fundamentally different layout than in the Net-Zero scenario.
     }
-    \label{fig:capacity_maps_co2_nn}
+    \label{fig:balance_maps_co2_nn}
 \end{figure}
 
 \begin{figure}[ht!]
@@ -529,16 +517,16 @@ The following figures display the optimal operation of the hydrogen and carbon s
     \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=\linewidth]{net-negative-0.1/h2-only/figures/90_nodes/balance_map_carbon.png}
-        \label{fig:capacity_map_carbon_h2_nn}
+        \label{fig:balance_map_carbon_h2_nn}
     \end{subfigure}%
     \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=\linewidth]{net-negative-0.1/h2-only/figures/90_nodes/balance_map_hydrogen.png}
-        \label{fig:capacity_map_hydrogen_h2_nn}
+        \label{fig:balance_map_hydrogen_h2_nn}
     \end{subfigure}
     \caption{Optimal operation, flows and prices of the carbon (left) and hydrogen (right) sectors for the \hydrogenmodel{} in the net negative scenario. For each region, upper semicircles show the average production per technology, lower semicircles the consumption, and colors the average marginal prices. Carbon Sequestration offshore are drawn as full circles. Lines and arrows show the interregional transportation. With the tightened emission target, the \hydrogengrid{} expands the \hydrogengrid{} layout of the Net-Zero scenario model results while increasing DAC facilities at the coast.
     }
-    \label{fig:capacity_maps_h2_nn}
+    \label{fig:balance_maps_h2_nn}
 \end{figure}
 
 
@@ -547,16 +535,24 @@ The following figures display the optimal operation of the hydrogen and carbon s
     \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=\linewidth]{net-negative-0.1/full/figures/90_nodes/balance_map_carbon.png}
-        \label{fig:capacity_map_carbon_full_nn}
+        \label{fig:balance_map_carbon_full_nn}
     \end{subfigure}%
     \begin{subfigure}{.5\textwidth}
         \centering
         \includegraphics[width=\linewidth]{net-negative-0.1/full/figures/90_nodes/balance_map_hydrogen.png}
-        \label{fig:capacity_map_hydrogen_full_nn}
+        \label{fig:balance_map_hydrogen_full_nn}
     \end{subfigure}
     \caption{Optimal operation, flows and prices of the carbon (left) and hydrogen (right) sectors for the \hydrogenmodel{} in the net negative scenario. For each region, upper semicircles show the average production per technology, lower semicircles the consumption, and colors the average marginal prices. Carbon Sequestration offshore are drawn as full circles. Lines and arrows show the interregional transportation. With the tightened emission target, the \hybridmodel{} decreases the \hydrogengrid{} layout in comparison to the Net-Zero scenario and increases \carbon{} transport from inland point sources to the sequestration sites.
     }
-    \label{fig:capacity_maps_full_nn}
+    \label{fig:balance_maps_full_nn}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\linewidth]{net-negative-0.1/full/figures/90_nodes/sankey_diagramm.png}
+    \caption{Sankey diagram of the carbon flows in the \hybridmodel{} in the Net-Negative scenario.}
+    \label{fig:sankey_diagramm}
 \end{figure}
 
 

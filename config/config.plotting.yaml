@@ -209,8 +209,8 @@ plotting:
       region_cmap: Blues
       region_unit: €/MWh
       bus_scale: 2.5e-9
-      branch_scale: 6e-9
-      flow_scale: 8e-6
+      branch_scale: 7e-9
+      flow_scale: 1e-5
       bus_sizes:
         - 200 # TWh
         - 100 # TWh
