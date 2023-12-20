@@ -64,7 +64,7 @@ for kind, output in snakemake.output.items():
     carriers = config["constants"]["carrier_to_buses"].get(kind, [kind])
 
     grouper = s.groupers.get_bus_and_carrier
-    df = s.dispatch(bus_carrier=carriers, groupby=grouper)
+    df = s.dispatch(bus_carrier=carriers, groupby=grouper, aggregate_time="mean")
     _ = get_transmission_carriers(n, bus_carrier=carriers)
     transmission_carriers = _.set_levels(
         n.carriers.nice_name[_.get_level_values(1)], level=1
@@ -88,9 +88,10 @@ for kind, output in snakemake.output.items():
         "edgecolor": "None",
     }
     unit = specs["unit"]
+    conversion = float(specs["unit_conversion"])
 
     bus_sizes = df.sort_index()
-    flow = s.transmission(groupby=False, bus_carrier=carriers)
+    flow = s.transmission(groupby=False, bus_carrier=carriers, aggregate_time="mean")
     branch_colors = {c: colors[carrier] for c, carrier in transmission_carriers}
     fallback = pd.Series()
 
@@ -243,14 +244,14 @@ for kind, output in snakemake.output.items():
     ax.set_extent(snakemake.config["plotting"]["extent"])
     if snakemake.params.settings.get("title", True):
         carrier_label = labels.get(kind, kind.title())
-        title = f"{carrier_label} Balance ({labels[run]} Model)"
+        title = f"{carrier_label} Balance ({labels[run]} Scenario)"
         ax.set_title(title)
 
     legend_bus_sizes = specs["bus_sizes"]
     if legend_bus_sizes is not None:
         add_legend_circles(
             ax,
-            [s * bus_scale * 1e6 for s in legend_bus_sizes],
+            [s * bus_scale * conversion for s in legend_bus_sizes],
             [f"{s} {unit}" for s in legend_bus_sizes],
             legend_kw={"bbox_to_anchor": (0, 1), **legend_kwargs},
         )
@@ -258,7 +259,7 @@ for kind, output in snakemake.output.items():
     if legend_branch_sizes is not None:
         add_legend_lines(
             ax,
-            [s * branch_scale * 1e6 for s in legend_branch_sizes],
+            [s * branch_scale * conversion for s in legend_branch_sizes],
             [f"{s} {unit}" for s in legend_branch_sizes],
             legend_kw={"bbox_to_anchor": (0, 0.85), **legend_kwargs},
         )
