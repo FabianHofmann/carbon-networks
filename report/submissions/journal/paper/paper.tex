@@ -93,7 +93,7 @@ natbib=true % natbib compatibility mode (\citep and~\citet still work)
 \maketitle
 
 \begin{abstract}
-    Hydrogen and carbon dioxide transport can both play an important role in climate-neutral energy systems. Hydrogen networks help serve regions with high energy demand, while excess emissions are transported away in carbon dioxide networks. When it comes to the synthesis of carbonaceous fuels, it is less clear which input should be transported: hydrogen to carbon point sources or carbon to low-cost hydrogen. We explore the potential synergies and competition of both networks in a cost-optimal carbon-neutral European energy system. In direct comparison, a hydrogen network is more cost-effective than a carbon network, since it serves to transport hydrogen to demand and to point source of carbon for utilization. However, in a hybrid scenario where both networks are present, the carbon network effectively complements the hydrogen network, promoting carbon capture from biomass and reducing reliance on direct air capture. This study shows how the European energy system in future net-zero and net-negative emissions scenarios can benefits from integrating both networks.
+    Hydrogen and carbon dioxide transport can both play an important role in climate-neutral energy systems. Hydrogen networks help serve regions with high energy demand, while excess emissions are transported away in carbon dioxide networks. When it comes to the synthesis of carbonaceous fuels, it is less clear which input should be transported: hydrogen to carbon point sources or carbon to low-cost hydrogen. We explore the potential synergies and competition of both networks in a cost-optimal carbon-neutral European energy system. In direct comparison, a hydrogen network is more cost-effective than a carbon network, since it serves to transport hydrogen to demand and to point source of carbon for utilization. However, in a hybrid scenario where both networks are present, the carbon network effectively complements the hydrogen network, promoting carbon capture from biomass and reducing reliance on direct air capture. This study shows how the European energy system in future net-zero and net-negative carbon dioxide emissions scenarios can benefits from integrating both networks.
 \end{abstract}
 
 
@@ -117,7 +117,7 @@ No study has yet considered the co-optimization and comprehensive assessment of 
 
 \begin{figure}[h!]
     \includegraphics[width=\linewidth]{baseline/figures/90_nodes/demand_bar.png}
-    \caption{Assumptions on exogenous demand, derived from~\cite{piamanzGeoreferencedIndustrialSites2018,muehlenpfordtTimeSeries2019,mantzosJRCIDEES20152018,NationalEmissionsReported2023,EurostatCompleteEnergyBalance,uwekrienDemandlib2023}. The figure shows the total annual energy demand for each energy source which determine the model's endogenous investments and operation. Endogenous processes can lead to higher total production volumes of some energy carriers, e.g., the demand for methanol requires more hydrogen and carbon as secondary (energy) inputs, which are not considered here. The model are defined per region and time stamp.}
+    \caption{Assumptions on exogenous demand, derived from~\cite{piamanzGeoreferencedIndustrialSites2018,muehlenpfordtTimeSeries2019,mantzosJRCIDEES20152018,NationalEmissionsReported2023,EurostatCompleteEnergyBalance,uwekrienDemandlib2023}. The figure shows the total annual energy demand for each energy source which determine the model's endogenous investments and operation. Endogenous processes can lead to higher total production volumes of some energy carriers, e.g., the demand for methanol requires more hydrogen and carbon as secondary (energy) inputs, which are not considered here. In the model, demands are defined per region and time stamp.}
     % TODO: adjust labels to show that these are exogenous assumptions
     \label{fig:total-demand-bar}
 \end{figure}
@@ -135,14 +135,8 @@ To investigate the competing transport dynamics between \COtwo{} and \Htwo{} net
     \item[] \textit{\Hgrid{}:} Only the \Htwo{} network is developed.
     \item[] \textit{Hybrid:} Both \COtwo{} and \Htwo{} networks are developed.
 \end{itemize}
-%
-% In anticipation of the future \carbon{} emission targets, the models are subjected to the following two scenarios:
-% \begin{itemize}
-%     \item[] \textit{Net\=/Zero}: aligning with the EU's 2050 emission targets. Limiting carbon sequestration to 200~Mt/a. This scenario is also denoted as NZ.
-%     \item[] \textit{Net\=/Negative}: 10\% net-negative emissions relative to 1990 levels, equaling 460~Mt \COtwo{} annually. Limiting carbon sequestration to 660~Mt/a. Also denoted as NN.
-% \end{itemize}
 
-We analyze how the deployment of carbon and hydrogen networks affects different decarbonization strategies in the models and scenarios and how investments in none or only one of the transport technologies lead to inefficient market layouts. We do this by focusing first on a net-zero \carbon{} emissions target, while limiting carbon sequestration to a total 200~Mt/a. We give a detailed description of the different technological and geographical impacts of the transportation systems. Subsequently, our analysis demonstrates the extent to which different deployment strategies remain robust under a tightened net-negative \carbon{} emissions target.
+We analyze how the deployment of carbon and hydrogen networks affects different decarbonization strategies in the models and scenarios and how investments in none or only one of the transport technologies lead to inefficient market layouts. We do this by focusing first on a net-zero \carbon{} emissions target, while limiting carbon sequestration to a total 200~Mt/a. We give a detailed description of the different technological and geographical impacts of the transportation systems. Subsequently, our analysis demonstrates the extent to which different deployment strategies remain robust under a tightened net \carbon{} removal target.
 
 
 \section{Results}
@@ -150,7 +144,6 @@ We analyze how the deployment of carbon and hydrogen networks affects different 
 
 
 All scenarios share key energy system characteristics but differ in system costs and technology use (Fig.~\ref{fig:cost_bar}). The \modBase{} has the highest annual cost at 779~bn€/a. Models with \carbon{} and \hydrogen{} transport options are more cost-effective, reducing costs by 3.1\% in \modCO{}, 4.8\% in \modH{}, and 5.2\% in \modHybrid{}.
-% in system costs: 779bn€ (baseline), 754bn€ (carbon), 742bn€ (hydrogen), 738bn€ (hybrid)
 
 \begin{figure}[ht!]
     \centering
@@ -197,19 +190,6 @@ However, both transport systems provide individual cost-benefits to the system. 
 
 
 
-% To understand the dynamics of the \modCO{}, we observe that the system locates CU in the regions where it can minimize costs for its material inputs, carbon and hydrogen. As the \COtwo{} network largely smoothes out carbon prices across regions, CU is located in the hydrogen price valleys on the periphery of the continent. Similarly, the model locates CS in regions where it can minimize the costs of the carbon to be sequestered. Thus, CS is located in the carbon price valleys among the subset of regions with access to offshore sequestration sites. Due to the \COtwo{} network these low-price regions are not strongly pronounced, but still prevalent and impact CS locations. DAC is only used for CU and thus co-located in regions with a mix of low electricity costs (for running DAC) and low hydrogen costs.
-
-% To explain the dynamics of the \modH{}, we observe that the model locates CU in the carbon price valleys across Western, Central and Eastern Europe (see top right), as the \Htwo{} network smoothes out hydrogen prices across the entire continent (see bottom right). CS is again located in the carbon price valleys among those regions with access to offshore sequestration sites. Due to the lack of a \COtwo{} network the full CC potentials from point sources are exhausted in all offshore sequestration regions, and the carbon is then sequestered. The additionally needed carbon to reach 200~Mt of CS is captured via DAC in the regions with access to offshore sequestration sites with the lowest costs for DAC, with the largest share deployed in Portugal (see top right). DAC is also used for CU in this model, and for both purposes DAC is located in the regions with the lowest costs for electricity.
-
-
-% The increase in captured carbon from point sources in the models with \carbon{} and/or \hydrogen{} transport is more related to an upgrading of existing industrial or power plant facilities to capture carbon rather than a shift in technologies. This is evident when analyzing the capture share of the different CC technologies (see Fig.~\ref{fig:captureshare_line}).
-
-
-
-% In summary, the implementation of \COtwo{} and \Htwo{} networks is instrumental in unlocking CC potentials and reducing system costs. However, despite the \modCO{} demonstrating higher amounts and shares of CC from point sources and therefore less DAC deployment, the \modH{} achieves even  lower total system costs (see Fig.~\ref{fig:cost_bar}).
-
-
-
 \subsection*{Hybrid configuration provides further flexibilities}\label{subsec:Hybrid}
 
 
@@ -248,38 +228,22 @@ While the topology of the \Htwo{} network (8~bn€ investments) roughly correspo
 \end{figure}%
 
 
-In this combination, the networks enable full carbon capture upgrades for all technologies that run on a high average capacity factor (above 70\%, see Fig.~\ref{fig:captureshare_line}). Except for SMR and gas-fired Combined Heat and Power Plants (CHP) which operate a few weeks annually, all emissions from carbon-emitting technologies are captured.
+In this combination, the networks enable all technologies that run on a high average, above 70\%, capacity factor to capture carbon (see Fig.~\ref{fig:captureshare_line}). Except for SMR and gas-fired Combined Heat and Power Plants (CHP) which operate a few weeks annually, all emissions from carbon-emitting technologies are captured.
 % In comparison with the \hydrogenscenario, Biomass CHP supplies more flexible heat, power and relatively low-cost carbon.
 Thus, only a few Direct Air Capture (DAC) installations are installed, such as those in southern Spain for methanolization plants. This leads to reduced power consumption and, therefore, less required wind and solar power deployment.
-
-The carbon prices are relatively evenly distributed across the continent at high level 115-155~€/t. This indicates
-
-
 
 
 \begin{figure}[htb!]
     \centering
     \includegraphics[width=0.9\linewidth]{difference/comparison/emission-reduction-0.1/figures/90_nodes/cost_bar.png}
-    \caption[short]{Net change in system cost when tightening the \COtwo{} emission target from net-zero to net-negative 10\% of 1990s emissions. Each cost bar is split into contribution of the same technology groups, except for \carbon{} sequestration cost which are now diplayed separately. For all models, Direct Air Capture (DAC) contributes most to the additional \carbon{} removal, requiring further solar, wind and heat pump capacities for electricity and heat input.}
+    \caption[short]{Net change in system cost when tightening the \COtwo{} emission target from net-zero to net-negative 10\% of 1990s emissions. Each cost bar is split into contribution of the same technology groups, except for \carbon{} sequestration cost, which are now displayed separately. For all models, Direct Air Capture (DAC) contributes most to the additional \carbon{} removal, requiring further solar, wind and heat pump capacities for electricity and heat input.}
     \label{fig:net-negative_cost_bar}
 \end{figure}
 
 
-In the following, we analyze how investment trends and network strategies alter when transitioning from a net zero to a net emissions reduction target. Therefore, we subject the models to the Net-Negative scenario with a net carbon removal of 460~Mt/a and an increased total sequestration limit of 660~Mt/a. In comparison to the Net-Zero scenario, all models with transport options incur a roughly similar net annual cost increase - 77~bn€ for the \modCO{}, 81~bn€ for the \modH{}, and 78~bn€ for the \modHybrid{} (see Fig.~\ref{fig:net-negative_cost_bar}), resulting in a higher cost-benefit of 6~bn€ for the \hybridmodel{} in comparison to the \hydrogenmodel{}.
+However, the exploitation of carbon point sources is close to its feasible limit. When applying a stricter \carbon{} emissions target and force the model to remove 460~Mt \carbon{} over one year (equivalent to 10\% of \carbon{} emissions in 1990) while sequestering maximally 660~Mt, investment in DAC and associated solar and wind power and heat supply cover a large share of additional system cost in all scenarios (see Fig.~\ref{fig:net-negative_cost_bar}). In the \hybridscenario{}, this share is at 80\% while new carbon capture at point sources only make up 6.5\% of new system costs. The additional sequestration is mainly supplied by large DAC facilities near the shore. To a small extend it is supplied by additional carbon captured and transported from bio-energetic sources in the inland that were used to supply CU before (compare Fig.~\ref{fig:balance_maps_full_nn}). At the same time, some of the CU in Central Europe moves to Spain, where it uses carbon from new DAC facilities without the installation of a \COtwo{} network. This slight shift in CU deployment leads to less investments in the hydrogen transport route from the Iberian Peninsula to Central Europe (2~bn€/a) and to an additional investment in the \carbongrid{} from Central and Eastern Europe to the shores (1.2~bn€/a, compare Fig.~\ref{fig:cost_bar_transmission_nn}).
 
-The models equally invest in the expansion of sequestration capacities up to the global limit (5~bn€). The investments in additional DAC (36-41~bn€), wind (6-7~bn€) and heat pumps (6-7~bn€) are relatively evenly for all models, with DAC accounting for roughly half of the additional system costs.
-Fundamental differences in investment strategies occur in the deployment of solar, carbon capture and bio-energy technologies: While the \carbonmodel{} expands CC at point sources the most, the \hydrogenmodel{} and the \hybridmodel{} invest relatively more in new solar plants. The \carbonmodel{} invests three time more in new bio-energy sources (6~bn€) than the other models.
-All models only reveal small net downscaling of technologies. However, as we discuss below, the geographic impact can vary depending on the model, sometimes leading to disruptive changes in optimal network strategies and stranded assets.
-
-
-In contrast to its layout in the Net-Zero scenario, the \carbonmodel{} fundamentally reorganizes the carbon transport pathways (see Fig.~\ref{fig:balance_maps_co2_nn}).
-In Spain, carbon utilization (CU) is now predominantly supplied by carbon extracted from DAC. Central Europe sees a major transformation, with carbon mainly being transported to sequestration sites in the north and south-east. This reorganization leads to stranded investment in the carbon network infrastructure, amounting to approximately 3~bn€.
-%
-The \modH{} on the other hand, primarily leaves the network topology unchanged and only expands DAC facilities at regions with access to sequestration sites as well as additional solar, wind and heat pumps in the vicinity to supply power and heat (see Fig.~\ref{fig:balance_maps_h2_nn}).
-%
-Finally, the \modHybrid{} expands the sequestration with carbon captured from bio-energetic inputs and transported from Central and Eastern Europe to the near shores (see Fig.~\ref{fig:balance_maps_full_nn}), leading to an additional investment in the \carbongrid{} (1.2~bn€, see Fig.~\ref{fig:cost_bar_transmission_nn}). At the same time, carbonaceous fuel production in Central Europe partially moves to Spain, where it uses carbon from new DAC facilities without the installation of a \COtwo{} network. As a trade-off, the model transports less hydrogen from the Iberian Peninsula to Central Europe, resulting in a dismantling of 2~bn€ in hydrogen network costs compared to the Net-Zero scenario.
-
-These findings highlight the continued trends of the two systemic approaches which are combined in the \hybridmodel. With an increased demand for sequestration, the \carbongrid{} relatively gains more importance, leading to higher cost-benefits by enabling to combine increased need DAC with a more dominant collection and transportation scheme of carbon from distributed point sources.
+Overall, the net cost increase by 77~bn€ in the \carbonscenario{}, by 81~bn€ in the \hydrogenscenario{}, and by 78~bn€ in the \hybridscenario{}, resulting in a cost-benefit of 6~bn€ for the \hybridscenario{} in comparison to the other scenarios.
 
 
 
@@ -287,24 +251,17 @@ These findings highlight the continued trends of the two systemic approaches whi
 \label{sec:conclusion}
 
 
-Our study assesses the roles of \Htwo{} and \COtwo{} networks in Europe's future energy system, revealing the trade-offs and benefits under various scenarios. The Baseline model, lacking both \Htwo{} and \COtwo{} networks, shows significant inefficiencies and higher system costs. The \COgrid{} model, with its \COtwo{} network, effectively integrates low-cost carbon from distributed point sources, primarily for carbon utilization and sequestration. Conversely, the \Hgrid{} model, with its \Htwo{} network, facilitates low-cost hydrogen delivery to high-demand areas, thus enabling efficient carbon utilization alongside point-source carbon capture.
-The Hybrid model, combining both \COtwo{} and \Htwo{} networks, leverages the strengths of each, resulting in the lowest system costs and a robust energy system. This model effectively utilizes \COtwo{} network for short-range carbon transport for sequestration and complements this with the \Htwo{} network for long-range hydrogen transport to support distributed carbon utilization. Under the net-negative scenario, the importance of Direct Air Capture (DAC) increases across all models, highlighting the growing significance of DAC in achieving deeper decarbonization goals.
+Our study assesses the roles of hydrogen (\Htwo{}) and carbon dioxide (\COtwo{}) networks in Europe's future energy system under net-neutrality and net-negativity targets for \carbon{} emissions. Both networks have strong impact of the optimal deployment of carbon capture, carbon utilization and sequestration. A \carbon{} network effectively reduces costs by transporting low-cost carbon from distributed point sources to sequestration sites and centralized carbon utilization at sites with low-cost hydrogen production. A hydrogen network provides greater cost savings as low-cost hydrogen can be transported to regions with high demand, allowing carbon utilization at point-sources. A combination of both networks emphasize the strengths of each infrastructure. In the hybrid configuration, the \hydrogen{} network supplies low-cost hydrogen to spatially-fixed hydrogen demand and carbon utilization at point-sources across regions. At the same time the \carbon{} network transports low-cost carbon captured from point-sources close to the coast to sequestration sites, reducing the overall reliance on high-cost Direct Air Capture. This results not only in the lowest system cost, but also in a more robust energy system.
 
-Despite the comprehensive nature of the model, there are some limitations that affect the validity of the results, as well as important discussion points that need to be put into context.
-In reality, energy demand and renewable supply can only be estimated for the next few hours/days. The model's perfect foresight may lead to non-reproducible technology dispatch which neglects uncertainties from long-term predictions and necessary reserve margins.
-The modelling results are heavily driven by the demand and emissions from industrial clusters. Allowing the model to relocate these, incorporate flexibility measures or alter underlying processes, may lead to less dependency on both \COtwo{} and \Htwo{} networks.
-The transport of fuel (FT, gas, oil) between the regions is not limited which may overestimate the flexibility provided by these commodities. However, the distributed CU systems in the \hydrogenmodel{} and \hybridmodel{} align well with today's distributed locations for oil-refineries, providing kerosene for aviation and naphtha for industry. The assumption to run Fischer-Tropsch facilities on baseload with at least 90\% of their nominal capacity, is likely shaping the deployment of CU, underestimating potential important flexibilities.
-The assumed cost projections on technologies are subject to uncertainties. As shown in \ref{sec:subsidy}, the effect on a 50\% cost reduction on \carbon{} pipelines alter total system costs to small extent (below 1\%). However, a different set of cost on DAC and electrolysis may-well impact in the model results.
-In combination with a net-zero or net-negative emission target, a relaxation of the global sequestration limit drives system costs down by introducing fossil fuels, as shown in~\cite{hofmannDesigningCO2Network2023}. Allowing the model to sequester onshore, would likely reduce the dominant co-location of CU with the point sources due to easier access to sequestration sites.
-Finally, the large deployment of DAC is subject to conservative biomass potentials, as shown in~\cite{lauerCrucialRoleBioenergy2023}.
+We discuss limitations of the model in section~\ref{sec:limitations} and sensitivities to \carbon{} pipeline costs in section~\ref{sec:subsidy}. Further research should explore the impacts of synthetic fuel imports and biomass potentials.
 
-In summary, our study underscores the need for strategic planning and integration of both \COtwo{} and \Htwo{} networks in the European energy landscape. The flexibility and cost-effectiveness provided by these networks are pivotal for realizing the EU's climate neutrality ambitions. By harnessing the synergies between \Htwo{} and \COtwo{} transportation and management, Europe can effectively navigate the complexities of a transition to a sustainable, low-carbon energy future.
+In summary, our study underscores the need for strategic planning and integration of both \COtwo{} and \Htwo{} networks in the European energy landscape. The flexibility and cost-effectiveness provided by these networks are pivotal for realizing the EU's climate targets. By harnessing the synergies between \Htwo{} and \COtwo{} transportation and management, Europe can effectively reduce system costs while ensuring a robust and sustainable energy future.
 
 
 \section*{Methods}
 \label{sec:methodology}
 
-The study is conducted on the basis of the open-source, capacity expansion model PyPSA-Eur~\cite{horschPyPSAEurOpenOptimisation2018,brownSynergiesSectorCoupling2018,PyPSAEurSecSectorCoupledOpen2023}.
+The study is conducted based on the open-source, capacity expansion model PyPSA-Eur~\cite{horschPyPSAEurOpenOptimisation2018,brownSynergiesSectorCoupling2018,PyPSAEurSecSectorCoupledOpen2023}.
 The model optimizes the design and operation of the European energy system, encompassing the power, heat, industry, agriculture, and transport sectors, including international aviation and shipping.
 All technology cost assumptions are taken for the year 2040 and sourced from an open-source database~\cite{lisazeyenPyPSATechnologydataTechnology2023}.
 Many of the assumptions contained therein are based on the technology catalogues published by the Danish Energy Agency~\cite{danishenergyagencyTechnologyDataGeneration2019,thedanishenergyagencyTechnologyDataCarbon2023}.
@@ -368,9 +325,16 @@ We assume a capture rate of 90\% for CC on process emissions, SMR, biogas-to-gas
 
 % carbon storage and sequestration
 
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=.5\linewidth]{baseline/figures/90_nodes/sequestration_map.png}
+    \caption{Maximal sequestration potential per offshore region used as input for all models. Note that in most model runs the regional sequestration potentials are not exploited due the the global limit on sequestration.}
+    \label{fig:sequestration_map}
+\end{figure}
+
 To store carbon, we differentiate between short-term storage in steel tanks without permanent containment and long-term, irreversible sequestration in underground sequestration sites such as porous rock formations or depleted gas reservoirs.
 Costs for both options are included in the model.
-For carbon sequestration, we only consider offshore sites as potential sinks.
+For carbon sequestration, we only consider offshore sites as potential sinks (see Fig.~\ref{fig:sequestration_map}).
 We make this choice because offshore sequestration sites typically have larger capacity compared to onshore sequestration sites in saline aquifers and due to concerns over public safety for infrastructure near populated areas.
 Our estimates for carbon sequestration potentials are restrictive, limiting the annual sequestration potential to 25~Mt per region and constraining it further such that this amount could be  25 years.
 Furthermore, we decide to limit the total amount of sequestered \COtwo{} to 200~Mt per year for our net-zero \carbon{} emission target and 660~Mt per year for our net-negative emission target.
@@ -390,15 +354,16 @@ This is in order to avoid offsetting fossil emissions with carbon removal if the
 
 \section*{Appendix}
 
-\subsection{Model Inputs}
 
-The following figures extend on the model assumptions and inputs.
-
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=.5\linewidth]{baseline/figures/90_nodes/sequestration_map.png}
-    \caption{Maximal sequestration potential per offshore region used as input for all models. Note that in most model runs the regional sequestration potentials are not exploited due the the global limit on sequestration.}
-\end{figure}
+\subsection{Limitations}
+\label{sec:limitations}
+Despite the comprehensive nature of the model, some limitations affect the validity of the results, as well as important discussion points that need to be put into context.
+In reality, energy demand and renewable supply can only be estimated for the next few hours/days. The model's perfect foresight may lead to non-reproducible technology dispatch which neglects uncertainties from long-term predictions and necessary reserve margins.
+Demand and emissions from industrial clusters heavily drive the modelling results. Allowing the model to relocate these, incorporate flexibility measures or alter underlying processes, may lead to less dependency on \COtwo{} and \Htwo{} networks.
+The transport of fuel (FT, gas, oil) between the regions is not limited which may overestimate their flexibility. However, the distributed CU systems, as enabled through the hydrogen network, align well with today's distributed locations for oil-refineries, providing kerosene for aviation and naphtha for industry. The assumption to run Fischer-Tropsch facilities on baseload with at least 90\% of their nominal capacity, is likely shaping the deployment of CU, underestimating potential important flexibilities.
+The assumed cost projections on technologies are subject to uncertainties. As shown in \ref{sec:subsidy}, the effect on a 50\% cost reduction on \carbon{} pipelines alter total system costs to small extent (below 1\%). However, a different set of cost on DAC and electrolysis may-well impact in the model results.
+In combination with a net \carbon{} neutrality or reduction target, a relaxation of the global sequestration limit drives system costs down by introducing fossil fuels, as shown in~\cite{hofmannDesigningCO2Network2023}. Allowing the model to sequester onshore, would likely reduce the dominant co-location of CU with the point sources due to easier access to sequestration sites.
+Finally, DAC deployment could be in parts replaced if larger sustainable biomass sources are assumed, as shown in ~\cite{lauerCrucialRoleBioenergy2023}.
 
 
 \clearpage
@@ -427,7 +392,7 @@ The following figures show further comparisons of total system costs and cost co
         \caption{}
         \label{fig:cost_bar_transmission_nn}
     \end{subfigure}
-    \caption{Annual transmission system costs for different models and scenarios in the Net-Zero scenario (a) and Net-Negative scenario (b).}
+    \caption{Annual transmission system costs for different models and scenarios for net \carbon{} neutrality (a) and net \carbon{} removal scenario (b).}
 \end{figure}
 
 
@@ -442,13 +407,14 @@ The following figures show further comparisons of total system costs and cost co
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=\linewidth]{difference/net-negative-0.1-h2-only-full/figures/90_nodes/cost_map.png}
-    \caption{Difference in regional costs between the \Hgrid{} and \modHybrid{}s in the Net-Negative scenario. The left figure shows higher spendings per technology and region and transport system for the \modH{}, the right shows higher spendings in the \modHybrid{}.}
+    \caption{Difference in regional costs between the \Hgrid{} and \modHybrid{}s in the net \carbon{} removal scenario. The left figure shows higher spendings per technology and region and transport system for the \modH{}, the right shows higher spendings in the \modHybrid{}.}
     \label{fig:cost_map_difference_nn}
 \end{figure}
 
 \subsection{Technologies with Carbon Capture}
 
 In the \modBase{}, the capture share is highest for biogas-to-gas facilities, followed by process emissions, biomass for industry, biomass CHPs, gas for industry, SMR and gas CHPs. For models with additional transport systems, we observe a correlation between CC share and capacity factors of the underlying technologies: Process emissions as well as gas and biomass for industry have high capacity factors (above 80\%), and CC shares close to 100\%, the only exception being gas for industry in the \modH{}. Biomass CHPs have a capacity factor of around 50\%, and CC shares of 50\% in the \modH{} and 97\% in the \modCO{}. SMR and gas CHPs have capacity factors around 15\%, and CC shares at nearly 0\% for the \baselinemodel. The capacity factor and CC share of SMR increases to around 20\% and 50-65\%, respectively, in the other models. Gas CHPs serve as peak load electricity production technology, and with very few operating hours, thus the high investment costs into CC applications are not efficient. Similarly, SMR serves as ``peak-load'' hydrogen production technology in regions with poor renewable resources for electrolysis.
+
 
 
 \clearpage
@@ -487,8 +453,8 @@ The effect of a 50\% subsidy on \carbon{} pipelines impacts the optimal technolo
 
 
 \clearpage
-\subsection{Operation in Net-Negative Scenarios}
-The following figures display the optimal operation of the hydrogen and carbon sector for all models in the Net-Negative scenario.
+\subsection{Operation in Net \carbon{} Removal Scenarios}
+The following figures display the optimal operation of the hydrogen and carbon sector for all models in the net \carbon{} removal scenario.
 
 \begin{figure}[ht!]
     \centering
@@ -537,7 +503,7 @@ The following figures display the optimal operation of the hydrogen and carbon s
         \includegraphics[width=\linewidth]{net-negative-0.1/full/figures/90_nodes/balance_map_hydrogen.png}
         \label{fig:balance_map_hydrogen_full_nn}
     \end{subfigure}
-    \caption{Optimal operation, flows and prices of the carbon (left) and hydrogen (right) sectors for the \hydrogenmodel{} in the net negative scenario. For each region, upper semicircles show the average production per technology, lower semicircles the consumption, and colors the average marginal prices. Carbon Sequestration offshore are drawn as full circles. Lines and arrows show the interregional transportation. With the tightened emission target, the \hybridmodel{} decreases the \hydrogengrid{} layout in comparison to the Net-Zero scenario and increases \carbon{} transport from inland point sources to the sequestration sites.
+    \caption{Optimal operation, flows and prices of the carbon (left) and hydrogen (right) sectors for the \hydrogenmodel{} in the net \carbon{} removal scenario. For each region, upper semicircles show the average production per technology, lower semicircles the consumption, and colors the average marginal prices. Carbon Sequestration offshore are drawn as full circles. Lines and arrows show the interregional transportation. With the tightened emission target, the \hybridmodel{} decreases the \hydrogengrid{} layout in comparison to the Net-Zero scenario and increases \carbon{} transport from inland point sources to the sequestration sites.
     }
     \label{fig:balance_maps_full_nn}
 \end{figure}
@@ -562,7 +528,20 @@ The following figures display the optimal operation of the hydrogen and carbon s
 
 % LEFT OVER
 % =========
+
+% To understand the dynamics of the \modCO{}, we observe that the system locates CU in the regions where it can minimize costs for its material inputs, carbon and hydrogen. As the \COtwo{} network largely smoothes out carbon prices across regions, CU is located in the hydrogen price valleys on the periphery of the continent. Similarly, the model locates CS in regions where it can minimize the costs of the carbon to be sequestered. Thus, CS is located in the carbon price valleys among the subset of regions with access to offshore sequestration sites. Due to the \COtwo{} network these low-price regions are not strongly pronounced, but still prevalent and impact CS locations. DAC is only used for CU and thus co-located in regions with a mix of low electricity costs (for running DAC) and low hydrogen costs.
+
+% To explain the dynamics of the \modH{}, we observe that the model locates CU in the carbon price valleys across Western, Central and Eastern Europe (see top right), as the \Htwo{} network smoothes out hydrogen prices across the entire continent (see bottom right). CS is again located in the carbon price valleys among those regions with access to offshore sequestration sites. Due to the lack of a \COtwo{} network the full CC potentials from point sources are exhausted in all offshore sequestration regions, and the carbon is then sequestered. The additionally needed carbon to reach 200~Mt of CS is captured via DAC in the regions with access to offshore sequestration sites with the lowest costs for DAC, with the largest share deployed in Portugal (see top right). DAC is also used for CU in this model, and for both purposes DAC is located in the regions with the lowest costs for electricity.
+
+
+% The increase in captured carbon from point sources in the models with \carbon{} and/or \hydrogen{} transport is more related to an upgrading of existing industrial or power plant facilities to capture carbon rather than a shift in technologies. This is evident when analyzing the capture share of the different CC technologies (see Fig.~\ref{fig:captureshare_line}).
+
+
+
+% In summary, the implementation of \COtwo{} and \Htwo{} networks is instrumental in unlocking CC potentials and reducing system costs. However, despite the \modCO{} demonstrating higher amounts and shares of CC from point sources and therefore less DAC deployment, the \modH{} achieves even  lower total system costs (see Fig.~\ref{fig:cost_bar}).
 %
+%
+% Comparison carbon and hydrogen network
 %
 % [Dynamics \modCO{} vs \modH{} (old text blocks)]
 % There are four notable dynamics or differences between the two network strategies:
@@ -581,3 +560,19 @@ The following figures display the optimal operation of the hydrogen and carbon s
 % And finally, the \modCO{ } spends 7~bn€ more on gas boilers, gas plants, gas infrastructure, and methanation.
 % TODO: why??
 % The costs of the respective networks, on the other hand, are almost equal: the \modCO{ } spends 8~bn€ on the \COtwo{} network, while the \modH{} even spends 10~bn€ on the \Htwo{} network. These factors add up to account for 14~bn€ of the difference of 20~bn€ in system costs between the two scenarios (785~bn€ for the \COgrid{} and 765~bn€ for the \modH{}, see Fig.~\ref{fig:objective_heatmap}).
+
+
+% Net-negative
+
+% Fundamental differences in investment strategies occur in the deployment of solar, carbon capture and bio-energy technologies: While the \carbonmodel{} expands CC at point sources the most, the \hydrogenmodel{} and the \hybridmodel{} invest relatively more in new solar plants. The \carbonmodel{} invests three time more in new bio-energy sources (6~bn€) than the other models.
+% All models only reveal small net downscaling of technologies. However, as we discuss below, the geographic impact can vary depending on the model, sometimes leading to disruptive changes in optimal network strategies and stranded assets.
+
+
+% In contrast to its layout in the Net-Zero scenario, the \carbonmodel{} fundamentally reorganizes the carbon transport pathways (see Fig.~\ref{fig:balance_maps_co2_nn}).
+% In Spain, carbon utilization (CU) is now predominantly supplied by carbon extracted from DAC. Central Europe sees a major transformation, with carbon mainly being transported to sequestration sites in the north and south-east. This reorganization leads to stranded investment in the carbon network infrastructure, amounting to approximately 3~bn€.
+
+% The \modH{} on the other hand, primarily leaves the network topology unchanged and only expands DAC facilities at regions with access to sequestration sites as well as additional solar, wind and heat pumps in the vicinity to supply power and heat (see Fig.~\ref{fig:balance_maps_h2_nn}).
+
+% Finally, the \modHybrid{} expands the sequestration with carbon captured from bio-energetic inputs and transported from Central and Eastern Europe to the near shores (see Fig.~\ref{fig:balance_maps_full_nn}), leading to an additional investment in the \carbongrid{} (1.2~bn€, see Fig.~\ref{fig:cost_bar_transmission_nn}). At the same time, carbonaceous fuel production in Central Europe partially moves to Spain, where it uses carbon from new DAC facilities without the installation of a \COtwo{} network. As a trade-off, the model transports less hydrogen from the Iberian Peninsula to Central Europe, resulting in a dismantling of 2~bn€ in hydrogen network costs compared to the Net-Zero scenario.
+
+% These findings highlight the continued trends of the two systemic approaches which are combined in the \hybridmodel. With an increased demand for sequestration, the \carbongrid{} relatively gains more importance, leading to higher cost-benefits by enabling to combine increased need DAC with a more dominant collection and transportation scheme of carbon from distributed point sources.
