@@ -32,7 +32,7 @@ rename_bus_carrier = {
     "low voltage": "electricity",
     "heat": "low-t heat",
     "Li ion": "electricity",
-    "oil": "carbonaceous\nfuel",
+    "oil": "liquid\nhydrocarbons",
 }
 rename_carrier = {
     "Heat": "Residential and Services Heat",
