@@ -1,0 +1,132 @@
+configs:
+  test: 0
+  presentation: 0
+
+report:
+  path: "report/submissions/journal/paper/paper.tex"
+
+remote:
+  # ssh: zecm
+  # path: /home/users/h/hofmann/scratch/projects/co2-network
+  ssh: z1
+  path: /home/htc/mhofmann/SCRATCH/projects/co2-network
+
+run:
+  name: &runs
+    - baseline
+    - co2-only
+    - h2-only
+    - full
+    - net-negative-0.1/baseline
+    - net-negative-0.1/co2-only
+    - net-negative-0.1/h2-only # sub-optimal (6.12.2023)
+    - net-negative-0.1/full # numerical problems (6.12.2023)
+    - half-price/co2-only # time-limit (6.12.2023)
+    - half-price/full # sub-optimal (6.12.2023)
+
+  scenarios:
+    enable: true
+  shared_resources: true
+  disable_progressbar: true
+
+comparison:
+  default:
+    - baseline
+    - co2-only
+    - h2-only
+    - full
+  net-negative-0.1:
+    - net-negative-0.1/baseline
+    - net-negative-0.1/co2-only
+    - net-negative-0.1/h2-only
+    - net-negative-0.1/full
+  emission-reduction:
+    - baseline
+    - net-negative-0.1/baseline
+    - co2-only
+    - net-negative-0.1/co2-only
+    - h2-only
+    - net-negative-0.1/h2-only
+    - full
+    - net-negative-0.1/full
+  emission-reduction-full:
+    - full
+    - net-negative-0.1/full
+  subsidy:
+    - baseline
+    - half-price/co2-only
+    - h2-only
+    - half-price/full
+  all: *runs
+difference:
+  default:
+    - co2-only
+    - h2-only
+  h2-only-full:
+    - h2-only
+    - full
+  net-negative-0.1:
+    - net-negative-0.1/co2-only
+    - net-negative-0.1/h2-only
+  net-negative-0.1-h2-only-full:
+    - net-negative-0.1/h2-only
+    - net-negative-0.1/full
+  emission-reduction-0.1-co2-only:
+    - co2-only
+    - net-negative-0.1/co2-only
+  emission-reduction-0.1-h2-only:
+    - h2-only
+    - net-negative-0.1/h2-only
+  emission-reduction-0.1-full:
+    - full
+    - net-negative-0.1/full
+  baseline-co2-only:
+    - co2-only
+    - baseline
+  baseline-h2-only:
+    - h2-only
+    - baseline
+  baseline-full:
+    - full
+    - baseline
+  subsidy-co2-only:
+    - co2-only
+    - half-price/co2-only
+  subsidy-full:
+    - full
+    - half-price/full
+difference-comparison:
+  emission-reduction-0.1:
+    - emission-reduction-0.1-co2-only
+    - emission-reduction-0.1-h2-only
+    - emission-reduction-0.1-full
+  baseline:
+    - baseline-co2-only
+    - baseline-h2-only
+    - baseline-full
+  subsidy:
+    - subsidy-co2-only
+    - subsidy-full
+
+labels:
+  baseline: "Baseline"
+  co2-only: "CO$_2$-Grid"
+  h2-only: "H$_2$-Grid"
+  full: "Hybrid"
+
+  half-price/co2-only: "CO$_2$-Grid\n(Subs.)"
+  half-price/full: "Hybrid\n(Subs.)"
+
+  net-neutral: "NZ"
+  net-negative-0.1: "NN"
+
+  net-negative-0.1/baseline: "Baseline (NN)"
+  net-negative-0.1/co2-only: "CO$_2$-Grid (NN)"
+  net-negative-0.1/h2-only: "H$_2$-Grid (NN)"
+  net-negative-0.1/full: "Hybrid (NN)"
+
+  carbon: "Captured Carbon"
+  hydrogen: "Hydrogen"
+  electricity: "Electricity"
+  gas: "Natural Gas"
+  co2: "Atm. CO$_2$"

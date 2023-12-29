@@ -1,0 +1,36 @@
+plotting:
+  theme:
+    style: white
+    context: talk
+    font: sans-serif
+    rc:
+      patch.linewidth: 0.1
+      savefig.transparent: True
+      savefig.bbox: "tight"
+
+  sequestration_map:
+    figsize: [8,7]
+
+  balance_bar:
+    figsize: [6, 6]
+    title: false
+
+  # operation_bar:
+  #   figsize: [5, 7]
+
+  cost_bar:
+    figsize: [7,5]
+
+
+  cost_bar_diff:
+    figsize: [7, 5]
+
+  # capacity_map:
+  #   figsize: [7, 4]
+
+  balance_map:
+    figsize: [15, 7]
+    title: false
+
+  captureshare_line:
+    figsize: [5, 5]

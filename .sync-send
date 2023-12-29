@@ -1,0 +1,13 @@
+config/
+config/*.yaml
+environment.yaml
+matplotlibrc
+workflow/scripts
+workflow/notebooks
+workflow/envs
+workflow/rules
+workflow/Snakefile
+workflow/subworkflows/pypsa-eur/Snakefile
+workflow/subworkflows/pypsa-eur/scripts
+workflow/subworkflows/pypsa-eur/rules
+workflow/subworkflows/pypsa-eur/config

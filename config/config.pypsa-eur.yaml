@@ -1,0 +1,59 @@
+scenario:
+  simpl: ''
+  ll: v1.2
+  clusters:
+    - 90
+  opts: ''
+  sector_opts: T-H-B-I-A-3H
+  planning_horizons: 2050
+
+enable:
+  retrieve: false
+  retrieve_cutout: true
+  retrieve_databundle: true
+
+
+electricity:
+  powerplants_filter: (DateOut >= 2050 or DateOut != DateOut) and not (Country in ['Germany', 'Switzerland', 'Austria', 'Belgium'] and Fueltype == 'Nuclear')
+
+
+co2_budget:
+  2050: 0.
+
+
+renewable:
+  onwind:
+    capacity_per_sqkm: 1.2
+
+atlite:
+  nprocesses: 8
+
+lines:
+  max_extension: 15_000 # MW
+  dynamic_line_rating:
+    activate: true
+
+links:
+  max_extension: 15_000 # MW
+
+costs:
+  year: 2040
+
+sector:
+  biomass_spatial: true
+  biomass_upgrading_cc: true
+  allam_cycle: true
+  regional_co2_sequestration_potential:
+    enable: true
+  co2_spatial: true
+  gas_network: true
+  H2_network: false
+  co2network: false
+  district_heating:
+    progress:
+      2050: 0.8
+
+solving:
+  walltime: 3-00:00:00
+  mem: 150000
+  partition: big

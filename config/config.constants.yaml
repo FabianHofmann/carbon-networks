@@ -1,0 +1,256 @@
+constants:
+  kinds:
+    - electricity
+    - gas
+    - hydrogen
+    - carbon
+    - co2
+  additional_kinds:
+    - methanol
+    - oil
+    - heat
+    - biogas
+
+  oneport_comps:
+    - Generator
+    - Store
+    - StorageUnit
+    - Load
+
+  node_comps:
+    - Generator
+    - Link
+    - StorageUnit
+    - Load
+
+  region_comps:
+    - Store
+
+  branch_comps:
+    - Line
+    - Link
+
+  comps:
+    - Generator
+    - Store
+    - StorageUnit
+    - Line
+    - Link
+
+  sites:
+    - residential urban decentral
+    - services urban decentral
+    - residential rural
+    - services rural
+    - services urban
+    - urban central
+
+  heating_techs:
+    - heat
+    - water tanks
+    - solar thermal
+
+  carrier_to_buses:
+    carbon:
+      - co2 stored
+      - co2 sequestered
+    hydrogen:
+      - H2
+    electricity:
+      - AC
+      - DC
+      # - low voltage
+    gas:
+      - gas
+    co2:
+      - co2
+
+
+  kind_to_carrier:
+    electricity:
+      production:
+        Generator:
+          - offwind
+          - onwind
+          - solar
+          - ror
+          - solar rooftop
+          - nuclear
+        Link:
+          bus1:
+            - OCGT
+            - H2 Fuel Cell
+            - V2G
+            - gas CHP
+            - gas CHP CC
+            - solid biomass CHP
+            - solid biomass CHP CC
+            - allam
+            - battery discharger
+            - home battery discharger
+        StorageUnit:
+          - PHS
+          - hydro
+      consumption:
+        Load:
+          - electricity
+          - industry electricity
+          - agriculture electricity
+        Link:
+          bus0:
+            - H2 Electrolysis
+            - battery charger
+            - BEV charger
+            - ground heat pump
+            - resistive heater
+            - air heat pump
+            - home battery charger
+          bus2:
+            - methanolisation
+            - DAC
+        StorageUnit:
+          - PHS
+          - hydro
+      transport:
+        Line:
+          - AC
+        Link:
+          - DC
+      storage:
+        Store:
+          - battery
+          - home battery
+        StorageUnit:
+          - PHS
+          - hydro
+
+    gas:
+      production:
+        Generator:
+          - gas
+        Link:
+          bus1:
+            - Sabatier
+            - biogas to gas
+            - biogas to gas CC
+            - gas for industry
+            - gas for industry CC
+      consumption:
+        Load:
+          - gas for industry
+        Link:
+          bus0:
+            - OCGT
+            - SMR CC
+            - SMR
+            - gas boiler
+            - gas CHP
+            - gas CHP CC
+            - gas for industry
+            - gas for industry CC
+            - allam
+      storage:
+        Store:
+          - gas
+      transport:
+        Link:
+          - gas pipeline
+          - gas pipeline new
+
+    hydrogen:
+      production:
+        Link:
+          bus1:
+            - H2 Electrolysis
+            - SMR CC
+            - SMR
+      consumption:
+        Link:
+          bus0:
+            - H2 Fuel Cell
+            - Sabatier
+            - methanolisation
+            - Fischer-Tropsch
+        Load:
+          - H2 for industry
+          - land transport fuel cell
+      storage:
+        Store:
+          - H2
+      transport:
+        Link:
+          - H2 pipeline
+
+    carbon:
+      production:
+        Link:
+          bus1:
+            - DAC
+          bus2:
+            - process emissions CC
+            - allam
+            - biogas to gas CC
+          bus3:
+            - SMR CC
+            - solid biomass for industry CC
+            - gas for industry CC
+          bus4:
+            - gas CHP CC
+            - solid biomass CHP CC
+        Store:
+          - co2 stored
+      consumption:
+        Link:
+          bus2:
+            - Sabatier
+            - Fischer-Tropsch
+          bus3:
+            - methanolisation
+        Store:
+          - co2 stored
+          - co2 sequestered
+      storage:
+        Store:
+          - co2 stored
+          - co2 sequestered
+      transport:
+        Link:
+          - CO2 pipeline
+
+    co2:
+      production:
+        Load:
+          - shipping methanol emissions
+          - oil emissions
+          - agriculture machinery oil emissions
+        Link:
+          bus1:
+            - process emissions
+            - process emissions CC
+          bus2:
+            - OCGT
+            - SMR CC
+            - SMR
+            - gas boiler
+            - gas for industry
+            - gas for industry CC
+          bus3:
+            - gas CHP
+            - gas CHP CC
+        Store:
+          - co2
+      consumption:
+        Link:
+          bus0:
+            - DAC
+          bus2:
+            - biogas to gas
+            - solid biomass for industry CC
+          bus3:
+            - solid biomass CHP CC
+            - biogas to gas CC
+        Store:
+          - co2
+      storage:
+        Store:
+          - co2

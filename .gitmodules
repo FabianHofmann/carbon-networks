@@ -1,0 +1,9 @@
+[submodule "workflow/subworkflows/pypsa-eur-sec"]
+	path = workflow/subworkflows/pypsa-eur-sec
+	url = git@github.com:Pypsa/pypsa-eur-sec.git
+[submodule "workflow/subworkflows/pypsa-eur"]
+	path = workflow/subworkflows/pypsa-eur
+	url = git@github.com:Pypsa/pypsa-eur.git
+[submodule "workflow/subworkflows/technology-data"]
+	path = workflow/subworkflows/technology-data
+	url = git@github.com:Pypsa/technology-data.git
