@@ -8,6 +8,7 @@
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{tabularx, multirow}
+\usepackage{hyperref} % Add this line to enable hyperlinks
 \usepackage{fancyhdr,lipsum}
 \usepackage{subcaption}
 \usepackage[shortcuts]{extdash}
@@ -22,6 +23,14 @@ maxbibnames=10, % default: 3, et al.
 natbib=true % natbib compatibility mode (\citep and~\citet still work)
 ]{biblatex}
 \bibliography{../../../references.bib}
+
+\hypersetup{
+colorlinks=true,
+    linkcolor=black, % Change the link color to blue
+    urlcolor=blue, % Change the URL color to blue
+    citecolor=black, % Change the citation color to blue
+    filecolor=black % Change the file color to blue
+}
 
 %define approx proportional
 \def\app#1#2{%
@@ -94,7 +103,7 @@ In line the climate neutrality target by 2050 of the European Union (EU) under t
 At the same time, collaborative industry initiatives like the European Hydrogen Backbone~\cite{gasforclimateEuropeanHydrogenBackbone2022} or the Hydrogen Infrastructure Map~\cite{H2InfrastructureMap} showcase the potential of hydrogen as a fuel and energy carrier.
 % Some natural gas pipelines have already been repurposed to transport hydrogen~\cite{RohrFreiFuer}.
 Business models from companies like Tree Energy Solutions~\cite{TESHydrogenLife2023}, Carbfix~\cite{WeTurnCO2}, and Equinor~\cite{adomaitisEquinorRWEBuild2023} advertise carbon management hubs that provide green hydrogen, methane, and synthetic fuels on the one hand and offer to purchase \carbon{} on the other hand. The Northern Lights project in Norway~\cite{NorthernLightsWhat} is planning with a transport and sequestration capacity of 1.5~Mt \carbon{} per year to be operative in 2024, expanding to a targeted scale of 5~Mt per year of sequestration by 2030.
-The market potential for carbon capture and sequestration in Europe is underscored by the Capture Map's estimated potential~\cite{ToolsGreenTransition} of 1.7 Gt carbon annually from point sources, accounting for about half of the continent's emissions, as well as estimated sequestration capacity potentials of up to 3~Gt/a~\cite{europeancommissionEuropeanCO2Storage}. However, it's important to note that carbon sequestration technology, unlike carbon capture, is not yet fully mature and its full potential and implications remain to be explored in depth.
+The market potential for carbon capture and sequestration in Europe is underscored by the Capture Map's estimated potential~\cite{ToolsGreenTransition} of 1.7 Gt carbon annually from point sources, accounting for about half of the continent's emissions, as well as estimated sequestration capacity potentials of up to 3~Gt/a~\cite{europeancommissionEuropeanCO2Storage}. However, it is important to note that carbon sequestration technology, unlike carbon capture, is not yet fully mature and its full potential and implications remain to be explored in depth.
 To advance the carbon economy, the Clean Air Task Force emphasizes the importance of developing a carbon transport system in Europe alongside a hydrogen network~\cite{lockwoodEuropeanStrategyCarbon}. Carbon pipelines, considered a mature technology, have seen widespread installations in the United States and Canada, primarily to supply \carbon{} to enhanced oil recovery~\cite{righettiSitingCarbonDioxide2017,friedmannNETZEROGEOSPHERICRETURN}.
 
 Up to this point, it remains unclear how the two transport systems of hydrogen and carbon may complement or even compete with each other. Both can bridge the misalignment of sources and sinks for carbon and hydrogen. A hydrogen network can supply regions with geographically fixed hydrogen demand, such as for steel production, with hydrogen from regions with the best renewable resources as well as enable CU at the site of point-source CC. On the other hand, the carbon transport system allows transporting captured carbon to regions with sequestration potentials or high-quality renewable resources, the latter enabling cost-effective CU.
@@ -235,7 +244,7 @@ Thus, only a few DAC facilities are installed, such as those in southern Spain f
 When applying a stricter \carbon{} emissions target and forcing the model to remove 460~Mt \carbon{} over one year (equivalent to 10\% of \carbon{} emissions in 1990) while sequestering maximally 660~Mt, investment in DAC and associated solar and wind power and heat supply covers a large share of additional system costs in all scenarios (see Fig.~\ref{fig:net-negative_cost_bar}). In the \hybridscenario{}, this share is at 80\% while new carbon capture at point sources only makes up 6.5\% of new system costs. This shows that the exploitation of carbon point sources is close to its feasible limit. The additional sequestration is primarily supplied by large DAC facilities near the shore. To a much smaller extent, carbon captured from bio-energetic sources in the inland, that was used to supply CU, before is now transported and sequestered (compare Fig.~\ref{fig:balance_maps_full_nn}). Some of the CU in Central Europe moves to Spain, where it uses carbon from new DAC facilities.
 
 
-In the network layouts, the slight shift in CU deployment results in partial dismantling of hydrogen pipelines, especially from the Iberian Peninsula to Central Europe (0.5~bn€/a). This adjustment, however, leaves 80\% of the hydrogen topology intact. Simultaneously, the \carbon{} network expands routes from Central and Eastern Europe to the shores (1.2~bn€/a). The benefits of \carbon{} transport and sequestration with tighter emission targets are also evident when comparing the other scenarios. The carbon network in the \carbonscenario{} expands to transport more carbon from point sources to sequestration sites rather than to CU facilities. In the \hydrogenscenario{}, where all carbon for CU and CS must come from DAC, the hydrogen transport topology remain mainly untouched (for detailed cost-contributions, refer to sections \ref{sec:cost_comparison} and \ref{sec:operation_nn} in the Appendix).
+In the network layouts, the slight shift in CU deployment results in a partial dismantling of hydrogen pipelines, especially from the Iberian Peninsula to Central Europe (0.5~bn€/a). This adjustment, however, leaves 80\% of the hydrogen topology intact. Simultaneously, the \carbon{} network expands routes from Central and Eastern Europe to the shores (1.2~bn€/a). The benefits of \carbon{} transport and sequestration with tighter emission targets are also evident when comparing the other scenarios. The carbon network in the \carbonscenario{} expands to transport more carbon from point sources to sequestration sites rather than to CU facilities. In the \hydrogenscenario{}, where all carbon for CU and CS must come from DAC, the hydrogen transport topology remain mainly untouched (for detailed cost contributions, refer to sections \ref{sec:cost_comparison} and \ref{sec:operation_nn} in the Appendix).
 
 Overall, this leads to the net cost increases of 77~bn€/a in the \carbonscenario{}, by 81~bn€/a in the \hydrogenscenario{}, and by 78~bn€/a in the \hybridscenario{}. The resulting cost-benefit of the \hybridscenario{} in comparison to the other scenarios is 6~bn€/a.
 
@@ -338,7 +347,7 @@ This is in order to avoid offsetting fossil emissions with carbon removal if the
 
 \subsection*{Acknowledgements}
 
-Fabian Hofmann and Christoph Tries are funded by the BreakthroughEnergy Initiative~\cite{BreakthroughEnergy2023}.
+Fabian Hofmann and Christoph Tries are funded by the Breakthrough Energy Initiative (\href{https://breakthroughenergy.org/}{https://breakthroughenergy.org/}).
 
 
 \printbibliography
@@ -524,24 +533,24 @@ The following figures display the optimal operation of the hydrogen and carbon s
 \end{figure}
 
 
-\clearpage
-\subsection{Inter-sectoral \carbon{} flows}
+% \clearpage
+% \subsection{Inter-sectoral \carbon{} flows}
 
-The following figure show Sankey Diagrams of the carbon flows between the sectors.
+% The following figure show Sankey Diagrams of the carbon flows between the sectors.
 
-\begin{figure}[h!]
-    \centering
-    \includegraphics[width=.8\linewidth]{full/figures/90_nodes/sankey_diagramm.png}
-    \caption{Sankey diagram of the carbon flows in the \hybridscenario{} assuming net \carbon{} neutrality.}
-    \label{fig:sankey_diagramm}
-\end{figure}
+% \begin{figure}[h!]
+%     \centering
+%     \includegraphics[width=.8\linewidth]{full/figures/90_nodes/sankey_diagramm.png}
+%     \caption{Sankey diagram of the carbon flows in the \hybridscenario{} assuming net \carbon{} neutrality.}
+%     \label{fig:sankey_diagramm}
+% \end{figure}
 
 
-\begin{figure}
-    \centering
-    \includegraphics[width=.8\linewidth]{net-negative-0.1/full/figures/90_nodes/sankey_diagramm.png}
-    \caption{Sankey diagram of the carbon flows in the \hybridscenario{} with a net \carbon{} removal target.}
-    \label{fig:sankey_diagramm_nn}
-\end{figure}
+% \begin{figure}
+%     \centering
+%     \includegraphics[width=.8\linewidth]{net-negative-0.1/full/figures/90_nodes/sankey_diagramm.png}
+%     \caption{Sankey diagram of the carbon flows in the \hybridscenario{} with a net \carbon{} removal target.}
+%     \label{fig:sankey_diagramm_nn}
+% \end{figure}
 
 \end{document}
