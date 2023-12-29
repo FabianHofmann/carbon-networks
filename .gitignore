@@ -19,6 +19,7 @@ pypsa-eur
 sec
 connect.sh
 old-results
+shallow/
 
 # from pypsa-eur
 
