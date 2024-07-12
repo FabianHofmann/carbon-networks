@@ -120,21 +120,6 @@ seq-800/full:
     co2_sequestration_potential: 800
 
 
-# hydrogen losses
-h2-loss/h2-only:
-  sector:
-    H2_network: true
-    transmission_efficiency:
-      enable: true
-
-h2-loss/full:
-  sector:
-    H2_network: true
-    co2network: true
-    transmission_efficiency:
-      enable: true
-
-
 # higher electrolysis costs
 updated-electrolisys-capex/baseline:
   sector:

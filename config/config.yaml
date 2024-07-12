@@ -23,6 +23,23 @@ run:
     - net-negative-0.1/full # numerical problems (6.12.2023)
     - half-price/co2-only # time-limit (6.12.2023)
     - half-price/full # sub-optimal (6.12.2023)
+    - seq-400/baseline
+    - seq-400/co2-only
+    - seq-400/h2-only
+    - seq-400/full
+    - seq-600/baseline
+    - seq-600/co2-only
+    - seq-600/h2-only
+    - seq-600/full
+    - seq-800/baseline
+    - seq-800/co2-only
+    - seq-800/h2-only
+    - seq-800/full
+    - updated-electrolisys-capex/baseline
+    - updated-electrolisys-capex/co2-only
+    - updated-electrolisys-capex/h2-only
+    - updated-electrolisys-capex/full
+
 
   scenarios:
     enable: true

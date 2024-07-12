@@ -13,7 +13,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 from pypsa.plot import add_legend_circles, add_legend_patches, add_legend_lines
-from pypsa.statistics import get_transmission_carriers
+from pypsa.statistics import get_transmission_carriers, get_bus_and_carrier
 from common import (
     import_network,
     mock_snakemake,
@@ -69,7 +69,7 @@ for n, axs, right_subplot in zip(networks, axes.T, [False, True]):
     for kind, ax in zip(["carbon", "hydrogen"], axs):
         carriers = config["constants"]["carrier_to_buses"].get(kind, [kind])
 
-        grouper = s.groupers.get_bus_and_carrier
+        grouper = get_bus_and_carrier
         df = s.dispatch(bus_carrier=carriers, groupby=grouper, aggregate_time="mean")
         _ = get_transmission_carriers(n, bus_carrier=carriers)
         transmission_carriers = _.set_levels(

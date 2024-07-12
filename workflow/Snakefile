@@ -171,7 +171,7 @@ rule get_solved_network:
             **config["scenario"]
         ),
     output:
-        network=protected("results/{run}/networks/{clusters}_nodes.nc"),
+        network="results/{run}/networks/{clusters}_nodes.nc",
     shell:
         """
         cp {input} {output}
@@ -557,7 +557,9 @@ rule push:
         cluster=f"{config['remote']['ssh']}:{config['remote']['path']}",
     shell:
         """
+        set -x
         rsync -uvarh --ignore-missing-args --files-from=.sync-send . {params.cluster}
+        set +x
         """
 
 
