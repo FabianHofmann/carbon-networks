@@ -60,3 +60,7 @@ solving:
   walltime: 3-00:00:00
   mem: 150000
   partition: big
+
+  solver:
+    name: gurobi
+    options: gurobi-numeric-focus

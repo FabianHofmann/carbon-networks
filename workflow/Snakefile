@@ -185,6 +185,23 @@ rule get_all_solved_networks:
             run=config["run"]["name"],
             **config["scenario"]
         ),
+    run:
+        import pypsa
+        import warnings
+        import logging
+
+        logger = logging.getLogger("pypsa")
+        logger.setLevel(logging.ERROR)
+
+        not_solved = []
+        for network in input:
+            n = pypsa.Network(network)
+            if not getattr(n, "objective", False):
+                not_solved.append(network)
+
+        if not_solved:
+            all_not_solved = "\n".join(not_solved)
+            warnings.warn(f"Networks not solved:\n{all_not_solved}")
 
 
 rule plot_demand_bar:

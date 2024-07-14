@@ -47,8 +47,8 @@ for n in networks:
     is_dac = n.links.carrier == "DAC"
     n.links.loc[is_dac, ["bus0", "bus1"]] = n.links.loc[is_dac, ["bus1", "bus0"]].values
 
-    capex = s.capex(groupby=s.get_bus_and_carrier)
-    opex = s.opex(aggregate_time="sum", groupby=s.get_bus_and_carrier)
+    capex = s.capex(groupby=s.groupers.get_bus_and_carrier)
+    opex = s.opex(aggregate_time="sum", groupby=s.groupers.get_bus_and_carrier)
     costs = capex.add(opex, fill_value=0)
 
     key = snakemake.params.labels[n.meta["wildcards"]["run"]]
