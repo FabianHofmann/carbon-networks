@@ -67,7 +67,8 @@ fig, ax = plt.subplots(
     1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"
 )
 
-grouped = grouped[grouped.round(0).ne(0).any(axis=1)]
+if not snakemake.config["configs"]["test"]:
+    grouped = grouped[grouped.round(0).ne(0).any(axis=1)]
 grouped.T.plot(kind="bar", stacked=True, ax=ax, color=colors, legend=True, alpha=0.9)
 for container in ax.containers:
     if abs(container.datavalues).sum() > grouped.abs().sum().sum() / 20:

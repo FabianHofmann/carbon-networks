@@ -322,11 +322,13 @@ plotting:
     SMR CC: '#4f1745'
     AC: rosybrown
     CO2 pipeline: '#f5627f' # needed as inserted flexibly post-optimization
+
   technology_groups:
     AC: Electricity Grid
     BEV charger: Battery Infrastructure
     DAC: DAC
     DC: Electricity Grid
+    Transmission losses: Electricity Grid
     Fischer-Tropsch: Fischer-Tropsch
     H2: H$_2$ Infrastructure
     H2 Electrolysis: Electrolysis
@@ -334,6 +336,7 @@ plotting:
     H2 Store: H$_2$ Infrastructure
     H2 for industry: H$_2$ Infrastructure
     H2 pipeline: H$_2$ Infrastructure
+    H2 pipeline losses: H$_2$ Infrastructure
     Li ion: Battery Infrastructure
     OCGT: Gas Infrastructure
     PHS: Hydro Energy
@@ -357,12 +360,14 @@ plotting:
     biomass boiler: Bioenergy
     co2: CO$_2$ Infrastructure
     CO2 pipeline: CO$_2$ Infrastructure
+    CO2 pipeline losses: CO$_2$ Infrastructure
     co2 sequestered: Other
     co2 stored: CO$_2$ Infrastructure
     electricity: Electricity Grid
     electricity distribution grid: Electricity Grid
     gas: Gas Infrastructure
     gas pipeline: Gas Infrastructure
+    gas pipeline losses: Gas Infrastructure
     gas pipeline new: Gas Infrastructure
     gas CHP: Gas Infrastructure
     gas CHP CC: Carbon Capt. at Point Sources

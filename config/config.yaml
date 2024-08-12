@@ -74,6 +74,21 @@ comparison:
     - half-price/co2-only
     - h2-only
     - half-price/full
+  sequestration:
+    - full
+    - seq-400/full
+    - seq-600/full
+    - seq-800/full
+  updated-electrolisys-capex:
+    - baseline
+    - updated-electrolisys-capex/baseline
+    - co2-only
+    - updated-electrolisys-capex/co2-only
+    - h2-only
+    - updated-electrolisys-capex/h2-only
+    - full
+    - updated-electrolisys-capex/full
+
   all: *runs
 difference:
   default:
@@ -112,6 +127,19 @@ difference:
   subsidy-full:
     - full
     - half-price/full
+  sequence-400:
+    - full
+    - seq-400/full
+  sequence-600:
+    - full
+    - seq-600/full
+  sequence-800:
+    - full
+    - seq-800/full
+  updated-electrolisys-capex-baseline:
+    - full
+    - updated-electrolisys-capex/full
+
 difference-comparison:
   emission-reduction-0.1:
     - emission-reduction-0.1-co2-only
@@ -147,3 +175,18 @@ labels:
   electricity: "Electricity"
   gas: "Natural Gas"
   co2: "Atm. CO$_2$"
+
+  seq-400/baseline: "Baseline (400)"
+  seq-400/co2-only: "CO$_2$-Grid (400)"
+  seq-400/h2-only: "H$_2$-Grid (400)"
+  seq-400/full: "Hybrid (400)"
+
+  seq-600/baseline: "Baseline (600)"
+  seq-600/co2-only: "CO$_2$-Grid (600)"
+  seq-600/h2-only: "H$_2$-Grid (600)"
+  seq-600/full: "Hybrid (600)"
+
+  seq-800/baseline: "Baseline (800)"
+  seq-800/co2-only: "CO$_2$-Grid (800)"
+  seq-800/h2-only: "H$_2$-Grid (800)"
+  seq-800/full: "Hybrid (800)"

@@ -232,6 +232,18 @@ While the topology of the hydrogen network (8~bn€/a investments) roughly corre
 In this combination, the networks enable all technologies that run on a high average capacity factor, i.e., above 70\%, to capture carbon to the full extent (see Fig.~\ref{fig:captureshare_line}). Except for SMR and gas-fired CHP which operate a few weeks annually, all emissions from carbon-emitting technologies are captured.
 Thus, only a few DAC facilities are installed, such as those in southern Spain for methanolization plants. In comparison to the other scenarios, this leads to reduced power consumption and, therefore, less required wind and solar power deployment.
 
+\subsection*{Higher sequestration limits reintroduce fossil fuels}
+
+
+
+\begin{figure}[htb!]
+    \centering
+    \includegraphics[width=\linewidth]{comparison/sequestration/figures/90_nodes/cost_bar.png}
+    \caption[short]{Total system cost as a function of the sequestration limit.}
+    \label{fig:sequestration_cost_bar}
+\end{figure}
+
+
 \subsection*{Stricter emission targets increase \carbon{} network benefits}
 \begin{figure}[htb!]
     \centering
@@ -244,15 +256,13 @@ Thus, only a few DAC facilities are installed, such as those in southern Spain f
 When applying a stricter \carbon{} emissions target and forcing the model to remove 460~Mt \carbon{} over one year (equivalent to 10\% of \carbon{} emissions in 1990) while sequestering maximally 660~Mt, investment in DAC and associated solar and wind power and heat supply covers a large share of additional system costs in all scenarios (see Fig.~\ref{fig:net-negative_cost_bar}). In the \hybridscenario{}, this share is at 80\% while new carbon capture at point sources only makes up 6.5\% of new system costs. This shows that the exploitation of carbon point sources is close to its feasible limit. The additional sequestration is primarily supplied by large DAC facilities near the shore. To a much smaller extent, carbon captured from bio-energetic sources in the inland, that was used to supply CU, before is now transported and sequestered (compare Fig.~\ref{fig:balance_maps_full_nn}). Some of the CU in Central Europe moves to Spain, where it uses carbon from new DAC facilities.
 
 
-In the network layouts, the slight shift in CU deployment results in a partial dismantling of hydrogen pipelines, especially from the Iberian Peninsula to Central Europe (0.5~bn€/a). This adjustment, however, leaves 80\% of the hydrogen topology intact. Simultaneously, the \carbon{} network expands routes from Central and Eastern Europe to the shores (1.2~bn€/a). The benefits of \carbon{} transport and sequestration with tighter emission targets are also evident when comparing the other scenarios. The carbon network in the \carbonscenario{} expands to transport more carbon from point sources to sequestration sites rather than to CU facilities. In the \hydrogenscenario{}, where all carbon for CU and CS must come from DAC, the hydrogen transport topology remains mainly untouched (for detailed cost contributions, refer to sections \ref{sec:cost_comparison} and \ref{sec:operation_nn} in the Appendix).
+In the network layouts, the slight shift in CU deployment results in a partial dismantling of hydrogen pipelines, especially from the Iberian Peninsula to Central Europe (0.5~bn€/a). This adjustment, however, leaves 80\% of the hydrogen topology intact. Simultaneously, the \carbon{} network expands routes from Central and Eastern Europe to the shores (1.2~bn€/a). The benefits of \carbon{} transport and sequestration with tighter emission targets are also evident when comparing the other scenarios. The carbon network in the \carbonscenario{} expands to transport more carbon from point sources to sequestration sites rather than to CU facilities. In the \hydrogenscenario{}, where all carbon for CU and CS must come from DAC, the hydrogen transport topology remains mainly untouched (for detailed cost contributions, refer to sections~\ref{sec:cost_comparison} and~\ref{sec:operation_nn} in the Appendix).
 
 Overall, this leads to the net cost increases of 77~bn€/a in the \carbonscenario{}, by 81~bn€/a in the \hydrogenscenario{}, and by 78~bn€/a in the \hybridscenario{}. The resulting cost-benefit of the \hybridscenario{} in comparison to the other scenarios is 6~bn€/a.
 
 
 \section{Conclusion}
 \label{sec:conclusion}
-
-
 Our study assesses the roles of hydrogen (\hydrogen{}) and carbon dioxide (\carbon{}) networks in Europe's future energy system under net carbon neutrality and net-removal targets. We show that both networks strongly impact the optimal deployment of carbon capture, carbon utilization and sequestration. A \carbon{} network effectively reduces costs by transporting low-cost carbon from distributed point sources to sequestration sites and sites with low-cost hydrogen production to produce carbonaceous fuels. A hydrogen network provides greater cost savings as low-cost hydrogen can be transported to regions with high demand, allowing carbon utilization at point sources. A combination of both networks emphasizes the strengths of each infrastructure. In the hybrid configuration, the \hydrogen{} network supplies low-cost hydrogen to spatially fixed hydrogen demand and carbon utilization at point sources across regions. At the same time, the \carbon{} network transports low-cost carbon captured from point sources close to the coast to sequestration sites, reducing the overall reliance on high-cost Direct Air Capture. This results not only in the lowest system cost but also in a more robust energy system.
 
 
@@ -293,8 +303,12 @@ For the use of biomass, we consider only residual biomass products and no energy
 
 % energy transport
 
-The topology and capacities of the electricity transmission system are taken from the ENTSO-E transparency map~\cite{wiegmansGridkitExtractEntsoE2016} and selected Ten Year Development Plan (TYNDP) projects. The power flow is based on the lossless linearized power flow approximation~.
-The topology of the \carbon{}, \hydrogen{} and gas network is identical to the topology of the electricity network, connecting all neighboring regions. Liquid fuels like oil, methanol and Fischer-Tropsch (FT) fuels are not spatially resolved, since transport costs per unit of energy are negligible due to their high energy density. Throughout this study, we focus on \carbon{} and \hydrogen{} networks because of their high relevance to infrastructure investments and thus public policy decisions. The electricity network and gas network are both included in the model with full geographical detail, but not further analyzed. Electricity networks are already in place, and we restrict further extension due to concerns about public acceptance. Gas networks also already exist, and will most likely experience decreased use in the future, removing any bottlenecks or constraints on the optimal system buildout or operation.
+The topology and capacities of the electricity transmission system are taken from the ENTSO-E transparency map~\cite{wiegmansGridkitExtractEntsoE2016} and selected Ten Year Development Plan (TYNDP) projects. The power flow is based on the linearized power flow approximation assuming a linear transport efficieny of 95.75\% per 1000~km accounting for resistive losses on the power lines. %TODO find reference
+The topology of the \hydrogen{}, \carbon{} and gas network is identical to the topology of the electricity network, connecting all neighboring regions.
+For hydrogen pipelines an average loss of 1.2\% per 1000~km, aligning with industry estimates that account for hydrogen's high permeability and small molecular size, which can lead to higher losses compared to other gases. The electrical demand for compression stations is assumed to be 1.8\% of the transported energy.
+For \carbon{} pipelines an average loss rate of 0.8\% per 1000~km is reflecting a generally low leakage rate observed in supercritical or dense phase CO2 transport~\cite{liuExperimentalStudyLeakage2023,vitaliRisksSafetyCO22021}. The compression energy needed is set to 250~KWh per 1000~km and tonne \carbon{} to maintain a supercritical state for efficient transport. For natural gas pipelines, the model assumes a 1\% loss rate per 1000~km, accounting for typical leakage and operational losses in well-maintained natural gas infrastructure as reported in~\cite{NaturalGasTransmission2021}. The electrical demand for compression is set at 1\% of the transported energy, which falls within the common range for natural gas pipeline operations~\cite{mcvayreneeMethaneEmissionsGas2023}.
+%
+Liquid fuels like oil, methanol and Fischer-Tropsch (FT) fuels are not spatially resolved, since transport costs per unit of energy are negligible due to their high energy density. Throughout this study, we focus on \carbon{} and \hydrogen{} networks because of their high relevance to infrastructure investments and thus public policy decisions. The electricity network and gas network are both included in the model with full geographical detail, but not further analyzed. Electricity networks are already in place, and we restrict further extension due to concerns about public acceptance. Gas networks also already exist, and will most likely experience decreased use in the future, removing any bottlenecks or constraints on the optimal system buildout or operation.
 If enabled, hydrogen can be transported via pipelines between regions which can be expanded without limits, considering costs for pipeline segments and compressors. Pipeline flows are modeled using net transfer capacities and without flow dynamics, pressure valves, or energy demand for compression. No retrofitting of gas pipelines is considered.
 % gas network data from SciGrid gas
 

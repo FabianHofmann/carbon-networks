@@ -10,6 +10,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from common import (
+    group_small_contributions,
     import_network,
     mock_snakemake,
     sort_rows_by_relative_diff,
@@ -20,8 +21,8 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_balance_bar",
         ext="png",
-        clusters=40,
-        comparison="emission-reduction-full",
+        clusters=90,
+        comparison="default",
     )
 
 sns.set_theme(**snakemake.params["theme"])
@@ -41,6 +42,13 @@ for path in snakemake.input.networks:
 df = pd.concat(df, axis=1).fillna(0)
 df = df.rename(lambda k: k.replace(" CC", ""), level=1).groupby(level=[0, 1, 2]).sum()
 
+transmission_losses_rename = {
+    "co2 stored": {"CO$_2$ Pipeline": "CO$_2$ Pipeline Losses"},
+    "H2": {"H$_2$ Pipeline": "H$_2$ Pipeline Losses"},
+    "gas": {"Gas Pipeline": "Gas Pipeline Losses"},
+    "AC": {"DC": "Transmission Losses"},
+}
+# %%
 for kind, output in snakemake.output.items():
     if kind.startswith("table"):
         continue
@@ -62,12 +70,15 @@ for kind, output in snakemake.output.items():
         fmt = ".0f"
 
     ds = df.xs(carrier, level=2)
+    ds = ds.rename(transmission_losses_rename.get(carrier, {}), level=1)
     ds = ds.div(norm).droplevel(0)
-    reduced = ds.where(ds.round(2) != 0).dropna(how="all").fillna(0)
+    reduced = group_small_contributions(ds.T, threshold=0.01).T
+
+    # ds.where(ds.abs() >= 0.15).dropna(how="all").fillna(0)
     if not reduced.empty:
         ds = reduced
     ds = ds.groupby(level=0).sum()
-    ds = ds.sort_values(ds.columns[0], ascending=False)
+    ds = ds.sort_values(by=ds.columns[0], ascending=False)
     if kind == "co2":
         ds.drop("CO$_2$", inplace=True, errors="ignore")
     ds = sort_rows_by_relative_diff(ds)

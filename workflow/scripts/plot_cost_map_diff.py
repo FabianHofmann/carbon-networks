@@ -29,8 +29,13 @@ plt.rc("patch", linewidth=0.1)
 config = snakemake.config
 labels = config["labels"]
 specs = config["plotting"]["cost_map_diff"]
-cutoff_bus = specs["cutoff_bus"]
-cutoff_branch = specs["cutoff_branch"]
+
+if config["configs"]["test"]:
+    cutoff_bus = 0
+    cutoff_branch = 0
+else:
+    cutoff_bus = specs["cutoff_bus"]
+    cutoff_branch = specs["cutoff_branch"]
 
 networks = [
     import_network(path, remove_gas_store_capital_cost=True)
@@ -56,7 +61,7 @@ for n in networks:
     df_bus[key] = costs
 
     branches = get_transmission_branches(n)
-    df_branch[key] = s.capex(groupby=False).loc[branches]
+    df_branch[key] = s.capex(groupby=False).reindex(branches, fill_value=0)
 
     carriers.append(n.carriers)
 

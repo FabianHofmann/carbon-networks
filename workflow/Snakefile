@@ -37,7 +37,7 @@ module pypsaeur:
 def get_graphics(tex_file):
     with open(tex_file, "r") as file:
         contents = file.read()
-    graphs = re.findall(r"\\includegraphics\[.*\]\{(.+?)\}", contents)
+    graphs = re.findall(r"\\includegraphics\*?\[.*\]\{(.+?)\}", contents)
     prefix = "results/"
     return [prefix + graph for graph in graphs]
 

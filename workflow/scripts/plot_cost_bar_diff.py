@@ -18,7 +18,10 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
 
 sns.set_theme(**snakemake.params["theme"])
 labels = snakemake.config["labels"]
-cutoff = snakemake.config["plotting"]["cost_bar_diff"]["cutoff"]
+if snakemake.config["configs"]["test"]:
+    cutouff = 0
+else:
+    cutoff = snakemake.config["plotting"]["cost_bar_diff"]["cutoff"]
 
 df = {}
 carriers = []

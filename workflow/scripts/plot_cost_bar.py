@@ -22,7 +22,7 @@ sns.set_theme(**snakemake.params["theme"])
 df = {}
 objective = {}
 for path in snakemake.input.networks:
-    n = import_network(path, remove_gas_store_capital_cost=True)
+    n = import_network(path, remove_gas_store_capital_cost=True, revert_dac=False)
     capex = n.statistics.capex()
     opex = n.statistics.opex(aggregate_time="sum")
 
@@ -34,6 +34,10 @@ for path in snakemake.input.networks:
 
     df[key] = costs
     objective[key] = n.objective
+
+    # with gas storage capex removed, the following should hold
+    # total_cost = costs.sum() - n.statistics.installed_capex().sum()
+    # assert total_cost.round(0) / 1e9 == n.objective.round(0) / 1e9
 
 df = pd.concat(df, axis=1)
 objective = pd.Series(objective)
