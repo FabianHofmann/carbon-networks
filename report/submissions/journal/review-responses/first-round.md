@@ -54,7 +54,7 @@ We have revised the figures to make them more accessible to the reader. However,
 @chrstphtrs
 > Your H2 prices seem comparatively low to similar exercises. What interest rate/ WACC did you use? I think that should always be made explicit, as it has huge a impact on many results.
 
-
+We use technology cost assumptions from the Technology Data database referenced in the Methods section. The database applies a discount rate of 7% to derive annualized investment costs for all major technologies, including hydrogen electrolyzers. We have added this information to the Methods section.
 
 ---
 @FabianHofmann
@@ -75,6 +75,10 @@ We have revised the figures to make them more accessible to the reader. However,
 @chrstphtrs
 > In the end of section 2: “In the network layouts, the slight shift in CU deployment results in a partial dismantling of hydrogen pipelines, especially from the Iberian Peninsula to Central Europe (0.5 bn€/a).” Is “dismantling” really the right word here? The model simply does not build those pipelines in this scenario, and you cannot dismantle what you never built. Or maybe you can, and this is a tricky koan.
 
+You are absolutely correct. We rephrased this passage, and similar ones, to accurately reflect the net-zero and net-negative scenarios as mutually exclusive futures, not as chronological events.
+
 ---
 @chrstphtrs
 > “High-cost Direct Air Capture”: I may be nitpicking, but I was wondering whether this expression is really fair in combination with the CS cap. I think you force the model to pursue many even more expensive option like FT, this is just the most expensive carbon option for sequestration. Again, really just a thought.
+
+You are correct, the relative statement of low and high cost only applies to elementary carbon dioxide needed for sequestration. We amended the statement to make it more clear.
