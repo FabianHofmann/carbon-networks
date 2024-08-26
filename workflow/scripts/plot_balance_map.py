@@ -64,7 +64,7 @@ for kind, output in snakemake.output.items():
     carriers = config["constants"]["carrier_to_buses"].get(kind, [kind])
 
     grouper = get_bus_and_carrier
-    df = s.dispatch(bus_carrier=carriers, groupby=grouper, aggregate_time="mean")
+    df = s.energy_balance(bus_carrier=carriers, groupby=grouper, aggregate_time="mean")
     _ = get_transmission_carriers(n, bus_carrier=carriers)
     transmission_carriers = _.set_levels(
         n.carriers.nice_name[_.get_level_values(1)], level=1
@@ -78,6 +78,7 @@ for kind, output in snakemake.output.items():
     df = df[df.abs() > 1]
 
     specs = config["plotting"]["balance_map"][kind]
+    specs.update(specs.get("overwrites", {}).get(run, {}))
     bus_scale = float(specs["bus_scale"])
     branch_scale = float(specs["branch_scale"])
     flow_scale = float(specs["flow_scale"])
@@ -94,11 +95,6 @@ for kind, output in snakemake.output.items():
     flow = s.transmission(groupby=False, bus_carrier=carriers, aggregate_time="mean")
     branch_colors = {c: colors[carrier] for c, carrier in transmission_carriers}
     fallback = pd.Series()
-
-    # plot sequestration sinks as full circles, watch out in current pypsa version
-    # the bus area is reduced by factor 2 if split circles is activated!
-    # https://github.com/PyPSA/PyPSA/issues/799
-    bus_sizes = bus_sizes * 2
 
     if kind == "carbon":
         sequestration_sizes = -bus_sizes.loc[:, ["CO$_2$ Sequestration"]] / 2

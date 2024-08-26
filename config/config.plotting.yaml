@@ -34,6 +34,12 @@ plotting:
 
   cost_bar:
     figsize: [4, 4]
+    rot: 90
+    overwrites:
+      sequestration:
+        kwargs:
+          xlabel: 'Sequestration limit (Mt CO$_2$/a)'
+          rot: 0
 
   cost_bar_wide:
     figsize: [9, 4]
@@ -50,6 +56,7 @@ plotting:
   cost_bar_diff:
     cutoff: 500_000_000
     figsize: [4, 5]
+
 
   cost_map_diff:
     cutoff_bus: 50_000_000
@@ -176,6 +183,7 @@ plotting:
     alpha: 1
     region_alpha: 0.6
     figsize: [5, 6.5]
+
     electricity:
       unit: GW
       unit_conversion: 1e3
@@ -211,9 +219,9 @@ plotting:
       unit_conversion: 1e3
       region_cmap: Blues
       region_unit: €/MWh
-      bus_scale: 2e-5
-      branch_scale: 7e-5
-      flow_scale: 1e-1
+      bus_scale: 3e-5
+      branch_scale: 6e-5
+      flow_scale: 8e-2
       bus_sizes:
         - 40
         - 20
@@ -227,23 +235,32 @@ plotting:
       unit_conversion: 1e3
       region_cmap: Purples
       region_unit: €/t
-      bus_scale: 1e-4
-      branch_scale: 5e-4
-      flow_scale: 7e-1
+      bus_scale: 2e-4
+      branch_scale: 6e-4
+      flow_scale: 8e-1
       bus_sizes:
         - 10
         - 5
       branch_sizes:
         - 10
         - 5
+
+      overwrites: # specified per scenario
+        co2-only:
+            branch_scale: 3e-4
+            flow_scale: 4e-1
+        h2-only:
+            branch_scale: 3e-4
+            flow_scale: 4e-1
+
     co2:
       unit: kt/h
       unit_conversion: 1e3
       region_cmap: Purples
       region_unit: €/t
-      bus_scale: 2e-4
+      bus_scale: 3e-4
       branch_scale: 5e-3
-      flow_scale: 2
+      flow_scale: 1
       bus_sizes:
         - 10
         - 5

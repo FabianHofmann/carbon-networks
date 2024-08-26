@@ -78,7 +78,7 @@ for container in ax.containers:
     ax.bar_label(
         container,
         label_type="center",
-        fmt=lambda x: int(round(x, 0)) if x > 0 else "",
+        fmt=lambda x: int(round(x, 0)) if x > 1 else "",
         fontsize=7,
         color="grey",
     )

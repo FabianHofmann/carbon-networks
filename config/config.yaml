@@ -190,3 +190,11 @@ labels:
   seq-800/co2-only: "CO$_2$-Grid (800)"
   seq-800/h2-only: "H$_2$-Grid (800)"
   seq-800/full: "Hybrid (800)"
+
+
+  overwrites:
+    sequestration:
+      full: 200
+      seq-400/full: 400
+      seq-600/full: 600
+      seq-800/full: 800
