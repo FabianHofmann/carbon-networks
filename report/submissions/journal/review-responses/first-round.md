@@ -24,6 +24,11 @@ We have revised the figures to make them more accessible to the reader. However,
 @nworbmot
 > The results are not understandable in terms of transferring into policies.
 
+We have written a short policy outlook in the conclusion as well as linking in the introduction to the recently-announced industrial carbon management strategy of the European Commission. Our addition to the conclusion reads:
+
+"For policy makers these results show the need for coordinated planning across sectors like carbon, hydrogen and synthetic fuels since they are strongly interacting, as well as across borders because of the localized nature of good renewable resources and sequestration potentials. Deploying multiple networks offers some robustness should unforeseen problems arise with one of them, and our results show that the system can even cope with neither a CO2 nor H2 network for a cost penalty.  Many of the technologies have not yet been deployed at scale before and will need support for financing, regulation and gaining the acceptance of local populations."
+
+
 ---
 
 
