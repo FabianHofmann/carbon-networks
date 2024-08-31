@@ -95,6 +95,7 @@ rule main:
                 "cost_bar",
                 "captureshare_line",
                 "cost_bar_transmission",
+                "capacity_bar_transmission",
             ],
         ),
         expand(
@@ -395,6 +396,25 @@ rule plot_cost_bar_transmission:
         threads=2,
     script:
         "scripts/plot_cost_bar_transmission.py"
+
+
+rule plot_capacity_bar_transmission:
+    params:
+        technology_groups=config["plotting"]["technology_groups"],
+        technology_groups_colors=config["plotting"]["technology_group_colors"],
+        settings=config["plotting"]["capacity_bar_transmission"],
+        theme=config["plotting"]["theme"],
+        labels=config["labels"],
+    input:
+        networks=get_comparison_networks,
+    output:
+        figure="results/comparison/{comparison}/figures/{clusters}_nodes/capacity_bar_transmission.{ext}",
+        table="results/comparison/{comparison}/figures/{clusters}_nodes/capacity_bar_transmission.{ext}.csv",
+    resources:
+        mem_mb=20000,
+        threads=2,
+    script:
+        "scripts/plot_capacity_bar_transmission.py"
 
 
 rule plot_balance_bar:

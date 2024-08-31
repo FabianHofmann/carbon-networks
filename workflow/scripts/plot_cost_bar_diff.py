@@ -27,6 +27,7 @@ df = {}
 carriers = []
 for path in snakemake.input.networks:
     n = import_network(path, remove_gas_store_capital_cost=True, revert_dac=False)
+
     capex = n.statistics.capex()
     opex = n.statistics.opex(aggregate_time="sum")
 

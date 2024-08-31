@@ -71,6 +71,7 @@ We use technology cost assumptions from the Technology Data database referenced 
 > I think an overview table with differences of the scenario settings in the beginning would be helpful, and maybe with some key results in the end.
 
 
+
 ---
 @FabianHofmann
 > The colour coding in Figure 6 could be better, the greens are almost indistinguishable and too many similar browns.

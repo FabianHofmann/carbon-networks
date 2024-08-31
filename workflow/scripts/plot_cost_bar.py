@@ -79,32 +79,31 @@ for container in ax.containers:
             color="grey",
         )
 
-if snakemake.wildcards.comparison == "default":
-    pad = 5
-    total = grouped.sum()
-    baseline = total["Baseline"]
-    decrease = 1 - total / baseline
-    for i, (val, y) in enumerate(zip(decrease, total)):
-        if val == 0:
-            ax.text(
-                i,
-                y + pad,
-                f"{baseline:.0f}",
-                ha="center",
-                va="bottom",
-                fontsize=7,
-                color="gray",
-            )
-        else:
-            ax.text(
-                i,
-                y + pad,
-                f"{-val:.1%}",
-                ha="center",
-                va="bottom",
-                fontsize=7,
-                color="gray",
-            )
+pad = 5
+total = grouped.sum()
+baseline = total[total.index[0]]
+decrease = 1 - total / baseline
+for i, (val, y) in enumerate(zip(decrease, total)):
+    if val == 0:
+        ax.text(
+            i,
+            y + pad,
+            f"{baseline:.0f}",
+            ha="center",
+            va="bottom",
+            fontsize=7,
+            color="gray",
+        )
+    else:
+        ax.text(
+            i,
+            y + pad,
+            f"{-val:.1%}",
+            ha="center",
+            va="bottom",
+            fontsize=7,
+            color="gray",
+        )
 
 
 ax.axhline(0, color="k", lw=1)

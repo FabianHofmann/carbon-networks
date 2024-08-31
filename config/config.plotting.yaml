@@ -47,6 +47,9 @@ plotting:
   cost_bar_transmission:
     figsize: [4, 2.5]
 
+  capacity_bar_transmission:
+    figsize: [4, 2.5]
+
   cost_bar_transmission_wide:
     figsize: [8, 2.5]
 
