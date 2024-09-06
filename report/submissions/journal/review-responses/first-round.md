@@ -70,6 +70,13 @@ Therefore, if there is a situation where a fixed hydrogen demand is critical to 
 > 3: In the introduction: “It is assumed that Europe is self-sufficient in energy and does not import any fuels.” I would like to see the consequences of this setting discussed, especially regarding the large liquid quantities it entails. Just a suggestion, but a variation in which half of the quantities are imported discussed briefliy in the Annex would be very valuable. Much of the infrastructure you model and discuss discuss hinges on this, and importing a major share is clearly an realistic and attractive option in reality.
 
 
+This is indeed an important point that we have not discussed in detail in the paper. The assumption of Europe's self-sufficiency in energy was made to simplify the system design and focus on internal infrastructure. However, we agree that importing a significant share of energy carriers, particularly liquid fuels, is a realistic and potentially cost-beneficial option.
+
+We have expanded the discussion of the limitations in the appendix to explore the potential consequences of allowing imports. In the higher sequestration scenario, for example, our model shows that increased imports of fossil oil significantly reduce the need for domestic Fischer-Tropsch (FT) fuel production. While this reduces hydrogen transport and carbon utilization requirements in Central Europe, it also necessitates substantial carbon sequestration within Europe to offset emissions from fossil-based imports. If these imports were carbon-neutral, the need for dedicated sequestration infrastructure would be significantly reduced, as the emissions would already be compensated.
+Thus, the carbon neutrality of imported fuels has a profound effect on the optimal infrastructure layout, especially for hydrogen transport and carbon sequestration. A scenario that allows for partial energy imports could lead to lower investments in the carbon and hydrogen networks as well as direct air capture.
+
+However, a critical political and strategic consideration is the control over the CO2 supply chain. There may not be sufficient sustainable CO2 available abroad, and Europe may prefer to maintain control of the CO2 supply chain to ensure security and reliability. Relying on external sources for carbon-neutral fuels could introduce geopolitical risks, similar to those faced with fossil fuel imports.
+
 
 ---
 @chrstphtrs
@@ -87,11 +94,14 @@ We have added a chapter to the Appendix that showes maps for other energy carrie
 @chrstphtrs
 > I think an overview table with differences of the scenario settings in the beginning would be helpful, and maybe with some key results in the end.
 
-
+We have added an overview table in the introduction that shows the main differences between the scenarios. Since the difference of the scenarios is important on the qualitative level, we have not added a table with key results in the end. We hope that the reader can follow the argumentation and the results are clear enough.
 
 ---
 @FabianHofmann
 > The colour coding in Figure 6 could be better, the greens are almost indistinguishable and too many similar browns.
+
+
+Thank you for your feedback. We have revised the color scheme in Figure 6 to make it more accessible to the reader. We hope that the new color scheme will make the figure easier to read.
 
 
 ---

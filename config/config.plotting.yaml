@@ -327,8 +327,8 @@ plotting:
     biogas to gas: '#805500'
     solid biomass: '#008020'
     solid biomass transport: '#008020'
-    solid biomass for industry: '#008010'
-    solid biomass for industry CC: '#00600c'
+    solid biomass for industry: '#d8f9b8'
+    solid biomass for industry CC: '#d8f9b8'
     solid biomass for industry co2 from atmosphere: '#008008'
     solid biomass for industry co2 to stored: '#00600c'
     urban central solid biomass CHP: '#007008'
@@ -342,9 +342,10 @@ plotting:
     SMR CC: '#4f1745'
     AC: rosybrown
     CO2 pipeline: '#f5627f' # needed as inserted flexibly post-optimization
-  tech_colors_secondary:
-    biomass chp: '#d8f9b8'
-    gas chp: "#ff0000"
+    gas CHP: "#ff0000"
+    gas for industry: '#808080'
+    gas for industry CC: '#808080'
+
   technology_groups:
     AC: Electricity Grid
     BEV charger: Battery Infrastructure
