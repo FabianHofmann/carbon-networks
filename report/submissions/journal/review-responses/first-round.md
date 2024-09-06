@@ -42,12 +42,28 @@ We have written a short policy outlook in the conclusion as well as linking in t
 > 1: CCS is a challenge for scenario analyses like yours, since it low cost makes it a backstop technology. The model will try to solve many things with CCS if one does not prevent somehow. Your approach is to limit CS. “This is in order to avoid offsetting fossil emissions with carbon removal if they can technologically be avoided in the first place.” I was wondering about this throughout the paper. So, first of all I could be helpful to point out the importance and weight of this setting early in the text. I think the implications of this should be discussed more, because I believe this to be crucial: At your point of operation, your model is able to provide and sequester CO2 for roughly160 €/t if I’m correct. That basically means that all mitigation measures costlier than that are only part of the solution because of the CS limit. It would be interesting to discuss the dual value/shadow price of tis cap, to understand how much economic pressure could be on relying more on CCS. The fossil lock-in your CS cap prevents could be an economically very attractive. So, if compensating fossil fuel usage is cheaper than the chosen path of FT and other PtX options, I think this would deserve a discussion in the paper. Especially because the compensation would not need to take place in Europe but could be done in regions with even lower DACS/BECCS costs.
 
 
+Thank you for your insightful comment. In response, we have added an explanation of for our choice to the introduction and have added a new subchapter in the Appendix "Higher Sequestration Limits" which we refer to in the main text. The added chapter discusses new model results for higher seqestration limits and their implications.
+
+Our analysis shows that increasing the limit from 200 Mt/year to 800 Mt/year reduces system costs quite significantly, by up to 9.1%. This reduction is primarily due to a shift towards greater reliance on fossil fuels with CCS, which in turn reduces the need for CU and renewable investments by about a third. At the same time, the hydrogen network loses importance whereas the carbon network quadruples its capacity. Point-sources of carbon in the inland where fossil fuels are used, like gas for heating or naphta for industry, are nearly all captured and tranpsorted to be sequesterd.
+
+
+Another interesting finding is the drop of the shadow price from €225/t to €51/t when increasing the sequestration limit. Additional sequestration capacity provides economic benefits, these benefits, however, diminish as the limit increases​.
+
+
+However, this also introduces the risk of reinforcing fossil fuel dependence, potentially undermining long-term decarbonization efforts. The discussion in the appendix now highlights these trade-offs, emphasizing the importance of carefully balancing sequestration limits to avoid economic over-reliance on CCS​.
+
+
+
 ---
 
 @chrstphtrs
 > 2. The H2 provision in the Baseline case confuses me a bit, namely that it works surprisingly well. How is a constant supply possible in regions without geological storage potential? Does this mean that in hours of low/no RES power plants in the regions with storages produce electricity, which is then brought to H2 sinks and turned into H2 again? In our scenarios this led to much bigger costs and almost impossible necessities for electricity network expansions. Is this because your H2 demand is relatively low, and you transform it into other carriers? Or do you have some other form of storage option at the consumption sites. Overall, I would just like to understand better how you supply H2 steadily without a network.
 
+Thank you for the comment, this is indeed a very interesting question.
 
+The effect you describe would indeed be possible in our model, although the model avoids it as much as possible. Finally, the geological potential for hydrogen storage is lower in some regions, but never zero. So the model always has the ability to store some hydrogen in the ground if needed. The bulk of the H2 demand (FT, methanolisation, methanation) is placed by the model and the spatially fixed hydrogen demand from industry is comparatively low.
+
+Therefore, if there is a situation where a fixed hydrogen demand is critical to be met in a particular region, the model would first consider increasing the local hydrogen storage capacity to meet that hour. If this is not possible, the model would consider increasing the electricity grid capacity to meet the local electrolysis demand. However, the imported electricity would mainly come from non-renewable sources nearby or from renewable sources far away (note that there is no hour when no renewable energy is available in Europe). In the baseline scenario we don't see any hydrogen re-electrification in regions with large hydrogen storage, indicating that the effect you describe is not pronounced in our model.
 
 ---
 @fneum
@@ -65,6 +81,7 @@ We use technology cost assumptions from the Technology Data database referenced 
 @FabianHofmann
 > Maybe this would be to much, but while seeing your H2 prices I was very interested in seeing your electricity prices. If a map/maps would be too much, maybe state the ranges somewhere for reference?
 
+We have added a chapter to the Appendix that showes maps for other energy carrier (electricity, heat, gas, biomass) in the hybrid scenario. These show the average production, consumption, transport and prices per carrier. We hope this will provide the information you are looking for.
 
 ---
 @chrstphtrs

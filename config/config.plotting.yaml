@@ -342,7 +342,9 @@ plotting:
     SMR CC: '#4f1745'
     AC: rosybrown
     CO2 pipeline: '#f5627f' # needed as inserted flexibly post-optimization
-
+  tech_colors_secondary:
+    biomass chp: '#d8f9b8'
+    gas chp: "#ff0000"
   technology_groups:
     AC: Electricity Grid
     BEV charger: Battery Infrastructure

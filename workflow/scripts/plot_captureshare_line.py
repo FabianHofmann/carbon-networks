@@ -30,7 +30,7 @@ which = "capacity"
 share = {}
 cf = {}
 for path in snakemake.input.networks:
-    n = import_network(path)
+    n = import_network(path, secondary_color=True)
     key = snakemake.params.labels[n.meta["wildcards"]["run"]]
 
     s = n.statistics

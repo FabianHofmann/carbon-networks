@@ -184,6 +184,10 @@ labels:
   seq-800/h2-only: "H$_2$-Grid (800)"
   seq-800/full: "Hybrid (800)"
 
+  seq-1000/full: "Hybrid (1000)"
+
+  seq-1200/full: "Hybrid (1200)"
+
   updated-electrolisys-capex/baseline: "Baseline (Reduced Ely. Capex)"
   updated-electrolisys-capex/co2-only: "CO$_2$-Grid (Reduced Ely. Capex)"
   updated-electrolisys-capex/h2-only: "H$_2$-Grid (Reduced Ely. Capex)"
@@ -195,3 +199,4 @@ labels:
       seq-400/full: 400
       seq-600/full: 600
       seq-800/full: 800
+      seq-1000/full: 1000

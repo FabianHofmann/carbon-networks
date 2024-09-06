@@ -129,30 +129,23 @@ No study has yet considered the co-optimization and comprehensive assessment of 
 
 
 To investigate the competing transport dynamics between \carbon{} and \hydrogen{} networks, we contrast the following four scenarios:
-\begin{table}[]
-    \resizebox{\textwidth}{!}{%
-        \begin{tabular}{@{}lcc@{}}
-            \toprule
-            \textbf{Scenario} & H$_2$ Network & CO$_2$ Network \\ \midrule
-            \textbf{Baseline} & \xmark          & \xmark           \\
-            \textbf{CO$_2$-Grid} & \xmark          & \checkmark            \\
-            \textbf{H$_2$-Grid}  & \checkmark          & \xmark           \\
-            \textbf{Hybrid}   & \checkmark           & \checkmark            \\ \bottomrule
-        \end{tabular}%
-    }
-\caption{Overview of the four different scenarios.}
-\label{tab:overview_scenarios}
-\end{table}
+%
+\begin{itemize}
+    \item[] \textit{Baseline:} Neither \carbon{} nor \hydrogen{} networks are constructed.
+    \item[] \textit{\carbongrid{}:} Only the \carbon{} network is developed.
+    \item[] \textit{\hydrogengrid{}:} Only the \hydrogen{} network is developed.
+    \item[] \textit{Hybrid:} Both \carbon{} and \hydrogen{} networks are developed.
+\end{itemize}
 
 
-We analyze how the deployment of carbon and hydrogen networks affects different decarbonization strategies in the scenarios and how investments in none or only one of the transport technologies lead to inefficient market layouts. We do this by focusing first on a net-zero \carbon{} emissions target while limiting carbon sequestration to 200~Mt/a. We give a detailed description of the different technological and geographical impacts of the transportation systems. Subsequently, our analysis demonstrates the extent to which different deployment strategies remain robust under a tightened net \carbon{} removal target.
+We analyze how the deployment of carbon and hydrogen networks affects different decarbonization strategies in the scenarios and how investments in none or only one of the transport technologies lead to inefficient market layouts. Initially, we focus on a net-zero carbon emissions target, limiting carbon sequestration to 200~Mt/a. This constraint ensures that carbon removal is reserved for the hardest-to-abate emissions, while avoiding reliance on sequestration where other mitigation options are feasible. We give a detailed description of the different technological and geographical impacts of the transportation systems. Subsequently, our analysis demonstrates the extent to which different deployment strategies remain robust under a tightened net \carbon{} removal target.
 
 
 \section{Results}
 \label{sec:results}
 
 
-All scenarios share key energy system characteristics but differ in system costs and technology use (Fig.~\ref{fig:cost_bar}). Costs in the \baselinescenario{} are the highest at 764~bn€/a. Scenarios with carbon and hydrogen networks are more cost-effective, reducing costs by 3.1\% in the \carbongrid{}, 4.7\% in the \hydrogengrid{}, and 5.3\% in the \hybridscenario{}.
+All scenarios share key energy system characteristics but differ in system costs and technology use (Fig.~\ref{fig:cost_bar}). Costs in the \baselinescenario{} are the highest at 764~bn€a. Scenarios with carbon and hydrogen networks are more cost-effective, reducing costs by 3.1\% in the \carbongrid{}, 4.7\% in the \hydrogengrid{}, and 5.3\% in the \hybridscenario{}.
 
 \begin{figure}[ht!]
     \centering
@@ -161,7 +154,7 @@ All scenarios share key energy system characteristics but differ in system costs
     \label{fig:cost_bar}
 \end{figure}
 
-% In every model, nearly half the costs are attributable to wind and solar electricity production, and about 10\% to hydro, nuclear, and biomass. In the \baselinemodel, transmission costs (electricity, gas, hydrogen, carbon) are below 4\% (25 bn€) and are dominated by electricity grid expenses. In contrast, the other models have higher combined pipeline costs, peaking at 20\% in the \hybridmodel. Both carbonaceous fuel production and electrolysis account for about 4\% (30 bn€) and 4.7\% (37 bn€) of costs respectively, with heat pump installations contributing around 8\% (64 bn€/a in the \baselinemodel).
+% In every model, nearly half the costs are attributable to wind and solar electricity production, and about 10\% to hydro, nuclear, and biomass. In the \baselinemodel, transmission costs (electricity, gas, hydrogen, carbon) are below 4\% (25 bn€) and are dominated by electricity grid expenses. In contrast, the other models have higher combined pipeline costs, peaking at 20\% in the \hybridscenario. Both carbonaceous fuel production and electrolysis account for about 4\% (30 bn€) and 4.7\% (37 bn€) of costs respectively, with heat pump installations contributing around 8\% (64 bn€/a in the \baselinemodel).
 
 System cost differences between the scenarios are driven by wind and solar, as well as carbon capture technologies. In scenarios with carbon and hydrogen networks, the model primarily reduces the reliance on high-cost DAC, from 365~Mt/a carbon removal in the \baselinescenario{} to 113~Mt/a in the \hybridscenario{} (see Fig.~\ref{fig:balance_captured_carbon}). At the same time, carbon capture from biomass combustion, gas-based industry processes and biogas-to-gas upgrading increase, the latter lowering the need for synthetic methane production.
 % Another knock-on effect of less reliance on DAC is its reduced endogenous demand for dedicated renewables as well as heat pumps and biomass CHPs to supply power and heat.
@@ -216,7 +209,7 @@ We conclude, there are individual cost-benefits of the transport networks. On th
         \label{fig:balance_map_hydrogen_full}
     \end{subfigure}
     \caption{Average operation, flows and prices of the carbon (left) and hydrogen (right) sectors in the \hybridscenario{} assuming net \carbon{} neutrality. For each region, upper semicircles show the average production per technology, lower semicircles the consumption, and colors the average marginal prices. Carbon Sequestration offshore is drawn in full circles. Lines and arrows show interregional transportation. Carbon from point-source in the inland either supplies local CU with imported hydrogen or facilitates sequestration in nearby offshore regions.
-    % Carbon network looks the same as in~\cite{morbeeOptimisedDeploymentEuropean2012}: two backbones, one in northern Europe other in south east.
+        % Carbon network looks the same as in~\cite{morbeeOptimisedDeploymentEuropean2012}: two backbones, one in northern Europe other in south east.
     }
     \label{fig:balance_map_full}
 \end{figure*}
@@ -265,7 +258,8 @@ Overall, this leads to the net cost increases of 77~bn€/a in the \carbonscenar
 Our study assesses the roles of hydrogen (\hydrogen{}) and carbon dioxide (\carbon{}) networks in Europe's future energy system under net carbon neutrality and net-removal targets. We show that both networks strongly impact the optimal deployment of carbon capture, carbon utilization and sequestration. A \carbon{} network effectively reduces costs by transporting low-cost carbon from distributed point sources to sequestration sites and sites with low-cost hydrogen production to produce carbonaceous fuels. A hydrogen network provides greater cost savings as low-cost hydrogen can be transported to regions with high demand, allowing carbon utilization at point sources. A combination of both networks emphasizes the strengths of each infrastructure. In the hybrid configuration, the \hydrogen{} network supplies low-cost hydrogen to spatially fixed hydrogen demand and carbon utilization at point sources across regions. At the same time, the \carbon{} network transports low-cost carbon captured from point sources near the coast to sequestration sites, reducing the reliance on Direct Air Capture. This results not only in the lowest system cost but also in a more robust energy system.
 
 
-Limitations of the study, such as the neglect of synthetic fuel imports and assumptions on biomass potentials, are discussed in the Appendix in Section~\ref{sec:limitations}. A sensitivity analysis of the costs of \carbon{} pipelines and costs of electrolyzers, which show relatively small effects on the results, can be found in the Appendix in Section~\ref{sec:subsidy}. As the cost optimum is affected by the sequestration potential limits, a more detailed analysis of a relaxed sequestration limit is presented in the Appendix in Section~\ref{sec:higher_sequestration}.
+Limitations of the study, such as the neglect of synthetic fuel imports and assumptions on biomass potentials, are discussed in the Appendix in Section~\ref{sec:limitations}.
+The Appendix in Section~\ref{sec:sensitivities} provides an analysis of the model's sensitivities. Notably, relaxing the sequestration limit has a significant impact, reducing system costs by 9.1\% at 800~Mt/a in the hybrid scenario. This reduction is achieved by opting for fossil fuels with carbon capture, transport, and sequestration instead of carbon utilization. Therefore, investments in renewable power assets which serve the synthetic fuel production for the aviation, shipping and industry sectors drop by roughly a third. Less effects can be seen from reducing capital costs for \carbon{} pipelines and costs of electrolyzers, on one hand indicate robustness against price changes but also little effect of subsidizing these technologies.  As the cost optimum is affected by the sequestration potential limits, a more detailed analysis of a relaxed sequestration limit is presented in the Appendix in Section~\ref{sec:higher_sequestration}.
 
 For policy makers these results show the need for coordinated planning across sectors like carbon, hydrogen and synthetic fuels since they are strongly interacting, as well as across borders because of the localized nature of good renewable resources and sequestration potentials. Deploying multiple networks offers some robustness should unforeseen problems arise with one of them, and our results show that the system can even cope with neither a \carbon{} nor \hydrogen{} network for a cost penalty.  Many of the technologies have not yet been deployed at scale before and will need support for financing, regulation and gaining the acceptance of local populations.
 
@@ -357,6 +351,8 @@ For carbon sequestration, we only consider offshore sites as potential sinks (se
 We make this choice because offshore sequestration sites typically have a larger capacity compared to onshore sequestration sites in saline aquifers and due to concerns over public safety for infrastructure near populated areas.
 Our estimates for carbon sequestration potentials are restrictive, limiting the annual sequestration potential to 25~Mt per region and constraining it further such that this amount could be  25 years.
 Furthermore, we decided to limit the total amount of sequestered \carbon{} to 200~Mt per year for our net-zero \carbon{} emission target and 660~Mt per year for our net-negative emission target.
+This constraint is deliberately implemented to avoid over-reliance on carbon capture and sequestration as a backstop technology, which could otherwise offset fossil emissions instead of prioritizing the reduction of fossil fuel use where technologically feasible. By capping the sequestration at 200 Mt/year, we aim to promote a balanced energy transition, where sequestration is used to offset hard-to-abate fossil process emissions (e.g., calcination of limestone in cement manufacturing) but does not become a substitute for more sustainable mitigation measures. The implications of this choice are discussed in the Appendix in Section~\ref{sec:higher_sequestration}.
+
 This is enough to offset hard-to-abate fossil process emissions (e.g., calcination of limestone in cement manufacturing) and some limited slack for fossil fuels to be used where they can be most valuable.
 This is in order to avoid offsetting fossil emissions with carbon removal if they can technologically be avoided in the first place.
 
@@ -403,48 +399,98 @@ Finally, DAC deployment could be in parts replaced if larger sustainable biomass
 In the following, we give a more detailed description of technologies that are upgraded to integrate carbon capture.
 In the \baselinescenario{}, the capture share is highest for biogas-to-gas facilities, followed by process emissions, biomass for industry, biomass CHPs, gas for industry, SMR and gas CHPs. For models with additional transport systems, we observe a correlation between CC share and capacity factors of the underlying technologies: Process emissions as well as gas and biomass for industry have high capacity factors (above 80\%), and CC shares close to 100\%, the only exception being gas for industry in the \hydrogenscenario{}. Biomass CHPs have a capacity factor of around 50\%, and CC shares of 50\% in the \hydrogenscenario{} and 97\% in the \carbonscenario{}. SMR and gas CHPs have capacity factors around 15\%, and CC shares at nearly 0\% for the \baselinescenario{}. The capacity factor and CC share of SMR increase to around 20\% and 50-65\%, respectively, in the other models. Gas CHPs serve as peak load electricity production technology, and with very few operating hours, thus the high investment costs into CC applications are not efficient. Similarly, SMR serves as a ``peak-load'' hydrogen production technology in regions with poor renewable resources for electrolysis.
 
+\clearpage
+\subsection{Sensitivities}
+\label{sec:sensitivities}
 
-\subsection{Subsidizing \carbon{} pipelines}
-\label{sec:subsidy}
 
-The effect of a 50\% subsidy on \carbon{} pipelines impacts the optimal technology deployment to a small extent. Fig.~\ref{fig:cost_bar_subsidy} shows the corresponding total system cost of all scenarios with a net carbon neutrality target. Fig.~\ref{fig:cost_bar_diff_subsidy} shows the net change in system cost between non-subsidized and subsidized models, showing only the \carbongrid{} and \hybridscenario{} where changes occur.
+\subsubsection*{Higher sequestration limits}
+\label{sec:higher_sequestration}
+Carbon management in the optimized energy system, particularly in the hard-to-abate sectors, is heavily influenced by the model's sequestration potential, which is capped at 200~Mt/year. Lifting the sequestration limit leads to cost benefits and a shift in primary energy supply and its implications (see Fig.~\ref{fig:sequestration_cost_bar}). With higher sequestration rates, more fossil fuels are used in the aviation, heating, and industry sectors in land-locked regions where hydrogen is expensive. This reduces the reliance on carbon utilization (CU) and, therefore, the production and transport of hydrogen. At the same time, the carbon network is expanded to transport more carbon from inland point sources to sequestration sites. Sequestration is further supported by large DAC facilities near coastal areas to offset additional emissions from fossil fuels.
+These effects lead to significant changes in investments when increasing sequestration from 200~Mt/a to 800~Mt/a. Due to reduced hydrogen production, investments in wind and solar drop by a third. Total system costs are reduced by 9.1\%, primarily due to lower renewable energy investments. Regarding transport networks, hydrogen network capacity is halved, while the carbon network quadruples (see Fig.~\ref{fig:sequestration_cost_bar_transmission}). These findings are consistent with the effects discussed in~\cite{hofmannDesigningCO2Network2023}.
+
 
 \begin{figure}[ht!]
     \centering
     \begin{subfigure}{.5\textwidth}
-    \includegraphics[width=\linewidth]{comparison/subsidy/figures/90_nodes/cost_bar.png}
-    \caption{}
-    \label{fig:cost_bar_subsidy}
-\end{subfigure}%
-\begin{subfigure}{.5\textwidth}
-    \centering
-    \includegraphics[width=\linewidth]{difference/comparison/subsidy/figures/90_nodes/cost_bar.png}
-    \caption{}
-    \label{fig:cost_bar_diff_subsidy}
-\end{subfigure}
-\caption{System costs for all models in the net-zero emission scenario with 50\% subsidy of \carbon{} pipelines (a) and change in system cost for the \carbongrid{} and \hybridscenario{} when subsidizing \carbon{} pipelines by 50\% (b).}
+        \includegraphics[width=\linewidth]{comparison/sequestration/figures/90_nodes/cost_bar.png}
+        \caption[short]{}
+        \label{fig:sequestration_cost_bar}
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+        \includegraphics[width=\linewidth]{comparison/sequestration/figures/90_nodes/cost_bar_transmission.png}
+        \caption[short]{}
+        \label{fig:sequestration_cost_bar_transmission}
+    \end{subfigure}
+    \caption{System costs for the \hybridscenario{} as a function of the sequestration limit (a). The transmission system cost for the \hybridscenario{} as a function of the sequestration limit (b).}
 \end{figure}
 
 
-\subsection*{Higher sequestration limits}
-\label{sec:higher_sequestration}
-Carbon management in the optimised energy system, particularly in the hard to abate sectors, is heavily influenced by the model's sequestration potential, which is capped at 200~Mt/year. Lifting the sequestration limit leads to cost benefits and a shift in primary energy supply (see Fig.~\ref{fig:sequestration_cost_bar}). Fossil oil and gas increasingly provide critical energy services in the aviation, industrial and heating sectors. Their emissions are either directly capture at the point source and transported to be sequestered or offset large DAC facilities close to coastal sequestration sites. At the same time, the role of the \hydrogen{} network is reduced from 57~TWkm to 20~TWkm due to the less CU required.
-At 800~Mt/a this already reduces wind and solar investments by a third and total costs by 9.1\%, roughly aligning with the findings in~\cite{hofmannDesigningCO2Network2023}.
-
-As the sequestration capacity increases, the cost savings from additional sequestration begin to plateau. At 200Mt/a, the shadow price of the sequestration constraint shows that each additional tonne saves 225€/t, but at 800Mt/a, this saving drops to 51€/t. Extrapolating this behaviour, saturation of sequestration can be expected at around 1200~Mt/a.
 
 
-\begin{figure}[htb!]
+As sequestration capacity increases, the cost savings from additional sequestration begin to plateau. At 200~Mt/a, the shadow price of the sequestration constraint shows that each additional tonne saves 225~€/t, but at 800~Mt/a, this saving drops to 51~€/t. Extrapolating this behavior, saturation of sequestration can be expected around 1200~Mt/a.
+
+While increasing sequestration capacity offers economic benefits, it poses potential risks. Over-reliance on sequestration may delay necessary investments in cleaner technologies and renewable energy. Additionally, the large-scale expansion of carbon storage infrastructure may encounter public opposition due to concerns about the long-term stability of CO$_2$ storage sites and possible leakage risks. Furthermore, the focus on sequestration could perpetuate the use of fossil fuels in sectors where decarbonization alternatives, such as electrification or green hydrogen, may offer more sustainable solutions. Thus, careful consideration must be given to avoid locking in fossil fuel usage and undermining the broader energy transition goals.
+
+
+
+
+\subsubsection{Lower \carbon{} pipelines costs}
+\label{sec:subsidy}
+
+The effect of a 50\% cost-reduction on \carbon{} pipelines, such as through subsidies, impacts the optimal technology deployment to a small extent. Fig.~\ref{fig:cost_bar_subsidy} shows the corresponding total system cost of all scenarios with a net carbon neutrality target. Fig.~\ref{fig:cost_bar_diff_subsidy} shows the net change in system cost between non-subsidized and subsidized models, showing only the \carbongrid{} and \hybridscenario{} where changes occur.
+
+\begin{figure}[ht!]
     \centering
-    \includegraphics[width=\linewidth]{comparison/sequestration/figures/90_nodes/cost_bar.png}
-    \caption[short]{Total system cost as a function of the sequestration limit.}
-    \label{fig:sequestration_cost_bar}
+    \begin{subfigure}{.5\textwidth}
+        \includegraphics[width=\linewidth]{comparison/subsidy/figures/90_nodes/cost_bar.png}
+        \caption{}
+        \label{fig:cost_bar_subsidy}
+    \end{subfigure}%
+    \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{difference/comparison/subsidy/figures/90_nodes/cost_bar.png}
+        \caption{}
+        \label{fig:cost_bar_diff_subsidy}
+    \end{subfigure}
+    \caption{System costs for all models in the net-zero emission scenario with 50\% subsidy of \carbon{} pipelines (a) and change in system cost for the \carbongrid{} and \hybridscenario{} when subsidizing \carbon{} pipelines by 50\% (b).}
 \end{figure}
-
-
 
 \clearpage
-\subsection{Cost comparison across scenarios}
+\subsection{Other sectors in the energy system}
+
+The following maps show the optimal supply, demand, transport and prices of energy carriers in the \hybridscenario{} not covered in the main text.
+
+\begin{figure}[ht!]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=\linewidth]{full/figures/90_nodes/balance_map_electricity.png}
+        \caption{Optimal supply, consumption, transport and prices of electricity in the \hybridscenario{}.}
+        \label{fig:balance_map_electricity}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=\linewidth]{full/figures/90_nodes/balance_map_heat.png}
+        \caption{Optimal supply, consumption, transport and prices of heat in the \hybridscenario{}.}
+        \label{fig:balance_map_heat}
+    \end{subfigure}
+\end{figure}
+
+\begin{figure}[ht!]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=\linewidth]{full/figures/90_nodes/balance_map_gas.png}
+        \caption{Optimal supply, consumption, transport and prices of gas in the \hybridscenario{}.}
+        \label{fig:balance_map_gas}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+        \includegraphics[width=\linewidth]{full/figures/90_nodes/balance_map_biogas.png}
+        \caption{Optimal supply, consumption, transport and prices of biogas in the \hybridscenario{}.}
+        \label{fig:balance_map_biogas}
+    \end{subfigure}
+\end{figure}
+
+\clearpage
+\subsection{Cost comparison across net-zero scenarios}
 \label{sec:cost_comparison}
 
 The following figures show further comparisons of total system costs and cost contributions of single technologies across the models and scenarios.
@@ -495,6 +541,7 @@ The following figures show further comparisons of total system costs and cost co
     \caption{Difference in regional costs between when tightening the emission target in the \hydrogenscenario{} from \carbon{} net-neutrality to net-removal. The left figure shows higher spending per technology and region and transport system net-neutrality case, the right shows higher spending net-negative (NN) case.}
     \label{fig:cost_map_difference_h2_nn}
 \end{figure}
+
 
 
 % \begin{figure}[ht!]

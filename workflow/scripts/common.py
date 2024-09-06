@@ -54,6 +54,7 @@ def import_network(
     offshore_sequestration=False,
     offshore_regions=None,
     remove_gas_store_capital_cost=False,
+    secondary_color=False,
 ):
     n = pypsa.Network(path)
     if offshore_sequestration:
@@ -67,7 +68,7 @@ def import_network(
     modify_carrier_names(n)
     add_carrier_nice_names(n)
     add_carrier_groups(n)
-    update_colors(n)
+    update_colors(n, secondary_color=secondary_color)
     n.carriers.drop("", inplace=True)
     if (no_names := n.carriers.query("nice_name == ''").index).any():
         warnings.warn(f"Carriers {no_names} have no nice_name")
@@ -575,10 +576,13 @@ def modify_carrier_names(n):
     n.carriers = n.carriers[~n.carriers.index.duplicated()]
 
 
-def update_colors(n):
+def update_colors(n, secondary_color=False):
     config = yaml.load(open(root / "config" / "config.plotting.yaml"), yaml.CFullLoader)
     colors = pd.Series(config["plotting"]["tech_colors"])
     n.carriers.color.update(colors)
+    if secondary_color:
+        secondary_colors = pd.Series(config["plotting"]["tech_colors_secondary"])
+        n.carriers.color.update(secondary_colors)
 
 
 def get_carrier_mapper(n):
