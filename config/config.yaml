@@ -72,13 +72,13 @@ comparison:
     - seq-400/full
     - seq-600/full
     - seq-800/full
-  updated-electrolisys-capex:
-    - baseline
-    - updated-electrolisys-capex/baseline
+  updated-electrolisys-capex-co2-only:
     - co2-only
     - updated-electrolisys-capex/co2-only
+  updated-electrolisys-capex-h2-only:
     - h2-only
     - updated-electrolisys-capex/h2-only
+  updated-electrolisys-capex-full:
     - full
     - updated-electrolisys-capex/full
 
@@ -188,10 +188,10 @@ labels:
 
   seq-1200/full: "Hybrid (1200)"
 
-  updated-electrolisys-capex/baseline: "Baseline (Reduced Ely. Capex)"
-  updated-electrolisys-capex/co2-only: "CO$_2$-Grid (Reduced Ely. Capex)"
-  updated-electrolisys-capex/h2-only: "H$_2$-Grid (Reduced Ely. Capex)"
-  updated-electrolisys-capex/full: "Hybrid (Reduced Ely. Capex)"
+  updated-electrolisys-capex/baseline: "Baseline\n(Higher Ely. Capex)"
+  updated-electrolisys-capex/co2-only: "CO$_2$-Grid\n(Higher Ely. Capex)"
+  updated-electrolisys-capex/h2-only: "H$_2$-Grid\n(Higher Ely. Capex)"
+  updated-electrolisys-capex/full: "Hybrid\n(Higher Ely. Capex)"
 
   overwrites:
     sequestration:

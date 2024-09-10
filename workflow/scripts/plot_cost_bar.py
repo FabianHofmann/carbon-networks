@@ -98,7 +98,7 @@ for i, (val, y) in enumerate(zip(decrease, total)):
         ax.text(
             i,
             y + pad,
-            f"{-val:.1%}",
+            f"{-val:+.1%}",
             ha="center",
             va="bottom",
             fontsize=7,

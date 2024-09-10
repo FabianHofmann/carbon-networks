@@ -1,44 +1,13 @@
 
+# Response to Reviewer 2
+
+
 We thank both reviewers for their helpful comments. We have rerun all scenarios in the paper with improved assumptions as suggested by the authors (improved accounting for leakage and compression losses) as well as new scenarios requested by the reviewers for a sensitivity to sequestration rates.
 
 
+Please let us reply to the reviewers' comments below.
 
-## Reviewer #1 (Remarks to the Author):
-
-
-@FabianHofmann
-> The article presents an interesting analysis of the foreseen H2 and CO2 transport infrastructures.
-> Literature is not accurate and there are many references cited without going in their details.
-> The study lacks of realistic elements such as leakage issues, location of compression stations in relation with the capture location.
-
-
-Thank you for your comments. We appreciate your feedback and have addressed your concerns in the revised manuscript.
-
-We have expanded the literature review section to provide more context for the study, as well as discussing recent policy measures for carbon management in the EU. Since the study touches a wide range of topics in the political and technological landscape, we have tried to find a good balance between providing a comprehensive overview and keeping the text concise. (#TODO)
-
-To simulate a more realistic transport system, the following assumptions have been integrated into the energy system model for transport efficiencies and compression requirements. For hydrogen pipelines an average loss of 1.2% per 1000 km, aligning with industry estimates that account for hydrogen's high permeability and small molecular size, which can lead to higher losses compared to other gases​. The compression energy required is assumed to be 1.8% of the transported energy, which is consistent with the significant energy demands for compressing hydrogen due to its low energy density​ [Environmental Defense Fund​](https://www.edf.org/sites/default/files/documents/Pipeline%20Methane%20Leaks%20Report.pdf). For natural gas pipelines, the model assumes a 1% loss rate per 1000 km, accounting for typical leakage and operational losses in well-maintained natural gas infrastructure​ as reported in [Global Energy Monitor](https://www.gem.wiki/Natural_gas_transmission_leakage_rates). The compression requirement is set at 1%, which falls within the common range for natural gas pipeline operations​ [Environmental Defense Fund​](https://www.edf.org/sites/default/files/documents/Pipeline%20Methane%20Leaks%20Report.pdf)​. For CO2 pipelines an average loss rate of 0.8% per 1000 km is reflecting a generally low leakage rate observed in supercritical or dense phase CO2 transport​ [SpringerLink](https://link.springer.com/article/10.1007/s11356-023-27289-3) [MDPI](https://www.mdpi.com/1996-1073/14/15/4601)​. The compression energy needed is set to 250 kWh per 1000km and tonne CO2 reflecting the energy required to compress and maintain CO2 in a supercritical state for efficient transport​.
-
----
-@FabianHofmann
-> There are several graphs that make the reader confused rather than explain the amount of work done by the authors.
-
-We have revised the layout of the figures to make them more accessible to the reader and have adjusted the color scheme where colors tended to be quite similar. However, we would appreciate more specific feedback on which figures you find confusing so that we can address these issues more effectively. Most of the figures contain a lot of information that we feel is necessary to support the argument. We have tried to make them as clear as possible.
-
----
-
-@nworbmot
-> The results are not understandable in terms of transferring into policies.
-
-We have written a short policy outlook in the conclusion as well as linking in the introduction to the recently-announced industrial carbon management strategy of the European Commission. Our addition to the conclusion reads:
-
-"For policy makers these results show the need for coordinated planning across sectors like carbon, hydrogen and synthetic fuels since they are strongly interacting, as well as across borders because of the localized nature of good renewable resources and sequestration potentials. Deploying multiple networks offers some robustness should unforeseen problems arise with one of them, and our results show that the system can even cope with neither a CO2 nor H2 network for a cost penalty.  Many of the technologies have not yet been deployed at scale before and will need support for financing, regulation and gaining the acceptance of local populations."
-
-
----
-
-
-## Reviewer #2 (Remarks to the Author):
-@FabianHofmann
+Comment:
 
 > Overall, a very impressive paper, with a very clear and concise structure, easy to follow with many interesting insights. The research gap and necessity of the paper clearly are demonstrated, the topic is higly relevant and the chosen methodology are well suited for the task.
 
@@ -59,9 +28,8 @@ However, this also introduces the risk of reinforcing fossil fuel dependence, po
 
 
 
----
+Comment:
 
-@chrstphtrs
 > 2. The H2 provision in the Baseline case confuses me a bit, namely that it works surprisingly well. How is a constant supply possible in regions without geological storage potential? Does this mean that in hours of low/no RES power plants in the regions with storages produce electricity, which is then brought to H2 sinks and turned into H2 again? In our scenarios this led to much bigger costs and almost impossible necessities for electricity network expansions. Is this because your H2 demand is relatively low, and you transform it into other carriers? Or do you have some other form of storage option at the consumption sites. Overall, I would just like to understand better how you supply H2 steadily without a network.
 
 Thank you for the comment, this is indeed a very interesting question.
@@ -70,8 +38,8 @@ The spatially-fixed hydrogen demand from industry (primarily for primary steel b
 
 In addition, to provide hydrogen in some regions with poor renewable resources the model resorts to SMR with either green or fossil methane transported in the gas grid.
 
----
-@fneum
+Comment:
+
 > 3: In the introduction: “It is assumed that Europe is self-sufficient in energy and does not import any fuels.” I would like to see the consequences of this setting discussed, especially regarding the large liquid quantities it entails. Just a suggestion, but a variation in which half of the quantities are imported discussed briefliy in the Annex would be very valuable. Much of the infrastructure you model and discuss discuss hinges on this, and importing a major share is clearly an realistic and attractive option in reality.
 
 
@@ -83,42 +51,42 @@ Thus, the carbon neutrality of imported fuels has a profound effect on the optim
 However, a critical political and strategic consideration is the control over the CO2 supply chain. There may not be sufficient sustainable CO2 available abroad, and Europe may prefer to maintain control of the CO2 supply chain to ensure security and reliability. Relying on external sources for carbon-neutral fuels could introduce geopolitical risks, similar to those faced with fossil fuel imports.
 
 
----
-@chrstphtrs
+Comment:
+
 > Your H2 prices seem comparatively low to similar exercises. What interest rate/ WACC did you use? I think that should always be made explicit, as it has huge a impact on many results.
 
 We use technology cost assumptions from the Danish Energy Agency referenced in the Methods section. The database applies a discount rate of 7% to derive annualized investment costs for all major technologies, including hydrogen electrolyzers. We have added this information to the Methods section.
 
----
-@FabianHofmann
+Comment:
+
 > Maybe this would be to much, but while seeing your H2 prices I was very interested in seeing your electricity prices. If a map/maps would be too much, maybe state the ranges somewhere for reference?
 
 We have added a chapter to the Appendix that showes maps for other energy carrier (electricity, heat, gas, biomass) in the hybrid scenario. These show the average production, consumption, transport and prices per carrier. We hope this will provide the information you are looking for.
 
----
-@chrstphtrs
+Comment:
+
 > I think an overview table with differences of the scenario settings in the beginning would be helpful, and maybe with some key results in the end.
 
 We have added an overview table in the introduction that shows the main differences between the scenarios. Since the difference of the scenarios is important on the qualitative level, we have not added a table with key results in the end. We hope that the reader can follow the argumentation and the results are clear enough.
 
----
-@FabianHofmann
+Comment:
+
 > The colour coding in Figure 6 could be better, the greens are almost indistinguishable and too many similar browns.
 
 
 Thank you for your feedback. We have revised the color scheme in Figure 6 to make it more accessible to the reader. We hope that the new color scheme will make the figure easier to read.
 
 
----
-@chrstphtrs
+Comment:
+
 > In the end of section 2: “In the network layouts, the slight shift in CU deployment results in a partial dismantling of hydrogen pipelines, especially from the Iberian Peninsula to Central Europe (0.5 bn€/a).” Is “dismantling” really the right word here? The model simply does not build those pipelines in this scenario, and you cannot dismantle what you never built. Or maybe you can, and this is a tricky koan.
 
 You are absolutely correct. We rephrased this passage, and similar ones, that the the net-zero and net-negative scenarios are modelled as different futures, not as chronological events.
 
 
 
----
-@chrstphtrs
+Comment:
+
 > “High-cost Direct Air Capture”: I may be nitpicking, but I was wondering whether this expression is really fair in combination with the CS cap. I think you force the model to pursue many even more expensive option like FT, this is just the most expensive carbon option for sequestration. Again, really just a thought.
 
 You are correct, the relative statement of low and high cost only applies to elementary carbon dioxide needed for sequestration. We amended the statement to make it more clear.

@@ -63,7 +63,7 @@ for container in ax.containers:
             label_type="center",
             fontsize=7,
             color="grey",
-            labels=diff.round(0).astype(int),
+            labels=f"{diff:+.0g}",
         )
 
 ax.vlines(0, -0.5, len(diff) - 0.5, color="k", lw=0.5)
