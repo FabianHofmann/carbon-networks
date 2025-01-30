@@ -34,17 +34,51 @@ module pypsaeur:
         config
 
 
-def get_graphics(tex_file):
-    with open(tex_file, "r") as file:
-        contents = file.read()
-    graphs = re.findall(r"\\includegraphics\[.*\]\{(.+?)\}", contents)
+def get_graphics(*tex_files):
+    if isinstance(tex_files, str):
+        tex_files = [tex_files]
+
+    graphs = []
+    for tex_file in tex_files:
+        with open(tex_file, "r") as file:
+            contents = file.read()
+        graphs.extend(re.findall(r"\\includegraphics\*?\[.*\]\{(.+?)\}", contents))
+
     prefix = "results/"
     return [prefix + graph for graph in graphs]
 
 
 rule graphics:
     input:
-        get_graphics(config["report"]["path"]),
+        get_graphics(config["report"]["path"], config["report"]["si"]),
+    output:
+        dir=directory(config["report"]["figures"]),
+        touch=".graphics",
+    run:
+        import shutil
+
+        for file in input:
+            file_stripped = file.replace("results/", "")
+
+            path = pathlib.Path(output.dir, file_stripped)
+            if not path.parent.exists():
+                path.parent.mkdir(parents=True)
+            shutil.copy(file, path)
+
+        pathlib.Path(output.touch).touch()
+
+
+rule arxiv:
+    input:
+        get_graphics("report/report.tex"),
+        "report/report.tex",
+        "report/references.bib",
+    output:
+        "report/submissions/arxiv/paper.zip",
+    shell:
+        """
+        zip -u {output} {input}
+        """
 
 
 rule main:
@@ -95,6 +129,7 @@ rule main:
                 "cost_bar",
                 "captureshare_line",
                 "cost_bar_transmission",
+                "capacity_bar_transmission",
             ],
         ),
         expand(
@@ -171,7 +206,7 @@ rule get_solved_network:
             **config["scenario"]
         ),
     output:
-        network=protected("results/{run}/networks/{clusters}_nodes.nc"),
+        network="results/{run}/networks/{clusters}_nodes.nc",
     shell:
         """
         cp {input} {output}
@@ -185,6 +220,23 @@ rule get_all_solved_networks:
             run=config["run"]["name"],
             **config["scenario"]
         ),
+    run:
+        import pypsa
+        import warnings
+        import logging
+
+        logger = logging.getLogger("pypsa")
+        logger.setLevel(logging.ERROR)
+
+        not_solved = []
+        for network in input:
+            n = pypsa.Network(network)
+            if not getattr(n, "objective", False):
+                not_solved.append(network)
+
+        if not_solved:
+            all_not_solved = "\n".join(not_solved)
+            warnings.warn(f"Networks not solved:\n{all_not_solved}")
 
 
 rule plot_demand_bar:
@@ -215,11 +267,15 @@ rule plot_capacity_map:
         ),
     output:
         **{
-            kind: f"results/{{run}}/figures/{{clusters}}_nodes/capacity_map_{kind}.{{ext}}"
+            kind: "results/{{run}}/figures/{{clusters}}_nodes/capacity_map_{kind}.{{ext}}".format(
+                kind=kind
+            )
             for kind in config["constants"]["kinds"]
         },
     resources:
         mem_mb=20000,
+    log:
+        "logs/{run}/plot_capacity_map_{run}_{clusters}.{ext}.log",
     script:
         "scripts/plot_capacity_map.py"
 
@@ -270,10 +326,14 @@ rule plot_balance_map:
         mem_mb=20000,
     output:
         **{
-            kind: f"results/{{run}}/figures/{{clusters}}_nodes/balance_map_{kind}.{{ext}}"
+            kind: "results/{{run}}/figures/{{clusters}}_nodes/balance_map_{kind}.{{ext}}".format(
+                kind=kind
+            )
             for kind in config["constants"]["kinds"]
             + config["constants"]["additional_kinds"]
         },
+    log:
+        "logs/{run}/plot_balance_map_{run}_{clusters}.{ext}.log",
     script:
         "scripts/plot_balance_map.py"
 
@@ -287,7 +347,9 @@ rule plot_balance_area:
         network="results/{run}/networks/{clusters}_nodes.nc",
     output:
         **{
-            kind: f"results/{{run}}/figures/{{clusters}}_nodes/balance_area_{kind}.{{ext}}"
+            kind: "results/{{run}}/figures/{{clusters}}_nodes/balance_area_{kind}.{{ext}}".format(
+                kind=kind
+            )
             for kind in config["constants"]["kinds"]
             + config["constants"]["additional_kinds"]
         },
@@ -380,6 +442,25 @@ rule plot_cost_bar_transmission:
         "scripts/plot_cost_bar_transmission.py"
 
 
+rule plot_capacity_bar_transmission:
+    params:
+        technology_groups=config["plotting"]["technology_groups"],
+        technology_groups_colors=config["plotting"]["technology_group_colors"],
+        settings=config["plotting"]["capacity_bar_transmission"],
+        theme=config["plotting"]["theme"],
+        labels=config["labels"],
+    input:
+        networks=get_comparison_networks,
+    output:
+        figure="results/comparison/{comparison}/figures/{clusters}_nodes/capacity_bar_transmission.{ext}",
+        table="results/comparison/{comparison}/figures/{clusters}_nodes/capacity_bar_transmission.{ext}.csv",
+    resources:
+        mem_mb=20000,
+        threads=2,
+    script:
+        "scripts/plot_capacity_bar_transmission.py"
+
+
 rule plot_balance_bar:
     params:
         settings=lambda w: config["plotting"]["balance_bar_wide"]
@@ -391,12 +472,16 @@ rule plot_balance_bar:
         networks=get_comparison_networks,
     output:
         **{
-            kind: f"results/comparison/{{comparison}}/figures/{{clusters}}_nodes/balance_bar_{kind}.{{ext}}"
+            kind: "results/comparison/{{comparison}}/figures/{{clusters}}_nodes/balance_bar_{kind}.{{ext}}".format(
+                kind=kind
+            )
             for kind in config["constants"]["kinds"]
             + config["constants"]["additional_kinds"]
         },
         **{
-            f"table-{kind}": f"results/comparison/{{comparison}}/figures/{{clusters}}_nodes/balance_bar_{kind}.{{ext}}.csv"
+            f"table-{kind}": "results/comparison/{{comparison}}/figures/{{clusters}}_nodes/balance_bar_{kind}.{{ext}}.csv".format(
+                kind=kind
+            )
             for kind in config["constants"]["kinds"]
             + config["constants"]["additional_kinds"]
         },
@@ -557,7 +642,9 @@ rule push:
         cluster=f"{config['remote']['ssh']}:{config['remote']['path']}",
     shell:
         """
+        set -x
         rsync -uvarh --ignore-missing-args --files-from=.sync-send . {params.cluster}
+        set +x
         """
 
 

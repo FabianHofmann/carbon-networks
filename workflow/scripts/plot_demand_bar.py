@@ -8,6 +8,7 @@ Created on Mon Oct 16 09:32:38 2023
 
 import os
 import pypsa
+import pypsa.statistics
 import seaborn as sns
 from common import import_network, mock_snakemake
 import matplotlib.pyplot as plt
@@ -23,7 +24,7 @@ sns.set_theme(**snakemake.params["theme"])
 n = import_network(snakemake.input.network)
 s = n.statistics
 
-demand = s.withdrawal(groupby=s.groupers.get_carrier_and_bus_carrier).Load
+demand = s.withdrawal(groupby=pypsa.statistics.get_carrier_and_bus_carrier).Load
 
 
 rename_bus_carrier = {

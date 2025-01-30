@@ -67,24 +67,39 @@ fig, ax = plt.subplots(
     1, 1, figsize=snakemake.params.settings["figsize"], layout="constrained"
 )
 
-grouped = grouped[grouped.round(0).ne(0).any(axis=1)]
+if not snakemake.config["configs"]["test"]:
+    grouped = grouped[grouped.round(0).ne(0).any(axis=1)]
+
+
+def rounded(x):
+    # hard set this to figures in the appendix
+    if abs(float(x)) <= 0.1:
+        return ""
+    elif grouped.abs().sum().sum() < 50:
+        return round(x, 1)
+    else:
+        return int(round(x, 0))
+
+
 grouped.T.plot(kind="bar", stacked=True, ax=ax, color=colors, legend=True, alpha=0.9)
 for container in ax.containers:
     if abs(container.datavalues).sum() > grouped.abs().sum().sum() / 20:
         ax.bar_label(
             container,
-            fmt=lambda x: int(round(x, 0)),
+            fmt=lambda x: rounded(x),
             label_type="center",
             fontsize=7,
             color="grey",
         )
-pad = ax.get_ylim()[1] * 0.02
+
+pad = (abs(ax.get_ylim()[1]) + abs(ax.get_ylim()[0])) * 0.02
 bbox = {"boxstyle": "circle", "facecolor": "none", "pad": 0.2, "edgecolor": "k"}
 for i in range(len(grouped.columns)):
     col = grouped.iloc[:, i]
-    val = col.sum().round(0).astype(int)
-    y = col[col.ge(0)].sum() + pad
-    ax.text(i, y, f"{val:g}", ha="center", va="bottom", fontsize=7, bbox=bbox)
+    if (val := col.sum()) != 0:
+        val = rounded(val)
+        y = col[col.ge(0)].sum() + pad
+        ax.text(i, y, f"{val}", ha="center", va="bottom", fontsize=7, bbox=bbox)
 
 ax.axhline(0, color="black", lw=0.5)
 ax.set_ylabel(f"Net Investment Change [{unit}]")

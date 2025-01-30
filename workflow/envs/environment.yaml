@@ -1,0 +1,73 @@
+name: co2-network
+channels:
+    - conda-forge
+    - bioconda
+dependencies:
+    - python>=3.11
+    - pip
+
+    - pre-commit
+    - black
+
+    - snakemake-minimal
+    - graphviz
+
+    - ipython
+    - jupyter
+    - jupyterlab
+
+    - seaborn
+    - plotly
+
+
+    - pypsa>=0.25.1
+    - atlite>=0.2.9
+    - dask
+    - gurobi
+    - python-kaleido
+
+    # Dependencies of the workflow itself
+    - xlrd
+    - openpyxl!=3.1.1
+    - pycountry
+    - seaborn
+    - snakemake-minimal
+    - memory_profiler
+    - yaml
+    - pytables
+    - lxml
+    - powerplantmatching>=0.5.8
+    - numpy<1.24
+    - pandas
+    - geopandas>=0.11.0
+    - rioxarray
+    - xarray
+    - netcdf4
+    - networkx
+    - scipy
+    - shapely>=2.0
+    - progressbar2
+    - pyomo
+    - matplotlib
+    - proj
+    - fiona
+    - country_converter
+
+    # Keep in conda environment when calling ipython
+    - ipython
+
+    # GIS dependencies:
+    - cartopy
+    - descartes
+    - rasterio!=1.2.10
+
+    # PyPSA-Eur-Sec Dependencies
+    - geopy
+    - tqdm
+    - pytz
+    - tabula-py
+    - pyxlsb
+
+    - pip:
+        - vresutils>=0.3.1
+        - tsam>=1.1.0

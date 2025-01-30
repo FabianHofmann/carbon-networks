@@ -18,12 +18,16 @@ if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
 
 sns.set_theme(**snakemake.params["theme"])
 labels = snakemake.config["labels"]
-cutoff = snakemake.config["plotting"]["cost_bar_diff"]["cutoff"]
+if snakemake.config["configs"]["test"]:
+    cutouff = 0
+else:
+    cutoff = snakemake.config["plotting"]["cost_bar_diff"]["cutoff"]
 
 df = {}
 carriers = []
 for path in snakemake.input.networks:
-    n = import_network(path, remove_gas_store_capital_cost=True)
+    n = import_network(path, remove_gas_store_capital_cost=True, revert_dac=False)
+
     capex = n.statistics.capex()
     opex = n.statistics.opex(aggregate_time="sum")
 
@@ -59,7 +63,7 @@ for container in ax.containers:
             label_type="center",
             fontsize=7,
             color="grey",
-            labels=diff.round(0).astype(int),
+            labels=f"{diff:+.0g}",
         )
 
 ax.vlines(0, -0.5, len(diff) - 0.5, color="k", lw=0.5)

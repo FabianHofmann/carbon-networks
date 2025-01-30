@@ -1,5 +1,6 @@
 import os
 import cartopy.crs as ccrs
+import cartopy
 import geopandas as gpd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -18,7 +19,7 @@ region_alpha = 0.8
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_cost_map_diff",
-        ext="png",
+        ext="pdf",
         clusters=90,
         difference="emission-reduction-0.1-co2-only",
     )
@@ -29,8 +30,13 @@ plt.rc("patch", linewidth=0.1)
 config = snakemake.config
 labels = config["labels"]
 specs = config["plotting"]["cost_map_diff"]
-cutoff_bus = specs["cutoff_bus"]
-cutoff_branch = specs["cutoff_branch"]
+
+if config["configs"]["test"]:
+    cutoff_bus = 0
+    cutoff_branch = 0
+else:
+    cutoff_bus = specs["cutoff_bus"]
+    cutoff_branch = specs["cutoff_branch"]
 
 networks = [
     import_network(path, remove_gas_store_capital_cost=True)
@@ -47,8 +53,8 @@ for n in networks:
     is_dac = n.links.carrier == "DAC"
     n.links.loc[is_dac, ["bus0", "bus1"]] = n.links.loc[is_dac, ["bus1", "bus0"]].values
 
-    capex = s.capex(groupby=s.get_bus_and_carrier)
-    opex = s.opex(aggregate_time="sum", groupby=s.get_bus_and_carrier)
+    capex = s.capex(groupby=s.groupers.get_bus_and_carrier)
+    opex = s.opex(aggregate_time="sum", groupby=s.groupers.get_bus_and_carrier)
     costs = capex.add(opex, fill_value=0)
 
     key = snakemake.params.labels[n.meta["wildcards"]["run"]]
@@ -56,7 +62,7 @@ for n in networks:
     df_bus[key] = costs
 
     branches = get_transmission_branches(n)
-    df_branch[key] = s.capex(groupby=False).loc[branches]
+    df_branch[key] = s.capex(groupby=False).reindex(branches, fill_value=0)
 
     carriers.append(n.carriers)
 
@@ -109,9 +115,11 @@ for ax, ds_bus, ds_branch, col, n in zip(
         lines = n.lines.index.intersection(ds_branch.Line.index)
         line_widths = ds_branch.Line[lines]
         line_colors = n.lines.carrier[lines].map(n.carriers.color)
+        line_alpha = alpha
     else:
-        line_widths = pd.Series()
-        line_colors = pd.Series()
+        line_widths = pd.Series(0, index=n.lines.index)
+        line_colors = pd.Series("black", index=n.lines.index)
+        line_alpha = pd.Series(0, index=n.lines.index)
 
     n.plot(
         bus_sizes=ds_bus * bus_scale,
@@ -123,7 +131,7 @@ for ax, ds_bus, ds_branch, col, n in zip(
         link_alpha=alpha,
         line_widths=line_widths * branch_scale,
         line_colors=line_colors,
-        line_alpha=alpha,
+        line_alpha=line_alpha,
         color_geomap={"border": "darkgrey", "coastline": "darkgrey"},
         geomap="10m",
         boundaries=snakemake.config["plotting"]["extent"],
@@ -137,6 +145,15 @@ for ax, ds_bus, ds_branch, col, n in zip(
         transform=ccrs.PlateCarree(),
         aspect="equal",
     )
+
+    # Add lat/lon gridlines
+    gl = ax.gridlines(
+        draw_labels=True, linewidth=0.1, color="gray", alpha=0.3, linestyle="--"
+    )
+    gl.top_labels = False
+    gl.right_labels = False
+    gl.xformatter = cartopy.mpl.gridliner.LONGITUDE_FORMATTER
+    gl.yformatter = cartopy.mpl.gridliner.LATITUDE_FORMATTER
 
     title = col.replace("\n", " ")
     ax.set_title(f"Higher Spendings {title}")

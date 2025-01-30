@@ -4,6 +4,8 @@ configs:
 
 report:
   path: "report/submissions/journal/paper/paper.tex"
+  si: "report/submissions/journal/paper/si.tex"
+  figures: "report/submissions/journal/paper/figures/"
 
 remote:
   # ssh: zecm
@@ -19,10 +21,25 @@ run:
     - full
     - net-negative-0.1/baseline
     - net-negative-0.1/co2-only
-    - net-negative-0.1/h2-only # sub-optimal (6.12.2023)
-    - net-negative-0.1/full # numerical problems (6.12.2023)
-    - half-price/co2-only # time-limit (6.12.2023)
-    - half-price/full # sub-optimal (6.12.2023)
+    - net-negative-0.1/h2-only
+    - net-negative-0.1/full
+    - co2-network-price-0.5/co2-only
+    - co2-network-price-0.5/full
+    - co2-network-price-1.5/co2-only
+    - co2-network-price-1.5/full
+    - h2-network-price-0.5/h2-only
+    - h2-network-price-0.5/full
+    - h2-network-price-1.5/h2-only
+    - h2-network-price-1.5/full
+    - seq-400/full
+    - seq-600/full
+    - seq-800/full
+    - seq-1000/full
+    - seq-1200/full
+    - updated-electrolisys-capex/baseline
+    - updated-electrolisys-capex/co2-only
+    - updated-electrolisys-capex/h2-only
+    - updated-electrolisys-capex/full
 
   scenarios:
     enable: true
@@ -52,11 +69,41 @@ comparison:
   emission-reduction-full:
     - full
     - net-negative-0.1/full
-  subsidy:
+  co2-subsidy:
     - baseline
-    - half-price/co2-only
+    - co2-network-price-0.5/co2-only
     - h2-only
-    - half-price/full
+    - co2-network-price-0.5/full
+  h2-subsidy:
+    - baseline
+    - co2-only
+    - h2-network-price-0.5/h2-only
+    - h2-network-price-0.5/full
+  co2-penalty:
+    - baseline
+    - co2-network-price-1.5/co2-only
+    - h2-only
+    - co2-network-price-1.5/full
+  h2-penalty:
+    - baseline
+    - co2-only
+    - h2-network-price-1.5/h2-only
+    - h2-network-price-1.5/full
+  sequestration:
+    - full
+    - seq-400/full
+    - seq-600/full
+    - seq-800/full
+  updated-electrolisys-capex-co2-only:
+    - co2-only
+    - updated-electrolisys-capex/co2-only
+  updated-electrolisys-capex-h2-only:
+    - h2-only
+    - updated-electrolisys-capex/h2-only
+  updated-electrolisys-capex-full:
+    - full
+    - updated-electrolisys-capex/full
+
   all: *runs
 difference:
   default:
@@ -89,12 +136,43 @@ difference:
   baseline-full:
     - full
     - baseline
-  subsidy-co2-only:
+  co2-subsidy-co2-only:
     - co2-only
-    - half-price/co2-only
-  subsidy-full:
+    - co2-network-price-0.5/co2-only
+  co2-subsidy-full:
     - full
-    - half-price/full
+    - co2-network-price-0.5/full
+  h2-subsidy-h2-only:
+    - h2-only
+    - h2-network-price-0.5/h2-only
+  h2-subsidy-full:
+    - full
+    - h2-network-price-0.5/full
+  co2-penalty-co2-only:
+    - co2-only
+    - co2-network-price-1.5/co2-only
+  co2-penalty-full:
+    - full
+    - co2-network-price-1.5/full
+  h2-penalty-h2-only:
+    - h2-only
+    - h2-network-price-1.5/h2-only
+  h2-penalty-full:
+    - full
+    - h2-network-price-1.5/full
+  sequence-400:
+    - full
+    - seq-400/full
+  sequence-600:
+    - full
+    - seq-600/full
+  sequence-800:
+    - full
+    - seq-800/full
+  # updated-electrolisys-capex-baseline:
+  #   - full
+  #   - updated-electrolisys-capex/full
+
 difference-comparison:
   emission-reduction-0.1:
     - emission-reduction-0.1-co2-only
@@ -104,9 +182,18 @@ difference-comparison:
     - baseline-co2-only
     - baseline-h2-only
     - baseline-full
-  subsidy:
-    - subsidy-co2-only
-    - subsidy-full
+  co2-subsidy:
+    - co2-subsidy-co2-only
+    - co2-subsidy-full
+  h2-subsidy:
+    - h2-subsidy-h2-only
+    - h2-subsidy-full
+  co2-penalty:
+    - co2-penalty-co2-only
+    - co2-penalty-full
+  h2-penalty:
+    - h2-penalty-h2-only
+    - h2-penalty-full
 
 labels:
   baseline: "Baseline"
@@ -114,8 +201,17 @@ labels:
   h2-only: "H$_2$-Grid"
   full: "Hybrid"
 
-  half-price/co2-only: "CO$_2$-Grid\n(Subs.)"
-  half-price/full: "Hybrid\n(Subs.)"
+  co2-network-price-0.5/co2-only: "CO$_2$-Grid\n(50% Cost)"
+  co2-network-price-0.5/full: "Hybrid\n(50% Cost)"
+
+  co2-network-price-1.5/co2-only: "CO$_2$-Grid\n(150% Cost)"
+  co2-network-price-1.5/full: "Hybrid\n(150% Cost)"
+
+  h2-network-price-0.5/h2-only: "H$_2$-Grid\n(50% Cost)"
+  h2-network-price-0.5/full: "Hybrid\n(50% Cost)"
+
+  h2-network-price-1.5/h2-only: "H$_2$-Grid\n(150% Cost)"
+  h2-network-price-1.5/full: "Hybrid\n(150% Cost)"
 
   net-neutral: "NZ"
   net-negative-0.1: "NN"
@@ -130,3 +226,35 @@ labels:
   electricity: "Electricity"
   gas: "Natural Gas"
   co2: "Atm. CO$_2$"
+
+  seq-400/baseline: "Baseline (400)"
+  seq-400/co2-only: "CO$_2$-Grid (400)"
+  seq-400/h2-only: "H$_2$-Grid (400)"
+  seq-400/full: "Hybrid (400)"
+
+  seq-600/baseline: "Baseline (600)"
+  seq-600/co2-only: "CO$_2$-Grid (600)"
+  seq-600/h2-only: "H$_2$-Grid (600)"
+  seq-600/full: "Hybrid (600)"
+
+  seq-800/baseline: "Baseline (800)"
+  seq-800/co2-only: "CO$_2$-Grid (800)"
+  seq-800/h2-only: "H$_2$-Grid (800)"
+  seq-800/full: "Hybrid (800)"
+
+  seq-1000/full: "Hybrid (1000)"
+
+  seq-1200/full: "Hybrid (1200)"
+
+  updated-electrolisys-capex/baseline: "Baseline\n(Higher Ely. Capex)"
+  updated-electrolisys-capex/co2-only: "CO$_2$-Grid\n(Higher Ely. Capex)"
+  updated-electrolisys-capex/h2-only: "H$_2$-Grid\n(Higher Ely. Capex)"
+  updated-electrolisys-capex/full: "Hybrid\n(Higher Ely. Capex)"
+
+  overwrites:
+    sequestration:
+      full: 200
+      seq-400/full: 400
+      seq-600/full: 600
+      seq-800/full: 800
+      seq-1000/full: 1000

@@ -12,7 +12,7 @@ You need [mamba](https://mamba.readthedocs.io/en/latest/) to run the analysis. U
 
 ## Run the analysis
 
-    snakemake main -call
+    snakemake -call
 
 This will run all analysis steps to reproduce results and eventually build the report.
 
@@ -24,7 +24,7 @@ To generate a PDF of the dependency graph of all steps `build/dag.pdf` run:
 
 * `config`: configurations used in the study
 * `data`: place for raw data
-<!-- * `report`: contains all files necessary to build the report; plots and result files are generated automatically -->
+* `report`: contains all files necessary to build the report; plots and result files are generated automatically
 * `workflow`: contains the Snakemake workflow
 * `build`: will contain all results (does not exist initially)
 

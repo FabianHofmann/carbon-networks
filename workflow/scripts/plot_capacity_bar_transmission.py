@@ -31,20 +31,16 @@ carriers = []
 for path in snakemake.input.networks:
     n = import_network(path)
 
-    is_transport = get_transmission_links(n, with_eu=False)
-    transport_carriers = [
-        *n.links.carrier[is_transport].unique(),
-        *n.lines.carrier.unique(),
-    ]
-    transport_carriers = n.carriers.nice_name[transport_carriers]
-
-    transmission = n.statistics.capex(comps=n.branch_components)
-    transmission = transmission.reindex(transport_carriers, level=1)
-    transmission = transmission.droplevel(0)
+    capacity = n.links.p_nom_opt * n.links.length
+    cap = (
+        capacity.groupby(n.links.carrier.map(n.carriers.nice_name))
+        .sum()
+        .round(2)[lambda x: x > 0]
+    )  # GW*km / Mt*km
 
     key = snakemake.params.labels[n.meta["wildcards"]["run"]]
 
-    df[key] = transmission
+    df[key] = cap
     carriers.append(n.carriers)
 
 data = pd.concat(df, axis=1)
@@ -62,7 +58,7 @@ data = data.rename(lambda x: x + "s", axis=0)
 colors = colors.rename(lambda x: x + "s", axis=0)
 
 
-norm = 1e9
+norm = 1e3
 data = sort_rows_by_relative_diff(data).div(norm)
 
 fig, ax = plt.subplots(
@@ -84,7 +80,7 @@ for container in ax.containers:
     )
 
 ax.axhline(0, color="k", lw=1)
-ax.set_ylabel("Transmission Cost [bn€/a]")
+ax.set_ylabel("Transmission Capacity [GW*km] / [Mt*km]")
 ax.set_xlabel(data.columns.name)
 
 handles, labels = get_ordered_handles_labels(ax, data, wrap=22)
