@@ -19,9 +19,12 @@ pypsa-eur
 sec
 connect.sh
 old-results
+shallow/
+report/submissions/arxiv
 
 # ignore paper dir in public repo
 report/
+
 
 # from pypsa-eur
 

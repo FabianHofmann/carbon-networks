@@ -33,7 +33,7 @@ aligned_carriers = ["carbon", "hydrogen"]
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_capacity_map",
-        run="net-negative-0.1/baseline",
+        run="full",
         clusters=90,
         ext="png",
     )

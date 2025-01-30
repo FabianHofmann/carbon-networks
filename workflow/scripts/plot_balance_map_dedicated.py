@@ -5,6 +5,7 @@ Created on Thu Nov 24 10:14:48 2022
 
 @author: fabian
 """
+
 import os
 import warnings
 import textwrap
@@ -12,8 +13,9 @@ import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import cartopy.mpl.gridliner
 from pypsa.plot import add_legend_circles, add_legend_patches, add_legend_lines
-from pypsa.statistics import get_transmission_carriers
+from pypsa.statistics import get_transmission_carriers, get_bus_and_carrier
 from common import (
     import_network,
     mock_snakemake,
@@ -69,8 +71,10 @@ for n, axs, right_subplot in zip(networks, axes.T, [False, True]):
     for kind, ax in zip(["carbon", "hydrogen"], axs):
         carriers = config["constants"]["carrier_to_buses"].get(kind, [kind])
 
-        grouper = s.groupers.get_bus_and_carrier
-        df = s.dispatch(bus_carrier=carriers, groupby=grouper, aggregate_time="mean")
+        grouper = get_bus_and_carrier
+        df = s.energy_balance(
+            bus_carrier=carriers, groupby=grouper, aggregate_time="mean"
+        )
         _ = get_transmission_carriers(n, bus_carrier=carriers)
         transmission_carriers = _.set_levels(
             n.carriers.nice_name[_.get_level_values(1)], level=1
@@ -84,6 +88,7 @@ for n, axs, right_subplot in zip(networks, axes.T, [False, True]):
         df = df[df.abs() > 1]
 
         specs = config["plotting"]["balance_map"][kind]
+        specs.update(specs.get("overwrites", {}).get(run, {}))
         bus_scale = float(specs["bus_scale"])
         branch_scale = float(specs["branch_scale"])
         flow_scale = float(specs["flow_scale"])
@@ -101,11 +106,6 @@ for n, axs, right_subplot in zip(networks, axes.T, [False, True]):
         )
         branch_colors = {c: colors[carrier] for c, carrier in transmission_carriers}
         fallback = pd.Series()
-
-        # plot sequestration sinks as full circles, watch out in current pypsa verion
-        # the bus sizes are reduced by factor 2 if split circles is activated!
-        # https://github.com/PyPSA/PyPSA/issues/799
-        bus_sizes = bus_sizes * 2
 
         if kind == "carbon":
             sequestration_sizes = -bus_sizes.loc[:, ["CO$_2$ Sequestration"]] / 2
@@ -125,25 +125,36 @@ for n, axs, right_subplot in zip(networks, axes.T, [False, True]):
                 ax=ax,
                 facecolor="None",
                 edgecolor="darkgrey",
-                linewidth=0.1,
+                linewidth=0,
                 alpha=region_alpha,
                 transform=ccrs.PlateCarree(),
                 aspect="equal",
             )
+
+        line_widths = (
+            (
+                flow.get("Line", fallback).abs().reindex(n.lines.index, fill_value=0)
+                * branch_scale
+            )
+            .astype(float)
+            .round(2)
+        )
+        link_widths = (
+            (
+                flow.get("Link", fallback).abs().reindex(n.links.index, fill_value=0)
+                * branch_scale
+            )
+            .astype(float)
+            .round(2)
+        )
 
         n.plot(
             bus_sizes=bus_sizes * bus_scale,
             bus_colors=colors,
             bus_alpha=alpha,
             bus_split_circles=True,
-            line_widths=flow.get("Line", fallback)
-            .abs()
-            .reindex(n.lines.index, fill_value=0)
-            * branch_scale,
-            link_widths=flow.get("Link", fallback)
-            .abs()
-            .reindex(n.links.index, fill_value=0)
-            * branch_scale,
+            line_widths=line_widths,
+            link_widths=link_widths,
             line_colors=branch_colors.get("Line", "lightgrey"),
             link_colors=branch_colors.get("Link", "lightgrey"),
             flow=flow * flow_scale,
@@ -153,6 +164,16 @@ for n, axs, right_subplot in zip(networks, axes.T, [False, True]):
             geomap="10m",
             boundaries=bounds,
         )
+
+        # Add lat/lon gridlines
+        gl = ax.gridlines(
+            draw_labels=True, linewidth=0.1, color="gray", alpha=0.3, linestyle="--"
+        )
+        gl.top_labels = False
+        gl.right_labels = False
+        gl.left_labels = ~right_subplot
+        gl.xformatter = cartopy.mpl.gridliner.LONGITUDE_FORMATTER
+        gl.yformatter = cartopy.mpl.gridliner.LATITUDE_FORMATTER
 
         buses = n.buses.query("carrier in @carriers").index
         price = (
@@ -277,6 +298,17 @@ for n, axs, right_subplot in zip(networks, axes.T, [False, True]):
             carrier_label = labels.get(kind, kind.title())
             title = f"{carrier_label} Balance ({labels[run]} Scenario)"
             ax.set_title(title)
+
+# Add panel letters
+for i, ax in enumerate(axes.flat):
+    ax.text(
+        -0.1,
+        1.05,
+        f"({chr(97+i)})",
+        transform=ax.transAxes,
+        fontweight="bold",
+        va="top",
+    )
 
 fig.savefig(
     snakemake.output.figure,

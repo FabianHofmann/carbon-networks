@@ -18,16 +18,49 @@ full:
     H2_network: true
     co2network: true
 
-half-price/co2-only:
+co2-network-price-0.5/co2-only:
   sector:
     co2network: true
     co2_network_cost_factor: 0.5
 
-half-price/full:
+co2-network-price-0.5/full:
   sector:
     H2_network: true
     co2network: true
     co2_network_cost_factor: 0.5
+
+co2-network-price-1.5/co2-only:
+  sector:
+    co2network: true
+    co2_network_cost_factor: 1.5
+
+co2-network-price-1.5/full:
+  sector:
+    H2_network: true
+    co2network: true
+    co2_network_cost_factor: 1.5
+
+h2-network-price-0.5/h2-only:
+  sector:
+    H2_network: true
+    H2_network_cost_factor: 0.5
+
+h2-network-price-0.5/full:
+  sector:
+    H2_network: true
+    co2network: true
+    H2_network_cost_factor: 0.5
+
+h2-network-price-1.5/h2-only:
+  sector:
+    H2_network: true
+    H2_network_cost_factor: 1.5
+
+h2-network-price-1.5/full:
+  sector:
+    H2_network: true
+    co2network: true
+    H2_network_cost_factor: 1.5
 
 net-negative-0.1/baseline:
   sector:
@@ -58,99 +91,98 @@ net-negative-0.1/full:
     2050: -0.1
 
 
-# with fuel cell land transport eq. old setup
-
-w-fc/baseline:
+# higher sequestration potential
+seq-400/baseline:
   sector:
-    land_transport_fuel_cell_share:
-      2050: 0.15
-    land_transport_electric_share:
-      2050: 0.85
+    co2_sequestration_potential: 400
 
-w-fc/co2-only:
+seq-400/co2-only:
   sector:
     co2network: true
-    land_transport_fuel_cell_share:
-      2050: 0.15
-    land_transport_electric_share:
-      2050: 0.85
+    co2_sequestration_potential: 400
 
-w-fc/h2-only:
+seq-400/h2-only:
   sector:
     H2_network: true
-    land_transport_fuel_cell_share:
-      2050: 0.15
-    land_transport_electric_share:
-      2050: 0.85
+    co2_sequestration_potential: 400
 
-w-fc/full:
+seq-400/full:
   sector:
     H2_network: true
     co2network: true
-    land_transport_fuel_cell_share:
-      2050: 0.15
-    land_transport_electric_share:
-      2050: 0.85
+    co2_sequestration_potential: 400
 
-w-fc/half-price/co2-only:
+seq-600/baseline:
+  sector:
+    co2_sequestration_potential: 600
+
+seq-600/co2-only:
   sector:
     co2network: true
-    co2_network_cost_factor: 0.5
-    land_transport_fuel_cell_share:
-      2050: 0.15
-    land_transport_electric_share:
-      2050: 0.85
+    co2_sequestration_potential: 600
 
-w-fc/half-price/full:
+seq-600/h2-only:
+  sector:
+    H2_network: true
+    co2_sequestration_potential: 600
+
+seq-600/full:
   sector:
     H2_network: true
     co2network: true
-    co2_network_cost_factor: 0.5
-    land_transport_fuel_cell_share:
-      2050: 0.15
-    land_transport_electric_share:
-      2050: 0.85
+    co2_sequestration_potential: 600
 
-w-fc/net-negative-0.1/baseline:
+seq-800/baseline:
   sector:
-    co2_sequestration_potential: 661.4112
-    land_transport_fuel_cell_share:
-      2050: 0.15
-    land_transport_electric_share:
-      2050: 0.85
-  co2_budget:
-    2050: -0.1
+    co2_sequestration_potential: 800
 
-w-fc/net-negative-0.1/co2-only:
+seq-800/co2-only:
   sector:
     co2network: true
-    co2_sequestration_potential: 661.4112
-    land_transport_fuel_cell_share:
-      2050: 0.15
-    land_transport_electric_share:
-      2050: 0.85
-  co2_budget:
-    2050: -0.1
+    co2_sequestration_potential: 800
 
-w-fc/net-negative-0.1/h2-only:
+seq-800/h2-only:
   sector:
     H2_network: true
-    co2_sequestration_potential: 661.4112
-    land_transport_fuel_cell_share:
-      2050: 0.15
-    land_transport_electric_share:
-      2050: 0.85
-  co2_budget:
-    2050: -0.1
+    co2_sequestration_potential: 800
 
-w-fc/net-negative-0.1/full:
+seq-800/full:
   sector:
     H2_network: true
     co2network: true
-    co2_sequestration_potential: 661.4112
-    land_transport_fuel_cell_share:
-      2050: 0.15
-    land_transport_electric_share:
-      2050: 0.85
-  co2_budget:
-    2050: -0.1
+    co2_sequestration_potential: 800
+
+
+seq-1000/full:
+  sector:
+    H2_network: true
+    co2network: true
+    co2_sequestration_potential: 1000
+
+seq-1200/full:
+  sector:
+    H2_network: true
+    co2network: true
+    co2_sequestration_potential: 1200
+
+
+# higher electrolysis costs
+updated-electrolisys-capex/baseline:
+  sector:
+    hydrogen_electrolysis_cost_factor: 1.4
+
+updated-electrolisys-capex/co2-only:
+  sector:
+    co2network: true
+    hydrogen_electrolysis_cost_factor: 1.4
+
+updated-electrolisys-capex/h2-only:
+  sector:
+    H2_network: true
+    hydrogen_electrolysis_cost_factor: 1.4
+
+updated-electrolisys-capex/full:
+  sector:
+    H2_network: true
+    co2network: true
+    hydrogen_electrolysis_cost_factor: 1.4

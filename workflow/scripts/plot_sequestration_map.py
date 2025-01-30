@@ -1,6 +1,7 @@
 import os
 import cartopy
 from cartopy import crs as ccrs
+import cartopy
 from common import (
     import_network,
     mock_snakemake,
@@ -14,7 +15,7 @@ import geopandas as gpd
 if os.path.dirname(os.path.abspath(__file__)) == os.getcwd():
     snakemake = mock_snakemake(
         "plot_sequestration_map",
-        run="half-price",
+        run="co2-price-0.5",
         clusters=40,
         ext="png",
     )
@@ -51,6 +52,16 @@ offshore_regions.plot(
         "extend": "max",
     },
 )
+
+# Add lat/lon gridlines
+gl = ax.gridlines(
+    draw_labels=True, linewidth=0.1, color="gray", alpha=0.3, linestyle="--"
+)
+gl.top_labels = False
+gl.right_labels = False
+gl.xformatter = cartopy.mpl.gridliner.LONGITUDE_FORMATTER
+gl.yformatter = cartopy.mpl.gridliner.LATITUDE_FORMATTER
+
 # draw costal lines
 ax.coastlines(resolution="10m", color="black", linewidth=0.5)
 ax.add_feature(cartopy.feature.BORDERS, edgecolor="black", linewidth=0.5)

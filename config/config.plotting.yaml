@@ -34,11 +34,20 @@ plotting:
 
   cost_bar:
     figsize: [4, 4]
+    rot: 90
+    overwrites:
+      sequestration:
+        kwargs:
+          xlabel: 'Sequestration limit (Mt CO$_2$/a)'
+          rot: 0
 
   cost_bar_wide:
     figsize: [9, 4]
 
   cost_bar_transmission:
+    figsize: [4, 2.5]
+
+  capacity_bar_transmission:
     figsize: [4, 2.5]
 
   cost_bar_transmission_wide:
@@ -50,6 +59,7 @@ plotting:
   cost_bar_diff:
     cutoff: 500_000_000
     figsize: [4, 5]
+
 
   cost_map_diff:
     cutoff_bus: 50_000_000
@@ -176,6 +186,7 @@ plotting:
     alpha: 1
     region_alpha: 0.6
     figsize: [5, 6.5]
+
     electricity:
       unit: GW
       unit_conversion: 1e3
@@ -211,9 +222,9 @@ plotting:
       unit_conversion: 1e3
       region_cmap: Blues
       region_unit: €/MWh
-      bus_scale: 2e-5
-      branch_scale: 7e-5
-      flow_scale: 1e-1
+      bus_scale: 3e-5
+      branch_scale: 6e-5
+      flow_scale: 8e-2
       bus_sizes:
         - 40
         - 20
@@ -227,23 +238,44 @@ plotting:
       unit_conversion: 1e3
       region_cmap: Purples
       region_unit: €/t
-      bus_scale: 1e-4
-      branch_scale: 5e-4
-      flow_scale: 7e-1
+      bus_scale: 2e-4
+      branch_scale: 6e-4
+      flow_scale: 8e-1
       bus_sizes:
         - 10
         - 5
       branch_sizes:
         - 10
         - 5
+
+      overwrites: # specified per scenario
+        co2-only:
+            branch_scale: 3e-4
+            flow_scale: 4e-1
+        h2-only:
+            branch_scale: 3e-4
+            flow_scale: 4e-1
+        net-negative-0.1/co2-only:
+            bus-scale: 1e-4
+            branch_scale: 2e-4
+            flow_scale: 3e-1
+        net-negative-0.1/h2-only:
+            bus-scale: 1e-4
+            branch_scale: 2e-4
+            flow_scale: 3e-1
+        net-negative-0.1/full:
+            bus-scale: 1e-4
+            branch_scale: 2e-4
+            flow_scale: 3e-1
+
     co2:
       unit: kt/h
       unit_conversion: 1e3
       region_cmap: Purples
       region_unit: €/t
-      bus_scale: 2e-4
+      bus_scale: 3e-4
       branch_scale: 5e-3
-      flow_scale: 2
+      flow_scale: 1
       bus_sizes:
         - 10
         - 5
@@ -307,8 +339,8 @@ plotting:
     biogas to gas: '#805500'
     solid biomass: '#008020'
     solid biomass transport: '#008020'
-    solid biomass for industry: '#008010'
-    solid biomass for industry CC: '#00600c'
+    solid biomass for industry: '#b7f046'
+    solid biomass for industry CC: '#b7f046'
     solid biomass for industry co2 from atmosphere: '#008008'
     solid biomass for industry co2 to stored: '#00600c'
     urban central solid biomass CHP: '#007008'
@@ -322,11 +354,16 @@ plotting:
     SMR CC: '#4f1745'
     AC: rosybrown
     CO2 pipeline: '#f5627f' # needed as inserted flexibly post-optimization
+    gas CHP: "#ff0000"
+    gas for industry: '#808080'
+    gas for industry CC: '#808080'
+
   technology_groups:
     AC: Electricity Grid
     BEV charger: Battery Infrastructure
     DAC: DAC
     DC: Electricity Grid
+    Transmission losses: Electricity Grid
     Fischer-Tropsch: Fischer-Tropsch
     H2: H$_2$ Infrastructure
     H2 Electrolysis: Electrolysis
@@ -334,6 +371,7 @@ plotting:
     H2 Store: H$_2$ Infrastructure
     H2 for industry: H$_2$ Infrastructure
     H2 pipeline: H$_2$ Infrastructure
+    H2 pipeline losses: H$_2$ Infrastructure
     Li ion: Battery Infrastructure
     OCGT: Gas Infrastructure
     PHS: Hydro Energy
@@ -357,12 +395,14 @@ plotting:
     biomass boiler: Bioenergy
     co2: CO$_2$ Infrastructure
     CO2 pipeline: CO$_2$ Infrastructure
+    CO2 pipeline losses: CO$_2$ Infrastructure
     co2 sequestered: Other
     co2 stored: CO$_2$ Infrastructure
     electricity: Electricity Grid
     electricity distribution grid: Electricity Grid
     gas: Gas Infrastructure
     gas pipeline: Gas Infrastructure
+    gas pipeline losses: Gas Infrastructure
     gas pipeline new: Gas Infrastructure
     gas CHP: Gas Infrastructure
     gas CHP CC: Carbon Capt. at Point Sources

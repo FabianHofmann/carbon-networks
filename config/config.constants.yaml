@@ -10,6 +10,7 @@ constants:
     - oil
     - heat
     - biogas
+    - carbon-hydrogen
 
   oneport_comps:
     - Generator

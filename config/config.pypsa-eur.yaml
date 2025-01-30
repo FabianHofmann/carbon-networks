@@ -52,8 +52,15 @@ sector:
   district_heating:
     progress:
       2050: 0.8
+  transmission_efficiency:
+    enable: true
+
 
 solving:
-  walltime: 3-00:00:00
-  mem: 150000
+  walltime: 4-00:00:00
+  mem: 180000
   partition: big
+
+  solver:
+    name: gurobi
+    options: gurobi-default

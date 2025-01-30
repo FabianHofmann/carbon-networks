@@ -103,7 +103,7 @@ pos = labels.index("Capacity Factor")
 # labels.insert(pos, "")
 
 # remove 40 and 60 from legend
-for label in ["60 %", "40 %"]:
+for label in set(labels).intersection(["60 %", "40 %"]):
     handles.pop(labels.index(label))
     labels.remove(label)
 

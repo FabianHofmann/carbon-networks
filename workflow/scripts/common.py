@@ -149,7 +149,7 @@ def remove_gas_store_capex(n):
 
 def group_small_contributions(df, threshold=0.01):
     if isinstance(df, pd.DataFrame):
-        is_small = df.sum() < threshold
+        is_small = df.abs().sum() < threshold * df.abs().sum().sum()
         if is_small.sum() <= 1:
             return df
         small = df.loc[:, is_small]
@@ -157,7 +157,7 @@ def group_small_contributions(df, threshold=0.01):
         df = df.assign(Other=small.sum(1))
         return df
     elif isinstance(df, pd.Series):
-        is_small = df < threshold
+        is_small = df.abs() < threshold * df.abs().sum()
         if is_small.sum() <= 1:
             return df
         small = df[is_small]
@@ -541,6 +541,17 @@ def fill_missing_carriers(n):
         new_carriers = set(c.df.carrier.unique()) - set(n.carriers.index)
         if new_carriers:
             n.madd("Carrier", list(new_carriers), nice_name=list(new_carriers))
+    reference = ["H2 pipeline", "CO2 pipeline", "gas pipeline", "DC"]
+    new_carriers = [
+        "H2 pipeline losses",
+        "CO2 pipeline losses",
+        "gas pipeline losses",
+        "Transmission losses",
+    ]
+    rename = dict(zip(reference, new_carriers))
+    carriers = n.carriers.loc[n.carriers.index.intersection(reference)].rename(rename)
+    carriers["nice_name"] = carriers.index
+    n.madd("Carrier", carriers.index, **carriers)
 
 
 def modify_carrier_names(n):
