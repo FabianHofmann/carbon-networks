@@ -73,7 +73,7 @@ if not snakemake.config["configs"]["test"]:
 
 def rounded(x):
     # hard set this to figures in the appendix
-    if abs(float(x)) <= 0.1:
+    if abs(float(x)) <= 0.2:
         return ""
     elif grouped.abs().sum().sum() < 50:
         return round(x, 1)
@@ -83,7 +83,7 @@ def rounded(x):
 
 grouped.T.plot(kind="bar", stacked=True, ax=ax, color=colors, legend=True, alpha=0.9)
 for container in ax.containers:
-    if abs(container.datavalues).sum() > grouped.abs().sum().sum() / 20:
+    if abs(container.datavalues).sum():
         ax.bar_label(
             container,
             fmt=lambda x: rounded(x),

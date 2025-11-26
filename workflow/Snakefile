@@ -42,7 +42,11 @@ def get_graphics(*tex_files):
     for tex_file in tex_files:
         with open(tex_file, "r") as file:
             contents = file.read()
-        graphs.extend(re.findall(r"\\includegraphics\*?\[.*\]\{(.+?)\}", contents))
+        matches = re.findall(r"\\includegraphics\*?\[.*\]\{(.+?)\}", contents)
+
+        # convert to nested paths
+        matches_sub = [m.replace("~", "/") for m in matches]
+        graphs.extend(matches_sub)
 
     prefix = "results/"
     return [prefix + graph for graph in graphs]
@@ -58,11 +62,10 @@ rule graphics:
         import shutil
 
         for file in input:
-            file_stripped = file.replace("results/", "")
-
+            file_stripped = file.replace("results/", "").replace("/", "~")
             path = pathlib.Path(output.dir, file_stripped)
-            if not path.parent.exists():
-                path.parent.mkdir(parents=True)
+            if not path.exists():
+                path.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy(file, path)
 
         pathlib.Path(output.touch).touch()
@@ -331,6 +334,7 @@ rule plot_balance_map:
             )
             for kind in config["constants"]["kinds"]
             + config["constants"]["additional_kinds"]
+            + config["constants"]["dedicated_kinds"]
         },
     log:
         "logs/{run}/plot_balance_map_{run}_{clusters}.{ext}.log",

@@ -1,8 +1,18 @@
-# CO2 and H2 networks in Europe
+# Combining the use of CO₂ and H₂ networks benefits carbon management in Europe
 
-This project targets at co-optimizing the Hydrogen and CO2 networks in Europe and tries to answer the question to what extent the two networks are competing or complementing each other.
+This repository contains the official workflow to reproduce the results of the paper:
 
-This repository contains the entire scientific project, including code and report. The philosophy behind this repository is that no intermediary results are included, but all results are computed from raw data and code.
+> **Combining the use of CO₂ and H₂ networks benefits carbon management in Europe**
+> Fabian Hofmann, Christoph Tries, Fabian Neumann, Elisabeth Zeyen, Tom Brown
+> *Nature Energy* (2025)
+> DOI: [10.1038/s41560-025-01753-5](https://doi.org/10.1038/s41560-025-01753-5)
+> Preprint: [arXiv:2402.19042](https://arxiv.org/abs/2402.19042)
+
+The study investigates how hydrogen and carbon dioxide transport networks can support a climate-neutral European energy system. It finds that a hydrogen network is more cost-effective for transporting hydrogen to demand centers, while both networks complement each other when deployed together—the CO₂ network encourages distributed biomass capture and reduces dependence on direct air capture.
+
+## Funding
+
+This project was funded by [Breakthrough Energy](https://www.breakthroughenergy.org/).
 
 ## Getting ready
 
@@ -27,6 +37,20 @@ To generate a PDF of the dependency graph of all steps `build/dag.pdf` run:
 * `report`: contains all files necessary to build the report; plots and result files are generated automatically
 * `workflow`: contains the Snakemake workflow
 * `build`: will contain all results (does not exist initially)
+
+## Citation
+
+If you use this code, please cite:
+
+```bibtex
+@article{hofmann2025co2h2,
+  title={Combining the use of CO2 and H2 networks benefits carbon management in Europe},
+  author={Hofmann, Fabian and Tries, Christoph and Neumann, Fabian and Zeyen, Elisabeth and Brown, Tom},
+  journal={Nature Energy},
+  year={2025},
+  doi={10.1038/s41560-025-01753-5}
+}
+```
 
 ## License
 
