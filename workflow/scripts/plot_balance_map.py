@@ -109,6 +109,7 @@ for kind_group, output in snakemake.output.items():
         flow = s.transmission(
             groupby=False, bus_carrier=carriers, aggregate_time="mean"
         )
+        flow = flow[flow.round(2) != 0]
         branch_colors = {c: colors[carrier] for c, carrier in transmission_carriers}
         fallback = pd.Series()
 
@@ -136,22 +137,11 @@ for kind_group, output in snakemake.output.items():
                 aspect="equal",
             )
 
-        line_widths = (
-            (
-                flow.get("Line", fallback).abs().reindex(n.lines.index, fill_value=0)
-                * branch_scale
-            )
-            .astype(float)
-            .round(2)
-        )
-        link_widths = (
-            (
-                flow.get("Link", fallback).abs().reindex(n.links.index, fill_value=0)
-                * branch_scale
-            )
-            .astype(float)
-            .round(2)
-        )
+        line_flow = flow.get("Line", fallback)
+        line_widths = (line_flow.abs() * branch_scale).astype(float).round(2)
+        link_flow = flow.get("Link", fallback)
+        link_widths = (link_flow.abs() * branch_scale).astype(float).round(2)
+
         plot = n.plot(
             bus_sizes=bus_sizes * bus_scale,
             bus_colors=colors,
@@ -283,7 +273,7 @@ for kind_group, output in snakemake.output.items():
         if snakemake.params.settings.get("title", True):
             carrier_label = labels.get(kind, kind.title())
             title = f"{carrier_label} Balance ({labels[run]} Scenario)"
-            ax.set_title(title)
+            ax.set_title(title, zorder=10)
 
         legend_bus_sizes = specs["bus_sizes"]
         if legend_bus_sizes is not None:

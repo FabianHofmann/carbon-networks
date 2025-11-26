@@ -156,7 +156,7 @@ for ax, ds_bus, ds_branch, col, n in zip(
     gl.yformatter = cartopy.mpl.gridliner.LATITUDE_FORMATTER
 
     title = col.replace("\n", " ")
-    ax.set_title(f"Higher Spendings {title}")
+    ax.set_title(f"Higher Spendings {title}", zorder=10, y=1.01)
 
     legend_bus_sizes = specs["bus_sizes"]
     if legend_bus_sizes is not None:

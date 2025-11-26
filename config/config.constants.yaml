@@ -10,6 +10,7 @@ constants:
     - oil
     - heat
     - biogas
+  dedicated_kinds:
     - carbon-hydrogen
 
   oneport_comps:
